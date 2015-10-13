@@ -1,30 +1,27 @@
 doctype html
 html
-head
-  title KarPage
-  = stylesheet_link_tag    'application', media: 'all'
-  = javascript_include_tag 'application'
-  = csrf_meta_tags
+  head
+    title KarPage
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
 
-body
-  = cell :header, nil, content: ->
-    - capture do
+  body
+    = cell :header do
       = yield :header
 
-  .container
-    = yield
+    .container
+      = yield
 
-.container-fluid.footer
-  .text-center.social
-    = link_to '#' do
-      img src="/assets/footer-twitter.png"
-    = link_to '#' do
-      img src="/assets/footer-facebook.png"
+  .container-fluid.footer
+    .text-center.social
+      = link_to image_tag('footer-twitter.png'), '#'
+      = link_to image_tag('footer-facebook.png'), '#'
 
-  ul.footer-nav
-    li= link_to 'Team', '#', class: 'btn btn-link'
-    li= link_to 'Help', '#', class: 'btn btn-link'
-    li= link_to 'Contact', '#', class: 'btn btn-link'
-    li= link_to 'Terms of Use', '#', class: 'btn btn-link'
+    ul.footer-nav
+      li= link_to 'Team', '#', class: 'btn btn-link'
+      li= link_to 'Help', '#', class: 'btn btn-link'
+      li= link_to 'Contact', '#', class: 'btn btn-link'
+      li= link_to 'Terms of Use', '#', class: 'btn btn-link'
 
-  p.copyright.small= copyright_notice
+    p.copyright.small= copyright_notice
