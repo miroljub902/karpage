@@ -4,10 +4,13 @@ gem 'rails', '4.2.4'
 gem 'pg'
 gem 'dotenv-rails'
 
+gem 'slim-rails'
 gem 'less-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer', platforms: :ruby
+gem 'cells', '~> 4.0.2'
+gem 'cells-slim'
 
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'

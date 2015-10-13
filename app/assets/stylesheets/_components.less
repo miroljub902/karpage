@@ -1,0 +1,20 @@
+.btn {
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.navbar-nav > li {
+  &:after {
+    position: absolute;
+    content: '';
+    right: -1px;
+    top: 30%;
+    width: 2px;
+    height: 40%;
+    background-color: @navbar-default-link-color;
+  }
+
+  &:last-child:after {
+    display: none;
+  }
+}

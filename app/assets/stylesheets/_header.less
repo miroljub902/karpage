@@ -1,0 +1,83 @@
+.jumbo-header {
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 40px;
+
+  .navbar-default {
+    padding-top: 20px;
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  .navbar-brand {
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 #000;
+    font-family: serif;
+    font-size: 24px;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;;
+      color: #fff;
+    }
+  }
+
+  .navbar-nav > li {
+    position: relative;
+
+    & > a {
+      text-shadow: 1px 1px 0 #000;
+      &:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      display: none;
+    }
+
+    & > a {
+      text-transform: uppercase;
+    }
+  }
+
+  .navbar-collapse.collapse.in,
+  .navbar-collapse.collapsing {
+    .navbar-nav > li:after {
+      display: none;
+    }
+  }
+
+  .header-content {
+    padding: 2em 60px;
+    color: #fff;
+    text-align: center;
+
+    h1 {
+      margin-bottom: 2em;
+      font-size: 46px;
+      font-weight: normal;
+      text-shadow: 1px 1px 10px #000;
+
+      small {
+        margin-top: 1em;
+        display: block;
+        color: #fff;
+      }
+    }
+  }
+
+  .btn.btn-default {
+    border-color: #fff;
+    color: #fff;
+    font-size: 24px;
+    padding: 15px 35px;
+
+    &:hover {
+      background-color: @brand-primary;
+      border-color: darken(@brand-primary, 5%);
+      text-shadow: none;
+    }
+  }
+}
