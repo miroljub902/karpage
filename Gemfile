@@ -8,6 +8,7 @@ gem 'slim-rails'
 gem 'less-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
+gem 'non-stupid-digest-assets'
 gem 'therubyracer', platforms: :ruby
 gem 'cells', '~> 4.0.2'
 gem 'cells-slim'
