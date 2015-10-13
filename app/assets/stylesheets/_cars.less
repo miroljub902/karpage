@@ -1,0 +1,50 @@
+.cars-list {
+  margin-top: 20px;
+
+  .thumbnail {
+    padding: 0;
+    .clearfix();
+  }
+
+  .image {
+    position: relative;
+
+    img {
+      max-width: 100%;
+    }
+
+    .title {
+      position: absolute;
+      top: 50%;
+      margin-top: -17px; // line-height / 2
+      width: 100%;
+      text-align: center;
+      color: white;
+      text-shadow: 1px 1px 10px #000;
+    }
+  }
+
+  .avatar {
+    display: inline-block;
+
+    img {
+      border-radius: 50%;
+    }
+  }
+
+  h3 {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    vertical-align: middle;
+  }
+
+  .car-count {
+    background: url(/assets/car-counter.png) no-repeat bottom right;
+    padding-bottom: 22px;
+    text-align: right;
+    background-size: 76px;
+    font-size: 1.0em;
+    padding-right: 30px; // Try to center 1 and 2 digit numbers over the car
+    color: @brand-primary;
+  }
+}

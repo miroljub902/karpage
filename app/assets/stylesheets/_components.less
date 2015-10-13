@@ -1,6 +1,13 @@
 .btn {
   text-transform: uppercase;
-  text-shadow: 1px 1px 0 #000;
+}
+
+.btn-default {
+  &:hover {
+    background-color: @brand-primary;
+    color: #fff;
+    border-color: darken(@brand-primary, 10%);
+  }
 }
 
 .navbar-nav > li {
@@ -16,5 +23,18 @@
 
   &:last-child:after {
     display: none;
+  }
+}
+
+// Center this component beside it's h1 counterpart
+.h1-side {
+  font-size: @font-size-h1;
+  font-family: @headings-font-family;
+  font-weight: @headings-font-weight;
+  line-height: @headings-line-height;
+  margin-top: @line-height-computed;
+
+  @media (max-width: @screen-xs-max) {
+    text-align: left;
   }
 }
