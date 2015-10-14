@@ -25,3 +25,7 @@ html
       li= link_to 'Terms of Use', '#', class: 'btn btn-link'
 
     p.copyright.small= copyright_notice
+
+    - unless signed_in?
+      = render 'users/signin'
+      /= render 'users/signup'

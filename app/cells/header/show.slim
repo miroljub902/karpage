@@ -20,8 +20,8 @@
               ul.dropdown-menu
                 li= link_to 'My profile', '#'
           - else
-            li= link_to 'Sign In', '#'
-            li= link_to 'Join Us', '#'
+            li= link_to 'Sign In', '#', data: { toggle: 'modal', target: '#modalSignIn' }
+            li= link_to 'Join Us', '#', data: { toggle: 'modal', target: '#modalSignUp' }
 
   .header-content
     = content

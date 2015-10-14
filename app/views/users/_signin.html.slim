@@ -1,0 +1,22 @@
+#modalSignIn.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalSignInLabel"
+  .modal-dialog role="document"
+    .modal-content
+      form
+        .modal-header
+          span Don't have an account?
+          a.pull-right.btn.btn-default href="/" Join Us
+        .modal-body
+          h4#modalSignInLabel.modal-title Sign In
+          .inputs
+            .form-group
+              input.form-control.input-lg name="email" type="text" placeholder="E-mail"
+            .form-group
+              input.form-control.input-lg name="password" type="password" placeholder="Password"
+        .modal-footer
+          button.btn.btn-primary.btn-lg.btn-block type="submit" Sign In
+          .text-center
+            a href="/" Forgot password?
+          br
+          button.btn.btn-facebook.btn-lg.btn-block type="button"
+            .fa.fa-facebook-f
+            'Sign In Using <span>Facebook</span>
