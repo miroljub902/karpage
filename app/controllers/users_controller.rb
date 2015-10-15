@@ -21,6 +21,17 @@ class UsersController < ApplicationController
     respond_with @user, location: user_path
   end
 
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    @user.attributes = user_params
+    flash_errors_with_save @user
+    respond_with @user, location: user_path
+  end
+
   private
 
   def user_params

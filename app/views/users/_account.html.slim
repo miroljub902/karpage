@@ -1,0 +1,34 @@
+- auto_open = false if auto_open.nil?
+- closeable = true if closeable.nil?
+- remote = request.xhr?.present?
+#modalAccount.session.modal.fade[tabindex="-1" role="dialog" aria-labelledby="#modalAccountLabel"
+  data-auto-open=auto_open data-backdrop=(closeable ? 'true' : 'static') data-keyboard=(closeable ? 'true' : 'false')]
+
+  .modal-dialog role="document"
+    .modal-content
+      = form_for @user, url: user_path, data: { remote: remote } do |f|
+        .modal-body
+          .inputs
+            .form-group class=(@user.errors[:email].any? ? 'error' : nil)
+              = f.text_field :email, class: 'form-control input-lg', placeholder: 'E-mail', required: true
+              - if @user.errors[:email].any?
+                .help-block= @user.errors[:email].join(', ')
+
+            .form-group class=(@user.errors[:login].any? ? 'error' : nil)
+              = f.text_field :login, class: 'form-control input-lg', placeholder: 'Username', required: true
+              - if @user.errors[:login].any?
+                .help-block= @user.errors[:login].join(', ')
+
+            .form-group class=(@user.errors[:password].any? ? 'error' : nil)
+              - placeholder = @user.crypted_password.present? ? 'Change password' : 'Set password'
+              = f.password_field :password, class: 'form-control input-lg', placeholder: placeholder
+              - if @user.errors[:password].any?
+                .help-block= @user.errors[:password].join(', ')
+
+            .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
+              = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation'
+              - if @user.errors[:password_confirmation].any?
+                .help-block= @user.errors[:password_confirmation].join(', ')
+
+        .modal-footer
+          button.btn.btn-primary.btn-lg.btn-block type="submit" Update
