@@ -8,6 +8,7 @@ gem 'responders'
 gem 'bcrypt'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'postmark-rails'
 
 gem 'slim-rails'
 gem 'less-rails'
@@ -27,7 +28,6 @@ gem 'newrelic_rpm'
 group :development, :test do
   gem 'byebug'
   gem 'quiet_assets'
-  gem 'letter_opener'
 end
 
 group :development do
@@ -36,4 +36,5 @@ end
 
 group :test do
   gem 'faker'
+  gem 'mocha'
 end
