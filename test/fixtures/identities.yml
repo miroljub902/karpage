@@ -1,0 +1,6 @@
+facebook:
+  user: john_doe
+  provider: facebook
+  uid: <%= rand(9999999999) %>
+  oauth_token: ABCDEF
+  oauth_expires_at: <%= 1.day.from_now %>

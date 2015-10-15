@@ -12,9 +12,8 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    @user_session = UserSession.new(session_params.merge(remember_me: true))
-    flash_errors_with_save @user_session
-    respond_with @user_session, location: user_path
+    @user_session = omniauth_session || normal_session
+    @user_session.valid? ? redirect_to(user_path) : render(:new)
   end
 
   def destroy
@@ -23,6 +22,18 @@ class UserSessionsController < ApplicationController
   end
 
   private
+
+  def omniauth_session
+    return nil unless env['omniauth.auth']
+    identity = Identity.from_omniauth(env['omniauth.auth'])
+    UserSession.create(identity.user, true)
+  end
+
+  def normal_session
+    UserSession.new(session_params.merge(remember_me: true)).tap do |session|
+      flash_errors_with_save session
+    end
+  end
 
   def session_params
     params.require(:user_session).permit(:login, :password)

@@ -3,8 +3,12 @@ class UsersController < ApplicationController
 
   layout 'blank', only: %i(new create)
 
-  before_filter :require_no_user, only: %i(new create)
-  before_filter :require_user, only: %i(show update)
+  before_action :require_no_user, only: %i(new create)
+  before_action :require_user, only: %i(show update)
+
+  def show
+    @user = current_user
+  end
 
   def new
     @user = User.new

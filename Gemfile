@@ -6,6 +6,8 @@ gem 'dotenv-rails'
 gem 'authlogic'
 gem 'responders'
 gem 'bcrypt'
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 gem 'slim-rails'
 gem 'less-rails'
@@ -20,6 +22,7 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 
 gem 'rails_12factor', group: :production
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug'

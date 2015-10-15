@@ -30,6 +30,41 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: identities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE identities (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    provider character varying,
+    uid character varying,
+    oauth_token character varying,
+    oauth_expires_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -45,6 +80,7 @@ CREATE TABLE schema_migrations (
 CREATE TABLE users (
     id integer NOT NULL,
     email character varying,
+    name character varying,
     login character varying,
     crypted_password character varying,
     password_salt character varying,
@@ -86,7 +122,22 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -95,6 +146,27 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_identities_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_identities_on_provider_and_uid ON identities USING btree (provider, uid);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_identities_on_user_id ON identities USING btree (user_id);
+
+
+--
+-- Name: index_identities_on_user_id_and_provider_and_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_identities_on_user_id_and_provider_and_uid ON identities USING btree (user_id, provider, uid);
 
 
 --
@@ -146,4 +218,6 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20151014220734');
+
+INSERT INTO schema_migrations (version) VALUES ('20151015022815');
 

@@ -22,6 +22,7 @@ class UserSessionsControllerTest < ActionController::TestCase
   end
 
   test 'redirects to user profile' do
-    skip 'TODO'
+    post :create, user_session: { login: @user.email, password: 'password' }
+    assert_redirected_to user_path
   end
 end
