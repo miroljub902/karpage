@@ -1,21 +1,24 @@
 - auto_open = false if auto_open.nil?
 - closeable = true if closeable.nil?
+- remote = request.xhr?
 #modalSignIn.modal.fade[tabindex="-1" role="dialog" aria-labelledby="#modalSignInLabel"
   data-auto-open=auto_open data-backdrop=(closeable ? 'true' : 'static') data-keyboard=(closeable ? 'true' : 'false')]
 
   .modal-dialog role="document"
     .modal-content
-      = form_for @user_session || UserSession.new, url: user_session_path do |f|
+      = form_for @user_session || UserSession.new, url: user_session_path, data: { remote: remote } do |f|
         .modal-header
           span Don't have an account?
-          a.pull-right.btn.btn-default href="/" Join Us
+          = link_to 'Join Us', '#', class: 'pull-right btn btn-default', data: { remote: remote }
         .modal-body
-          h4#modalSignInLabel.modal-title Sign In
+          h4#modalSignInLabel.modal-title.text-center Sign In
           .inputs
             .form-group
-              = f.text_field :login, class: 'form-control input-lg', placeholder: 'E-mail or Username'
-            .form-group
-              = f.password_field :password, class: 'form-control input-lg', placeholder: 'Password'
+              = f.text_field :login, class: 'form-control input-lg', placeholder: 'E-mail or Username', required: true
+            .form-group class=(@user_session.errors[:password].any? ? 'error' : nil)
+              = f.password_field :password, class: 'form-control input-lg', placeholder: 'Password', required: true
+              - if @user_session.errors[:password].any?
+                .help-block= @user_session.errors[:password].join(', ')
         .modal-footer
           button.btn.btn-primary.btn-lg.btn-block type="submit" Sign In
           .text-center

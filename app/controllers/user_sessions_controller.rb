@@ -8,6 +8,7 @@ class UserSessionsController < ApplicationController
 
   def new
     @user_session = UserSession.new
+    respond_with @user_session
   end
 
   def create

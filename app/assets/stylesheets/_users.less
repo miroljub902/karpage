@@ -26,6 +26,23 @@
 
     .form-group {
       margin-bottom: 40px;
+
+      &.error input {
+        border-color: @alert-danger-text;
+      }
+
+      &.error ::-webkit-input-placeholder {
+        color: @alert-danger-text;
+      }
+      &.error :-moz-placeholder {
+        color: @alert-danger-text;
+      }
+      &.error ::-moz-placeholder {
+        color: @alert-danger-text;
+      }
+      &.error :-ms-input-placeholder {
+        color: @alert-danger-text;
+      }
     }
 
     input {

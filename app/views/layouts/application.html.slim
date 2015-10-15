@@ -25,8 +25,4 @@ html
 
       p.copyright.small= copyright_notice
 
-      - unless signed_in?
-        = render 'users/signin'
-        /= render 'users/signup'
-
     = javascript_include_tag 'application'
