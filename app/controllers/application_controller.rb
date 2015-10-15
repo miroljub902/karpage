@@ -18,10 +18,10 @@ class ApplicationController < ActionController::Base
     redirect_to new_user_session_path unless current_user
   end
 
-  def redirect_back_or_default(default)
-    redirect_to :back
+  def redirect_back_or_default(default, options = {})
+    redirect_to :back, options
   rescue ActionController::RedirectBackError
-    redirect_to default
+    redirect_to default, options
   end
 
   def current_user_session
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     if record.save
       flash[:notice] = I18n.t("#{record.class.model_name.param_key}.flash.#{verb}")
     else
-      flash.now[:warning] = record.errors.full_messages.join(', ')
+      flash.now[:alert] = record.errors.full_messages.join(', ')
     end
   end
 end

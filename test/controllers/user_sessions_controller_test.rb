@@ -17,7 +17,7 @@ class UserSessionsControllerTest < ActionController::TestCase
 
   test 'invalid credentials' do
     post :create, user_session: { login: @user.login, password: 'invalid' }
-    assert flash['warning'].present?
+    assert flash[:alert].present?
     assert_template :new
   end
 

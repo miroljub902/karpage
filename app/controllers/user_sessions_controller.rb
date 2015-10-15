@@ -14,12 +14,12 @@ class UserSessionsController < ApplicationController
   def create
     @user_session = UserSession.new(session_params.merge(remember_me: true))
     flash_errors_with_save @user_session
-    respond_with @user_session, location: root_path
+    respond_with @user_session, location: user_path
   end
 
   def destroy
     current_user_session.destroy
-    redirect_to root_path, notice: 'Goodbye!'
+    redirect_back_or_default root_path, notice: 'Goodbye!'
   end
 
   private

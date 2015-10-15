@@ -1,0 +1,46 @@
+- auto_open = false if auto_open.nil?
+- closeable = true if closeable.nil?
+- remote = request.xhr?.present?
+#modalSignUp.session.modal.fade[tabindex="-1" role="dialog" aria-labelledby="#modalSignUpLabel"
+  data-auto-open=auto_open data-backdrop=(closeable ? 'true' : 'static') data-keyboard=(closeable ? 'true' : 'false')]
+
+  .modal-dialog role="document"
+    .modal-content
+      = form_for @user, url: user_path, data: { remote: remote } do |f|
+        .modal-header
+          span Already have an account?
+          = link_to 'Sign In', new_user_session_path, class: 'pull-right btn btn-default', data: { remote: remote }
+        .modal-body
+          h4#modalSignUpLabel.modal-title.text-center Get started
+          .inputs
+            .form-group class=(@user.errors[:email].any? ? 'error' : nil)
+              = f.text_field :email, class: 'form-control input-lg', placeholder: 'E-mail', required: true
+              - if @user.errors[:email].any?
+                .help-block= @user.errors[:email].join(', ')
+
+            .form-group class=(@user.errors[:login].any? ? 'error' : nil)
+              = f.text_field :login, class: 'form-control input-lg', placeholder: 'Username', required: true
+              - if @user.errors[:login].any?
+                .help-block= @user.errors[:login].join(', ')
+
+            .form-group class=(@user.errors[:password].any? ? 'error' : nil)
+              = f.password_field :password, class: 'form-control input-lg', placeholder: 'Password', required: true
+              - if @user.errors[:password].any?
+                .help-block= @user.errors[:password].join(', ')
+
+            .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
+              = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation', required: true
+              - if @user.errors[:password_confirmation].any?
+                .help-block= @user.errors[:password_confirmation].join(', ')
+
+          .small.terms
+            ' By joining Kar Page, you agree to the
+            = link_to 'Terms of Use', '#'
+        .modal-footer
+          button.btn.btn-primary.btn-lg.btn-block type="submit" Join
+          br
+          .text-center or
+          br
+          button.btn.btn-facebook.btn-lg.btn-block type="button"
+            .fa.fa-facebook-f
+            'Join Using <span>Facebook</span>
