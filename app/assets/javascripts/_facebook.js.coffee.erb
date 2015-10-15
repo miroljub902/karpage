@@ -11,5 +11,6 @@ window.fbAsyncInit = ->
 
   $(document).on 'click', '.btn-facebook', (e) ->
     e.preventDefault()
-    FB.login (response) ->
+    FB.login((response) ->
       window.location = '/auth/facebook/callback' if response.authResponse
+    , scope: 'email')
