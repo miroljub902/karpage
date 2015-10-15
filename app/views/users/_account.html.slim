@@ -19,16 +19,21 @@
               - if @user.errors[:login].any?
                 .help-block= @user.errors[:login].join(', ')
 
-            .form-group class=(@user.errors[:password].any? ? 'error' : nil)
-              - placeholder = @user.crypted_password.present? ? 'Change password' : 'Set password'
-              = f.password_field :password, class: 'form-control input-lg', placeholder: placeholder
-              - if @user.errors[:password].any?
-                .help-block= @user.errors[:password].join(', ')
+            .form-group.checkbox.collapse.in.setPassword
+              a href="#" data-toggle="collapse" data-target=".setPassword"
+                = @user.crypted_password.present? ? 'Change password' : 'Set password'
 
-            .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
-              = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation'
-              - if @user.errors[:password_confirmation].any?
-                .help-block= @user.errors[:password_confirmation].join(', ')
+            .setPassword.collapse
+              .form-group class=(@user.errors[:password].any? ? 'error' : nil)
+                - placeholder = @user.crypted_password.present? ? 'Change password' : 'Set password'
+                = f.password_field :password, class: 'form-control input-lg', placeholder: placeholder
+                - if @user.errors[:password].any?
+                  .help-block= @user.errors[:password].join(', ')
+
+              .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
+                = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation'
+                - if @user.errors[:password_confirmation].any?
+                  .help-block= @user.errors[:password_confirmation].join(', ')
 
         .modal-footer
           button.btn.btn-primary.btn-lg.btn-block type="submit" Update
