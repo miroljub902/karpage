@@ -1,12 +1,7 @@
-- auto_open = false if auto_open.nil?
-- closeable = true if closeable.nil?
-- remote = request.xhr?.present?
-#modalAccount.session.modal.fade[tabindex="-1" role="dialog" aria-labelledby="#modalAccountLabel"
-  data-auto-open=auto_open data-backdrop=(closeable ? 'true' : 'static') data-keyboard=(closeable ? 'true' : 'false')]
-
+#modalAccount.session.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalAccountLabel"
   .modal-dialog role="document"
     .modal-content
-      = form_for @user, url: user_path, data: { remote: remote } do |f|
+      = form_for @user, url: user_path, data: { remote: true } do |f|
         .modal-body
           .inputs
             .form-group class=(@user.errors[:email].any? ? 'error' : nil)

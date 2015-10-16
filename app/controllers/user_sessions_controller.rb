@@ -1,19 +1,25 @@
 class UserSessionsController < ApplicationController
-  respond_to :html, :js
-
-  layout 'blank'
-
   before_filter :require_no_user, only: %i(new create)
   before_filter :require_user, only: :destroy
 
   def new
     @user_session = UserSession.new
-    respond_with @user_session
+    respond_to do |format|
+      format.js { render '_modals/new', locals: { id: 'modalSignIn', content: 'new' } }
+    end
   end
 
   def create
     @user_session = omniauth_session || normal_session
-    @user_session.valid? ? redirect_to(user_path) : render(:new)
+    respond_to do |format|
+      format.js {
+        if @user_session.valid?
+          render inline: 'window.location.reload();'
+        else
+          render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
+        end
+      }
+    end
   end
 
   def destroy

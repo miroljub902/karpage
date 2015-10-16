@@ -1,3 +1,14 @@
+.navbar-brand {
+  text-transform: uppercase;
+}
+
+.navbar-nav > li {
+  & > a {
+    color: #fff;
+    text-transform: uppercase;
+  }
+}
+
 .jumbo-header {
   background-size: cover;
   background-position: center;
@@ -11,7 +22,6 @@
   }
 
   .navbar-brand {
-    text-transform: uppercase;
     text-shadow: 1px 1px 0 #000;
     font-family: serif;
     font-size: 24px;
@@ -28,6 +38,7 @@
 
     & > a {
       text-shadow: 1px 1px 0 #000;
+
       &:hover {
         color: #fff;
         text-decoration: underline;
@@ -36,10 +47,6 @@
 
     &:after {
       display: none;
-    }
-
-    & > a {
-      text-transform: uppercase;
     }
   }
 

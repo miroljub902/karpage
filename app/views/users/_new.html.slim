@@ -1,15 +1,10 @@
-- auto_open = false if auto_open.nil?
-- closeable = true if closeable.nil?
-- remote = request.xhr?.present?
-#modalSignUp.session.modal.fade[tabindex="-1" role="dialog" aria-labelledby="#modalSignUpLabel"
-  data-auto-open=auto_open data-backdrop=(closeable ? 'true' : 'static') data-keyboard=(closeable ? 'true' : 'false')]
-
+#modalSignUp.session.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalSignUpLabel"
   .modal-dialog role="document"
     .modal-content
-      = form_for @user, url: user_path, data: { remote: remote } do |f|
+      = form_for @user, url: user_path, data: { remote: true } do |f|
         .modal-header
           span Already have an account?
-          = link_to 'Sign In', new_user_session_path, class: 'pull-right btn btn-default', data: { remote: remote }
+          = link_to 'Sign In', new_user_session_path, class: 'pull-right btn btn-default', data: { remote: true }
         .modal-body
           h4#modalSignUpLabel.modal-title.text-center Get started
           .inputs

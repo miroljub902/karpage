@@ -13,17 +13,27 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    respond_with @user
+    respond_to do |format|
+      format.js { render '_modals/new', locals: { id: 'modalSignUp', content: 'new' } }
+    end
   end
 
   def create
     @user = User.new(user_params)
-    flash_errors_with_save @user
-    respond_with @user, location: user_path
+    respond_to do |format|
+      format.js {
+        unless @user.save
+          render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
+        end
+      }
+    end
   end
 
   def edit
     @user = current_user
+    respond_to do |format|
+      format.js { render '_modals/new', locals: { id: 'modalAccount', content: 'edit' } }
+    end
   end
 
   def update

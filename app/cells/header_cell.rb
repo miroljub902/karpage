@@ -7,6 +7,10 @@ class HeaderCell < Cell::ViewModel
     @options[:content].call
   end
 
+  def css_class
+    @options.has_key?(:class) ? @options[:class] : 'jumbo-header'
+  end
+
   def background
     "url(#{asset_path('/assets/header-bg.jpg')})"
   end

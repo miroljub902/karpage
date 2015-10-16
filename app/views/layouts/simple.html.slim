@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title Kar Page
+    = stylesheet_link_tag    'application', media: 'all'
+    = csrf_meta_tags
+
+  body
+    = cell :header, nil, class: nil do
+      = yield :header
+
+    .container
+      = yield
+
+    .container-fluid.footer
+      .text-center.social
+        = link_to image_tag('footer-twitter.png'), '#'
+        = link_to image_tag('footer-facebook.png'), '#'
+
+      ul.footer-nav
+        li= link_to 'Team', '#', class: 'btn btn-link'
+        li= link_to 'Help', '#', class: 'btn btn-link'
+        li= link_to 'Contact', '#', class: 'btn btn-link'
+        li= link_to 'Terms of Use', '#', class: 'btn btn-link'
+
+      p.copyright.small= copyright_notice
+
+    = javascript_include_tag 'application'

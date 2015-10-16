@@ -15,4 +15,8 @@ module ApplicationHelper
     }) if block_given?
     controller.cell(name, model, options).()
   end
+
+  def param?(key, default = false)
+    params[key].present? ? params[key] == 'true' : default
+  end
 end

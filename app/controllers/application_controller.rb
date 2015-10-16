@@ -10,12 +10,16 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def render_404
+    render file: 'public/404', status: :not_found, layout: false
+  end
+
   def require_no_user
     redirect_back_or_default root_path if current_user
   end
 
   def require_user
-    redirect_to new_user_session_path unless current_user
+    redirect_to root_path unless current_user
   end
 
   def redirect_back_or_default(default, options = {})
