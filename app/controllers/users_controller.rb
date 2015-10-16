@@ -6,7 +6,6 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-    redirect_to edit_user_path if @user.email.blank?
   end
 
   def new
