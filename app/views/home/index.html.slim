@@ -3,7 +3,8 @@
     'Show your car and share your car history
     small with other car enthusiasts around the world
 
-  = link_to 'Get Started', '#', class: 'btn btn-default'
+  - unless signed_in?
+    = link_to 'Get Started', new_user_path, data: { remote: true }, class: 'btn btn-default'
 
 .row
   .col-sm-10
