@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
   respond_to :html, :js
 
-  layout 'blank', only: %i(new create)
-
   before_action :require_no_user, only: %i(new create)
   before_action :require_user, only: %i(show update)
 
@@ -22,7 +20,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       format.js {
-        unless @user.save
+        if @user.save
+          render inline: "window.location = '#{user_path}'"
+        else
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
       }
@@ -39,8 +39,15 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     @user.attributes = user_params
-    flash_errors_with_save @user
-    respond_with @user, location: user_path
+    respond_to do |format|
+      format.js {
+        if @user.save
+          render inline: 'window.location.reload();'
+        else
+          render '_modals/new', locals: { id: 'modalAccount', content: 'edit' }
+        end
+      }
+    end
   end
 
   private
