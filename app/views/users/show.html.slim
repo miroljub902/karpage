@@ -1,0 +1,37 @@
+- content_for :header do
+  .user-profile
+    h1= current_user
+    '@#{current_user.login}
+
+.profile-nav.clearfix
+  ul.nav.nav-pills.pull-left
+    li.active
+      = link_to '#' do
+        .sprite.sprite-profile-cars
+        'My Cars
+
+    li
+      = link_to '#' do
+        .sprite.sprite-profile-posts
+        'Posts
+
+    li
+      = link_to '#' do
+        .sprite.sprite-profile-meetups
+        'Meetups
+
+  ul.nav.nav-pills.pull-right
+    li.car-count
+      = link_to '#' do
+        span 0
+        .sprite.sprite-car-counter
+
+    li.follow-count
+      = link_to '#' do
+        'Followers
+        span 0
+
+    li.follow-count
+      = link_to '#' do
+        'Following
+        span 0

@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
     User.find_by(login: login) || User.find_by(email: login)
   end
 
+  def to_s
+    name
+  end
+
   def deliver_reset_password_instructions!
     reset_perishable_token!
     UserMailer.new(self).reset_password!

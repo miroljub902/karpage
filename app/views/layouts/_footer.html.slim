@@ -1,0 +1,16 @@
+.container-fluid.footer
+  .text-center.social
+    = link_to '#' do
+      .sprite.sprite-twitter-badge
+    = link_to '#' do
+      .sprite.sprite-facebook-badge
+
+  ul.footer-nav
+    li= link_to 'Team', '#', class: 'btn btn-link'
+    li= link_to 'Help', '#', class: 'btn btn-link'
+    li= link_to 'Contact', '#', class: 'btn btn-link'
+    li= link_to 'Terms of Use', '#', class: 'btn btn-link'
+
+  p.copyright.small= copyright_notice
+
+  = javascript_include_tag 'application'

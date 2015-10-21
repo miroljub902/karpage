@@ -1,0 +1,60 @@
+.profile-nav {
+  text-align: center;
+
+  @media (max-width: @screen-xs-max) {
+    .nav-pills {
+      float: none !important;
+      clear: both;
+      display: inline-block;
+    }
+  }
+
+  .nav-pills > li {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .nav-pills {
+    > li span {
+      display: block;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .active > a {
+      background-color: transparent;
+      color: #000;
+
+      &:hover {
+        background-color: #eee;
+        color: #000;
+      }
+    }
+
+    .car-count {
+      span {
+        font-size: 20px;
+        color: @brand-primary;
+        margin-bottom: 12px; // +2px to align with the other nav items
+        padding-left: 5px; // Center on asymetric car
+      }
+    }
+
+    .follow-count {
+      font-size: 20px;
+
+      span {
+        font-size: 24px;
+      }
+    }
+  }
+
+
+  .sprite {
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+}
