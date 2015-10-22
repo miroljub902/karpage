@@ -35,3 +35,32 @@
       = link_to '#' do
         'Following
         span 0
+
+.current-cars.my-cars.text-center
+  h2 Current Cars
+  = link_to new_user_car_path(current: true), class: 'btn btn-primary', data: { remote: true } do
+    i.fa.fa-plus
+    'Add Car
+
+  .car-cards.row
+    - @cars.current.each do |car|
+      .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
+
+.previous-cars.my-cars.text-center
+  h2 Previous Cars
+  = link_to new_user_car_path(past: true), class: 'btn btn-primary', data: { remote: true } do
+    i.fa.fa-plus
+    'Add Car
+
+.first-car.my-cars.text-center
+  h2 First Car
+  = link_to new_user_car_path(first: true), class: 'btn btn-primary', data: { remote: true } do
+    i.fa.fa-plus
+    'Add Car
+
+.row
+  .col-md-8.text-center
+    h2 Dream Cars
+
+  .col-md-4.text-center
+    h2 Next Car

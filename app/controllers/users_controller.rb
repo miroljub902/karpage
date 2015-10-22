@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
+    @cars = UserCarsDecorator.cars(@user)
   end
 
   def new

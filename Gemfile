@@ -9,6 +9,7 @@ gem 'bcrypt'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'postmark-rails'
+gem 'friendly_id'
 
 gem 'slim-rails'
 gem 'less-rails'

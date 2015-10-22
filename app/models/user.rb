@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   end
 
   has_many :identities, dependent: :delete_all
+  has_many :cars, dependent: :destroy
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
