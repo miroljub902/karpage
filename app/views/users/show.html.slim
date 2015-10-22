@@ -52,11 +52,18 @@
     i.fa.fa-plus
     'Add Car
 
+  .car-cards.row
+    - @cars.past.each do |car|
+      .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
+
 .first-car.my-cars.text-center
   h2 First Car
   = link_to new_user_car_path(first: true), class: 'btn btn-primary', data: { remote: true } do
     i.fa.fa-plus
     'Add Car
+
+  .car-cards.row
+    .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/car', car: @cars.first if @cars.first
 
 .row
   .col-md-8.text-center

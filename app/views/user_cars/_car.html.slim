@@ -12,9 +12,9 @@
         '5
 
     .pull-right
-      a.btn.btn-default href="#"
+      a.btn.btn-default href=edit_user_car_path(car) data-remote="true"
         .sprite.sprite-edit
         'Edit
 
-      a.btn.btn-default href="#"
+      = link_to user_car_path(car), method: :delete, class: 'btn btn-default', data: { remote: true, confirm: 'Are you sure?' } do
         .sprite.sprite-trash

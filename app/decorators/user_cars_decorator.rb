@@ -3,7 +3,7 @@ class UserCarsDecorator
     def cars(user)
       cars = user.cars
       OpenStruct.new(
-        first:      cars.find_all(&:first?),
+        first:      cars.detect(&:first?),
         current:    cars.find_all(&:current?),
         past:       cars.find_all(&:past?),
         wished_for: [],
