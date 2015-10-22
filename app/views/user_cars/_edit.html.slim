@@ -28,8 +28,20 @@
             .row
               .col-xs-12
                 h5.text-center Upload up to 10 photos
-                .col-md-offset-2.col-md-8
-                  a.btn.btn-default.btn-block.btn-lg href="#" Add More Photos
+
+                .photos
+                  ul
+                    - (1..10).each do |n|
+                      li.photo
+                        input.photo-url type="hidden" name="car[photo_urls[]]" data-index=n
+                        .img
+                          .remove.sprite.sprite-delete
+                        = n
+
+                  .col-md-offset-2.col-md-8
+                    input.car-photos[type="file" multiple data-prefix="user_cars/#{car.id}"
+                      data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+                    a.btn.btn-default.btn-block.btn-lg.car-photo-upload href="#" Add More Photos
 
         .modal-footer
           a.btn.btn-default.btn-lg data-dismiss="modal" Cancel

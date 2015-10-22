@@ -116,6 +116,76 @@
   .row {
     margin-bottom: 30px;
   }
+
+  .photos {
+    ul {
+      padding: 0;
+      margin: 20px 0 0 0;
+      list-style: none;
+      .clearfix();
+    }
+
+    .photo {
+      float: left;
+      width: 17%;
+      margin-right: 3.75%;
+      text-align: center;
+      position: relative;
+      padding-top: 50px;
+      margin-bottom: 15px;
+
+      &:nth-child(5n+0) {
+        margin-right: 0;
+      }
+
+      &:before, .img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 50px;
+      }
+
+      .img {
+        background: no-repeat center;
+        background-size: cover;
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
+
+        .remove {
+          position: absolute;
+          right: -9px;
+          top: -9px;
+          cursor: pointer;
+          display: none;
+        }
+      }
+
+      &.has-photo:hover .img .remove {
+        display: block;
+      }
+
+      &.uploading .img {
+        opacity: 0;
+      }
+
+      &:before {
+        content: attr(data-progress);
+        text-align: center;
+        line-height: 50px;
+        color: #eee;
+        background-color: #eee;
+      }
+
+      &.uploading:before {
+        color: #999;
+      }
+    }
+  }
+
+  input.car-photos {
+    display: none;
+  }
 }
 
 .car-cards {

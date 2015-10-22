@@ -9,4 +9,6 @@ Rails.application.routes.draw do
     resources :user_cars, path: 'cars', as: :cars
   end
   resource :user_session, only: %i(new create destroy), path: 'session'
+
+  get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 end
