@@ -38,7 +38,7 @@ class UserCarsController < ApplicationController
   private
 
   def new_car_params
-    params.permit!.slice(:past, :current, :first).merge(current: params[:current] == true)
+    params.permit!.slice(:past, :current, :first).merge(current: params[:current] == 'true')
   end
 
   def car_params

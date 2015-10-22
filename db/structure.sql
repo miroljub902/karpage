@@ -201,6 +201,43 @@ ALTER SEQUENCE models_id_seq OWNED BY models.id;
 
 
 --
+-- Name: photos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE photos (
+    id integer NOT NULL,
+    attachable_type character varying,
+    attachable_id integer,
+    photo_type character varying,
+    image_id character varying,
+    image_filename character varying,
+    image_size integer,
+    image_content_type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: photos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE photos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: photos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE photos_id_seq OWNED BY photos.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -293,6 +330,13 @@ ALTER TABLE ONLY models ALTER COLUMN id SET DEFAULT nextval('models_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY photos ALTER COLUMN id SET DEFAULT nextval('photos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -334,6 +378,14 @@ ALTER TABLE ONLY makes
 
 ALTER TABLE ONLY models
     ADD CONSTRAINT models_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: photos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY photos
+    ADD CONSTRAINT photos_pkey PRIMARY KEY (id);
 
 
 --
@@ -478,6 +530,20 @@ CREATE UNIQUE INDEX index_models_on_name ON models USING btree (make_id, lower((
 
 
 --
+-- Name: index_photos_on_attachable_type_and_attachable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_photos_on_attachable_type_and_attachable_id ON photos USING btree (attachable_type, attachable_id);
+
+
+--
+-- Name: index_photos_on_photo_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_photos_on_photo_type ON photos USING btree (photo_type);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -560,4 +626,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151021231922');
 INSERT INTO schema_migrations (version) VALUES ('20151021233251');
 
 INSERT INTO schema_migrations (version) VALUES ('20151021235437');
+
+INSERT INTO schema_migrations (version) VALUES ('20151022205617');
 

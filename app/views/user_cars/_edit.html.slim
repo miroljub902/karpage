@@ -19,7 +19,7 @@
               .col-xs-12
                 = f.text_area :description, class: 'form-control', rows: 5
 
-                - if car.current?
+                - if car.current? && car.persisted?
                   .checkbox
                     label
                       = f.check_box :past
@@ -29,20 +29,24 @@
               .col-xs-12
                 h5.text-center Upload up to 10 photos
 
-                .photos
+                .photos data-create-url=user_car_photos_path(car) data-update-url=user_car_photo_path(car, id: '_ID_')
                   ul
-                    - (1..10).each do |n|
+                    - car.photos.each_with_index do |photo, n|
+                      li.photo.has-photo data-id=photo.id
+                        .img style="background-image: url(#{photo.image_url})"
+                          .remove.sprite.sprite-delete
+                        span.index= n + 1
+                    - (1..10 - car.photos.size).each do |n|
                       li.photo
-                        input.photo-url type="hidden" name="car[photo_urls[]]" data-index=n
                         .img
                           .remove.sprite.sprite-delete
-                        = n
+                        span.index= n + car.photos.size
 
                   .col-md-offset-2.col-md-8
-                    input.car-photos[type="file" multiple data-prefix="user_cars/#{car.id}"
+                    input.car-photos[type="file" multiple data-prefix="store"
                       data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
-                    a.btn.btn-default.btn-block.btn-lg.car-photo-upload href="#" Add More Photos
+                    a.btn.btn-default.btn-block.btn-lg.car-photo-upload class=('disabled' if car.photos.size == 10) href="#" Add More Photos
 
         .modal-footer
           a.btn.btn-default.btn-lg data-dismiss="modal" Cancel
-          button.btn.btn-primary.btn-lg type="submit" Update Car
+          button.btn.btn-primary.btn-lg type="submit" Update Car Info

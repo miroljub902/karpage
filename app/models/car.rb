@@ -4,6 +4,7 @@ class Car < ActiveRecord::Base
   belongs_to :user
   belongs_to :model
   has_one :make, through: :model
+  has_many :photos, as: :attachable, dependent: :destroy
 
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
@@ -30,9 +31,10 @@ class Car < ActiveRecord::Base
     "#{year} #{model}"
   end
 
-  def past=(value)
-    self.current = !value
-    super
+  def past=(_value)
+    super.tap do
+      self.current = false if past === true
+    end
   end
 
   private

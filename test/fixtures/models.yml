@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  make_id: 
+  name: MyString
+
+two:
+  make_id: 
+  name: MyString
