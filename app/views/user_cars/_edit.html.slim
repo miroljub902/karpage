@@ -19,6 +19,12 @@
               .col-xs-12
                 = f.text_area :description, class: 'form-control', rows: 5
 
+                - if car.current?
+                  .checkbox
+                    label
+                      = f.check_box :past
+                      'I no longer own this car
+
             .row
               .col-xs-12
                 h5.text-center Upload up to 10 photos

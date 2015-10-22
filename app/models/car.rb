@@ -30,6 +30,11 @@ class Car < ActiveRecord::Base
     "#{year} #{model}"
   end
 
+  def past=(value)
+    self.current = !value
+    super
+  end
+
   private
 
   def find_or_build_make_and_model
