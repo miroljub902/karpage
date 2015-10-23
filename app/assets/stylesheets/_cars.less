@@ -284,3 +284,49 @@
     }
   }
 }
+
+.car-singles {
+  .singles {
+    margin-top: 20px;
+  }
+
+  .add-car {
+    margin-left: 10px;
+    padding-top: 8px;
+
+    .sprite {
+      vertical-align: middle;
+      margin-top: -2px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.car-single {
+  margin-bottom: 30px;
+
+  img {
+    max-width: 100%;
+  }
+
+  .img {
+    position: relative;
+
+    .remove {
+      display: none;
+      position: absolute;
+      right: -9px;
+      top: -9px;
+    }
+
+    &:hover .remove {
+      display: block;
+    }
+  }
+}
+
+#modalNewSingle {
+  input[type=file] {
+    display: inline-block;
+  }
+}

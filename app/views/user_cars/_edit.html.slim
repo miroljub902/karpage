@@ -35,7 +35,7 @@
                   ul
                     - car.photos.sorted.each_with_index do |photo, n|
                       li.photo.has-photo data-id=photo.id
-                        .img style="background-image: url(#{photo.image_url})"
+                        .img style="background-image: url(#{photo.image_url(:fill, 180, 100)})"
                           .remove.sprite.sprite-delete
                         span.index= n + 1
                     - (1..10 - car.photos.size).each do |n|

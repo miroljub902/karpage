@@ -66,8 +66,32 @@
     .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/car', car: @cars.first if @cars.first
 
 .row
-  .col-md-8.text-center
-    h2 Dream Cars
+  .col-md-8.text-center.car-singles
+    h2
+      'Dream Cars
+      = link_to new_user_single_path(type: 'dream-cars'), class: 'btn btn-default add-car', data: { remote: true } do
+        .sprite.sprite-add-photo
+        '  Add Image
 
-  .col-md-4.text-center
-    h2 Next Car
+    .row.singles
+      - current_user.dream_cars.each do |photo|
+        .car-single.col-xs-4.col-sm-3
+          .img
+            = attachment_image_tag photo, :image, :fill, 450, 240
+            = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+              .sprite.sprite-delete
+
+  .col-md-4.text-center.car-singles
+    h2
+      'Next Car
+      = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if current_user.next_car}", data: { remote: true } do
+        .sprite.sprite-add-photo
+        '  Add Image
+
+    .row.singles
+      .car-single.col-xs-offset-2.col-xs-8.col-sm-offset-3.col-sm-6
+        - if current_user.next_car
+          .img
+            = attachment_image_tag current_user.next_car, :image, :fill, 450, 240
+            = link_to user_single_path(current_user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+              .sprite.sprite-delete

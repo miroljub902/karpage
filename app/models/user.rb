@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
 
   has_many :identities, dependent: :delete_all
   has_many :cars, dependent: :destroy
+  has_many :singles, class_name: 'Photo', as: :attachable, dependent: :destroy
+  has_many :dream_cars, -> { where(photo_type: 'dream-car') }, class_name: 'Photo', as: :attachable
+  has_one :next_car, -> { where(photo_type: 'next-car') }, class_name: 'Photo', as: :attachable
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 

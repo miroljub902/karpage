@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         post 'reorder', on: :collection
       end
     end
+
+    resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)
   end
   resource :user_session, only: %i(new create destroy), path: 'session'
 
