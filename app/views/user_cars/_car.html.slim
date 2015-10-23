@@ -1,15 +1,15 @@
-.thumbnail
-  img
-  .caption
-    h3= car
+.thumbnail class="#{'has-photo' if car.photos.any?}"
+  = link_to '#' do
+    .img style="background-image: url(#{attachment_url(car.photos.sorted.first, :image, :fit, 720, 250)})"
+
+    .caption
+      h3= car
+
   .actions.clearfix
     .pull-left
       .counter
         .sprite.sprite-photos
         = car.photos.size
-      /.counter
-        .sprite.sprite-videos
-        '5
 
     .pull-right
       a.btn.btn-default href=edit_user_car_path(car) data-remote="true"

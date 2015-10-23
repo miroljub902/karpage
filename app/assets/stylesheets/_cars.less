@@ -229,20 +229,21 @@
       background: #000;
       opacity: 0.2;
       transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
     }
 
-    &:hover:before {
+    &.has-photo:hover:before {
       opacity: 0;
     }
 
-    &:hover .caption {
+    &.has-photo:hover .caption {
       display: none;
     }
 
-    img {
+    .img {
       width: 100%;
       height: @thumb-height;
-      background: asset-url('header-bg.jpg') no-repeat center;
+      background: no-repeat center;
       background-size: cover;
     }
   }
@@ -296,6 +297,10 @@
       border-color: #bbb;
       line-height: 24px;
       margin-left: 8px;
+
+      &:hover {
+        border-color: @brand-primary;
+      }
 
       .sprite {
         vertical-align: top;
