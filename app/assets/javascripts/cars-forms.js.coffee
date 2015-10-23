@@ -1,16 +1,25 @@
 $ ->
   $selectButton = null
+
+  updateButtonText = ->
+    total = $('#modalEditCar .photo.has-photo').length
+    text = if total == 0 then 'Add Photos' else 'Add More Photos'
+    $selectButton.html(text)
+
   enableButton = -> $selectButton.removeClass('disabled')
+
   disableButton = -> $selectButton.addClass('disabled')
 
   updatePhotoIndexes = ->
     $modal = $('#modalEditCar')
     $('.photo .index', $modal).each (i) -> $(this).html i + 1
+    sorting = $.makeArray($('.photos .photo.has-photo', $modal).map((i, e) -> $(e).data('id')))
+    return if sorting.length == 0
     $.ajax
       url: $('.photos', $modal).data('sort-url')
       method: 'POST'
       data:
-        sorting: $.makeArray($('.photos .photo.has-photo', $modal).map((i, e) -> $(e).data('id')))#.join(',')
+        sorting: sorting
 
   # Reordering images
   $(document).on 'show.bs.modal', '#modalEditCar', ->
@@ -48,6 +57,7 @@ $ ->
           .fadeIn()
 
           updatePhotoIndexes()
+          updateButtonText()
 
   $(document).on 'click', '.car-photo-upload', (e) ->
     e.preventDefault()
@@ -102,6 +112,7 @@ $ ->
                 $photos.find(".photo-url[data-index=#{i + 1}]").val imageUrl
                 $photo.find('.img').css('background-image', "url(#{imageUrl})")
                 $photo.removeClass('uploading').addClass('has-photo').attr('data-id', data.id)
+                updateButtonText()
 
       $files.wrap('<form>').closest('form').get(0).reset()
       $files.unwrap()

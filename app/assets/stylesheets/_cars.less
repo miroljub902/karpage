@@ -59,12 +59,18 @@
     background: @brand-primary;
     color: #fff;
     text-transform: uppercase;
-    margin: 8px;
+    margin: 5px;
   }
 
-  .modal-footer .btn-default {
-    color: #fff;
-    border-color: #fff;
+  .btn {
+    border-radius: 3px;
+  }
+
+  .modal-footer {
+    .btn-default {
+      color: #fff;
+      border-color: #fff;
+    }
   }
 
   .modal-footer {
@@ -130,6 +136,21 @@
   }
   :-ms-input-placeholder {
     text-transform: uppercase;
+  }
+
+  textarea {
+    &::-webkit-input-placeholder {
+      text-transform: none;
+    }
+    &:-moz-placeholder {
+      text-transform: none;
+    }
+    &::-moz-placeholder {
+      text-transform: none;
+    }
+    &:-ms-input-placeholder {
+      text-transform: none;
+    }
   }
 
   .row {
