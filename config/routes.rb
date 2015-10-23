@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   resource :user, only: %i(show new create edit update) do
     resource :password_reset, path: 'password', only: %i(new create edit update)
     resources :user_cars, path: 'cars', as: :cars do
-      resources :car_photos, path: 'photos', as: :photos, only: %i(create destroy)
+      resources :car_photos, path: 'photos', as: :photos, only: %i(create destroy) do
+        post 'reorder', on: :collection
+      end
     end
   end
   resource :user_session, only: %i(new create destroy), path: 'session'

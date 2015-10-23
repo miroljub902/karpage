@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require bootstrap/dist/js/bootstrap
 //= require evaporatejs/evaporate
+//= require Sortable/Sortable
 //= require_tree .

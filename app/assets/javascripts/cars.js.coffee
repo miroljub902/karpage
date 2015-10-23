@@ -7,6 +7,25 @@ $ ->
   enableButton = -> $selectButton.removeClass('disabled')
   disableButton = -> $selectButton.addClass('disabled')
 
+  updatePhotoIndexes = ->
+    $modal = $('#modalEditCar')
+    $('.photo .index', $modal).each (i) -> $(this).html i + 1
+    $.ajax
+      url: $('.photos', $modal).data('sort-url')
+      method: 'POST'
+      data:
+        sorting: $.makeArray($('.photos .photo.has-photo', $modal).map((i, e) -> $(e).data('id')))#.join(',')
+
+  # Reordering images
+  $(document).on 'show.bs.modal', '#modalEditCar', ->
+    $modal = $(this)
+    $photos = $modal.find('.photos')
+    Sortable.create(
+      $modal.find('.photos ul')[0]
+      draggable: '.has-photo'
+      onSort: updatePhotoIndexes
+    )
+
   $(document).on 'click', '.photo .remove', (e) ->
     $this = $(this)
     $photo = $this.parents('.photo')
@@ -29,8 +48,8 @@ $ ->
             .detach()
             .appendTo($parent)
             .fadeIn()
-          $('.photo .index', $parent).each (i) ->
-            $(this).html i + 1
+
+          updatePhotoIndexes()
 
   $(document).on 'click', '.car-photo-upload', (e) ->
     e.preventDefault()

@@ -29,9 +29,11 @@
               .col-xs-12
                 h5.text-center Upload up to 10 photos
 
-                .photos data-create-url=user_car_photos_path(car) data-update-url=user_car_photo_path(car, id: '_ID_')
+                .photos[data-create-url=user_car_photos_path(car)
+                        data-update-url=user_car_photo_path(car, id: '_ID_')
+                        data-sort-url=reorder_user_car_photos_path(car)]
                   ul
-                    - car.photos.each_with_index do |photo, n|
+                    - car.photos.sorted.each_with_index do |photo, n|
                       li.photo.has-photo data-id=photo.id
                         .img style="background-image: url(#{photo.image_url})"
                           .remove.sprite.sprite-delete
@@ -50,3 +52,6 @@
         .modal-footer
           a.btn.btn-default.btn-lg data-dismiss="modal" Cancel
           button.btn.btn-primary.btn-lg type="submit" Update Car Info
+
+  javascript:
+    $('#modalEditCar').trigger('show.bs.modal')

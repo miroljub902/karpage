@@ -13,6 +13,15 @@ class CarPhotosController < ApplicationController
     render nothing: true, status: :ok
   end
 
+  def reorder
+    car = current_user.cars.includes(:photos).friendly.find(params[:car_id])
+    sorting = params.require(:sorting).map(&:to_i)
+    car.photos.each do |photo|
+      photo.update_attribute :sorting, sorting.index(photo.id)
+    end
+    render nothing: true, status: :ok
+  end
+
   private
 
   def photo_params

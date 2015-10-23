@@ -17,7 +17,7 @@ class UserCarsController < ApplicationController
 
   def edit
     @car = current_user.cars.friendly.find(params[:id])
-    render '_modals/new', locals: { id: 'modalNewCar', content: 'edit', options: { car: @car }}
+    render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car }}
   end
 
   def update

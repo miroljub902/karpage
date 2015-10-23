@@ -214,7 +214,8 @@ CREATE TABLE photos (
     image_size integer,
     image_content_type character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    sorting integer
 );
 
 
@@ -537,6 +538,13 @@ CREATE INDEX index_photos_on_attachable_type_and_attachable_id ON photos USING b
 
 
 --
+-- Name: index_photos_on_attachable_type_and_attachable_id_and_sorting; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_photos_on_attachable_type_and_attachable_id_and_sorting ON photos USING btree (attachable_type, attachable_id, sorting);
+
+
+--
 -- Name: index_photos_on_photo_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -628,4 +636,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151021233251');
 INSERT INTO schema_migrations (version) VALUES ('20151021235437');
 
 INSERT INTO schema_migrations (version) VALUES ('20151022205617');
+
+INSERT INTO schema_migrations (version) VALUES ('20151023004903');
 
