@@ -9,18 +9,18 @@ class Car < ActiveRecord::Base
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
   validates :year, numericality: true
-  validates :car_model_name, presence: true
+  validates :make_name, :car_model_name, presence: true
   validates_associated :model
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
 
   def make_name
-    @make_name.presence || make.try(:name)
+    @make_name.nil? ? make.try(:name) : @make_name
   end
 
   def car_model_name
-    @car_model_name.presence || model.try(:name)
+    @car_model_name.nil? ? model.try(:name) : @car_model_name
   end
 
   def to_s
@@ -40,8 +40,15 @@ class Car < ActiveRecord::Base
   private
 
   def find_or_build_make_and_model
-    make = self.make || Make.find_by(slug: make_name.parameterize) || Make.create(name: make_name)
-    self.model ||= (make.models.find_by(slug: car_model_name.parameterize) || make.models.new(name: car_model_name))
+    # Set make from existing make name or create it
+    unless @make_name.nil?
+      self.make = Make.find_by(slug: @make_name.parameterize) || Make.create(name: @make_name)
+    end
+
+    unless @car_model_name.nil? || make.nil?
+      self.model = make.models.find_by(slug: @car_model_name.parameterize) || make.models.new(name: @car_model_name)
+    end
+
     true
   end
 
