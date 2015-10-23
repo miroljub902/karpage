@@ -23,6 +23,8 @@ $ ->
     )
 
   $(document).on 'click', '.photo .remove', (e) ->
+    return unless confirm('Are you sure?')
+
     $this = $(this)
     $photo = $this.parents('.photo')
     $photos = $this.parents('.photos')

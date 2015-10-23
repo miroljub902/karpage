@@ -6,10 +6,8 @@ html
     = csrf_meta_tags
 
   body
-    = cell :header do
-      = yield :header
+    = yield :header
 
-    .container
-      = yield
+    = yield
 
     = render 'layouts/footer'

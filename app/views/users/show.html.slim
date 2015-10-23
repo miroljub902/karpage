@@ -1,97 +1,99 @@
 - content_for :header do
-  .user-profile
-    h1= current_user
-    '@#{current_user.login}
+  = cell :header do
+    .user-profile
+      h1= current_user
+      '@#{current_user.login}
 
-.profile-nav.clearfix
-  ul.nav.nav-pills.pull-left
-    li.active
-      = link_to '#' do
-        .sprite.sprite-profile-cars
-        'My Cars
+.container
+  .profile-nav.clearfix
+    ul.nav.nav-pills.pull-left
+      li.active
+        = link_to '#' do
+          .sprite.sprite-profile-cars
+          'My Cars
 
-    li
-      = link_to '#' do
-        .sprite.sprite-profile-posts
-        'Posts
+      li
+        = link_to '#' do
+          .sprite.sprite-profile-posts
+          'Posts
 
-    li
-      = link_to '#' do
-        .sprite.sprite-profile-meetups
-        'Meetups
+      li
+        = link_to '#' do
+          .sprite.sprite-profile-meetups
+          'Meetups
 
-  ul.nav.nav-pills.pull-right
-    li.car-count
-      = link_to '#' do
-        span= current_user.cars.count
-        .sprite.sprite-car-counter
+    ul.nav.nav-pills.pull-right
+      li.car-count
+        = link_to '#' do
+          span= current_user.cars.count
+          .sprite.sprite-car-counter
 
-    li.follow-count
-      = link_to '#' do
-        'Followers
-        span 0
+      li.follow-count
+        = link_to '#' do
+          'Followers
+          span 0
 
-    li.follow-count
-      = link_to '#' do
-        'Following
-        span 0
+      li.follow-count
+        = link_to '#' do
+          'Following
+          span 0
 
-.current-cars.my-cars.text-center
-  h2 Current Cars
-  = link_to new_user_car_path(current: true), class: 'btn btn-primary', data: { remote: true } do
-    i.fa.fa-plus
-    'Add Car
+  .current-cars.my-cars.text-center
+    h2 Current Cars
+    = link_to new_user_car_path(current: true), class: 'btn btn-primary', data: { remote: true } do
+      i.fa.fa-plus
+      'Add Car
 
-  .car-cards.row
-    - @cars.current.each do |car|
-      .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
+    .car-cards.row
+      - @cars.current.each do |car|
+        .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
 
-.previous-cars.my-cars.text-center
-  h2 Previous Cars
-  = link_to new_user_car_path(past: true), class: 'btn btn-primary', data: { remote: true } do
-    i.fa.fa-plus
-    'Add Car
+  .previous-cars.my-cars.text-center
+    h2 Previous Cars
+    = link_to new_user_car_path(past: true), class: 'btn btn-primary', data: { remote: true } do
+      i.fa.fa-plus
+      'Add Car
 
-  .car-cards.row
-    - @cars.past.each do |car|
-      .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
+    .car-cards.row
+      - @cars.past.each do |car|
+        .car-card.col-xs-12.col-sm-6= render 'user_cars/car', car: car
 
-.first-car.my-cars.text-center
-  h2 First Car
-  = link_to new_user_car_path(first: true), class: 'btn btn-primary', data: { remote: true } do
-    i.fa.fa-plus
-    'Add Car
+  .first-car.my-cars.text-center
+    h2 First Car
+    = link_to new_user_car_path(first: true), class: 'btn btn-primary', data: { remote: true } do
+      i.fa.fa-plus
+      'Add Car
 
-  .car-cards.row
-    .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/car', car: @cars.first if @cars.first
+    .car-cards.row
+      .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/car', car: @cars.first if @cars.first
 
-.row
-  .col-md-8.text-center.car-singles
-    h2
-      'Dream Cars
-      = link_to new_user_single_path(type: 'dream-cars'), class: 'btn btn-default add-car', data: { remote: true } do
-        .sprite.sprite-add-photo
-        '  Add Image
+  .row
+    .col-md-8.text-center.car-singles
+      h2
+        'Dream Cars
+        = link_to new_user_single_path(type: 'dream-cars'), class: 'btn btn-default add-car', data: { remote: true } do
+          .sprite.sprite-add-photo
+          '  Add Image
 
-    .row.singles
-      - current_user.dream_cars.each do |photo|
-        .car-single.col-xs-4.col-sm-3
-          .img
-            = attachment_image_tag photo, :image, :fill, 450, 240
-            = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
-              .sprite.sprite-delete
+      .row.singles
+        - current_user.dream_cars.each do |photo|
+          .car-single.col-xs-4.col-sm-3
+            .img
+              = attachment_image_tag photo, :image, :fill, 450, 240
+              = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+                .sprite.sprite-delete
 
-  .col-md-4.text-center.car-singles
-    h2
-      'Next Car
-      = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if current_user.next_car}", data: { remote: true } do
-        .sprite.sprite-add-photo
-        '  Add Image
+    .col-md-4.text-center.car-singles
+      h2
+        'Next Car
+        = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if current_user.next_car}", data: { remote: true } do
+          .sprite.sprite-add-photo
+          '  Add Image
 
-    .row.singles
-      .car-single.col-xs-offset-2.col-xs-8.col-sm-offset-3.col-sm-6
-        - if current_user.next_car
-          .img
-            = attachment_image_tag current_user.next_car, :image, :fill, 450, 240
-            = link_to user_single_path(current_user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
-              .sprite.sprite-delete
+      .row.singles
+        .car-single.col-xs-offset-2.col-xs-8.col-sm-offset-3.col-sm-6
+          - if current_user.next_car
+            .img
+              = attachment_image_tag current_user.next_car, :image, :fill, 450, 240
+              = link_to user_single_path(current_user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+                .sprite.sprite-delete

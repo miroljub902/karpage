@@ -1,19 +1,20 @@
-.row
-  .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3.text-center
-    h1 Reset your password
-    br
-    .col-sm-10.col-sm-offset-1
-      = form_for @user, url: user_password_reset_path(token: params[:token]) do |f|
-        .form-group
-          .form-group class=(@user.errors[:password].any? ? 'error' : nil)
-            = f.password_field :password, class: 'form-control input-lg', placeholder: 'Password', required: true
-            - if @user.errors[:password].any?
-              .help-block= @user.errors[:password].join(', ')
+.container
+  .row
+    .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2.col-lg-6.col-lg-offset-3.text-center
+      h1 Reset your password
+      br
+      .col-sm-10.col-sm-offset-1
+        = form_for @user, url: user_password_reset_path(token: params[:token]) do |f|
+          .form-group
+            .form-group class=(@user.errors[:password].any? ? 'error' : nil)
+              = f.password_field :password, class: 'form-control input-lg', placeholder: 'Password', required: true
+              - if @user.errors[:password].any?
+                .help-block= @user.errors[:password].join(', ')
 
-          .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
-            = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation', required: true
-            - if @user.errors[:password_confirmation].any?
-              .help-block= @user.errors[:password_confirmation].join(', ')
+            .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
+              = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation', required: true
+              - if @user.errors[:password_confirmation].any?
+                .help-block= @user.errors[:password_confirmation].join(', ')
 
-          .actions
-            button.btn.btn-primary.btn-lg.btn-block type="submit" Save
+            .actions
+              button.btn.btn-primary.btn-lg.btn-block type="submit" Save

@@ -17,4 +17,9 @@ Rails.application.routes.draw do
   resource :user_session, only: %i(new create destroy), path: 'session'
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
+
+  get ':profile_id' => 'profiles#show', as: :profile
+  scope ':profile_id' do
+    get ':car_id' => 'profile_cars#show', as: :profile_car
+  end
 end

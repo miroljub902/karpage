@@ -1,0 +1,23 @@
+.car-page
+  - @car.photos.sorted.each_with_index do |photo, index|
+    .car-photo
+      = attachment_image_tag photo, :image, :fit, 1920, 1280
+
+      - if index == 0
+        .caption
+          .heading.text-center
+            .avatar
+            h2= @car.user
+
+            h1
+              = @car
+              .small= @car.description
+
+  .container
+    .pull-right
+      'Views: 116
+
+    h1.text-center= @car
+
+    .avatar.text-center
+      h2= @car.user
