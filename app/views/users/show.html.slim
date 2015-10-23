@@ -23,7 +23,7 @@
   ul.nav.nav-pills.pull-right
     li.car-count
       = link_to '#' do
-        span 0
+        span= current_user.cars.count
         .sprite.sprite-car-counter
 
     li.follow-count
