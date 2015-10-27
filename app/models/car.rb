@@ -6,6 +6,8 @@ class Car < ActiveRecord::Base
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy
 
+  accepts_nested_attributes_for :photos
+
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
   validates :year, numericality: true

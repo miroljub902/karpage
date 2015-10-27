@@ -24,8 +24,7 @@
                 = f.text_area :description, class: 'form-control', rows: 5
 
             .row
-              .col-xs-12
-                p.text-center You can upload photos after adding your car
+              .col-xs-12= render 'user_cars/add_photos', f: f
 
         .modal-footer
           a.btn.btn-default.btn-lg data-dismiss="modal" Cancel

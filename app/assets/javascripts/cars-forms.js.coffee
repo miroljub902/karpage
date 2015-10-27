@@ -2,7 +2,7 @@ $ ->
   $selectButton = null
 
   updateButtonText = ->
-    total = $('#modalEditCar .photo.has-photo').length
+    total = $('.car-form .photo.has-photo').length
     text = if total == 0 then 'Add Photos' else 'Add More Photos'
     $selectButton.html(text)
 
@@ -11,19 +11,42 @@ $ ->
   disableButton = -> $selectButton.addClass('disabled')
 
   updatePhotoIndexes = ->
-    $modal = $('#modalEditCar')
+    $modal = $('.car-form')
     $('.photo .index', $modal).each (i) -> $(this).html i + 1
+    $('.photo', $modal).each (i) -> $(this).find('input.sorting').val(i)
+
+    url = $('.photos', $modal).data('sort-url')
+    return unless url
     sorting = $.makeArray($('.photos .photo.has-photo', $modal).map((i, e) -> $(e).data('id')))
-    return if sorting.length == 0
     $.ajax
-      url: $('.photos', $modal).data('sort-url')
+      url: url
       method: 'POST'
       data:
         sorting: sorting
 
+  removePhoto = ($photo) ->
+    $photo.find('input[type=hidden]').remove()
+    enableButton()
+    $parent = $photo.parent()
+    $photo.fadeOut ->
+      $photo
+      .removeClass('has-photo')
+      .removeAttr('data-id')
+      .find('.img')
+      .removeAttr('style')
+      .end()
+      .detach()
+      .appendTo($parent)
+      .fadeIn()
+
+      updatePhotoIndexes()
+      updateButtonText()
+
   # Reordering images
-  $(document).on 'show.bs.modal', '#modalEditCar', ->
-    $modal = $(this)
+  # Cannot use the class name directly
+  $(document).on 'show.bs.modal', (e) ->
+    $modal = $(e.target)
+    return unless $modal.hasClass('car-form')
     $photos = $modal.find('.photos')
     Sortable.create(
       $modal.find('.photos ul')[0]
@@ -38,26 +61,15 @@ $ ->
     $photo = $this.parents('.photo')
     $photos = $this.parents('.photos')
     $selectButton ||= $('.car-photo-upload', $photos)
+
+    return removePhoto($photo) unless $photo.data('id')
+
     url = $photos.data('update-url').replace('_ID_', $photo.data('id'))
     $.ajax
       url: url,
       method: 'DELETE'
       success: ->
-        enableButton()
-        $parent = $photo.parent()
-        $photo.fadeOut ->
-          $photo
-          .removeClass('has-photo')
-          .removeAttr('data-id')
-          .find('.img')
-          .removeAttr('style')
-          .end()
-          .detach()
-          .appendTo($parent)
-          .fadeIn()
-
-          updatePhotoIndexes()
-          updateButtonText()
+        removePhoto $photo
 
   $(document).on 'click', '.car-photo-upload', (e) ->
     e.preventDefault()
@@ -103,16 +115,29 @@ $ ->
             progress = parseInt(progress * 100, 10) + '%'
             $photo.attr 'data-progress', progress
           complete: (xhr) ->
-            $.ajax
-              url: $photos.data('create-url'),
-              method: 'POST'
-              data: { photo: { image_id: image_id, image_content_type: file.type, image_size: file.size, image_filename: file.name } }
-              success: (data) ->
-                imageUrl = xhr.responseURL.replace(/\?.+/, '')
-                $photos.find(".photo-url[data-index=#{i + 1}]").val imageUrl
-                $photo.find('.img').css('background-image', "url(#{imageUrl})")
-                $photo.removeClass('uploading').addClass('has-photo').attr('data-id', data.id)
-                updateButtonText()
+            imageUrl = xhr.responseURL.replace(/\?.+/, '')
+            if $photos.data('create-url')
+              $.ajax
+                url: $photos.data('create-url'),
+                method: 'POST'
+                data: { photo: { image_id: image_id, image_content_type: file.type, image_size: file.size, image_filename: file.name } }
+                success: (data) ->
+                  $photo.find('.img').css('background-image', "url(#{imageUrl})")
+                  $photo.removeClass('uploading').addClass('has-photo').attr('data-id', data.id)
+                  updateButtonText()
+            else
+              $photo.find('.img').css('background-image', "url(#{imageUrl})")
+              randomId = Math.random().toString().substr(2, 100)
+              $photo
+                .removeClass('uploading')
+                .addClass('has-photo')
+                .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_id]" value="' + image_id + '">')
+                .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_content_type]" value="' + file.type + '">')
+                .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_size]" value="' + file.size + '">')
+                .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_filename]" value="' + file.name + '">')
+                .append('<input type="hidden" class="sorting" name="car[photos][' + randomId + '][sorting]" value="' + (start + i) + '">')
+
+              updateButtonText()
 
       $files.wrap('<form>').closest('form').get(0).reset()
       $files.unwrap()
