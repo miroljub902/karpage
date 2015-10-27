@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 
+  resources :pages, only: :show, path: 'info'
+
   get ':profile_id' => 'profiles#show', as: :profile
   scope ':profile_id' do
     get ':car_id' => 'profile_cars#show', as: :profile_car
