@@ -5,6 +5,7 @@ class Car < ActiveRecord::Base
   belongs_to :model
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   accepts_nested_attributes_for :photos
 

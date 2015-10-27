@@ -69,6 +69,40 @@ ALTER SEQUENCE cars_id_seq OWNED BY cars.id;
 
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    commentable_id integer,
+    commentable_type character varying,
+    user_id integer,
+    body text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -304,6 +338,13 @@ ALTER TABLE ONLY cars ALTER COLUMN id SET DEFAULT nextval('cars_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly_id_slugs_id_seq'::regclass);
 
 
@@ -348,6 +389,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY cars
     ADD CONSTRAINT cars_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -452,6 +501,20 @@ CREATE UNIQUE INDEX index_cars_on_user_id_and_slug ON cars USING btree (user_id,
 --
 
 CREATE INDEX index_cars_on_year ON cars USING btree (year);
+
+
+--
+-- Name: index_comments_on_commentable_type_and_commentable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON comments USING btree (commentable_type, commentable_id);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
 
 
 --
@@ -602,6 +665,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT fk_rails_03de2dc08c FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_7eccb46500; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -648,4 +719,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151022205617');
 INSERT INTO schema_migrations (version) VALUES ('20151023004903');
 
 INSERT INTO schema_migrations (version) VALUES ('20151027194013');
+
+INSERT INTO schema_migrations (version) VALUES ('20151027195233');
 

@@ -22,3 +22,33 @@
 
     .avatar.text-center
       h2= @car.user
+
+.container
+  .comments
+    .row
+      .col-xs-12.col-sm-offset-2.col-sm-8
+        hr
+        h3
+          .sprite.sprite-chat-bubble
+          'Comments
+
+        - if signed_in?
+          = form_for Comment.new, url: user_car_comments_path, html: { class: 'media new-comment' } do |f|
+            .media-left
+              = link_to '#' do
+                img.media-object
+            .media-body
+              = f.text_area :body, class: 'form-control', rows: 6
+              = f.submit 'Post', class: 'btn btn-green pull-right'
+
+        .media.comment
+          .media-left
+            = link_to '#' do
+              img.media-object
+          .media-body
+            h4.media-heading
+              'username
+              .small
+                'THU OCT 25 2015 AT 10:30pm
+
+            'Comment

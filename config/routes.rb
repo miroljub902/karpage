@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments
   root to: 'home#index'
 
   get 'auth/:provider/callback', to: 'user_sessions#create'
@@ -10,6 +11,8 @@ Rails.application.routes.draw do
       resources :car_photos, path: 'photos', as: :photos, only: %i(create destroy) do
         post 'reorder', on: :collection
       end
+
+      resources :comments, only: %i(create), scope: :cars
     end
 
     resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)
