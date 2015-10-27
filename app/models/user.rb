@@ -24,6 +24,10 @@ class User < ActiveRecord::Base
     User.find_by(login: login) || User.find_by(email: login)
   end
 
+  def to_param
+    login.presence || id
+  end
+
   def to_s
     name
   end

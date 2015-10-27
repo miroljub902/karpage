@@ -8,7 +8,8 @@
           = cell :nav
 
           .heading.text-center
-            .avatar
+            = link_to profile_path(@car.user) do
+              = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
             h2= @car.user
 
             h1
@@ -20,8 +21,12 @@
 
     h1.text-center= @car
 
-    .avatar.text-center
-      h2= @car.user
+    .text-center
+      h2
+        div
+          = link_to profile_path(@car.user) do
+            = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
+        = @car.user
 
 .container
   .comments
@@ -34,21 +39,24 @@
 
         - if signed_in?
           = form_for Comment.new, url: user_car_comments_path, html: { class: 'media new-comment' } do |f|
+            = hidden_field_tag :return_to, request.original_url
             .media-left
               = link_to '#' do
-                img.media-object
+                img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
+
             .media-body
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Post', class: 'btn btn-green pull-right'
 
-        .media.comment
-          .media-left
-            = link_to '#' do
-              img.media-object
-          .media-body
-            h4.media-heading
-              'username
-              .small
-                'THU OCT 25 2015 AT 10:30pm
+        - @car.comments.sorted.each do |comment|
+          .media.comment
+            .media-left
+              = link_to profile_path(comment.user) do
+                img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
 
-            'Comment
+            .media-body
+              h4.media-heading
+                = comment.user
+                .small.created-at= comment.created_at.strftime('%a %b %d %Y at %l:%M%P')
+
+              = simple_format comment.body

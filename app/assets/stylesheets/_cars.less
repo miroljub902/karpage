@@ -388,6 +388,19 @@
       width: 100%;
       padding: 20px 45px;
       background-color: transparent;
+      transition: background-color 0.5s ease-in-out;
+
+      &:hover {
+        background-color: rgba(100, 100, 100, 0.8);
+      }
+
+      a:hover, a:focus, .open > a {
+        color: #eee;
+      }
+
+      .dropdown-menu a:hover {
+        color: #000;
+      }
     }
 
     img {
@@ -407,6 +420,10 @@
         display: inline-block;
         height: 100%;
         margin-left: -0.25em;
+      }
+
+      .avatar {
+        border: 3px solid #fff;
       }
 
       .heading {
@@ -432,6 +449,10 @@
         }
       }
     }
+  }
+
+  h2 .avatar {
+    margin-bottom: 15px;
   }
 
   .container {
