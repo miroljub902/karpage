@@ -44,7 +44,8 @@ CREATE TABLE cars (
     current boolean DEFAULT true NOT NULL,
     past boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    hits integer DEFAULT 0 NOT NULL
 );
 
 
@@ -412,6 +413,13 @@ CREATE INDEX index_cars_on_first ON cars USING btree (first);
 
 
 --
+-- Name: index_cars_on_hits; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_cars_on_hits ON cars USING btree (hits);
+
+
+--
 -- Name: index_cars_on_model_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -638,4 +646,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151021235437');
 INSERT INTO schema_migrations (version) VALUES ('20151022205617');
 
 INSERT INTO schema_migrations (version) VALUES ('20151023004903');
+
+INSERT INTO schema_migrations (version) VALUES ('20151027194013');
 
