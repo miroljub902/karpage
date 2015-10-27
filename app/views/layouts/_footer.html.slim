@@ -1,15 +1,16 @@
 .container-fluid.footer
   .text-center.social
-    = link_to 'https://twitter.com/karpage1' do
-      .sprite.sprite-twitter-badge
-    = link_to 'https://www.facebook.com/karpage1' do
-      .sprite.sprite-facebook-badge
+    = link_to 'https://www.facebook.com/karpage1', target: '_blank' do
+      = image_tag 'facebook.png'
+    = link_to 'https://instagram.com/karpage', target: '_blank' do
+      = image_tag 'instagram.png'
+    = link_to 'https://twitter.com/karpage1', target: '_blank' do
+      = image_tag 'twitter.png'
 
   ul.footer-nav
-    li= link_to 'Team', '#', class: 'btn btn-link'
-    li= link_to 'Help', '#', class: 'btn btn-link'
     li= link_to 'Contact', '#', class: 'btn btn-link'
     li= link_to 'Terms of Use', '#', class: 'btn btn-link'
+    li= link_to 'Privacy Policy', '#', class: 'btn btn-link'
 
   p.copyright.small= copyright_notice
 
