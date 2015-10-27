@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         post 'reorder', on: :collection
       end
 
-      resources :comments, only: %i(create), scope: :car
+      resources :comments, only: %i(create destroy), scope: :car
     end
 
     resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)

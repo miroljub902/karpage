@@ -4,6 +4,13 @@ class CommentsController < ApplicationController
     redirect_to return_to_path
   end
 
+  def destroy
+    @comment = commentable.comments.find(params[:id])
+    authorize @comment
+    @comment.destroy
+    redirect_to params[:return_to].presence || root_path
+  end
+
   private
 
   def comment_params

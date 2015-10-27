@@ -41,8 +41,7 @@
           = form_for Comment.new, url: user_car_comments_path, html: { class: 'media new-comment' } do |f|
             = hidden_field_tag :return_to, request.original_url
             .media-left
-              = link_to '#' do
-                img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
+              img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
 
             .media-body
               = f.text_area :body, class: 'form-control', rows: 6
@@ -55,8 +54,13 @@
                 img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
 
             .media-body
-              h4.media-heading
-                = comment.user
+              h4.media-heading.clearfix
+                = comment.user.to_s
                 .small.created-at= comment.created_at.strftime('%a %b %d %Y at %l:%M%P')
+
+              - if policy(comment).destroy?
+                .pull-right
+                  = link_to user_car_comment_path(@car, comment, return_to: profile_car_path(@car.user, @car)), title: 'Delete this comment', method: :delete, data: { confirm: 'Are you sure?' } do
+                    .fa.fa-trash-o
 
               = simple_format comment.body

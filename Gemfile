@@ -14,6 +14,7 @@ gem 'friendly_id'
 gem 'refile', require: 'refile/rails'
 gem 'refile-s3'
 gem 'refile-mini_magick'
+gem 'pundit'
 
 gem 'slim-rails'
 gem 'less-rails'
