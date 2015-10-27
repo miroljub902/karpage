@@ -6,7 +6,7 @@ class CarSinglesController < ApplicationController
   end
 
   def create
-    return redirect_to(user_path) unless params[:single]
+    return redirect_to(user_path) unless params[:single] && current_user.dream_cars.count < 3
 
     case params[:type]
     when 'dream-cars'

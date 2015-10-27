@@ -71,13 +71,13 @@
     .col-md-8.text-center.car-singles
       h2
         'Dream Cars
-        = link_to new_user_single_path(type: 'dream-cars'), class: 'btn btn-default add-car', data: { remote: true } do
+        = link_to new_user_single_path(type: 'dream-cars'), class: "btn btn-default add-car #{'disabled' if current_user.dream_cars.count == 3}", data: { remote: true } do
           .sprite.sprite-add-photo
           '  Add Image
 
       .row.singles
         - current_user.dream_cars.each do |photo|
-          .car-single.col-xs-4.col-sm-3
+          .car-single.col-xs-12.col-sm-4
             .img
               = attachment_image_tag photo, :image, :fill, 450, 240
               = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
@@ -91,7 +91,7 @@
           '  Add Image
 
       .row.singles
-        .car-single.col-xs-offset-2.col-xs-8.col-sm-offset-3.col-sm-6
+        .car-single.col-xs-12.col-sm-offset-2.col-sm-8
           - if current_user.next_car
             .img
               = attachment_image_tag current_user.next_car, :image, :fill, 450, 240
