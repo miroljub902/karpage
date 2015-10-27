@@ -40,7 +40,7 @@
 
   .current-cars.my-cars.text-center
     h2 Current Cars
-    = link_to new_user_car_path(current: true), class: 'btn btn-primary', data: { remote: true } do
+    = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
       i.fa.fa-plus
       'Add Car
 
@@ -50,7 +50,7 @@
 
   .previous-cars.my-cars.text-center
     h2 Previous Cars
-    = link_to new_user_car_path(past: true), class: 'btn btn-primary', data: { remote: true } do
+    = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
       i.fa.fa-plus
       'Add Car
 
@@ -60,7 +60,7 @@
 
   .first-car.my-cars.text-center
     h2 First Car
-    = link_to new_user_car_path(first: true), class: 'btn btn-primary', data: { remote: true } do
+    = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
       i.fa.fa-plus
       'Add Car
 
