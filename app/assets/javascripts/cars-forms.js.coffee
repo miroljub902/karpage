@@ -5,6 +5,7 @@ $ ->
     total = $('.car-form .photo.has-photo').length
     text = if total == 0 then 'Add Photos' else 'Add More Photos'
     $selectButton.html(text)
+    sortablePhotos()
 
   enableButton = -> $selectButton.removeClass('disabled')
 
@@ -42,17 +43,21 @@ $ ->
       updatePhotoIndexes()
       updateButtonText()
 
+  sortablePhotos = ->
+    $modal = $('.car-form')
+    Sortable.create(
+      $modal.find('.photos ul')[0]
+      draggable: '.has-photo'
+      onSort: updatePhotoIndexes
+    )
+
   # Reordering images
   # Cannot use the class name directly
   $(document).on 'show.bs.modal', (e) ->
     $modal = $(e.target)
     return unless $modal.hasClass('car-form')
     $photos = $modal.find('.photos')
-    Sortable.create(
-      $modal.find('.photos ul')[0]
-      draggable: '.has-photo'
-      onSort: updatePhotoIndexes
-    )
+    sortablePhotos()
 
   $(document).on 'click', '.photo .remove', (e) ->
     return unless confirm('Are you sure?')
