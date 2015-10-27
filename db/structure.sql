@@ -304,7 +304,11 @@ CREATE TABLE users (
     current_login_ip character varying,
     last_login_ip character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    avatar_id character varying,
+    avatar_filename character varying,
+    avatar_size integer,
+    avatar_content_type character varying
 );
 
 
@@ -721,4 +725,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151023004903');
 INSERT INTO schema_migrations (version) VALUES ('20151027194013');
 
 INSERT INTO schema_migrations (version) VALUES ('20151027195233');
+
+INSERT INTO schema_migrations (version) VALUES ('20151027205722');
 

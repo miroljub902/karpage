@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
     config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? || password.present? }
   end
 
+  attachment :avatar
+
   has_many :identities, dependent: :delete_all
   has_many :cars, dependent: :destroy
   has_many :singles, class_name: 'Photo', as: :attachable, dependent: :destroy
