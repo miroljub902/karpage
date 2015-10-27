@@ -14,4 +14,8 @@ class HeaderCell < Cell::ViewModel
   def background
     @options[:background] || asset_path('/assets/header-bg.jpg')
   end
+
+  def style
+    "background-image: url(#{background})" unless background === false
+  end
 end
