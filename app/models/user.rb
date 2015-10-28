@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    name
+    name.to_s
   end
 
   def deliver_reset_password_instructions!
