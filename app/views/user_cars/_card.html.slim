@@ -1,0 +1,16 @@
+.thumbnail class="#{'has-photo' if car.photos.any?}"
+  = link_to car.user.login ? profile_car_path(car.user.login, car) : '#' do
+    .img style="background-image: url(#{attachment_url(car.photos.sorted.first, :image, :fit, 720, 250)})"
+
+    .caption
+      h3= car
+
+  .actions.clearfix
+    = link_to profile_path(car.user), class: 'pull-left profile-avatar small' do
+      .initials= car.user.initials
+      - if car.user.avatar
+        img.media-object.avatar src=attachment_url(car.user, :avatar, :fit, 45, 45) width="45" height="45"
+
+    .user
+      = car.user
+      .location.small= car.user.location

@@ -59,6 +59,16 @@
   }
 }
 
+.user-profile {
+  .profile-avatar img {
+    border: 3px solid #fff;
+  }
+
+  h1 .small {
+    color: #fff;
+  }
+}
+
 .profile-avatar {
   position: relative;
   display: inline-block;
@@ -90,6 +100,26 @@
     .initials {
       line-height: 100px;
       font-size: 80px;
+    }
+  }
+
+  &.huge {
+    width: 150px;
+    height: 150px;
+
+    .initials {
+      line-height: 150px;
+      font-size: 120px;
+    }
+  }
+
+  &.small {
+    width: 45px;
+    height: 45px;
+
+    .initials {
+      line-height: 45px;
+      font-size: 36px;
     }
   }
 }

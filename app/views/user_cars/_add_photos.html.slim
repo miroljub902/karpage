@@ -7,7 +7,7 @@ p.text-center
 .photos[data-create-url=(user_car_photos_path(car) if car.persisted?)
   data-update-url=(user_car_photo_path(car, id: '_ID_') if car.persisted?)
   data-sort-url=(reorder_user_car_photos_path(car) if car.persisted?)]
-  ul
+  ul.sortable
     / No AR sort because we'll have non-saved photos for new cars
     - car.photos.sort_by(&:sorting).each_with_index do |photo, n|
       li.photo.has-photo.sortable data-id=photo.id

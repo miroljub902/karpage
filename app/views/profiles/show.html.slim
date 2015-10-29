@@ -1,0 +1,90 @@
+- content_for :header do
+  = cell :header do
+    .user-profile
+      = link_to profile_path(@user), class: 'profile-avatar huge' do
+        .initials= @user.initials
+        - if @user.avatar
+          = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
+
+      h1
+        = @user.login
+        .small= @user.location
+
+.container
+  .profile-nav.clearfix
+    ul.nav.nav-pills.pull-left
+      li.active
+        = link_to '#' do
+          .sprite.sprite-profile-cars
+          'Cars
+
+      li
+        = link_to '#' do
+          .sprite.sprite-profile-posts
+          'Posts
+
+      li
+        = link_to '#' do
+          .sprite.sprite-profile-meetups
+          'Meetups
+
+    ul.nav.nav-pills.pull-right
+      li.car-count
+        = link_to '#' do
+          span= @user.cars.count
+          .sprite.sprite-car-counter
+
+      li.follow-count
+        = link_to '#' do
+          'Followers
+          span 0
+
+      li.follow-count
+        = link_to '#' do
+          'Following
+          span 0
+
+  - if @cars.current.any?
+    .current-cars.my-cars.text-center
+      h2 Current Cars
+
+      .car-cards.row
+        - @cars.current.each do |car|
+          .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: car
+
+  - if @cars.past.any?
+    .previous-cars.my-cars.text-center
+      h2 Previous Cars
+
+      .car-cards.row
+        - @cars.past.each do |car|
+          .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: car
+
+  - if @cars.first
+    .first-car.my-cars.text-center
+      h2 First Car
+
+      .car-cards.row
+        .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/card', car: @cars.first if @cars.first
+
+  .row
+    - @user.dream_cars.any? do |photo|
+      .col-md-8.text-center.car-singles
+        h2
+          'Dream Cars
+
+        .row.singles
+          - @user.dream_cars.each do |photo|
+            .car-single.col-xs-12.col-sm-4
+              .img
+                = attachment_image_tag photo, :image, :fill, 450, 240
+
+    - if @user.next_car
+      .col-md-4.text-center.car-singles
+        h2
+          'Next Car
+
+        .row.singles
+          .car-single.col-xs-12.col-sm-offset-2.col-sm-8
+            .img
+              = attachment_image_tag @user.next_car, :image, :fill, 450, 240

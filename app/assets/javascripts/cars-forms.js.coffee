@@ -46,7 +46,7 @@ $ ->
   sortablePhotos = ->
     $modal = $('.car-form')
     Sortable.create(
-      $modal.find('.photos ul')[0]
+      $modal.find('.photos ul.sortable')[0]
       draggable: '.has-photo'
       onSort: updatePhotoIndexes
     )

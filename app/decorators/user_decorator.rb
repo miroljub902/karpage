@@ -4,4 +4,9 @@ class UserDecorator < Draper::Decorator
   def initials
     model.name.to_s.split(' ')[0..1].map { |n| n.first.upcase }.join.presence || '?'
   end
+
+  def location
+    # TODO
+    'Phoenix, Arizona'
+  end
 end
