@@ -8,8 +8,11 @@
           = cell :nav
 
           .heading.text-center
-            = link_to profile_path(@car.user) do
-              = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
+            = link_to profile_path(@car.user), class: 'profile-avatar large' do
+              .initials= @car.user.initials
+              - if @car.user.avatar
+                = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
+
             h2= @car.user
 
             h1
@@ -24,8 +27,10 @@
     .text-center
       h2
         div
-          = link_to profile_path(@car.user) do
-            = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
+          = link_to profile_path(@car.user), class: 'profile-avatar large' do
+            .initials= @car.user.initials
+            - if @car.user.avatar
+              = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
         = @car.user
 
 .container
@@ -41,17 +46,22 @@
           = form_for Comment.new, url: user_car_comments_path, html: { class: 'media new-comment' } do |f|
             = hidden_field_tag :return_to, request.original_url
             .media-left
-              img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
+              .profile-avatar
+                .initials= current_user.initials
+                - if current_user.avatar
+                  img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
 
             .media-body
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Post', class: 'btn btn-green pull-right'
 
-        - @car.comments.sorted.each do |comment|
+        - @car.comments.each do |comment|
           .media.comment
             .media-left
-              = link_to profile_path(comment.user) do
-                img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
+              = link_to profile_path(comment.user), class: 'profile-avatar' do
+                .initials= comment.user.decorate.initials
+                - if comment.user.avatar
+                  img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
 
             .media-body
               h4.media-heading.clearfix

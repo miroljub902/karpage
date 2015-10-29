@@ -1,4 +1,9 @@
 .inputs
+  .form-group class=(@user.errors[:name].any? ? 'error' : nil)
+    = f.text_field :name, class: 'form-control input-lg', placeholder: 'Your name'
+    - if @user.errors[:name].any?
+      .help-block= @user.errors[:name].join(', ')
+
   .form-group class=(@user.errors[:email].any? ? 'error' : nil)
     = f.text_field :email, class: 'form-control input-lg', placeholder: 'E-mail', required: true
     - if @user.errors[:email].any?
@@ -15,7 +20,7 @@
 
   .setPassword.collapse
     .form-group class=(@user.errors[:password].any? ? 'error' : nil)
-      - placeholder = @user.crypted_password.present? ? 'Change password' : 'Set password'
+      - placeholder = @user.crypted_password.present? ? 'New password' : 'Set password'
       = f.password_field :password, class: 'form-control input-lg', placeholder: placeholder
       - if @user.errors[:password].any?
         .help-block= @user.errors[:password].join(', ')
