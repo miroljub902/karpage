@@ -5,12 +5,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_action :require_complete_profile
+
   def signed_in?
     current_user.present?
   end
   helper_method :signed_in?
 
   private
+
+  def require_complete_profile
+    return if !signed_in? || (controller_name == 'users' && %w(edit update).include?(action_name))
+    redirect_to edit_user_path, notice: 'Please provide a username and e-mail' if current_user.incomplete_profile?
+  end
 
   def render_404
     render file: 'public/404', status: :not_found, layout: false

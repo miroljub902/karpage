@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options if: -> { identities.empty? || login.present? }
     config.merge_validates_length_of_login_field_options if: -> { identities.empty? || login.present? }
-    config.merge_validates_length_of_password_field_options if: -> { identities.empty? || password.present? }
-    config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? || password.present? }
+    config.merge_validates_length_of_password_field_options if: -> { identities.empty? && password.present? }
+    config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? && password.present? }
   end
 
   attachment :avatar
@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
 
   def self.find_by_login_or_email(login)
     User.find_by(login: login) || User.find_by(email: login)
+  end
+
+  def incomplete_profile?
+    login.blank? || email.blank?
   end
 
   def to_param

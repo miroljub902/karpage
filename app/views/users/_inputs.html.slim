@@ -1,0 +1,26 @@
+.inputs
+  .form-group class=(@user.errors[:email].any? ? 'error' : nil)
+    = f.text_field :email, class: 'form-control input-lg', placeholder: 'E-mail', required: true
+    - if @user.errors[:email].any?
+      .help-block= @user.errors[:email].join(', ')
+
+  .form-group class=(@user.errors[:login].any? ? 'error' : nil)
+    = f.text_field :login, class: 'form-control input-lg', placeholder: 'Username', required: true
+    - if @user.errors[:login].any?
+      .help-block= @user.errors[:login].join(', ')
+
+  .form-group.checkbox.collapse.in.setPassword
+    a href="#" data-toggle="collapse" data-target=".setPassword"
+      = @user.crypted_password.present? ? 'Change password' : 'Set password'
+
+  .setPassword.collapse
+    .form-group class=(@user.errors[:password].any? ? 'error' : nil)
+      - placeholder = @user.crypted_password.present? ? 'Change password' : 'Set password'
+      = f.password_field :password, class: 'form-control input-lg', placeholder: placeholder
+      - if @user.errors[:password].any?
+        .help-block= @user.errors[:password].join(', ')
+
+    .form-group class=(@user.errors[:password_confirmation].any? ? 'error' : nil)
+      = f.password_field :password_confirmation, class: 'form-control input-lg', placeholder: 'Password confirmation'
+      - if @user.errors[:password_confirmation].any?
+        .help-block= @user.errors[:password_confirmation].join(', ')

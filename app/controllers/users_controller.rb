@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   respond_to :html, :js
 
+  layout 'simple', only: %i(edit update)
+
   before_action :require_no_user, only: %i(new create)
   before_action :require_user, only: %i(show update)
 
@@ -33,6 +35,7 @@ class UsersController < ApplicationController
     @user = current_user
     respond_to do |format|
       format.js { render '_modals/new', locals: { id: 'modalAccount', content: 'edit' } }
+      format.html
     end
   end
 
@@ -45,6 +48,14 @@ class UsersController < ApplicationController
           render inline: 'window.location.reload();'
         else
           render '_modals/new', locals: { id: 'modalAccount', content: 'edit' }
+        end
+      }
+      format.html {
+        if @user.save
+          redirect_to user_path, notice: 'Changes saved'
+        else
+          flash.now.alert = 'Could not update your profile'
+          render :edit
         end
       }
     end
