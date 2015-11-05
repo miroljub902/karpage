@@ -19,7 +19,7 @@ class UserSessionsController < ApplicationController
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
       }
-      format.html { redirect_to user_path }
+      format.html { redirect_to profile_path(@user_session.user) }
     end
   end
 

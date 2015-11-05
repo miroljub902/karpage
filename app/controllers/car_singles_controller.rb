@@ -6,7 +6,7 @@ class CarSinglesController < ApplicationController
   end
 
   def create
-    return redirect_to(user_path) unless params[:single] && current_user.dream_cars.count < 3
+    return redirect_to(profile_path(current_user)) unless params[:single] && current_user.dream_cars.count < 3
 
     case params[:type]
     when 'dream-cars'
@@ -17,13 +17,13 @@ class CarSinglesController < ApplicationController
       return render_404
     end
 
-    redirect_to user_path
+    redirect_to profile_path(current_user)
   end
 
   def destroy
     photo = current_user.singles.find(params[:id])
     photo.destroy
-    redirect_to user_path
+    redirect_to profile_path(current_user)
   end
 
   private

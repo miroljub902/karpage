@@ -4,12 +4,7 @@ class UsersController < ApplicationController
   layout 'simple', only: %i(edit update)
 
   before_action :require_no_user, only: %i(new create)
-  before_action :require_user, only: %i(show update)
-
-  def show
-    @user = current_user
-    @cars = UserCarsDecorator.cars(@user)
-  end
+  before_action :require_user, only: %i(update)
 
   def new
     @user = User.new
@@ -23,7 +18,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.js {
         if @user.save
-          render inline: "window.location = '#{user_path}'"
+          render inline: "window.location = '#{profile_path(@user)}'"
         else
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
@@ -52,7 +47,7 @@ class UsersController < ApplicationController
       }
       format.html {
         if @user.save
-          redirect_to user_path, notice: 'Changes saved'
+          redirect_to profile_path(current_user), notice: 'Changes saved'
         else
           flash.now.alert = 'Could not update your profile'
           render :edit

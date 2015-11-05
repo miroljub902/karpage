@@ -1,10 +1,14 @@
 - content_for :header do
   = cell :header, nil, background: attachment_url(@user, :profile_background) do
-    .user-profile
-      = link_to profile_path(@user), class: 'profile-avatar huge' do
+    .user-profile data-user-id=@user.id
+      .profile-avatar.huge
         .initials= @user.initials
-        - if @user.avatar
-          = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
+        - if my_profile?
+          input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
+            data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+        .avatar-container data-edit=('Change your profile photo' if my_profile?)
+          - if @user.avatar
+            = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
 
       h1
         = @user.login
@@ -12,6 +16,24 @@
           .location= @user.location
           .description= @user.description
           .twitter= @user.twitter_link
+          - if my_profile?
+            .edit-info= link_to 'Edit info', edit_user_path, data: { remote: true }
+
+      - if my_profile?
+        .actions.clearfix
+          .edit.pull-right
+            = link_to 'Edit Profile', '#', class: 'btn btn-default edit-profile'
+
+          .editing.clearfix
+            .pull-left
+              input.background-photo[type="file" data-prefix="store" data-update-url=user_path
+                data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+              = link_to '#', class: 'btn btn-default change-background' do
+                .sprite.sprite-profile-change-background-image
+                ' Change Background
+
+            .pull-right
+              = link_to 'OK', '#', class: 'btn btn-default close-edit'
 
 .container
   .profile-nav.clearfix
@@ -19,7 +41,10 @@
       li.active
         = link_to '#' do
           .sprite.sprite-profile-cars
-          'Cars
+          - if my_profile?
+            'My Cars
+          - else
+            'Cars
 
       li
         = link_to '#' do
@@ -47,47 +72,69 @@
           'Following
           span 0
 
-  - if @cars.current.any?
-    .current-cars.my-cars.text-center
-      h2 Current Cars
+  .current-cars.my-cars.text-center
+    h2 Current Cars
+    - if my_profile?
+      = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
+        i.fa.fa-plus
+        'Add Car
 
-      .car-cards.row
-        - @cars.current.each do |car|
-          .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: car
+    .car-cards.row
+      - @cars.current.each do |car|
+        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car
 
-  - if @cars.past.any?
-    .previous-cars.my-cars.text-center
-      h2 Previous Cars
+  .previous-cars.my-cars.text-center
+    h2 Previous Cars
+    - if my_profile?
+      = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
+        i.fa.fa-plus
+        'Add Car
 
-      .car-cards.row
-        - @cars.past.each do |car|
-          .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: car
+    .car-cards.row
+      - @cars.past.each do |car|
+        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car
 
-  - if @cars.first
-    .first-car.my-cars.text-center
-      h2 First Car
+  .first-car.my-cars.text-center
+    h2 First Car
+    - if my_profile?
+      = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
+        i.fa.fa-plus
+        'Add Car
 
-      .car-cards.row
-        .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render 'user_cars/card', car: @cars.first if @cars.first
+    .car-cards.row
+      .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: @cars.first if @cars.first
 
   .row
-    - @user.dream_cars.any? do |photo|
-      .col-md-8.text-center.car-singles
-        h2
-          'Dream Cars
+    .col-md-8.text-center.car-singles
+      h2
+        'Dream Cars
+        - if my_profile?
+          = link_to new_user_single_path(type: 'dream-cars'), class: "btn btn-default add-car #{'disabled' if @user.dream_cars.count == 3}", data: { remote: true } do
+            .sprite.sprite-add-photo
+            '  Add Image
 
-        .row.singles
-          - @user.dream_cars.each do |photo|
-            .car-single.col-xs-12.col-sm-4
-              .img
-                = attachment_image_tag photo, :image, :fill, 450, 240
+      .row.singles
+        - @user.dream_cars.each do |photo|
+          .car-single.col-xs-12.col-sm-4
+            .img
+              = attachment_image_tag photo, :image, :fill, 450, 240
+              - if my_profile?
+                = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+                  .sprite.sprite-delete
 
-    - if @user.next_car
-      .col-md-4.text-center.car-singles
-        h2
-          'Next Car
+    .col-md-4.text-center.car-singles
+      h2
+        'Next Car
+        - if my_profile?
+          = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if @user.next_car}", data: { remote: true } do
+            .sprite.sprite-add-photo
+            '  Add Image
 
-        .row.singles
-          .car-single.col-xs-12.col-sm-offset-2.col-sm-8
+      .row.singles
+        .car-single.col-xs-12.col-sm-offset-2.col-sm-8
+          - if @user.next_car
             .img
               = attachment_image_tag @user.next_car, :image, :fill, 450, 240
+              - if my_profile?
+                = link_to user_single_path(@user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
+                  .sprite.sprite-delete

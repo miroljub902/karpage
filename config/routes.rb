@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'auth/:provider/callback', to: 'user_sessions#create'
   get 'auth/failure', to: redirect('/')
 
-  resource :user, only: %i(show new create edit update) do
+  resource :user, only: %i(new create edit update) do
     resource :password_reset, path: 'password', only: %i(new create edit update)
     resources :user_cars, path: 'cars', as: :cars do
       resources :car_photos, path: 'photos', as: :photos, only: %i(create destroy) do

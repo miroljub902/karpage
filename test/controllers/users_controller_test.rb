@@ -6,7 +6,7 @@ class UsersControllerTest < ActionController::TestCase
       post :create, user: { email: Faker::Internet.email, login: Faker::Internet.user_name, password: 'password', password_confirmation: 'password' }
       assert_response :found
     end
-    assert_redirected_to user_path
+    assert_redirected_to profile_path(User.first)
   end
 
   test 'halts on invalid params' do

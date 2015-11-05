@@ -23,6 +23,6 @@ class UserSessionsControllerTest < ActionController::TestCase
 
   test 'redirects to user profile' do
     post :create, user_session: { login: @user.email, password: 'password' }
-    assert_redirected_to user_path
+    assert_redirected_to profile_path(@user)
   end
 end

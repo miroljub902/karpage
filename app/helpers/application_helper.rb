@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def my_profile?
+    current_user && @user && current_user.id == @user.id
+  end
+
   def flash_class(key)
     {
       notice: 'alert-info',
