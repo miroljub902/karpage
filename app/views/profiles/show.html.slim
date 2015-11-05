@@ -8,7 +8,10 @@
 
       h1
         = @user.login
-        .small= @user.location
+        .small
+          .location= @user.location
+          .description= @user.description
+          .twitter= @user.twitter_link
 
 .container
   .profile-nav.clearfix

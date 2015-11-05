@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   end
 
   attachment :avatar
+  attachment :profile_background
 
   has_many :identities, dependent: :delete_all
   has_many :cars, dependent: :destroy

@@ -64,8 +64,112 @@
     border: 3px solid #fff;
   }
 
-  h1 .small {
-    color: #fff;
+  h1 {
+    margin-bottom: 1em !important;
+
+    a {
+      color: #fff;
+    }
+
+    .small {
+      color: #fff;
+
+      .location {
+        margin: 20px 0;
+      }
+
+      .description {
+        font-size: 22px;
+        margin: 0 auto 15px auto;
+        width: 35%;
+
+        @media (max-width: @screen-xs-max) {
+          width: 100%;
+        }
+
+        @media (max-width: @screen-sm-max) {
+          width: 60%;
+        }
+      }
+
+      .twitter, .edit-info {
+        font-size: 16px;
+        text-shadow: 1px 1px 1px #000;
+      }
+
+      .edit-info {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .avatar-input {
+    display: none;
+  }
+
+  .avatar-container {
+    position: relative;
+    display: inline-block;
+
+    &.editing {
+      cursor: pointer;
+
+      &:after {
+        content: attr(data-edit);
+        text-transform: uppercase;
+        font-size: 12px;
+        text-align: center;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: rgba(50,50,50,0.3);
+        padding: 59px 10px 0 10px;
+        text-shadow: none;
+        color: #fff;
+      }
+    }
+  }
+
+  .edit-info {
+    display: none;
+
+    &.editing {
+      display: inline-block;
+    }
+  }
+
+  .actions {
+    width: 80%;
+    margin: 0 auto;
+
+    .btn {
+      border-radius: 5px;
+      font-size: 16px;
+      padding: 10px 35px;
+    }
+
+    .editing {
+      display: none;
+
+      .change-background {
+        position: relative;
+        padding-left: 69px;
+
+        .sprite {
+          position: absolute;
+          top: 9px;
+          left: initial;
+          margin-left: -34px;
+        }
+      }
+    }
+
+    .background-photo {
+      display: none;
+    }
   }
 }
 
