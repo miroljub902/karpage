@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :comments
   root to: 'home#index'
 
   get 'auth/:provider/callback', to: 'user_sessions#create'
