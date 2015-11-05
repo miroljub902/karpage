@@ -6,3 +6,4 @@ aws = {
   region: ENV['S3_REGION']
 }
 Refile.store = Refile::S3.new(prefix: 'store', **aws)
+Refile.cdn_host = ENV['CDN_HOST'] if ENV['CDN_HOST'].present?
