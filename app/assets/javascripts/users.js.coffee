@@ -76,7 +76,11 @@ $ ->
           dataType: 'text' # Prevent returned code from executing
           data: { user: { avatar_id: imageId, avatar_content_type: file.type, avatar_size: file.size, avatar_filename: file.name } }
           success: (data) ->
-            $avatar.find('img').attr 'src', imageUrl
+            $img = $avatar.find('img')
+            if $img.length > 0
+              $img.attr 'src', imageUrl
+            else
+              $avatar.append("<img src='#{imageUrl}' width='150' height='150'>")
             $avatar.attr 'data-edit', $avatar.data('edit-original')
           error: ->
             alert 'Could not upload your avatar, please try again later.'
