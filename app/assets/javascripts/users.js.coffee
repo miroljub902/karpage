@@ -80,7 +80,7 @@ $ ->
             if $img.length > 0
               $img.attr 'src', imageUrl
             else
-              $avatar.append("<img src='#{imageUrl}' width='150' height='150'>")
+              $avatar.append("<img src='#{imageUrl}' width='150' height='150' class='avatar'>")
             $avatar.attr 'data-edit', $avatar.data('edit-original')
           error: ->
             alert 'Could not upload your avatar, please try again later.'
