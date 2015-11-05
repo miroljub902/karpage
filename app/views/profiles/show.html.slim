@@ -1,5 +1,5 @@
 - content_for :header do
-  = cell :header do
+  = cell :header, nil, background: attachment_url(@user, :profile_background) do
     .user-profile
       = link_to profile_path(@user), class: 'profile-avatar huge' do
         .initials= @user.initials
