@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
 
     resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)
+    resources :posts, only: %i(new create edit update destroy)
   end
   resource :user_session, only: %i(new create destroy), path: 'session'
 
@@ -24,6 +25,8 @@ Rails.application.routes.draw do
 
   get ':profile_id' => 'profiles#show', as: :profile
   scope ':profile_id' do
+    resources :posts, only: %i(index show)
+
     get ':car_id' => 'profile_cars#show', as: :profile_car
   end
 end

@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_action :require_user
+
   def create
     @comment = current_user.comments.create(comment_params.merge(commentable: commentable))
     redirect_to return_to_path

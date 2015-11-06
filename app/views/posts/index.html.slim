@@ -1,0 +1,10 @@
+= render 'profiles/header'
+
+.container
+  = render 'layouts/flash'
+
+  - if my_profile?
+    = render 'form', post: @post
+
+  .post-list
+    = render @posts.find_all(&:persisted?)

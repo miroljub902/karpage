@@ -1,0 +1,108 @@
+.post-form {
+  margin-top: 10px;
+  padding: 15px 40px;
+  background-color: @brand-primary;
+
+  > .title {
+    text-transform: uppercase;
+    font-size: 30px;
+    color: #fff;
+  }
+
+  #post_photo {
+    display: none;
+  }
+
+  #post_body {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .btn {
+    border-color: #fff;
+    border-radius: 5px;
+    color: #fff;
+  }
+
+  > .photobutton {
+    position: absolute;
+    border-color: transparent !important;
+    padding-left: 40px;
+
+    .sprite {
+      position: absolute;
+      top: 8px;
+      left: 0;
+    }
+  }
+
+  > .submit {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.post-list {
+  margin-top: 2em;
+
+  .post-item {
+    margin-bottom: 1em;
+  }
+}
+
+.post-item {
+  @thumb-height: 250px;
+
+  .thumbnail {
+    border-radius: 0;
+    position: relative;
+    padding: 0;
+
+    &:before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      content: '';
+      height: @thumb-height;
+      width: 100%;
+      background: #000;
+      opacity: 0.2;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+    }
+
+    &.has-photo:before {
+      display: none;
+    }
+
+    .img {
+      width: 100%;
+      height: @thumb-height;
+      background: no-repeat center;
+      background-size: cover;
+    }
+
+    .actions {
+      text-align: left;
+      padding: 12px 20px 12px 12px;
+
+      .sprite {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .views {
+    font-size: 24px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .date {
+    color: #000;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: block;
+  }
+}

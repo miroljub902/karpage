@@ -1,0 +1,19 @@
+.post-item.row
+  .col-md-6
+    .thumbnail class="#{'has-photo' if post.photo}"
+      = link_to post_path(post.user, post) do
+        .img style="background-image: url(#{attachment_url(post, :photo, :fit, 720, 250)})"
+
+      .actions.clearfix
+        .pull-right
+          .sprite.sprite-post-update-views
+          .views= post.views
+
+  .col-md-6
+    = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'
+    .body= simple_format post.body
+    - if my_profile?
+      .actions
+        = link_to 'Edit Post', edit_user_post_path(post)
+        '  &bull;
+        = link_to 'Delete Post', user_post_path(post), method: :delete, data: { confirm: 'Are you sure?' }
