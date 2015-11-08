@@ -8,3 +8,18 @@
 
   .post-list
     = render @posts.find_all(&:persisted?)
+
+  - if (cars = @user.latest_cars).any?
+    h2.text-center Latest Cars
+
+    .car-cards.row
+      - cars.each do |car|
+        .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: car
+
+  - if (comments = @user.latest_comments).any?
+    h2.text-center Latest Comments
+
+    .comments
+      - comments.each do |comment|
+        - car = comment.commentable
+        = render 'comments/car_comment', comment: comment, link: profile_car_path(car.user, car), link_text: car

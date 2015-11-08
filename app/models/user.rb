@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_one :next_car, -> { where(photo_type: 'next-car') }, class_name: 'Photo', as: :attachable
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :car_comments, through: :cars, source: :comments
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 

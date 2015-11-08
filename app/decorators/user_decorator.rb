@@ -9,4 +9,12 @@ class UserDecorator < Draper::Decorator
     return unless model.twitter_uid.present?
     h.link_to "twitter.com/#{model.twitter_uid}", "https://twitter.com/#{model.twitter_uid}", target: '_blank'
   end
+
+  def latest_cars
+    model.cars.order(created_at: :desc).limit(4).map { |car| UserCarDecorator.decorate(car) }
+  end
+
+  def latest_comments
+    model.car_comments.order(created_at: :desc).limit(5).includes(:commentable, :user)
+  end
 end

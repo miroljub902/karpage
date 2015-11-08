@@ -55,22 +55,4 @@
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Post', class: 'btn btn-green pull-right'
 
-        - @car.comments.each do |comment|
-          .media.comment
-            .media-left
-              = link_to profile_path(comment.user), class: 'profile-avatar' do
-                .initials= comment.user.decorate.initials
-                - if comment.user.avatar
-                  img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
-
-            .media-body
-              h4.media-heading.clearfix
-                = comment.user.to_s
-                .small.created-at= comment.created_at.strftime('%a %b %d %Y at %l:%M%P')
-
-              - if policy(comment).destroy?
-                .pull-right
-                  = link_to user_car_comment_path(@car, comment, return_to: profile_car_path(@car.user, @car)), title: 'Delete this comment', method: :delete, data: { confirm: 'Are you sure?' } do
-                    .fa.fa-trash-o
-
-              = simple_format comment.body
+        = render partial: 'comments/car_comment', collection: @car.comments, as: :comment
