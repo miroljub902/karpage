@@ -518,6 +518,13 @@ CREATE INDEX index_cars_on_current ON cars USING btree (current);
 
 
 --
+-- Name: index_cars_on_description; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_cars_on_description ON cars USING btree (description);
+
+
+--
 -- Name: index_cars_on_first; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -807,4 +814,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151105001856');
 INSERT INTO schema_migrations (version) VALUES ('20151105052913');
 
 INSERT INTO schema_migrations (version) VALUES ('20151105225357');
+
+INSERT INTO schema_migrations (version) VALUES ('20151109000542');
 
