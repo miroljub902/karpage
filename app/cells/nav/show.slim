@@ -11,7 +11,7 @@
 
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
-        li= link_to 'Explore', '#'
+        li= link_to 'Explore', profile_cars_path
         - if controller.signed_in?
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"

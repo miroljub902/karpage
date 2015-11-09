@@ -1,0 +1,18 @@
+= form_tag profile_cars_path, method: :get, class: 'car-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+
+h1.text-center
+  - if params[:search]
+    'Cars
+    span.text-muted |&nbsp;
+    = link_to 'Owners', profiles_path(search: params[:search])
+  - else
+    'Explore Most Popular
+
+.car-cards.row
+  - @cars.each do |car|
+    .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: UserCarDecorator.new(car)
+
+  .col-xs-12.text-right= paginate @cars

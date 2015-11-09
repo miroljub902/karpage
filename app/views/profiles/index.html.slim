@@ -1,0 +1,28 @@
+= form_tag profiles_path, method: :get, class: 'car-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+
+h1.text-center
+  - if params[:search]
+    = link_to 'Cars', profile_cars_path(search: params[:search])
+    span.text-muted &nbsp;|
+    '  Owners
+  - else
+    'Explore Most Popular
+
+- if @users.any?
+  .row
+    .user-list
+      - @users.each do |user|
+        .user.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8
+          .profile-avatar.large.pull-left
+            = link_to profile_path(user) do
+              = attachment_image_tag user, :avatar, :fit, 100, 100, width: 100, height: 100
+          .car-count.pull-right
+            span.count= user.cars.count
+            .sprite.sprite-search-car-counter
+          h3.name= user
+          .location= user.location
+
+    .col-xs-12.text-right= paginate @users

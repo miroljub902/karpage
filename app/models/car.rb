@@ -18,6 +18,12 @@ class Car < ActiveRecord::Base
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
 
+  scope :popular, -> { order(hits: :desc) }
+  scope :search, -> (term) {
+    joins(:make)
+      .where('cars.slug ILIKE :term OR description ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term', term: "%#{term}%")
+  }
+
   def make_name
     @make_name.nil? ? make.try(:name) : @make_name
   end
