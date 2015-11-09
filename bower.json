@@ -15,6 +15,7 @@
     "bootstrap": "~3.3.5",
     "font-awesome": "~4.4",
     "evaporatejs": "",
-    "Sortable": "~1.4.2"
+    "Sortable": "~1.4.2",
+    "stellar": "0.6.2"
   }
 }

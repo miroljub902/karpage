@@ -1,7 +1,7 @@
 .car-page
   - @car.photos.sorted.each_with_index do |photo, index|
-    .car-photo
-      = attachment_image_tag photo, :image, :fit, 1920, 1280
+    .car-photo[data-slide=(index + 1) data-stellar-background-ratio="0.5"
+      style="background-image: url(#{attachment_url(photo, :image, :fit, 1920, 1280)})"]
 
       - if index == 0
         .caption
