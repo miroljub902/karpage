@@ -13,22 +13,9 @@
       h1 Featured Cars
 
     .col-sm-2.text-right.h1-side
-      = link_to 'Explore', '#', class: 'btn btn-default'
+      = link_to 'Explore', profile_cars_path, class: 'btn btn-default'
 
-  .row.cars-list
+  .row.car-cards
     - @cars.each do |car|
-      .col-md-6
-        .thumbnail
-          .image
-            img src="http://lorempixel.com/800/400/transport/?#{rand(100000)}"
-            h2.title= car.name
-          .caption
-            .row
-              .col-xs-8
-                .avatar
-                  img src="http://lorempixel.com/40/40/people/?#{rand(100000)}"
-                h3
-                  = car.owner
-                  .small.location= car.location
-              .col-xs-4
-                .car-count= rand(10) + 1
+      .car-card.col-md-6
+        = render 'user_cars/card', car: UserCarDecorator.new(car)
