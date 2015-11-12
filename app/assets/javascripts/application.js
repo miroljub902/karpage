@@ -16,4 +16,5 @@
 //= require evaporatejs/evaporate
 //= require Sortable/Sortable
 //= require stellar/jquery.stellar
+//= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 //= require_tree .

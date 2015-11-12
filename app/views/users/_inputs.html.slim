@@ -14,21 +14,6 @@
     - if @user.errors[:login].any?
       .help-block= @user.errors[:login].join(', ')
 
-  .form-group class=(@user.errors[:location].any? ? 'error' : nil)
-    = f.text_field :location, class: 'form-control input-lg', placeholder: 'Location', rows: 2
-    - if @user.errors[:location].any?
-      .help-block= @user.errors[:location].join(', ')
-
-  .form-group class=(@user.errors[:description].any? ? 'error' : nil)
-    = f.text_area :description, class: 'form-control input-lg', placeholder: 'Description', rows: 2
-    - if @user.errors[:description].any?
-      .help-block= @user.errors[:description].join(', ')
-
-  .form-group class=(@user.errors[:twitter_uid].any? ? 'error' : nil)
-    = f.text_field :twitter_uid, class: 'form-control input-lg', placeholder: 'Twitter Username'
-    - if @user.errors[:twitter_uid].any?
-      .help-block= @user.errors[:twitter_uid].join(', ')
-
   .form-group.checkbox.collapse.in.setPassword
     a href="#" data-toggle="collapse" data-target=".setPassword"
       = @user.crypted_password.present? ? 'Change password' : 'Set password'

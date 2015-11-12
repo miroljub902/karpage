@@ -59,9 +59,58 @@
   }
 }
 
+.jumbo-header.editing {
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px dashed yellow;
+    pointer-events: none;
+  }
+}
+
 .user-profile {
   .profile-avatar img {
     border: 3px solid #fff;
+  }
+
+  .editable {
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    outline: 0;
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 5px;
+
+    &.editable-empty:before {
+      content: '<empty>';
+      pointer-events: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+  }
+
+  &.editing {
+    .editable {
+      border-color: yellow;
+      background-color: rgba(50, 50, 50, 0.5);
+    }
+
+    .actions .btn {
+      border-color: yellow;
+    }
   }
 
   h1 {
@@ -75,12 +124,13 @@
       color: #fff;
 
       .location {
-        margin: 20px 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
       }
 
       .description {
         font-size: 22px;
-        margin: 0 auto 15px auto;
+        margin: 0 auto 5px auto;
         width: 35%;
 
         @media (max-width: @screen-xs-max) {
@@ -95,10 +145,6 @@
       .twitter, .edit-info {
         font-size: 16px;
         text-shadow: 1px 1px 1px #000;
-      }
-
-      .edit-info {
-        margin-top: 20px;
       }
     }
   }
@@ -135,14 +181,6 @@
     }
   }
 
-  .edit-info {
-    display: none;
-
-    &.editing {
-      display: inline-block;
-    }
-  }
-
   .actions {
     width: 80%;
     margin: 0 auto;
@@ -151,6 +189,11 @@
       border-radius: 5px;
       font-size: 16px;
       padding: 10px 35px;
+      margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
     .editing {

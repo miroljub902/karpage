@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  respond_to :html, :js
+  respond_to :html, :js, :json
 
   layout 'simple', only: %i(edit update)
 
@@ -39,10 +39,19 @@ class UsersController < ApplicationController
     @user.attributes = user_params
     respond_to do |format|
       format.js {
+        is_profile_page = @user.login && request.referer == profile_url(@user.login_was)
+        location = @user.login_changed? && is_profile_page ? %Q(window.location = "#{profile_path(@user)}") : 'window.location.reload()'
         if @user.save
-          render inline: 'window.location.reload();'
+          render inline: location
         else
           render '_modals/new', locals: { id: 'modalAccount', content: 'edit' }
+        end
+      }
+      format.json {
+        if @user.save
+          render json: {}
+        else
+          render json: @user.errors, status: :unprocessable_entity
         end
       }
       format.html {

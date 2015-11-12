@@ -11,13 +11,11 @@
             = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
 
       h1
-        = @user.login
+        .login.editable= @user.login
         .small
-          .location= @user.location
-          .description= @user.description
-          .twitter= @user.twitter_link
-          - if my_profile?
-            .edit-info= link_to 'Edit info', edit_user_path, data: { remote: true }
+          .location.editable= @user.location
+          .description.editable= @user.description
+          .twitter.editable= @user.twitter_link
 
       - if my_profile?
         .actions.clearfix
@@ -33,7 +31,8 @@
                 ' Change Background
 
             .pull-right
-              = link_to 'OK', '#', class: 'btn btn-default close-edit'
+              = link_to 'Cancel', '#', class: 'btn btn-default close-edit'
+              = link_to 'Save', '#', class: 'btn btn-default save'
 
 .container
   .profile-nav.clearfix

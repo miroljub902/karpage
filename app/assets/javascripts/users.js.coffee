@@ -4,10 +4,121 @@ $ ->
   $editing = $('.editing', $userProfile)
   $avatar = $('.avatar-container', $userProfile)
   $avatarInput = $('.avatar-input', $userProfile)
-  $info = $('.edit-info', $userProfile)
+  $avatarInput.data 'original', $avatar.find('img').attr('src')
   $background = $userProfile.parents('.jumbo-header')
   $changeBackground = $('.change-background', $userProfile)
   $backgroundInput = $('input.background-photo', $userProfile)
+  $backgroundInput.data 'original', $background.css('backgroundImage')
+
+  $editables = $('.editable', $userProfile)
+  $login = $('.login', $userProfile)
+  $location = $('.location', $userProfile)
+  $description = $('.description', $userProfile)
+  $twitter = $('.twitter', $userProfile)
+
+  $login.data('original', $login.html())
+  $location.data('original', $location.html())
+  $description.data('original', $description.html())
+  $twitter.data('original', $twitter.html())
+
+  startEditing = ->
+    options = { emptytext: '&nbsp;' }
+    $userProfile.addClass('editing').parents('.jumbo-header').addClass('editing')
+    if $login.html().trim() == ''
+      $login.html('Username').editable($.extend(value: '', options))
+    else
+      $login.editable(options)
+
+    if $location.html().trim() == ''
+      $location.html('Location').editable($.extend(value: '', options))
+    else
+      $location.editable(options)
+
+    if $description.html().trim() == ''
+      $description.html('Bio').editable($.extend(value: '', options))
+    else
+      $description.editable(options)
+
+    twitterDisplay = (value) ->
+      link = "twitter.com/#{value.trim().replace(/.*twitter.com\//, '')}"
+      if link.length == 0 then $(this).html('') else $(this).html "<a href='https://#{link}'>#{link}</a>"
+
+    if $twitter.html().trim() == ''
+      $twitter.html('Twitter').editable($.extend(value: '', display: twitterDisplay, options))
+    else
+      $twitter.editable($.extend(display: twitterDisplay, options))
+
+  saveEdits = ->
+    twitter = $twitter.find('a').html().trim().replace(/.*twitter.com\//, '')
+    data =
+      login: $login.html().trim()
+      location: $location.html().trim()
+      description: $description.html().trim()
+      twitter_uid: twitter
+    if $backgroundInput.data('attachment')
+      data.profile_background_id = $backgroundInput.data('attachment').id
+      data.profile_background_content_type = $backgroundInput.data('attachment').contentType
+      data.profile_background_size = $backgroundInput.data('attachment').size
+      data.profile_background_filename = $backgroundInput.data('attachment').filename
+    if $avatarInput.data('attachment')
+      data.avatar_id = $avatarInput.data('attachment').id
+      data.avatar_content_type = $avatarInput.data('attachment').contentType
+      data.avatar_size = $avatarInput.data('attachment').size
+      data.avatar_filename = $avatarInput.data('attachment').filename
+    $.ajax
+      url: '/user'
+      dataType: 'json'
+      method: 'put'
+      data: { user: data }
+      error: (xhr) ->
+        unless xhr.responseJSON
+          alert 'Unexpected error, please try again later.'
+          return
+
+        if xhr.responseJSON['login']
+          errors = xhr.responseJSON['login'][0]
+          $login.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['location']
+          errors = xhr.responseJSON['location'][0]
+          $location.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['description']
+          errors = xhr.responseJSON['description'][0]
+          $description.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['twitter_uid']
+          errors = xhr.responseJSON['twitter_uid'][0]
+          $twitter.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['profile_background_id']
+          errors = xhr.responseJSON['profile_background_id'][0]
+          alert errors
+        if xhr.responseJSON['avatar_id']
+          errors = xhr.responseJSON['avatar_id'][0]
+          alert errors
+
+      success: ->
+        username = $login.html().trim()
+        if username != $login.data('original').trim()
+          window.location = "/#{username}"
+        $userProfile.removeClass('editing').parents('.jumbo-header').removeClass('editing')
+        $backgroundInput.data('attachment', {}).data('original', $background.css('backgroundImage'))
+        $avatarInput.data('attachment', {}).data('original', $avatar.find('img').attr('src'))
+        $editables.editable('destroy').addClass('editable').removeClass('error').tooltip('destroy').each ->
+          $this = $(this)
+          $this.data('original', $this.html()).removeAttr('style')
+        $avatar.removeClass 'editing'
+        $editing.fadeOut -> $edit.fadeIn()
+
+  cancelEdits = ->
+    $userProfile.removeClass('editing').parents('.jumbo-header').removeClass('editing')
+    $backgroundInput.data('attachment', {}).val('')
+    $editables.editable('destroy').addClass('editable').removeClass('error').tooltip('destroy').each ->
+      $this = $(this)
+      $this.html($this.data('original')).removeAttr('style')
+    $background.css('backgroundImage', $backgroundInput.data('original'))
+    $avatarInput.val('')
+    if $avatarInput.data('original')
+      $avatar.find('img').attr('src', $avatarInput.data('original'))
+    else
+      $avatar.find('img').remove()
 
   userId = $userProfile.data('user-id')
 
@@ -36,17 +147,14 @@ $ ->
         requestDate = (new Date()).toISOString()
         xhr.setRequestHeader 'Request-Header', requestDate
       complete: (xhr) ->
+        $backgroundInput.data 'attachment',
+          id: imageId
+          contentType: file.type
+          size: file.size
+          filename: file.name
         imageUrl = xhr.responseURL.replace(/\?.+/, '')
-        $.ajax
-          url: $backgroundInput.data('update-url'),
-          method: 'PUT'
-          dataType: 'text' # Prevent returned code from executing
-          data: { user: { profile_background_id: imageId, profile_background_content_type: file.type, profile_background_size: file.size, profile_background_filename: file.name } }
-          success: (data) ->
-            $background.css('backgroundImage', "url(#{imageUrl})")
-            $changeBackground.removeClass('disabled').html($changeBackground.data('original'))
-          error: ->
-            alert 'Could not upload your background image, please try again later.'
+        $background.css('backgroundImage', "url(#{imageUrl})")
+        $changeBackground.removeClass('disabled').html($changeBackground.data('original'))
       error: ->
         alert 'Could not upload your background image, please try again later.'
 
@@ -69,21 +177,18 @@ $ ->
         requestDate = (new Date()).toISOString()
         xhr.setRequestHeader 'Request-Header', requestDate
       complete: (xhr) ->
+        $avatarInput.data 'attachment',
+          id: imageId
+          contentType: file.type
+          size: file.size
+          filename: file.name
         imageUrl = xhr.responseURL.replace(/\?.+/, '')
-        $.ajax
-          url: $avatarInput.data('update-url'),
-          method: 'PUT'
-          dataType: 'text' # Prevent returned code from executing
-          data: { user: { avatar_id: imageId, avatar_content_type: file.type, avatar_size: file.size, avatar_filename: file.name } }
-          success: (data) ->
-            $img = $avatar.find('img')
-            if $img.length > 0
-              $img.attr 'src', imageUrl
-            else
-              $avatar.append("<img src='#{imageUrl}' width='150' height='150' class='avatar'>")
-            $avatar.attr 'data-edit', $avatar.data('edit-original')
-          error: ->
-            alert 'Could not upload your avatar, please try again later.'
+        $img = $avatar.find('img')
+        if $img.length > 0
+          $img.attr 'src', imageUrl
+        else
+          $avatar.append("<img src='#{imageUrl}' width='150' height='150' class='avatar'>")
+        $avatar.attr 'data-edit', $avatar.data('edit-original')
       error: ->
         alert 'Could not upload your avatar, please try again later.'
 
@@ -92,11 +197,15 @@ $ ->
     $edit.fadeOut ->
       $avatar.addClass 'editing'
       $editing.fadeIn()
-      $info.fadeIn()
+      startEditing()
+
+  $('.user-profile .save').click (e) ->
+    e.preventDefault()
+    saveEdits()
 
   $('.user-profile .close-edit').click (e) ->
     e.preventDefault()
     $avatar.removeClass 'editing'
-    $info.fadeOut()
+    cancelEdits()
     $editing.fadeOut ->
       $edit.fadeIn()
