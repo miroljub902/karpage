@@ -6,7 +6,7 @@ class CarSinglesController < ApplicationController
   end
 
   def create
-    return redirect_to(profile_path(current_user)) unless params[:single] && current_user.dream_cars.count < 3
+    return redirect_to(profile_path(current_user)) unless params[:single] && !car_limit?
 
     case params[:type]
     when 'dream-cars'
@@ -27,6 +27,15 @@ class CarSinglesController < ApplicationController
   end
 
   private
+
+  def car_limit?
+    case params[:type]
+    when 'next-car'
+      current_user.next_car.present?
+    when 'dream-cars'
+      current_user.dream_cars.count == 3
+    end
+  end
 
   def single_params
     params.require(:single).permit(:image)
