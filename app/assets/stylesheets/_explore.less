@@ -16,6 +16,10 @@ form.car-search {
       font-size: 30px;
       width: 100%;
       padding-left: 50px;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 }
@@ -25,10 +29,17 @@ form.car-search {
 
   .user {
     margin-bottom: 40px;
+    text-decoration: none;
+    color: #000;
   }
 
   .profile-avatar {
     margin-right: 25px;
+
+    img {
+      width: 100px !important;
+      height: 100px !important;
+    }
   }
 
   .car-count {
