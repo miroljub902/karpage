@@ -9,6 +9,15 @@
   }
 }
 
+.nav.navbar-default {
+  width: 100%;
+
+  &.affix {
+    background-color: rgba(43, 157, 135, 0.7);
+    z-index: 100;
+  }
+}
+
 .jumbo-header {
   background-size: cover;
   background-position: center;
@@ -16,9 +25,13 @@
   margin-bottom: 30px;
 
   .navbar-default {
-    padding-top: 20px;
+    padding: 10px 0;
     border-color: transparent;
     background-color: transparent;
+
+    &.affix {
+      background-color: rgba(50, 50, 50, 0.5);
+    }
   }
 
   .navbar-brand {
