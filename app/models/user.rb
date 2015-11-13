@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :car_comments, through: :cars, source: :comments
+  has_many :follows
+  has_many :follows_by, class_name: 'Follow', foreign_key: 'followee_id'
+  has_many :followers, through: :follows_by, source: :user
+  has_many :followees, through: :follows
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
@@ -28,10 +32,20 @@ class User < ActiveRecord::Base
     where like.join(' OR '), term: "%#{term}%"
   }
 
-  # validates
-
   def self.find_by_login_or_email(login)
     User.find_by(login: login) || User.find_by(email: login)
+  end
+
+  def follow!(user)
+    follows.find_or_create_by(followee_id: user.id)
+  end
+
+  def unfollow!(user)
+    follows.where(followee_id: user.id).delete_all
+  end
+
+  def following?(user)
+    follows.where(followee_id: user.id).exists?
   end
 
   def incomplete_profile?
@@ -43,7 +57,7 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    name.to_s
+    name.to_s.presence || login.to_s
   end
 
   def deliver_reset_password_instructions!

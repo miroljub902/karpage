@@ -1,0 +1,19 @@
+= render 'profiles/header'
+
+- if @users.any?
+  .row
+    .user-list
+      - @users.each do |user|
+        = link_to profile_path(user), class: 'clearfix user col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8' do
+          .profile-avatar.large.pull-left
+            = attachment_image_tag user, :avatar, :fit, 100, 100, width: 100, height: 100
+          .car-count.pull-right
+            span.count= user.cars.count
+            .sprite.sprite-search-car-counter
+          h3.name= user
+          .location= user.location
+- else
+  - if params[:followers]
+    h1.text-center #{@user} does not have followers yet
+  - else
+    h1.text-center #{@user} is not following anyone yet

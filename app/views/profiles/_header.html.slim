@@ -33,6 +33,13 @@
             .pull-right
               = link_to 'Cancel', '#', class: 'btn btn-default close-edit'
               = link_to 'Save', '#', class: 'btn btn-default save'
+      - elsif signed_in?
+        .actions.clearfix
+          .edit.pull-right
+            - if current_user.following?(@user)
+              = link_to 'Unfollow', unfollow_user_path(@user), class: 'btn btn-default', method: :post
+            - else
+              = link_to 'Follow', follow_user_path(@user), class: 'btn btn-default', method: :post
 
 .container
   .profile-nav.clearfix
@@ -61,12 +68,12 @@
           span= @user.cars.count
           .sprite.sprite-car-counter
 
-      li.follow-count
-        = link_to '#' do
+      li.follow-count class=('active' if controller_name == 'follows' && params[:followers])
+        = link_to user_followers_path(@user) do
           'Followers
-          span 0
+          span= @user.followers.count
 
-      li.follow-count
-        = link_to '#' do
+      li.follow-count class=('active' if controller_name == 'follows' && params[:following])
+        = link_to user_followees_path(@user) do
           'Following
-          span 0
+          span= @user.followees.count

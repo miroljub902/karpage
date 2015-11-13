@@ -12,8 +12,11 @@
   .col-md-6
     = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'
     .body= simple_format post.body
-    - if my_profile?
+    - if my_profile? && post.user_id == current_user.id
       .actions
         = link_to 'Edit Post', edit_user_post_path(post)
         '  &bull;
         = link_to 'Delete Post', user_post_path(post), method: :delete, data: { confirm: 'Are you sure?' }
+    - else
+      'by
+      = link_to post.user, profile_path(post.user)

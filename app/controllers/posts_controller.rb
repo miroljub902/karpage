@@ -7,8 +7,8 @@ class PostsController < ApplicationController
   before_action :find_user
 
   def index
-    @posts = @user.posts.sorted
-    @post = @posts.new
+    @posts = @user.posts_for_feed
+    @post = @user.posts.new
   end
 
   def show

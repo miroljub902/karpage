@@ -27,6 +27,11 @@ Rails.application.routes.draw do
 
   get ':profile_id' => 'profiles#show', as: :profile
   scope ':profile_id' do
+    post 'follow' => 'profiles#follow', as: :follow_user
+    post 'unfollow' => 'profiles#unfollow', as: :unfollow_user
+    get 'followers' => 'follows#index', followers: true, as: :user_followers
+    get 'following' => 'follows#index', following: true, as: :user_followees
+
     resources :posts, only: %i(index show)
 
     get ':car_id' => 'profile_cars#show', as: :profile_car
