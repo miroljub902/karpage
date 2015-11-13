@@ -10,7 +10,7 @@
 
     .car-cards.row
       - @cars.current.each do |car|
-        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car
+        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   .previous-cars.my-cars.text-center
     h2 Previous Cars
@@ -21,7 +21,7 @@
 
     .car-cards.row
       - @cars.past.each do |car|
-        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car
+        .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   .first-car.my-cars.text-center
     h2 First Car
@@ -31,7 +31,8 @@
         'Add Car
 
     .car-cards.row
-      .car-card.col-xs-12.col-sm-offset-3.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: @cars.first if @cars.first
+      .car-card.col-xs-12.col-sm-offset-3.col-sm-6
+        = render(my_profile? ? 'user_cars/car' : 'user_cars/card', car: @cars.first, whole_actions_link: false) if @cars.first
 
   .row
     .col-md-8.text-center.car-singles

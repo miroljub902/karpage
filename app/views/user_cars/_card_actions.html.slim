@@ -1,0 +1,14 @@
+.pull-left.profile-avatar.small
+  .initials= car.user.initials
+  - if car.user.avatar
+    img.media-object.avatar src=attachment_url(car.user, :avatar, :fit, 45, 45) width="45" height="45"
+
+- if car_counter
+  .pull-right
+    .car-count
+      span= car.user.cars.count
+      .sprite.sprite-car-counter
+
+.user
+  = car.user
+  .location.small= car.user.location
