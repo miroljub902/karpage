@@ -1,3 +1,4 @@
+- car_counter = false unless defined? car_counter
 .thumbnail class="#{'has-photo' if car.photos.any?}"
   = link_to car.user.login ? profile_car_path(car.user.login, car) : '#' do
     .img style="background-image: url(#{attachment_url(car.photos.sorted.first, :image, :fit, 720, 250)})"
@@ -10,6 +11,12 @@
       .initials= car.user.initials
       - if car.user.avatar
         img.media-object.avatar src=attachment_url(car.user, :avatar, :fit, 45, 45) width="45" height="45"
+
+    - if car_counter
+      .pull-right
+        .car-count
+          span= car.user.cars.count
+          .sprite.sprite-car-counter
 
     .user
       = car.user
