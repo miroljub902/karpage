@@ -11,8 +11,10 @@
 
 .nav.navbar-default {
   width: 100%;
+  position: relative;
 
   &.affix {
+    position: fixed;
     background-color: rgba(43, 157, 135, 0.7);
     z-index: 100;
   }
@@ -23,6 +25,17 @@
   background-position: center;
   padding-bottom: 40px;
   margin-bottom: 30px;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%);
+  }
 
   .navbar-default {
     padding: 10px 0;
@@ -82,6 +95,7 @@
     padding: 2em 60px;
     color: #fff;
     text-align: center;
+    position: relative;
 
     h1 {
       margin-bottom: 2em;
