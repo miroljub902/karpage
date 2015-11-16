@@ -14,12 +14,12 @@ $ ->
   $login = $('.login', $userProfile)
   $location = $('.location', $userProfile)
   $description = $('.description', $userProfile)
-  $twitter = $('.twitter', $userProfile)
+  $link = $('.link', $userProfile)
 
   $login.data('original', $login.html())
   $location.data('original', $location.html())
   $description.data('original', $description.html())
-  $twitter.data('original', $twitter.html())
+  $link.data('original', $link.html())
 
   startEditing = ->
     options = { emptytext: '&nbsp;' }
@@ -39,22 +39,21 @@ $ ->
     else
       $description.editable(options)
 
-    twitterDisplay = (value) ->
-      link = "twitter.com/#{value.trim().replace(/.*twitter.com\//, '')}"
-      if link.length == 0 then $(this).html('') else $(this).html "<a href='https://#{link}'>#{link}</a>"
+    linkDisplay = (value) ->
+      link = value.trim()
+      if link.length == 0 then $(this).html('') else $(this).html "<a href='#{link}'>#{link}</a>"
 
-    if $twitter.html().trim() == ''
-      $twitter.html('Twitter').editable($.extend(value: '', display: twitterDisplay, options))
+    if $link.html().trim() == ''
+      $link.html('Twitter').editable($.extend(value: '', display: linkDisplay, options))
     else
-      $twitter.editable($.extend(display: twitterDisplay, options))
+      $link.editable($.extend(display: linkDisplay, options))
 
   saveEdits = ->
-    twitter = $twitter.find('a').html().trim().replace(/.*twitter.com\//, '')
     data =
       login: $login.html().trim()
       location: $location.html().trim()
       description: $description.html().trim()
-      twitter_uid: twitter
+      link: $link.find('a').html().trim()
     if $backgroundInput.data('attachment')
       data.profile_background_id = $backgroundInput.data('attachment').id
       data.profile_background_content_type = $backgroundInput.data('attachment').contentType
@@ -84,9 +83,9 @@ $ ->
         if xhr.responseJSON['description']
           errors = xhr.responseJSON['description'][0]
           $description.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
-        if xhr.responseJSON['twitter_uid']
-          errors = xhr.responseJSON['twitter_uid'][0]
-          $twitter.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['link']
+          errors = xhr.responseJSON['link'][0]
+          $link.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
         if xhr.responseJSON['profile_background_id']
           errors = xhr.responseJSON['profile_background_id'][0]
           alert errors

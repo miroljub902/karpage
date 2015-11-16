@@ -15,7 +15,7 @@
         .small
           .location.editable= @user.location
           .description.editable= @user.description
-          .twitter.editable= @user.twitter_link
+          .link.editable= link_to @user.link, @user.link
 
       - if my_profile?
         .actions.clearfix
