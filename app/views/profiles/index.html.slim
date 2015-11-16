@@ -5,9 +5,9 @@
 
 h1.text-center
   - if params[:search]
-    = link_to 'Cars', profile_cars_path(search: params[:search])
+    = link_to "Cars (#{@car_count})", profile_cars_path(search: params[:search])
     span.text-muted &nbsp;|
-    '  Owners
+    '  Owners (#{@users.count})
   - else
     .text-primary Explore Most Popular
 

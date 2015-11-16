@@ -3,7 +3,10 @@ class ProfileCarsController < ApplicationController
 
   def index
     @cars = Car.popular
-    @cars = @cars.search(params[:search]) if params[:search].present?
+    if params[:search].present?
+      @cars = @cars.search(params[:search])
+      @user_count = User.search(params[:search]).count
+    end
     @cars = @cars.page(params[:page]).per(8)
   end
 

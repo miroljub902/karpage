@@ -5,6 +5,7 @@ class ProfilesController < ApplicationController
 
   def index
     @users = if params[:search].present?
+      @car_count = Car.search(params[:search]).count
       User.search(params[:search]).page(params[:page]).per(8)
     else
       []
