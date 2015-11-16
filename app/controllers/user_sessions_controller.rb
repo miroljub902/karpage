@@ -14,7 +14,7 @@ class UserSessionsController < ApplicationController
     respond_to do |format|
       format.js {
         if @user_session.valid?
-          render inline: 'window.location.reload();'
+          render inline: "window.location = '#{profile_path(@user_session.user)}';"
         else
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
