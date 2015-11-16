@@ -1,7 +1,6 @@
 #= require_self
 #= require cars-forms
 #= require cars-cards
-#= require cars-parallax
 
 window.randomHex = ->
   part = -> Math.floor((1 + Math.random()) * 0x100000).toString(16)

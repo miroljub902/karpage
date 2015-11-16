@@ -16,7 +16,6 @@
     "font-awesome": "~4.4",
     "evaporatejs": "",
     "Sortable": "~1.4.2",
-    "stellar": "~0.6.2",
     "x-editable": "~1.5.1"
   }
 }
