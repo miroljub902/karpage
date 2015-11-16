@@ -21,7 +21,7 @@
 
             .row
               .col-xs-12
-                = f.text_area :description, class: 'form-control', rows: 5
+                = f.text_area :description, class: 'form-control', rows: 5, placeholder: 'Tell us about this car... (optional)'
 
             .row
               .col-xs-12= render 'user_cars/add_photos', f: f
