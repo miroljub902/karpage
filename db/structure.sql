@@ -379,7 +379,7 @@ CREATE TABLE users (
     avatar_size integer,
     avatar_content_type character varying,
     description character varying,
-    twitter_uid character varying,
+    link character varying,
     location character varying,
     profile_background_id character varying,
     profile_background_filename character varying,
@@ -872,4 +872,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151105225357');
 INSERT INTO schema_migrations (version) VALUES ('20151109000542');
 
 INSERT INTO schema_migrations (version) VALUES ('20151113010509');
+
+INSERT INTO schema_migrations (version) VALUES ('20151116015342');
 
