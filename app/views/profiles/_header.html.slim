@@ -64,7 +64,7 @@
 
     ul.nav.nav-pills.pull-right
       li.car-count
-        = link_to '#' do
+        = link_to profile_path(@user) do
           span= @user.cars.count
           .sprite.sprite-car-counter
 
