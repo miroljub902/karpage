@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 
+  get 'contact' => 'contact_form#new', as: :contact_form
+  post 'contact' => 'contact_form#create'
+
   resources :pages, only: :show, path: 'info'
   resources :profile_cars, only: :index, path: 'cars'
   resources :profiles, only: :index, path: 'users'

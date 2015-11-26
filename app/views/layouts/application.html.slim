@@ -8,6 +8,9 @@ html
   body
     = yield :header
 
+    - if flash.any?
+      .container= render 'layouts/flash'
+
     = yield
 
     = render 'layouts/footer'
