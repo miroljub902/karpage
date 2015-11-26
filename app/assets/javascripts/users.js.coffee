@@ -20,33 +20,24 @@ $ ->
   $link.data('original', $link.html())
 
   startEditing = ->
-    options = { emptytext: '&nbsp;' }
+    options = { emptytext: ' ' }
     $userProfile.addClass('editing').parents('.jumbo-header').addClass('editing')
 
-    if $location.html().trim() == ''
-      $location.html('Location').editable($.extend(value: '', options))
-    else
-      $location.editable(options)
-
-    if $description.html().trim() == ''
-      $description.html('Bio').editable($.extend(value: '', options))
-    else
-      $description.editable(options)
+    $location.editable(options)
+    $description.editable(options)
 
     linkDisplay = (value) ->
       link = value.trim()
       if link.length == 0 then $(this).html('') else $(this).html "<a href='#{link}'>#{link}</a>"
 
-    if $link.html().trim() == ''
-      $link.html('Twitter').editable($.extend(value: '', display: linkDisplay, options))
-    else
-      $link.editable($.extend(display: linkDisplay, options))
+    $link.editable($.extend(display: linkDisplay, options))
 
   saveEdits = ->
+    link = if $link.find('a').length > 0 then $link.find('a').html().trim() else ''
     data =
       location: $location.html().trim()
       description: $description.html().trim()
-      link: $link.find('a').html().trim()
+      link: link
     if $backgroundInput.data('attachment')
       data.profile_background_id = $backgroundInput.data('attachment').id
       data.profile_background_content_type = $backgroundInput.data('attachment').contentType
