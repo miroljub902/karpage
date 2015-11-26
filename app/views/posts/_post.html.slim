@@ -2,7 +2,7 @@
   .col-md-6
     .thumbnail class="#{'has-photo' if post.photo}"
       = link_to post_path(post.user, post) do
-        .img style="background-image: url(#{attachment_url(post, :photo, :fit, 720, 250)})"
+        .img class=('empty' unless post.photo.present?) style="background-image: url(#{attachment_url(post, :photo, :fit, 720, 250)})"
 
       .actions.clearfix
         .pull-right
