@@ -13,9 +13,9 @@
       h1
         .login= @user.login
         .small
-          .location.editable= @user.location
-          .description.editable data-type="textarea"= @user.description
-          .link.editable= link_to @user.link, @user.link
+          .location.editable data-label="Location" = @user.location
+          .description.editable data-label="Bio" data-type="textarea" = @user.description
+          .link.editable data-label="Website" = link_to @user.link, @user.link
 
       - if my_profile?
         .actions.clearfix
