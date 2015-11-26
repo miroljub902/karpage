@@ -15,7 +15,7 @@
         .small
           .location.editable data-label="Location" = @user.location
           .description.editable data-label="Bio" data-type="textarea" = @user.description
-          .link.editable data-label="Website" = link_to @user.link, @user.link
+          .link.editable data-label="Website" = link_to @user.link, @user.link, target: '_blank'
 
       - if my_profile?
         .actions.clearfix
