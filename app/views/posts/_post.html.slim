@@ -6,8 +6,9 @@
 
       .actions.clearfix
         .pull-right
-          .sprite.sprite-post-update-views
-          .views= post.views
+          .views
+            span VIEWS
+            span.count #{post.views}
 
   .col-md-6
     = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'
