@@ -11,10 +11,10 @@
             = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
 
       h1
-        .login.editable= @user.login
+        .login= @user.login
         .small
           .location.editable= @user.location
-          .description.editable= @user.description
+          .description.editable data-type="textarea"= @user.description
           .link.editable= link_to @user.link, @user.link
 
       - if my_profile?

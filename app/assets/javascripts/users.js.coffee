@@ -11,12 +11,10 @@ $ ->
   $backgroundInput.data 'original', $background.css('backgroundImage')
 
   $editables = $('.editable', $userProfile)
-  $login = $('.login', $userProfile)
   $location = $('.location', $userProfile)
   $description = $('.description', $userProfile)
   $link = $('.link', $userProfile)
 
-  $login.data('original', $login.html())
   $location.data('original', $location.html())
   $description.data('original', $description.html())
   $link.data('original', $link.html())
@@ -24,10 +22,6 @@ $ ->
   startEditing = ->
     options = { emptytext: '&nbsp;' }
     $userProfile.addClass('editing').parents('.jumbo-header').addClass('editing')
-    if $login.html().trim() == ''
-      $login.html('Username').editable($.extend(value: '', options))
-    else
-      $login.editable(options)
 
     if $location.html().trim() == ''
       $location.html('Location').editable($.extend(value: '', options))
@@ -50,7 +44,6 @@ $ ->
 
   saveEdits = ->
     data =
-      login: $login.html().trim()
       location: $location.html().trim()
       description: $description.html().trim()
       link: $link.find('a').html().trim()
@@ -74,9 +67,6 @@ $ ->
           alert 'Unexpected error, please try again later.'
           return
 
-        if xhr.responseJSON['login']
-          errors = xhr.responseJSON['login'][0]
-          $login.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
         if xhr.responseJSON['location']
           errors = xhr.responseJSON['location'][0]
           $location.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
@@ -94,9 +84,6 @@ $ ->
           alert errors
 
       success: ->
-        username = $login.html().trim()
-        if username != $login.data('original').trim()
-          window.location = "/#{username}"
         $userProfile.removeClass('editing').parents('.jumbo-header').removeClass('editing')
         $backgroundInput.data('attachment', {}).data('original', $background.css('backgroundImage'))
         $avatarInput.data('attachment', {}).data('original', $avatar.find('img').attr('src'))
