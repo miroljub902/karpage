@@ -25,7 +25,7 @@
 
   .first-car.my-cars.text-center
     h2 class=('text-primary' unless signed_in?) First Car
-    - if my_profile?
+    - if my_profile? && @cars.first.nil?
       = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
         i.fa.fa-plus
         'Add Car
