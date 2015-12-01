@@ -17,6 +17,7 @@ gem 'refile-mini_magick'
 gem 'pundit'
 gem 'draper'
 gem 'kaminari'
+gem 'rails_autolink'
 
 gem 'slim-rails'
 gem 'less-rails'

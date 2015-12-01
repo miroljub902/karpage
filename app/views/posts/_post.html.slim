@@ -12,7 +12,7 @@
 
   .col-md-6
     = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'
-    .body= simple_format post.body
+    .body= simple_format auto_link(post.body, html: { target: '_blank' })
     - if my_profile? && post.user_id == current_user.id
       .actions
         = link_to 'Edit Post', edit_user_post_path(post)
