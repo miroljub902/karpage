@@ -18,7 +18,8 @@
               'Me
               span.caret
             ul.dropdown-menu
-              li= link_to 'My Profile', profile_path(current_user)
+              - unless current_user.incomplete_profile?
+                li= link_to 'My Profile', profile_path(current_user)
               li= link_to 'Edit Account', edit_user_path, data: { remote: true }
               li= link_to 'Sign Out', user_session_path, method: :delete
         - else
