@@ -27,11 +27,10 @@ class User < ActiveRecord::Base
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
-  scope :search, -> (term) {
+  scope :simple_search, -> (term) {
     like = %w(name login description link location).map { |column| "#{column} ILIKE :term" }
     where like.join(' OR '), term: "%#{term}%"
   }
-
   def self.find_by_login_or_email(login)
     User.find_by(login: login) || User.find_by(email: login)
   end

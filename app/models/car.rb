@@ -19,7 +19,7 @@ class Car < ActiveRecord::Base
   before_validation :find_or_build_make_and_model
 
   scope :popular, -> { order(hits: :desc) }
-  scope :search, -> (term) {
+  scope :simple_search, -> (term) {
     joins(:make)
       .where('cars.slug ILIKE :term OR description ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term', term: "%#{term}%")
   }
