@@ -10,13 +10,21 @@ ActiveAdmin.register User do
   filter :created_at
   filter :updated_at
 
+  before_filter do
+    User.class_eval do
+      def to_param
+        id.to_s
+      end
+    end
+  end
+
   index do
     selectable_column
     column :avatar do |user|
       attachment_image_tag user, :avatar, :fit, 50, 50, size: '50x50'
     end
     column :login do |user|
-      link_to user.login, [:admin, user]
+      link_to user.login.presence || '<no login>', admin_user_path(user)
     end
     column :name
     column :email
@@ -130,7 +138,7 @@ ActiveAdmin.register User do
           else
             table_for user.followers do
               column '' do |user|
-                link_to user, [:admin, user]
+                link_to user, admin_user_path(user)
               end
               column :cars do |user|
                 user.cars.count
@@ -146,7 +154,7 @@ ActiveAdmin.register User do
           else
             table_for user.followees do
               column '' do |user|
-                link_to user, [:admin, user]
+                link_to user, admin_user_path(user)
               end
               column :cars do |user|
                 user.cars.count
@@ -174,11 +182,5 @@ ActiveAdmin.register User do
     end
 
     actions
-  end
-
-  controller do
-    def find_resource
-      User.find_by(login: params[:id])
-    end
   end
 end
