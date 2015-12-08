@@ -33,13 +33,13 @@ class ApplicationController < ActionController::Base
 
   def redirect_back_or_default(default, options = {})
     redirect_to :back, options
-  rescue ActionController::RedirectBackError
+  rescue ::ActionController::RedirectBackError
     redirect_to default, options
   end
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+    @current_user_session = ::UserSession.find
   end
 
   def current_user
@@ -48,10 +48,19 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
+  def current_admin_user
+    current_user && current_user.admin? ? current_user : nil
+  end
+
+  def authenticate_admin_user!
+    return if current_user && current_user.admin?
+    render_404
+  end
+
   def flash_errors_with_save(record)
     verb = record.new_record? ? 'created' : 'updated'
     if record.save
-      flash[:notice] = I18n.t("#{record.class.model_name.param_key}.flash.#{verb}")
+      flash[:notice] = ::I18n.t("#{record.class.model_name.param_key}.flash.#{verb}")
     else
       flash.now[:alert] = record.errors.full_messages.join(', ')
     end

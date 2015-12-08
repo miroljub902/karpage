@@ -18,6 +18,7 @@ gem 'pundit'
 gem 'draper'
 gem 'kaminari'
 gem 'rails_autolink'
+gem 'activeadmin', github: 'activeadmin'
 
 gem 'slim-rails'
 gem 'less-rails'

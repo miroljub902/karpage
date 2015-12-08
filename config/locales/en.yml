@@ -3,3 +3,18 @@ en:
     flash:
       created: You've been signed in
 
+  activerecord:
+    attributes:
+      user:
+        created_at: Member Since
+        login_count: Total Logins
+        failed_login_count: Failed Login Attempts
+        last_request_at: Last Active
+        current_login_at: Current Login
+        last_login_at: Last Login
+
+      car:
+        created_at: Created
+
+      post:
+        created_at: Post
