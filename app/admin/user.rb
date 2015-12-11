@@ -48,7 +48,7 @@ ActiveAdmin.register User do
         attachment_image_tag user, :profile_background, :fit, 300, 100, size: '300x100'
       end
       row :login do |user|
-        link_to user, profile_path(user), target: '_blank'
+        link_to user, profile_path(user.username), target: '_blank' if user.username.present?
       end
       row :name
       row :email
