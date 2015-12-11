@@ -9,7 +9,7 @@
       h3= car
 
   - if whole_actions_link
-    = link_to profile_path(car.user), class: 'actions clearfix' do
+    = link_to profile_path(car.user.login), class: 'actions clearfix' do
       = render 'user_cars/card_actions', car: car, car_counter: car_counter
   - else
     .actions.clearfix= render 'user_cars/card_actions', car: car, car_counter: car_counter
