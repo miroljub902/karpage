@@ -4,4 +4,8 @@ class Photo < ActiveRecord::Base
   scope :sorted, -> { order(sorting: :asc) }
 
   attachment :image
+
+  before_create -> do
+    self.sorting = (attachable.photos.maximum(:sorting) || -1) + 1
+  end
 end
