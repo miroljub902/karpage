@@ -2,7 +2,7 @@
 
 .container
   .current-cars.my-cars.text-center
-    h2 class=('text-primary' unless signed_in?) Current Cars
+    h2.text-primary Current Cars
     - if my_profile?
       = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
         i.fa.fa-plus
@@ -13,7 +13,7 @@
         .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   .previous-cars.my-cars.text-center
-    h2 class=('text-primary' unless signed_in?) Previous Cars
+    h2.text-primary Previous Cars
     - if my_profile?
       = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
         i.fa.fa-plus
@@ -24,7 +24,7 @@
         .car-card.col-xs-12.col-sm-6= render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   .first-car.my-cars.text-center
-    h2 class=('text-primary' unless signed_in?) First Car
+    h2.text-primary First Car
     - if my_profile? && @cars.first.nil?
       = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
         i.fa.fa-plus
@@ -36,7 +36,7 @@
 
   .row
     .col-md-8.text-center.car-singles
-      h2 class=('text-primary' unless signed_in?)
+      h2.text-primary
         'Dream Cars
         - if my_profile?
           = link_to new_user_single_path(type: 'dream-cars'), class: "btn btn-default add-car #{'disabled' if @user.dream_cars.count == 3}", data: { remote: true } do
@@ -53,7 +53,7 @@
                   .sprite.sprite-delete
 
     .col-md-4.text-center.car-singles
-      h2 class=('text-primary' unless signed_in?)
+      h2.text-primary
         'Next Car
         - if my_profile?
           = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if @user.next_car}", data: { remote: true } do
