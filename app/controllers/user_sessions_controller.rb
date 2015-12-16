@@ -11,16 +11,24 @@ class UserSessionsController < ApplicationController
 
   def create
     @user_session = omniauth_session || normal_session
-    location = @user_session.user.incomplete_profile? ? edit_user_path : profile_path(@user_session.user)
+    user = @user_session.user
     respond_to do |format|
       format.js {
         if @user_session.valid?
+          location = user.incomplete_profile? ? edit_user_path : profile_path(user)
           render inline: "window.location = '#{location}';"
         else
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
       }
-      format.html { redirect_to location, notice: nil }
+      format.html {
+        if @user_session.valid?
+          location = user.incomplete_profile? ? edit_user_path : profile_path(user)
+          redirect_to location, notice: nil
+        else
+          render :new
+        end
+      }
     end
   end
 
