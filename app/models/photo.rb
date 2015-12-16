@@ -6,6 +6,9 @@ class Photo < ActiveRecord::Base
   attachment :image
 
   before_create -> do
-    self.sorting = (attachable.photos.maximum(:sorting) || -1) + 1
+    if attachable.respond_to?(:photos)
+      self.sorting = (attachable.photos.maximum(:sorting) || -1) + 1
+    end
+    true
   end
 end
