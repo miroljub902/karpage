@@ -8,14 +8,6 @@ ActiveAdmin.register Car do
   filter :year
   filter :description
 
-  before_filter do
-    Car.class_eval do
-      def to_param
-        id.to_s
-      end
-    end
-  end
-
   index do
     selectable_column
     column :car, sortable: 'slug' do |car|
@@ -82,5 +74,11 @@ ActiveAdmin.register Car do
     end
 
     actions
+  end
+
+  controller do
+    def edit_resource_path(resource)
+      edit_admin_car_path resource.id
+    end
   end
 end

@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    login.presence || id
+    login.presence || id.to_s
   end
 
   def to_s

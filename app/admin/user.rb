@@ -10,14 +10,6 @@ ActiveAdmin.register User do
   filter :created_at
   filter :updated_at
 
-  before_filter do
-    User.class_eval do
-      def to_param
-        id.to_s
-      end
-    end
-  end
-
   index do
     selectable_column
     column :avatar do |user|
@@ -48,7 +40,7 @@ ActiveAdmin.register User do
         attachment_image_tag user, :profile_background, :fit, 300, 100, size: '300x100'
       end
       row :login do |user|
-        link_to user, profile_path(user.username), target: '_blank' if user.username.present?
+        link_to user, profile_path(user.login), target: '_blank' if user.login.present?
       end
       row :name
       row :email
@@ -182,5 +174,11 @@ ActiveAdmin.register User do
     end
 
     actions
+  end
+
+  controller do
+    def find_resource
+      params[:id] =~ /^\d+$/ ? User.find(params[:id]) : User.find_by(login: params[:id])
+    end
   end
 end
