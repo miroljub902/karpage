@@ -5,12 +5,13 @@ class UserMailer < ApplicationMailer
   end
 
   def welcome_email!
+    url = @user.login.present? ? profile_url(@user) : edit_user_url
     postmark.deliver_with_template(
       from: ENV['DEFAULT_MAIL_FROM'],
       to: @user.email,
       template_id: ENV['POSTMARK_TEMPLATE_WELCOME'],
       template_model: {
-        action_url: user_url,
+        action_url: url,
         username: @user.login.presence || @user.email
       }
     )
