@@ -2,7 +2,7 @@ class ProfileCarsController < ApplicationController
   layout 'simple', only: :index
 
   def index
-    @cars = Car.order(created_at: :desc)
+    @cars = Car.order(created_at: :desc).has_photos
     if params[:search].present?
       @cars = @cars.simple_search(params[:search])
       @user_count = User.simple_search(params[:search]).count
