@@ -4,7 +4,7 @@
     = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
 
 h1.text-center
-  - if params[:search]
+  - if params[:search].present?
     = link_to "Cars (#{@car_count})", profile_cars_path(search: params[:search])
     span.text-muted &nbsp;|
     '  Owners (#{@users.count})
