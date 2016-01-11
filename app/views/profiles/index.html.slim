@@ -27,4 +27,7 @@ h1.text-center
           h3.name= user
           .location= user.location
 
-    .col-xs-12.text-right= paginate @users
+  .col-xs-12.text-center.next-prev-pagination
+    .row
+      .col-sm-6= link_to_previous_page @users, 'Previous Page', class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6= link_to_next_page @users, 'Next Page', class: 'btn btn-default btn-lg btn-block'

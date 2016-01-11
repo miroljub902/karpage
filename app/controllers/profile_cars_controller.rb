@@ -7,7 +7,7 @@ class ProfileCarsController < ApplicationController
       @cars = @cars.simple_search(params[:search])
       @user_count = User.simple_search(params[:search]).count
     end
-    @cars = @cars.page(params[:page]).per(8)
+    @cars = @cars.page(params[:page]).per(12)
   end
 
   def show
