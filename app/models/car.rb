@@ -1,7 +1,7 @@
 class Car < ActiveRecord::Base
   include FriendlyId
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   belongs_to :model
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy

@@ -435,7 +435,8 @@ CREATE TABLE users (
     profile_background_filename character varying,
     profile_background_size integer,
     profile_background_content_type character varying,
-    admin boolean DEFAULT false NOT NULL
+    admin boolean DEFAULT false NOT NULL,
+    cars_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -974,4 +975,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151207221711');
 INSERT INTO schema_migrations (version) VALUES ('20151207222016');
 
 INSERT INTO schema_migrations (version) VALUES ('20151221170050');
+
+INSERT INTO schema_migrations (version) VALUES ('20160111011306');
 

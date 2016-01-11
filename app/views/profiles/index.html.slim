@@ -9,7 +9,10 @@ h1.text-center
     span.text-muted &nbsp;|
     '  Owners (#{@users.count})
   - else
-    .text-primary Explore Most Popular
+    p.text-primary Explore Most Popular
+    = link_to 'Cars', profile_cars_path
+    span.text-muted &nbsp;|
+    '  Owners
 
 - if @users.any?
   .row

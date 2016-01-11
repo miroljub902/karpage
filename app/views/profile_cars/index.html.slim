@@ -9,7 +9,10 @@ h1.text-center
     span.text-muted |&nbsp;
     = link_to "Owners (#{@user_count})", profiles_path(search: params[:search])
   - else
-    .text-primary Explore Most Popular
+    p.text-primary Explore Most Popular
+    'Cars
+    span.text-muted |&nbsp;
+    = link_to 'Owners', profiles_path
 
 .car-cards.row
   - @cars.each do |car|
