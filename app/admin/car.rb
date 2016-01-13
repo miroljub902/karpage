@@ -3,10 +3,17 @@ ActiveAdmin.register Car do
 
   actions :all, except: %i(new)
 
+  filter :featured_order_present, as: :select, collection: [['Yes', '1'], ['No', nil]], label: 'Featured'
   filter :make
   filter :model
   filter :year
   filter :description
+
+  member_action :toggle_featured, method: :put do
+    resource.toggle_featured!
+    notice = resource.featured? ? "#{resource} featured in position ##{resource.featured_order}" : "#{resource} un-featured"
+    redirect_to admin_cars_path, notice: notice
+  end
 
   index do
     selectable_column
@@ -17,8 +24,13 @@ ActiveAdmin.register Car do
     column :user do |car|
       link_to car.user, [:admin, car.user]
     end
+    column :featured, sortable: 'featured_order' do |car|
+      status_tag 'Yes' if car.featured?
+    end
 
     actions defaults: false do |car|
+      label = car.featured? ? 'Unfeature' : 'Feature'
+      item label, toggle_featured_admin_car_path(car.id), class: 'member_link', method: :put
       item 'Edit', edit_admin_car_path(car.id), class: 'member_link'
       item 'Delete', admin_car_path(car.id), method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'member_link'
     end
@@ -26,6 +38,13 @@ ActiveAdmin.register Car do
 
   show do
     attributes_table do
+      row :featured do |user|
+        if user.featured?
+          "Featured in position ##{user.featured_order}"
+        else
+          status_tag 'No'
+        end
+      end
       row :make
       row :model
       row :year
@@ -64,19 +83,15 @@ ActiveAdmin.register Car do
     end
   end
 
-  permit_params :model_id, :year, :description
+  permit_params :model_id, :year, :description, :featured_order
 
-  form do |_f|
-    inputs do
-      input :model
-      input :year
-      input :description
-    end
-
-    actions
-  end
+  form partial: 'form'
 
   controller do
+    def update
+      super location: admin_cars_path
+    end
+
     def edit_resource_path(resource)
       edit_admin_car_path resource.id
     end

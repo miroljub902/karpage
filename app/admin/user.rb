@@ -1,6 +1,7 @@
 ActiveAdmin.register User do
   menu priority: 10
 
+  filter :featured_order_present, as: :select, collection: [['Yes', '1'], ['No', nil]], label: 'Featured'
   filter :email
   filter :name
   filter :login
@@ -9,6 +10,12 @@ ActiveAdmin.register User do
   filter :last_login_at
   filter :created_at
   filter :updated_at
+
+  member_action :toggle_featured, method: :put do
+    resource.toggle_featured!
+    notice = resource.featured? ? "#{resource} featured in position ##{resource.featured_order}" : "#{resource} un-featured"
+    redirect_to admin_users_path, notice: notice
+  end
 
   index do
     selectable_column
@@ -24,7 +31,12 @@ ActiveAdmin.register User do
       I18n.l user.created_at.to_date, format: :long
     end
     column :location
+    column :featured do |user|
+      status_tag 'Yes' if user.featured?
+    end
     actions defaults: false do |user|
+      label = user.featured? ? 'Unfeature' : 'Feature'
+      item label, toggle_featured_admin_user_path(user), class: 'member_link', method: :put
       item 'Edit', edit_admin_user_path(user), class: 'member_link'
       item 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'member_link'
     end
@@ -33,6 +45,13 @@ ActiveAdmin.register User do
   show do
     attributes_table do
       row :id
+      row :featured do |user|
+        if user.featured?
+          "Featured in position ##{user.featured_order}"
+        else
+          status_tag 'No'
+        end
+      end
       row :avatar do |user|
         attachment_image_tag user, :avatar, :fit, 100, 100, size: '100x100'
       end
@@ -158,13 +177,14 @@ ActiveAdmin.register User do
     end
   end
 
-  permit_params :email, :name, :login, :avatar, :profile_background, :description, :link, :location, :admin
+  permit_params :email, :name, :login, :avatar, :profile_background, :description, :link, :location, :admin, :featured_order
 
   form do |_f|
     inputs do
+      input :featured_order, label: 'Featured position'
       input :email
       input :name
-      input :login
+      input :login, as: :string
       input :avatar, as: :file
       input :profile_background, as: :file
       input :description

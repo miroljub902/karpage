@@ -1,0 +1,8 @@
+= semantic_form_for resource, url: admin_car_path(resource.id), builder: ActiveAdmin::FormBuilder do |f|
+  = f.inputs do
+    = f.input :featured_order, label: 'Featured position'
+    = f.input :model
+    = f.input :year
+    = f.input :description
+
+  = f.actions

@@ -1,5 +1,6 @@
 class Car < ActiveRecord::Base
   include FriendlyId
+  include FeaturedOrdering
 
   belongs_to :user, counter_cache: true
   belongs_to :model
