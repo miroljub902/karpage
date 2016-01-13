@@ -19,3 +19,33 @@
     - @cars.each do |car|
       .car-card.col-md-6
         = render 'user_cars/card', car: UserCarDecorator.new(car), car_counter: true
+
+  .row
+    .col-sm-10
+      h1 Featured Owners
+
+    .col-sm-2.text-right.h1-side
+      = link_to 'Explore', profiles_path, class: 'btn btn-default'
+
+  .row
+    .car-cards.clearfix
+      - @users.each do |user|
+        .car-card.col-md-6
+          .thumbnail class="#{'has-photo' if user.profile_background.present?}"
+            = link_to profile_path(user.login) do
+              .img style="background-image: url(#{attachment_url(user, :profile_background, :fit, 720, 250)})"
+              .caption
+                h3= user
+
+              = link_to profile_path(user.login), class: 'actions clearfix' do
+                .pull-left.profile-avatar.small
+                  .initials= user.initials
+                  - if user.avatar
+                    img.media-object.avatar src=attachment_url(user, :avatar, :fit, 45, 45) width="45" height="45"
+                .pull-right
+                  .car-count
+                    span= user.cars.count
+                    .sprite.sprite-car-counter
+                .user
+                  = user
+                  .location.small= user.location

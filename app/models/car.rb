@@ -19,6 +19,7 @@ class Car < ActiveRecord::Base
   before_validation :find_or_build_make_and_model
 
   scope :popular, -> { order(hits: :desc) }
+  scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :has_photos, -> { distinct.joins(:photos) }
   scope :simple_search, -> (term) {
     joins(:make)

@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
 
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
+  scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 
   scope :simple_search, -> (term) {
