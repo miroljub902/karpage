@@ -95,7 +95,8 @@ CREATE TABLE cars (
     past boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    hits integer DEFAULT 0 NOT NULL
+    hits integer DEFAULT 0 NOT NULL,
+    featured_order integer
 );
 
 
@@ -436,7 +437,8 @@ CREATE TABLE users (
     profile_background_size integer,
     profile_background_content_type character varying,
     admin boolean DEFAULT false NOT NULL,
-    cars_count integer DEFAULT 0 NOT NULL
+    cars_count integer DEFAULT 0 NOT NULL,
+    featured_order integer
 );
 
 
@@ -660,6 +662,13 @@ CREATE INDEX index_cars_on_description ON cars USING btree (description);
 
 
 --
+-- Name: index_cars_on_featured_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_cars_on_featured_order ON cars USING btree (featured_order);
+
+
+--
 -- Name: index_cars_on_first; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -856,6 +865,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
+-- Name: index_users_on_featured_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_featured_order ON users USING btree (featured_order);
+
+
+--
 -- Name: index_users_on_login; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -977,4 +993,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151207222016');
 INSERT INTO schema_migrations (version) VALUES ('20151221170050');
 
 INSERT INTO schema_migrations (version) VALUES ('20160111011306');
+
+INSERT INTO schema_migrations (version) VALUES ('20160113174803');
 
