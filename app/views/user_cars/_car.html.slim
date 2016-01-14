@@ -1,6 +1,6 @@
 .thumbnail class="#{'has-photo' if car.photos.any?}"
   = link_to current_user.login ? profile_car_path(current_user.login, car) : '#' do
-    .img style="background-image: url(#{attachment_url(car.photos.sorted.first, :image, :fit, 720, 250)})"
+    .img style="background-image: url(#{car.first_photo_url})"
 
     .caption
       h3= car

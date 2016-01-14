@@ -61,7 +61,11 @@ ActiveAdmin.register Car do
       else
         ul class: 'car-photos' do
           car.photos.each do |photo|
-            li attachment_image_tag photo, :image, :fit, 100, 100, size: '100x100'
+            li do
+              link_to edit_admin_photo_path(photo) do
+                attachment_image_tag photo, :image, :fit, 100, 100, size: '100x100'
+              end
+            end
           end
         end
       end

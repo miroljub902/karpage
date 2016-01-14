@@ -1,7 +1,7 @@
 .car-page
   - @car.photos.sorted.each_with_index do |photo, index|
     .car-photo
-      = attachment_image_tag photo, :image, :fit, 1920, 1280
+      = attachment_image_tag photo, :image, :fit_and_orient, 1920, 1280, photo.rotate
 
       - if index == 0
         .caption
