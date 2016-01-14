@@ -29,7 +29,9 @@
 
   .row
     .car-cards.clearfix
-      - @users.each do |user|
+      .col-lg-6= image_tag '/featured1.jpg', class: 'img-responsive'
+      .col-lg-6= image_tag '/featured2.jpg', class: 'img-responsive'
+    /  - @users.each do |user|
         .car-card.col-md-6
           .thumbnail class="#{'has-photo' if user.profile_background.present?}"
             = link_to profile_path(user.login) do
