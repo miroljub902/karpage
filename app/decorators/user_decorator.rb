@@ -17,4 +17,8 @@ class UserDecorator < Draper::Decorator
     followees = model.followees.select('id')
     Post.where("user_id = ? OR user_id IN (#{followees.to_sql})", model.id).sorted.decorate
   end
+
+  def dream_cars_col_offset
+    { 1 => 'col-sm-offset-4', 2 => 'col-sm-offset-2' }[dream_cars.size]
+  end
 end
