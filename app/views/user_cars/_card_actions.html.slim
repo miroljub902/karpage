@@ -8,6 +8,11 @@
     .car-count
       span= car.user.cars.count
       .sprite.sprite-car-counter
+- else
+  .pull-right
+    .car-likes
+      .fa.fa-heart
+      = car.likes_count
 
 .user
   = car.user
