@@ -1,5 +1,5 @@
 .car-page
-  - @car.photos.sorted.each_with_index do |photo, index|
+  /- @car.photos.sorted.each_with_index do |photo, index|
     .car-photo
       = attachment_image_tag photo, :image, :fit_and_orient, 1920, 1280, photo.rotate
 
@@ -23,16 +23,11 @@
     a.likes href=toggle_like_car_path(@car.user, @car) data-remote=true data-method="put"
       .count= @car.likes_count
 
-    h1.text-center= @car
-
     .text-center
-      h2
-        div
-          = link_to profile_path(@car.user), class: 'profile-avatar large' do
-            .initials= @car.user.initials
-            - if @car.user.avatar
-              = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
-        = @car.user
+      .back
+        = link_to profile_path(@car.user), class: 'btn btn-default' do
+          .fa.fa-arrow-left
+          'Back to cars
 
 .container
   .comments
@@ -41,6 +36,7 @@
         hr
         h3
           .sprite.sprite-chat-bubble
+            span.comments-count= @car.comments.count
           'Comments
 
         - if signed_in?
