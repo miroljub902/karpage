@@ -96,7 +96,8 @@ CREATE TABLE cars (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     hits integer DEFAULT 0 NOT NULL,
-    featured_order integer
+    featured_order integer,
+    likes_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -254,6 +255,39 @@ ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
 
 
 --
+-- Name: likes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE likes (
+    id integer NOT NULL,
+    likeable_id integer,
+    likeable_type character varying,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE likes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE likes_id_seq OWNED BY likes.id;
+
+
+--
 -- Name: makes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -333,7 +367,8 @@ CREATE TABLE photos (
     image_content_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    sorting integer
+    sorting integer,
+    rotate integer
 );
 
 
@@ -507,6 +542,13 @@ ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY makes ALTER COLUMN id SET DEFAULT nextval('makes_id_seq'::regclass);
 
 
@@ -584,6 +626,14 @@ ALTER TABLE ONLY friendly_id_slugs
 
 ALTER TABLE ONLY identities
     ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY likes
+    ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
 
 
 --
@@ -785,6 +835,27 @@ CREATE INDEX index_identities_on_user_id ON identities USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_identities_on_user_id_and_provider_and_uid ON identities USING btree (user_id, provider, uid);
+
+
+--
+-- Name: index_likes_on_likeable_type_and_likeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_likeable_type_and_likeable_id ON likes USING btree (likeable_type, likeable_id);
+
+
+--
+-- Name: index_likes_on_likeable_type_and_likeable_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_likes_on_likeable_type_and_likeable_id_and_user_id ON likes USING btree (likeable_type, likeable_id, user_id);
+
+
+--
+-- Name: index_likes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_user_id ON likes USING btree (user_id);
 
 
 --
@@ -995,4 +1066,10 @@ INSERT INTO schema_migrations (version) VALUES ('20151221170050');
 INSERT INTO schema_migrations (version) VALUES ('20160111011306');
 
 INSERT INTO schema_migrations (version) VALUES ('20160113174803');
+
+INSERT INTO schema_migrations (version) VALUES ('20160114180457');
+
+INSERT INTO schema_migrations (version) VALUES ('20160116180153');
+
+INSERT INTO schema_migrations (version) VALUES ('20160125161447');
 

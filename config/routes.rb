@@ -40,5 +40,8 @@ Rails.application.routes.draw do
     resources :posts, only: %i(index show)
 
     get ':car_id' => 'profile_cars#show', as: :profile_car
+    scope ':car_id' do
+      put 'like' => 'likes#toggle', as: :toggle_like_car, likeable_class: Car
+    end
   end
 end

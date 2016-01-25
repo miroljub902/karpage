@@ -7,6 +7,7 @@ class Car < ActiveRecord::Base
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :delete_all
 
   accepts_nested_attributes_for :photos
 
@@ -26,6 +27,14 @@ class Car < ActiveRecord::Base
     joins(:make)
       .where('cars.slug ILIKE :term OR description ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term', term: "%#{term}%")
   }
+
+  def toggle_like!(user)
+    if (like = likes.find_by(user: user))
+      like.destroy
+    else
+      likes.create! user: user
+    end
+  end
 
   def make_name
     @make_name.nil? ? make.try(:name) : @make_name
