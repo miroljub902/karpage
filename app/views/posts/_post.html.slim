@@ -1,14 +1,8 @@
 .post-item.row
   .col-md-6
     .thumbnail class="#{'has-photo' if post.photo}"
-      = link_to post_path(post.user, post) do
+      = link_to attachment_url(post, :photo, :fit, 1280, 1024), data: { lightbox: "post-#{post.id}" } do
         .img class=('empty' unless post.photo.present?) style="background-image: url(#{attachment_url(post, :photo, :fit, 720, 250)})"
-
-      .actions.clearfix
-        .pull-right
-          .views
-            span VIEWS
-            span.count #{post.views}
 
   .col-md-6
     = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'

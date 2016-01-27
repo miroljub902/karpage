@@ -16,6 +16,7 @@
     "font-awesome": "~4.4",
     "evaporatejs": "",
     "Sortable": "~1.4.2",
-    "x-editable": "~1.5.1"
+    "x-editable": "~1.5.1",
+    "lightbox2": "~2.8.2"
   }
 }
