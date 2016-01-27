@@ -89,16 +89,24 @@
     border-radius: 5px;
     min-height: 1.15em;
 
-    &.editable-click:hover:before {
+    &.editable-click:before {
       content: attr(data-label);
       position: absolute;
-      left: -2px;
-      top: -1.4em;
+      left: 0;
+      top: 0;
       font-size: 16px;
       background: yellow;
       padding: 0.2em 5px;
       text-shadow: none;
       color: #666;
+      height: 100%;
+    }
+
+
+    &.editable-click {
+      @media (max-width: @screen-sm-max) {
+        width: 100%;
+      }
     }
   }
 
