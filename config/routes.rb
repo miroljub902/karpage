@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     end
 
     resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)
-    resources :posts, only: %i(new create edit update destroy)
+    resources :posts, only: %i(new create edit update destroy) do
+      resources :comments, only: %i(create destroy), scope: :post
+    end
   end
   resource :user_session, only: %i(new create destroy), path: 'session'
 
