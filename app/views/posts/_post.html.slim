@@ -1,12 +1,24 @@
+- show_comments = true unless defined?(show_comments)
+- truncate = false unless defined?(truncate)
 .post-item.row
   .col-md-6
     .thumbnail class="#{'has-photo' if post.photo}"
       = link_to attachment_url(post, :photo, :fit, 1280, 1024), data: { lightbox: "post-#{post.id}" } do
         .img class=('empty' unless post.photo.present?) style="background-image: url(#{attachment_url(post, :photo, :fit, 720, 250)})"
 
+      .car-card
+        .actions.clearfix
+          .pull-left.profile-avatar.m-r-1.small
+            .initials= post.user.initials
+            - if post.user.avatar
+              img.media-object.avatar src=attachment_url(post.user, :avatar, :fit, 45, 45) width="45" height="45"
+          .user
+            = post.user
+            .location= post.user.location
+
   .col-md-6
     = link_to post.created_at.strftime('%B %d, %Y - %l:%M %p'), post_path(post.user, post), class: 'date'
-    .body= simple_format auto_link(post.body, html: { target: '_blank' })
+    .body= truncate ? post.truncated_body : post.html_body
     - if my_profile? && post.user_id == current_user.id
       .actions
         = link_to 'Edit Post', edit_user_post_path(post)
@@ -16,12 +28,16 @@
       'by
       = link_to post.user, profile_path(post.user)
 
-    .comments
-      - if signed_in?
-        = form_for Comment.new, url: user_post_comments_path(post), html: { class: 'media new-comment m-t-2' } do |f|
-          = hidden_field_tag :return_to, request.original_url
-          .media-body
-            = f.text_area :body, class: 'form-control', rows: 6
-            = f.submit 'Comment', class: 'btn btn-green pull-right'
+    - if show_comments
+      .comments
+        - if signed_in?
+          = form_for Comment.new, url: user_post_comments_path(post), html: { class: 'media new-comment m-t-2' } do |f|
+            = hidden_field_tag :return_to, request.original_url
+            .media-body
+              = f.text_area :body, class: 'form-control', rows: 6
+              = f.submit 'Comment', class: 'btn btn-green pull-right'
 
-      = render partial: 'comments/post_comment', collection: post.comments, as: :comment
+        = render partial: 'comments/post_comment', collection: post.comments, as: :comment
+    - else
+      .text-center.m-t-2
+        = link_to 'Reply', post_path(post.user, post), class: 'btn btn-default'

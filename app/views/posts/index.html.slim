@@ -7,7 +7,7 @@
     = render 'form', post: @post
 
   .post-list
-    = render @posts.find_all(&:persisted?)
+    = render @posts.find_all(&:persisted?), show_comments: false, truncate: true
 
   - if (cars = @user.latest_cars).any?
     h2.text-center Latest Cars
