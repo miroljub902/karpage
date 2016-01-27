@@ -1,3 +1,5 @@
+= cell :nav, nil, transparent: true
+
 .car-page
   - @car.photos.sorted.each_with_index do |photo, index|
     .car-photo
@@ -5,8 +7,6 @@
 
       - if index == 0
         .caption
-          = cell :nav
-
           .heading.text-center
             = link_to profile_path(@car.user), class: 'profile-avatar large' do
               .initials= @car.user.initials

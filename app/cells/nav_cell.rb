@@ -3,6 +3,10 @@ class NavCell < Cell::ViewModel
     render
   end
 
+  def transparent?
+    !!options[:transparent]
+  end
+
   def current_user
     controller.send :current_user
   end

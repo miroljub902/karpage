@@ -1,5 +1,6 @@
 $ ->
   $nav = $('#navmain')
+  return unless $nav.data('affix')
   $header = $nav.parent()
   height = $nav.outerHeight()
 
