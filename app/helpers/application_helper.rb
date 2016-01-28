@@ -30,4 +30,13 @@ module ApplicationHelper
   def param?(key, default = false)
     params[key].present? ? params[key] == 'true' : default
   end
+
+  def new_count_indicator(stuff, owner:, force: false, reset: false)
+    count = count_new_stuff(stuff, owner: owner, force: force)
+    return if count == 0
+    if reset
+      NewStuff.reset_count stuff, current_user, owner: owner, delay: reset == :delay
+    end
+    content_tag :div, count, class: 'new-count'
+  end
 end

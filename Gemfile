@@ -3,6 +3,7 @@ ruby '2.2.3'
 
 gem 'rails', '4.2.4'
 gem 'pg'
+gem 'puma'
 gem 'dotenv-rails'
 gem 'authlogic'
 gem 'responders'

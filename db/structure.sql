@@ -353,6 +353,40 @@ ALTER SEQUENCE models_id_seq OWNED BY models.id;
 
 
 --
+-- Name: new_stuffs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE new_stuffs (
+    id integer NOT NULL,
+    user_id integer,
+    stuff_owner_id integer,
+    stuff character varying,
+    last_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: new_stuffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE new_stuffs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: new_stuffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE new_stuffs_id_seq OWNED BY new_stuffs.id;
+
+
+--
 -- Name: photos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -563,6 +597,13 @@ ALTER TABLE ONLY models ALTER COLUMN id SET DEFAULT nextval('models_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY new_stuffs ALTER COLUMN id SET DEFAULT nextval('new_stuffs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY photos ALTER COLUMN id SET DEFAULT nextval('photos_id_seq'::regclass);
 
 
@@ -650,6 +691,14 @@ ALTER TABLE ONLY makes
 
 ALTER TABLE ONLY models
     ADD CONSTRAINT models_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: new_stuffs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY new_stuffs
+    ADD CONSTRAINT new_stuffs_pkey PRIMARY KEY (id);
 
 
 --
@@ -775,10 +824,24 @@ CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON comments U
 
 
 --
+-- Name: index_comments_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_created_at ON comments USING btree (created_at);
+
+
+--
 -- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
+-- Name: index_follows_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_follows_on_created_at ON follows USING btree (created_at);
 
 
 --
@@ -838,6 +901,13 @@ CREATE UNIQUE INDEX index_identities_on_user_id_and_provider_and_uid ON identiti
 
 
 --
+-- Name: index_likes_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_created_at ON likes USING btree (created_at);
+
+
+--
 -- Name: index_likes_on_likeable_type_and_likeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -894,6 +964,34 @@ CREATE UNIQUE INDEX index_models_on_name ON models USING btree (make_id, lower((
 
 
 --
+-- Name: index_new_stuffs_on_last_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_new_stuffs_on_last_at ON new_stuffs USING btree (last_at);
+
+
+--
+-- Name: index_new_stuffs_on_stuff; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_new_stuffs_on_stuff ON new_stuffs USING btree (stuff);
+
+
+--
+-- Name: index_new_stuffs_on_stuff_owner_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_new_stuffs_on_stuff_owner_id ON new_stuffs USING btree (stuff_owner_id);
+
+
+--
+-- Name: index_new_stuffs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_new_stuffs_on_user_id ON new_stuffs USING btree (user_id);
+
+
+--
 -- Name: index_photos_on_attachable_type_and_attachable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -912,6 +1010,13 @@ CREATE INDEX index_photos_on_attachable_type_and_attachable_id_and_sorting ON ph
 --
 
 CREATE INDEX index_photos_on_photo_type ON photos USING btree (photo_type);
+
+
+--
+-- Name: index_posts_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_posts_on_created_at ON posts USING btree (created_at);
 
 
 --
@@ -1072,4 +1177,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160114180457');
 INSERT INTO schema_migrations (version) VALUES ('20160116180153');
 
 INSERT INTO schema_migrations (version) VALUES ('20160125161447');
+
+INSERT INTO schema_migrations (version) VALUES ('20160128042354');
+
+INSERT INTO schema_migrations (version) VALUES ('20160128042415');
 

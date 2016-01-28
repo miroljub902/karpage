@@ -9,6 +9,7 @@ class PostsController < ApplicationController
   def index
     @posts = @user.posts_for_feed
     @post = @user.posts.new
+    reset_new_stuff @posts, owner: @user
   end
 
   def show

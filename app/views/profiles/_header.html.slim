@@ -56,6 +56,7 @@
         = link_to posts_path(@user) do
           .sprite.sprite-profile-posts
           'Posts
+          = new_count_indicator(@user.posts, owner: @user)
 
       /li
         = link_to '#' do
@@ -72,6 +73,7 @@
         = link_to user_followers_path(@user) do
           'Followers
           span= @user.followers.count
+          = new_count_indicator(@user.follows_by, owner: @user)
 
       li.follow-count class=('active' if controller_name == 'follows' && params[:following])
         = link_to user_followees_path(@user) do

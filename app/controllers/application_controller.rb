@@ -12,6 +12,16 @@ class ApplicationController < ActionController::Base
   end
   helper_method :signed_in?
 
+  def count_new_stuff(stuff, owner:, force: false)
+    NewStuff.count_stuff stuff, current_user, owner: owner, force: force
+  end
+  helper_method :count_new_stuff
+
+  def reset_new_stuff(stuff, owner:)
+    NewStuff.reset_count stuff, current_user, owner: owner
+  end
+  helper_method :reset_new_stuff
+
   private
 
   def require_complete_profile
