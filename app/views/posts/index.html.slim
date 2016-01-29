@@ -6,5 +6,30 @@
   - if my_profile?
     = render 'form', post: @post
 
-  .post-list
-    = render @posts.find_all(&:persisted?), show_comments: false, truncate: true
+  ul.nav.nav-pills.text-center.m-t-3.nav-posts
+    li.active
+      - if my_profile?
+        a.btn.btn-default.btn-block href="#all-posts" data-toggle="tab" All
+      - else
+        a.btn.btn-default.btn-block href="#user-posts" data-toggle="tab" User
+    li
+      - if my_profile?
+        a.btn.btn-default.btn-block href="#friends-posts" data-toggle="tab" Following
+      - else
+        a.btn.btn-default.btn-block href="#all-posts" data-toggle="tab" All
+
+  .tab-content
+    - if my_profile?
+      #all-posts.tab-pane.active
+        .post-list
+          = render Post.limit(15).sorted.decorate, show_comments: false, truncate: true
+      #friends-posts.tab-pane.active
+        .post-list
+          = render current_user.friends_posts_for_feed.limit(15).decorate, show_comments: false, truncate: true
+    - else
+      #user-posts.tab-pane
+        .post-list
+          = render @posts.decorate.find_all(&:persisted?), show_comments: false, truncate: true
+      #all-posts.tab-pane.active
+        .post-list
+          = render Post.limit(15).sorted.decorate, show_comments: false, truncate: true

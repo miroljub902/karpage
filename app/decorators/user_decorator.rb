@@ -13,9 +13,9 @@ class UserDecorator < Draper::Decorator
     model.car_comments.order(created_at: :desc).limit(5).includes(:commentable, :user)
   end
 
-  def posts_for_feed
+  def friends_posts_for_feed
     followees = model.followees.select('id')
-    Post.where("user_id = ? OR user_id IN (#{followees.to_sql})", model.id).sorted.decorate
+    Post.where(user_id: followees).sorted
   end
 
   def dream_cars_col_offset

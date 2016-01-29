@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   before_action :find_user
 
   def index
-    @posts = @user.posts_for_feed
+    @posts = @user.posts.limit(15).sorted
     @post = @user.posts.new
     reset_new_stuff @posts, owner: nil
   end
