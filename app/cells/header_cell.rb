@@ -6,6 +6,7 @@ class HeaderCell < Cell::ViewModel
   def nav_cell_options
     {}.tap do |opts|
       opts[:affix] = options[:nav_affix] if options.has_key?(:nav_affix)
+      opts[:back_to_top] = options[:nav_back_to_top] if options.has_key?(:nav_back_to_top)
     end
   end
 

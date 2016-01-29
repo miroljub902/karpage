@@ -8,7 +8,7 @@ class NavCell < Cell::ViewModel
   end
 
   def back_to_top?
-    false
+    options.has_key?(:back_to_top) ? options[:back_to_top] : false
   end
 
   def transparent?

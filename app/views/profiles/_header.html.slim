@@ -1,5 +1,6 @@
 - content_for :header do
-  = cell :header, nil, nav_affix: true, background: attachment_url(@user, :profile_background) do
+  - back_to_top = false unless defined?(back_to_top)
+  = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: attachment_url(@user, :profile_background) do
     .user-profile data-user-id=@user.id
     .user-profile data-user-id=@user.id
       .profile-avatar.huge

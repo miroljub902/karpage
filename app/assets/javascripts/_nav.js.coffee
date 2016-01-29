@@ -1,4 +1,8 @@
 $ ->
+  $('.js-back-to-top').click (e) ->
+    e.preventDefault()
+    $('html,body').animate { scrollTop: 0 }, 1000
+
   $nav = $('#navmain')
   return unless $nav.data('affix')
   $header = $nav.parent()
