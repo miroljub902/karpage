@@ -29,7 +29,12 @@
 
   - if @cars.first || my_profile?
     .first-car.my-cars.text-center
-      h2.text-primary First Car
+      h2.text-primary
+        'First Car
+        - if my_profile?
+          a.text-muted.m-l-1 tabindex="0" role="button" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="right" data-content="If you don't have any pictures of your first car, you can upload a stock photo or picture of the same make and model. Specify in the description that this is not a picture of your car, and give credit for the photo if needed!"
+            .fa.fa-lightbulb-o
+
       - if my_profile? && @cars.first.nil?
         = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
           i.fa.fa-plus
