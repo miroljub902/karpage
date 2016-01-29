@@ -3,6 +3,14 @@ class NavCell < Cell::ViewModel
     render
   end
 
+  def affix?
+    options.has_key?(:affix) ? options[:affix] : true
+  end
+
+  def back_to_top?
+    false
+  end
+
   def transparent?
     !!options[:transparent]
   end

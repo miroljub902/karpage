@@ -3,6 +3,12 @@ class HeaderCell < Cell::ViewModel
     render
   end
 
+  def nav_cell_options
+    {}.tap do |opts|
+      opts[:affix] = options[:nav_affix] if options.has_key?(:nav_affix)
+    end
+  end
+
   def content
     @options[:content].call
   end

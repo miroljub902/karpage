@@ -1,5 +1,6 @@
 - content_for :header do
-  = cell :header, nil, background: attachment_url(@user, :profile_background) do
+  = cell :header, nil, nav_affix: true, background: attachment_url(@user, :profile_background) do
+    .user-profile data-user-id=@user.id
     .user-profile data-user-id=@user.id
       .profile-avatar.huge
         .initials= @user.initials
