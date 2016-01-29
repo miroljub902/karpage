@@ -2,7 +2,7 @@
 .posts= render posts.decorate, show_comments: false, truncate: true
 
 - if posts.size < posts.total_count
-  .col-md-offset-4.col-md-4
+  .col-md-offset-2.col-md-8
     a.btn.btn-lg.btn-default.btn-block[
       href=posts_feed_path(page: 2, scope: scope)
       data-url=posts_feed_path(page: '__PAGE__', scope: scope)

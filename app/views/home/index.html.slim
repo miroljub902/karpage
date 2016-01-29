@@ -28,11 +28,11 @@
       = link_to 'Explore', profiles_path, class: 'btn btn-default'
 
   .row
-    .car-cards.clearfix
-      .col-lg-6
+    .car-cards.clearfix.m-t-0
+      .col-lg-6.m-t-3
         = link_to '/thatyellowS2k' do
           = image_tag '/featured1.jpg', class: 'img-responsive', style: "box-shadow: 2px 2px 8px rgba(0,0,0,0.5);border-radius: 8px;"
-      .col-lg-6
+      .col-lg-6.m-t-3
         = link_to '/Etienne' do
           = image_tag '/featured2.jpg', class: 'img-responsive', style: "box-shadow: 2px 2px 8px rgba(0,0,0,0.5);border-radius: 8px;"
     /  - @users.each do |user|
