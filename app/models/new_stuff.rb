@@ -4,8 +4,7 @@ class NewStuff < ActiveRecord::Base
 
   validates :user, :stuff, presence: true
 
-  def self.count_stuff(stuff, user, owner:, force: false)
-    return 0 if !force && user.id == owner.id
+  def self.count_stuff(stuff, user, owner:)
     counter = get_counter(stuff, user, owner: owner)
     stuff = stuff.object if stuff.is_a?(Draper::CollectionDecorator)
     stuff.where("#{stuff_class(stuff).table_name}.created_at > ?", counter.last_at).count

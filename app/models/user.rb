@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
     User.find_by(login: login) || User.find_by(email: login)
   end
 
+  def friends_posts
+    Post.where(user_id: followees.select(:id))
+  end
+
   def link=(value)
     self[:link] = (/^https?:\/\//i.match(value) || value.strip.empty?) ? value : "http://#{value}"
   end

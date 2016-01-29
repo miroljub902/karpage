@@ -13,11 +13,11 @@
       .counter
         .fa.fa-heart-o.m-l-2
         = car.likes_count
-        = new_count_indicator(car.likes, owner: car.user, force: true, reset: :delay)
+        = new_count_indicator(car.likes, owner: car.user, reset: :delay)
       .counter
         .fa.fa-comment-o.m-l-2
         = car.comments.count
-        = new_count_indicator(car.comments, owner: car.user, force: true, reset: :delay)
+        = new_count_indicator(car.comments, owner: car.user, reset: :delay)
 
     .pull-right
       a.btn.btn-default href=edit_user_car_path(car) data-remote="true"

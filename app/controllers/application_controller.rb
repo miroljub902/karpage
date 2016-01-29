@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
   end
   helper_method :signed_in?
 
-  def count_new_stuff(stuff, owner:, force: false)
-    NewStuff.count_stuff stuff, current_user, owner: owner, force: force
+  def count_new_stuff(stuff, owner:)
+    NewStuff.count_stuff stuff, current_user, owner: owner
   end
   helper_method :count_new_stuff
 
