@@ -22,14 +22,14 @@
     - if my_profile?
       #all-posts.tab-pane.active
         .post-list
-          = render Post.limit(15).sorted.decorate, show_comments: false, truncate: true
-      #friends-posts.tab-pane.active
+          = render 'posts/loader', posts: Post.all, scope: :all
+      #friends-posts.tab-pane
         .post-list
-          = render current_user.friends_posts_for_feed.limit(15).decorate, show_comments: false, truncate: true
+          = render 'posts/loader', posts: current_user.friends_posts_for_feed, scope: :friends
     - else
-      #user-posts.tab-pane
+      #user-posts.tab-pane.active
         .post-list
-          = render @posts.decorate.find_all(&:persisted?), show_comments: false, truncate: true
-      #all-posts.tab-pane.active
+          = render 'posts/loader', posts: @user.posts, scope: @user.login
+      #all-posts.tab-pane
         .post-list
-          = render Post.limit(15).sorted.decorate, show_comments: false, truncate: true
+          = render 'posts/loader', posts: Post.all, scope: :all

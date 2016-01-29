@@ -6,6 +6,21 @@ class PostsController < ApplicationController
   before_action :require_user, only: %i(new create edit update destroy)
   before_action :find_user
 
+  def feed
+    @posts = case params[:scope]
+             when 'all'
+               Post.all
+             when 'friends'
+               current_user.friends_posts_for_feed
+             else
+               @user = User.find_by!(login: params[:scope])
+               @user.posts
+             end.sorted.page(params[:page]).decorate
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def index
     @posts = @user.posts.limit(15).sorted
     @post = @user.posts.new

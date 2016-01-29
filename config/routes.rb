@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   resources :profile_cars, only: :index, path: 'cars'
   resources :profiles, only: :index, path: 'users'
 
+  get 'posts/feed' => 'posts#feed'
+
   get ':profile_id' => 'profiles#show', as: :profile
   scope ':profile_id' do
     post 'follow' => 'profiles#follow', as: :follow_user

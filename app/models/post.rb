@@ -7,4 +7,6 @@ class Post < ActiveRecord::Base
   validates :body, presence: true
 
   scope :sorted, -> { order(created_at: :desc) }
+
+  paginates_per 15
 end
