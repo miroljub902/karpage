@@ -53,6 +53,8 @@
             = link_to new_user_single_path(type: 'dream-cars'), class: "btn btn-default add-car #{'disabled' if @user.dream_cars.count == 3}", data: { remote: true } do
               .sprite.sprite-add-photo
               '  Add Image
+            .small.m-t-0.tex-muted
+              small add up to 3 cars
 
         .row.singles
           - @user.dream_cars.each_with_index do |photo, index|
@@ -71,6 +73,8 @@
             = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if @user.next_car}", data: { remote: true } do
               .sprite.sprite-add-photo
               '  Add Image
+            .small.m-t-0
+              small &nbsp;
 
         .row.singles
           .car-single.col-xs-12.col-sm-offset-2.col-sm-8
