@@ -20,6 +20,7 @@ gem 'draper'
 gem 'kaminari'
 gem 'rails_autolink'
 gem 'activeadmin', github: 'activeadmin'
+gem 'appsignal', '~> 1.0'
 
 gem 'slim-rails'
 gem 'less-rails'
