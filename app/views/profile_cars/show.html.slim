@@ -3,7 +3,7 @@
 .car-page
   - @car.photos.sorted.each_with_index do |photo, index|
     .car-photo
-      = attachment_image_tag photo, :image, :fit_and_orient, 1920, 1280, photo.rotate
+      = ix_refile_image_tag photo, :image, auto: 'enhance,format', fit: 'clip', w: 1920, class: 'img-responsive'
 
       - if index == 0
         .caption
@@ -11,7 +11,7 @@
             = link_to profile_path(@car.user), class: 'profile-avatar large' do
               .initials= @car.user.initials
               - if @car.user.avatar
-                = attachment_image_tag @car.user, :avatar, :fit, 100, 100, size: '100x100'
+                = ix_refile_image_tag @car.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
 
             h2= @car.user
 
@@ -46,7 +46,7 @@
               .profile-avatar
                 .initials= current_user.initials
                 - if current_user.avatar
-                  img.media-object.avatar src=attachment_url(current_user, :avatar, :fit, 70, 70) width="70" height="70"
+                  img.media-object.avatar src=ix_refile_image_url(current_user, :avatar, auto: 'enhance,format', fit: 'crop', w: 70, h: 70) width="70" height="70"
 
             .media-body
               = f.text_area :body, class: 'form-control', rows: 6

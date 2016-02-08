@@ -1,7 +1,7 @@
 .pull-left.profile-avatar.small
   .initials= car.user.initials
   - if car.user.avatar
-    img.media-object.avatar src=attachment_url(car.user, :avatar, :fit, 45, 45) width="45" height="45"
+    img.media-object.avatar src=ix_refile_image_url(car.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
 
 - if car_counter
   .pull-right

@@ -1,6 +1,6 @@
 - content_for :header do
   - back_to_top = false unless defined?(back_to_top)
-  = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: attachment_url(@user, :profile_background) do
+  = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: ix_refile_image_url(@user, :profile_background, auto: 'enhance,format', fit: 'clip', w: 1920) do
     .user-profile data-user-id=@user.id
     .user-profile data-user-id=@user.id
       .profile-avatar.huge
@@ -10,7 +10,7 @@
             data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
         .avatar-container data-edit=('Change your profile photo' if my_profile?)
           - if @user.avatar
-            = attachment_image_tag @user, :avatar, :fit, 150, 150, size: '150x150'
+            = ix_refile_image_tag @user, :avatar, auto: 'enhance,format', fit: 'crop', w: 150, h: 150, size: '150x150'
 
       h1
         .login= @user.login

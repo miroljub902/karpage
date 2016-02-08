@@ -3,7 +3,7 @@
     = link_to profile_path(comment.user), class: 'profile-avatar' do
       .initials= comment.user.decorate.initials
       - if comment.user.avatar
-        img.media-object.avatar src=attachment_url(comment.user, :avatar, :fit, 70, 70) width="70" height="70"
+        img.media-object.avatar src=ix_refile_image_url(comment.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 70, h: 70) width="70" height="70"
 
   .media-body
     h4.media-heading.clearfix

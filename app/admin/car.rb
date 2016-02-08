@@ -63,7 +63,7 @@ ActiveAdmin.register Car do
           car.photos.each do |photo|
             li do
               link_to edit_admin_photo_path(photo) do
-                attachment_image_tag photo, :image, :fit, 100, 100, size: '100x100'
+                ix_refile_image_tag photo, :image, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
               end
             end
           end

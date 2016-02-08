@@ -2,7 +2,7 @@
   - users.each do |user|
     = link_to profile_path(user), class: 'clearfix user col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8' do
       .profile-avatar.large.pull-left
-        = attachment_image_tag user, :avatar, :fit, 100, 100, width: 100, height: 100
+        = ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
       .car-count.pull-right
         span.count= user.cars.count
         .sprite.sprite-search-car-counter

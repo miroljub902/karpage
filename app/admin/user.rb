@@ -20,7 +20,7 @@ ActiveAdmin.register User do
   index do
     selectable_column
     column :avatar do |user|
-      attachment_image_tag user, :avatar, :fit, 50, 50, size: '50x50'
+      ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 50, h: 50, size: '50x50'
     end
     column :login do |user|
       link_to user.login.presence || '<no login>', admin_user_path(user)
@@ -53,10 +53,10 @@ ActiveAdmin.register User do
         end
       end
       row :avatar do |user|
-        attachment_image_tag user, :avatar, :fit, 100, 100, size: '100x100'
+        ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
       end
       row :profile_background do |user|
-        attachment_image_tag user, :profile_background, :fit, 300, 100, size: '300x100'
+        ix_refile_image_tag user, :profile_background, auto: 'enhance,format', fit: 'crop', w: 300, h: 100, size: '300x100'
       end
       row :login do |user|
         link_to user, profile_path(user.login), target: '_blank' if user.login.present?
@@ -110,7 +110,7 @@ ActiveAdmin.register User do
       else
         table_for user.posts do
           column :photo do |post|
-            attachment_image_tag post, :photo, :fit, 50, 50, size: '50x50'
+            ix_refile_image_tag post, :photo, auto: 'enhance,format', fit: 'crop', w: 50, h: 50, size: '50x50'
           end
           column :created_at do |post|
             link_to I18n.l(post.created_at.to_date, format: :long), [:admin, post]

@@ -54,6 +54,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     appsignal (1.0.1)
       rack
       thread_safe
@@ -129,6 +130,10 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    imgix (1.0.0)
+      addressable
+    imgix-rails (1.0.0)
+      imgix (~> 1.0, >= 1.0.0)
     inherited_resources (1.6.0)
       actionpack (>= 3.2, < 5)
       has_scope (~> 0.6.0.rc)
@@ -332,6 +337,7 @@ DEPENDENCIES
   draper
   faker
   friendly_id
+  imgix-rails
   jbuilder (~> 2.0)
   jquery-rails
   kaminari

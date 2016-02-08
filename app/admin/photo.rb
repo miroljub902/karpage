@@ -19,7 +19,7 @@ ActiveAdmin.register Photo do
 
   form do |_f|
     inputs do
-      input :rotate, hint: 'Enter a positive or negative angle for manual rotation'
+      input :rotate, hint: 'Enter an angle (0-359) for manual rotation (counter-clockwise)'
     end
 
     actions

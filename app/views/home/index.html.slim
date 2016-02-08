@@ -39,7 +39,7 @@
         .car-card.col-md-6
           .thumbnail class="#{'has-photo' if user.profile_background.present?}"
             = link_to profile_path(user.login) do
-              .img style="background-image: url(#{attachment_url(user, :profile_background, :fit, 720, 250)})"
+              .img style="background-image: url(#{ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'clip', h: 250)})"
               .caption
                 h3= user
 
@@ -47,7 +47,7 @@
                 .pull-left.profile-avatar.small
                   .initials= user.initials
                   - if user.avatar
-                    img.media-object.avatar src=attachment_url(user, :avatar, :fit, 45, 45) width="45" height="45"
+                    img.media-object.avatar src=ix_refile_image_url(user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
                 .pull-right
                   .car-count
                     span= user.cars.count

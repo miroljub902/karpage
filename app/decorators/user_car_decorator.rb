@@ -10,10 +10,6 @@ class UserCarDecorator < Draper::Decorator
   def first_photo_url
     photo = photos.sorted.first
     return unless photo
-    if photo.rotate?
-      h.attachment_url photo, :image, :fit_and_orient, 720, 250, photo.rotate
-    else
-      h.attachment_url photo, :image, :fit_and_orient, 720, 250
-    end
+    h.ix_refile_image_url photo, :image, auto: 'enhance,format', fit: 'clip', h: 250
   end
 end

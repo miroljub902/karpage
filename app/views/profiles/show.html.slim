@@ -60,7 +60,7 @@
           - @user.dream_cars.each_with_index do |photo, index|
             .car-single.col-xs-12.col-sm-4 class=(@user.dream_cars_col_offset if index == 0)
               .img
-                = attachment_image_tag photo, :image, :fill_and_orient, 450, 240, photo.rotate
+                = ix_refile_image_tag photo, :image, auto: 'enhance,format', fit: 'crop', w: 450, h: 240
                 - if my_profile?
                   = link_to user_single_path(photo.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
                     .sprite.sprite-delete
@@ -80,7 +80,7 @@
           .car-single.col-xs-12.col-sm-offset-2.col-sm-8
             - if @user.next_car
               .img
-                = attachment_image_tag @user.next_car, :image, :fill_and_orient, 450, 240, @user.next_car.rotate
+                = ix_refile_image_tag @user.next_car, :image, auto: 'enhance,format', fit: 'crop', w: 450, h: 240
                 - if my_profile?
                   = link_to user_single_path(@user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
                     .sprite.sprite-delete
