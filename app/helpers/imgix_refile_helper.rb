@@ -2,13 +2,13 @@ module ImgixRefileHelper
   def ix_refile_image_url(obj, key, **opts)
     path = s3_path(obj, key)
     opts.merge!(default_ix_options(obj, key))
-    path ? ix_image_url(path, opts) : ''
+    path ? ix_image_url(path, opts) : attachment_url(obj, key) # Get default if any
   end
 
   def ix_refile_image_tag(obj, key, **opts)
     path = s3_path(obj, key)
     opts.merge!(default_ix_options(obj, key))
-    path ? ix_image_tag(path, opts) : ''
+    path ? ix_image_tag(path, opts) : attachment_image_tag(obj, key)
   end
 
   private
