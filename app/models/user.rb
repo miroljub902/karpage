@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   scope :simple_search, -> (term) {
     like = %w(name login description link location).map { |column| "#{column} ILIKE :term" }
-    where like.join(' OR '), term: "%#{term}%"
+    where like.join(' OR '), term: "%#{term.to_s.strip}%"
   }
 
   def self.find_by_login_or_email(login)
