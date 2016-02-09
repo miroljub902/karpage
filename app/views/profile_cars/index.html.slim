@@ -5,7 +5,7 @@
 
 h1.text-center
   - if params[:search].present?
-    'Cars (#{@cars.count})
+    'Cars (#{@cars.total_count})
     span.text-muted |&nbsp;
     = link_to "Owners (#{@user_count})", profiles_path(search: params[:search])
   - else
@@ -20,5 +20,5 @@ h1.text-center
 
   .col-xs-12.text-center.next-prev-pagination
     .row
-      .col-sm-6= link_to_previous_page @cars, 'Previous Page', class: 'btn btn-default btn-lg btn-block'
-      .col-sm-6= link_to_next_page @cars, 'Next Page', class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6= link_to_previous_page @cars, 'Previous Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6= link_to_next_page @cars, 'Next Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'

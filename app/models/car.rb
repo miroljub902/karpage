@@ -24,8 +24,10 @@ class Car < ActiveRecord::Base
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :has_photos, -> { distinct.joins(:photos) }
   scope :simple_search, -> (term) {
-    joins(:make)
-      .where('cars.slug ILIKE :term OR description ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term', term: "%#{term}%")
+    year = term.to_i.to_s == term.strip ? term.to_i : nil
+    year_condition = "cars.year = #{year} OR" if year
+    joins(:make, :user)
+      .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
   }
 
   def toggle_like!(user)
