@@ -9,7 +9,7 @@ p.text-center
   data-sort-url=(reorder_user_car_photos_path(car) if car.persisted?)]
   ul.sortable
     / No AR sort because we'll have non-saved photos for new cars
-    - car.photos.sort_by(&:sorting).each_with_index do |photo, n|
+    - car.photos.sort_by { |p| p.sorting || 10 }.each_with_index do |photo, n|
       li.photo.has-photo.sortable data-id=photo.id
         .img style="background-image: url(#{photo.image_url(:fill, 180, 100)})"
           .remove.sprite.sprite-delete
