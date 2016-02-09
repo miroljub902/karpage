@@ -45,6 +45,10 @@ class UserSessionsController < ApplicationController
 
   private
 
+  def api_session
+    nil
+  end
+
   def omniauth_session
     return nil unless env['omniauth.auth']
     identity = Identity.from_omniauth(env['omniauth.auth'])
