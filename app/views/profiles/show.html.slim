@@ -1,6 +1,18 @@
 = render 'header'
 
 .container
+  - if my_profile?
+    .text-center.m-y-2
+      a#welcome-popover.text-muted[tabindex="0" role="button"
+        data-container="body"
+        data-trigger="focus"
+        data-placement="right"
+        data-content=(render('welcome_popover').gsub('"', "'"))
+        data-html=true
+        title="WELCOME TO KAR PAGE"
+      ]
+        .fa.fa-exclamation-triangle.fz-5
+
   - if @cars.current.any? || my_profile?
     .current-cars.my-cars.text-center
       h2.text-primary Current Cars

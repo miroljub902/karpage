@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    @user_session = omniauth_session || normal_session
+    @user_session = api_session || omniauth_session || normal_session
     user = @user_session.user
     respond_to do |format|
       format.js {
@@ -29,12 +29,18 @@ class UserSessionsController < ApplicationController
           render :new
         end
       }
+      format.json
     end
   end
 
   def destroy
     current_user_session.destroy
-    redirect_to root_path
+    respond_to do |format|
+      format.html do
+        redirect_to root_path
+      end
+      format.json
+    end
   end
 
   private
