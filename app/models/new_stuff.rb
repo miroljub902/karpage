@@ -11,6 +11,7 @@ class NewStuff < ActiveRecord::Base
   end
 
   def self.reset_count(stuff, user, owner:, delay: false)
+    return unless user
     get_counter(stuff, user, owner: owner).reset!(delay)
   end
 
