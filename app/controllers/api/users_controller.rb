@@ -1,5 +1,5 @@
 class Api::UsersController < ApiController
-  before_action :require_user
+  before_action :require_user, except: :create
 
   def create
     @user = User.create user_params
