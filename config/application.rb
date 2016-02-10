@@ -29,6 +29,7 @@ module KarPage
     config.generators do |generate|
       generate.assets false
       generate.helper false
+      generate.decorators false
       generate.view_specs false
       generate.helper_specs false
     end

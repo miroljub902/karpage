@@ -1,0 +1,11 @@
+method: get
+url: ".*graph.facebook.com.*"
+url_type: regex
+responses:
+  valid_token:
+    status: 200
+    body: '{"name":"David Alajiiidbhagf Dingleman","email":"pgqndmq_dingleman_1452513720\u0040tfbnw.net","id":"137110159998964"}'
+  invalid_token:
+    status: 400
+    body: '{"error":{"message":"Invalid OAuth access token.","type":"OAuthException","code":190,"fbtrace_id":"F13ea+UbPlJ"}}'
+

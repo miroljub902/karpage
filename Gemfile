@@ -10,6 +10,7 @@ gem 'responders'
 gem 'bcrypt'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'koala'
 gem 'postmark-rails'
 gem 'friendly_id'
 gem 'refile', require: 'refile/rails'
@@ -50,4 +51,5 @@ end
 group :test do
   gem 'faker'
   gem 'mocha'
+  gem 'webmock'
 end

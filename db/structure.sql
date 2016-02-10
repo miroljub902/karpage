@@ -507,7 +507,8 @@ CREATE TABLE users (
     profile_background_content_type character varying,
     admin boolean DEFAULT false NOT NULL,
     cars_count integer DEFAULT 0 NOT NULL,
-    featured_order integer
+    featured_order integer,
+    access_token character varying
 );
 
 
@@ -1027,6 +1028,13 @@ CREATE INDEX index_posts_on_user_id ON posts USING btree (user_id);
 
 
 --
+-- Name: index_users_on_access_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_access_token ON users USING btree (access_token);
+
+
+--
 -- Name: index_users_on_admin; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1181,4 +1189,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160125161447');
 INSERT INTO schema_migrations (version) VALUES ('20160128042354');
 
 INSERT INTO schema_migrations (version) VALUES ('20160128042415');
+
+INSERT INTO schema_migrations (version) VALUES ('20160210171251');
 

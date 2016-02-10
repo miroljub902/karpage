@@ -2,8 +2,14 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'mocha/mini_test'
+require 'webmock/minitest'
+require 'authlogic/test_case'
 
 OmniAuth.config.test_mode = true
+
+class ActionController::TestCase
+  setup :activate_authlogic
+end
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
@@ -47,5 +53,16 @@ class ActiveSupport::TestCase
         }
       }
     })
+  end
+
+  def mock_request(request, response: nil)
+    yaml = YAML.load_file(Rails.root.join('test/webmock', "#{request}.yml"))
+    url = yaml['url_type'] == 'regex' ? /#{yaml['url']}/ : yaml['url']
+    method = yaml['method'].to_sym
+    if response
+      stub_request(method, url).to_return(yaml['responses'][response.to_s])
+    else
+      stub_request method, url
+    end
   end
 end

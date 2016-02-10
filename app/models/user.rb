@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :follows_by, source: :user
   has_many :followees, through: :follows
 
+  before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
@@ -78,6 +79,17 @@ class User < ActiveRecord::Base
   def deliver_reset_password_instructions!
     reset_perishable_token!
     UserMailer.new(self).reset_password!
+  end
+
+  def generate_access_token
+    begin
+      self.access_token = SecureRandom.hex(32)
+    end while User.where(access_token: access_token).exists?
+  end
+
+  def generate_access_token!
+    generate_access_token
+    save!
   end
 
   private

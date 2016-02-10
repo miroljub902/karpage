@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    @user_session = api_session || omniauth_session || normal_session
+    @user_session = omniauth_session || normal_session
     user = @user_session.user
     respond_to do |format|
       format.js {
@@ -29,7 +29,6 @@ class UserSessionsController < ApplicationController
           render :new
         end
       }
-      format.json
     end
   end
 
@@ -44,10 +43,6 @@ class UserSessionsController < ApplicationController
   end
 
   private
-
-  def api_session
-    nil
-  end
 
   def omniauth_session
     return nil unless env['omniauth.auth']

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
+  namespace :api, constraints: { subdomain: 'api' } do
+    resource :session, only: %i(create destroy), path: 'session'
+  end
+
   root to: 'home#index'
 
   get 'auth/:provider/callback', to: 'user_sessions#create'
