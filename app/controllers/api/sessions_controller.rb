@@ -1,5 +1,5 @@
 class Api::SessionsController < ApiController
-  before_action :require_api_user, only: :destroy
+  before_action :require_user, only: :destroy
 
   def create
     @session = facebook_session || UserSession.create(session_params)
@@ -7,7 +7,7 @@ class Api::SessionsController < ApiController
   end
 
   def destroy
-    @session = current_api_session
+    @session = current_session
     @session.destroy
     head :ok
   end

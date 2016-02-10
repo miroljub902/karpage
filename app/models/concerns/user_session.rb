@@ -14,8 +14,6 @@ class UserSession < Authlogic::Session::Base
   rescue => e
     session.errors.add :base, "invalid Facebook token (#{e.message})"
     session
-  ensure
-    session
   end
 
   private

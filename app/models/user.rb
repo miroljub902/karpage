@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
   has_many :followers, through: :follows_by, source: :user
   has_many :followees, through: :follows
 
+  validates_associated :identities
+
   before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
 
@@ -42,6 +44,25 @@ class User < ActiveRecord::Base
 
   def self.find_by_login_or_email(login)
     User.find_by(login: login) || User.find_by(email: login)
+  end
+
+  concerning :Facebook do
+    included do
+      attr_accessor :facebook_token
+      validate :validate_facebook_token, if: -> { facebook_token.present? }
+    end
+
+    def validate_facebook_token
+      facebook = Koala::Facebook::API.new(facebook_token).get_object('me')
+      identity = Identity.find_or_initialize_by provider: 'facebook', uid: facebook['id']
+      if identity.new_record?
+        self.identities << identity
+      else
+        errors.add :facebook_token, :taken
+      end
+    rescue => e
+      errors.add :facebook_token, "invalid Facebook token (#{e.message})"
+    end
   end
 
   def friends_posts

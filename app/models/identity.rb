@@ -1,6 +1,8 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
 
+  validates :uid, uniqueness: { scope: %i(user_id provider) }
+
   def self.from_omniauth(auth)
     Identity.where(auth.to_h.slice('provider', 'uid')).first_or_initialize.tap do |identity|
       identity.oauth_token = auth.credentials.token

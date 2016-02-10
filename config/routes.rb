@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: { subdomain: 'api' } do
     resource :session, only: %i(create destroy), path: 'session'
+    resource :user, only: %i(show create update)
   end
 
   root to: 'home#index'
