@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
-  namespace :api, constraints: { subdomain: 'api' } do
+  namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
     resource :session, only: %i(create destroy), path: 'session'
     resource :user, only: %i(show create update)
   end
