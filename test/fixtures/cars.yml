@@ -1,0 +1,22 @@
+REQUIRED: &REQUIRED
+  year: 2015
+  model: audi_r8
+  slug: <%= "2015-audi-r8-#{rand(100000000)}" %>
+  first: false
+  current: false
+  past: false
+
+first:
+  <<: *REQUIRED
+  first: true
+  slug: <%= "2015-audi-r8-#{rand(100000000)}" %>
+
+current:
+  <<: *REQUIRED
+  current: true
+  slug: <%= "2015-audi-r8-#{rand(100000000)}" %>
+
+past:
+  <<: *REQUIRED
+  past: true
+  slug: <%= "2015-audi-r8-#{rand(100000000)}" %>
