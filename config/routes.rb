@@ -6,6 +6,10 @@ Rails.application.routes.draw do
     resource :user, only: %i(show create update)
   end
 
+  scope constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
+    match '*unmatched', to: 'api#route_options', via: :options
+  end
+
   root to: 'home#index'
 
   get 'auth/:provider/callback', to: 'user_sessions#create'
