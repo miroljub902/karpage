@@ -49,6 +49,7 @@ class Api::UsersControllerTest < ApiControllerTest
   test 'returns avatar url' do
     user = users(:john_doe)
     user.update_attribute :avatar_id, '1234567890'
+    authorize_user user
     get :show
     assert_response :ok
     assert json_response['user']['avatar_url'] =~ /1234567890/
