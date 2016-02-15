@@ -14,6 +14,7 @@ class ApiController < ActionController::Base
 
   def current_user
     return @current_user if defined?(@current_user)
+    return nil unless request.headers['Authorization'].present?
     @current_user = ::User.find_by(access_token: request.headers['Authorization'])
   end
   helper_method :current_user
