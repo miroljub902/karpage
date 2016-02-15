@@ -30,6 +30,8 @@ class Api::CarsController < ApiController
     respond_with @car
   end
 
+  private
+
   def car_params
     params.require(:car).permit(
       :year,
