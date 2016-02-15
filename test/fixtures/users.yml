@@ -4,3 +4,10 @@ john_doe:
   # Password is 'password'
   crypted_password: "$2a$10$lUSGJ0fndGQt8c.1TFKnKepKF2/w4CnixEZ2uem0qPF8Qr/QR3AGa"
   password_salt: "sRw275sp81b01otLgjC"
+
+friend:
+  login: friend
+  email: friend@example.com
+  # Password is 'password'
+  crypted_password: "$2a$10$lUSGJ0fndGQt8c.1TFKnKepKF2/w4CnixEZ2uem0qPF8Qr/QR3AGa"
+  password_salt: "sRw275sp81b01otLgjC"

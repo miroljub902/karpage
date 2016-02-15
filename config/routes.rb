@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resource :session, only: %i(create destroy), path: 'session'
     resource :user, only: %i(show create update)
     resources :profiles, only: %i(show), path: 'users'
+    resources :cars
   end
 
   scope constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
