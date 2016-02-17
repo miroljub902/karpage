@@ -2,7 +2,6 @@
   - back_to_top = false unless defined?(back_to_top)
   = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: ix_refile_image_url(@user, :profile_background, auto: 'enhance,format', fit: 'clip', w: 1920) do
     .user-profile data-user-id=@user.id
-    .user-profile data-user-id=@user.id
       .profile-avatar.huge
         .initials= @user.initials
         - if my_profile?
