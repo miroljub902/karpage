@@ -8,7 +8,7 @@ class Api::PostsController < ApiController
   end
 
   def feed
-    @posts = current_user.friends_posts_for_feed.sorted.page(params[:page]).decorate
+    @posts = current_user.decorate.friends_posts_for_feed.sorted.page(params[:page]).decorate
     respond_with @posts
   end
 
