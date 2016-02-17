@@ -1,9 +1,14 @@
 class Api::PostsController < ApiController
-  before_action :require_user, only: %i(create update destroy)
+  before_action :require_user, only: %i(create update destroy feed)
 
   def index
     scope = params[:user_id] ? Post.where(user_id: params[:user_id]) : Post
     @posts = scope.sorted.page(params[:page])
+    respond_with @posts
+  end
+
+  def feed
+    @posts = current_user.friends_posts_for_feed.sorted.page(params[:page]).decorate
     respond_with @posts
   end
 

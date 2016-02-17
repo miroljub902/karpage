@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
     resources :posts, only: %i(index show create update destroy) do
       get 'user/:user_id' => 'posts#index'
+      get :feed, on: :collection
       resources :comments, commentable_type: 'Post'
     end
   end
