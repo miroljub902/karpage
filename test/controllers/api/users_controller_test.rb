@@ -54,4 +54,22 @@ class Api::UsersControllerTest < ApiControllerTest
     assert_response :ok
     assert json_response['user']['avatar_url'] =~ /1234567890/
   end
+
+  test 'can add dream cars' do
+    user = users(:john_doe)
+    authorize_user user
+    patch :update, user: { dream_cars_attributes: [{ image_id: 'dummy' }] }
+    assert_response :ok
+    assert_equal 1, user.dream_cars.count
+    assert_equal 'dummy', user.dream_cars.first.image_id
+  end
+
+  test 'can add next car' do
+    user = users(:john_doe)
+    authorize_user user
+    patch :update, user: { next_car_attributes: { image_id: 'dummy' } }
+    assert_response :ok
+    assert user.next_car.present?
+    assert_equal 'dummy', user.next_car.image_id
+  end
 end

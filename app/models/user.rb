@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
   has_many :followers, through: :follows_by, source: :user
   has_many :followees, through: :follows
 
+  accepts_nested_attributes_for :dream_cars, :next_car, allow_destroy: true
+
   validates_associated :identities
 
   before_create :generate_access_token
