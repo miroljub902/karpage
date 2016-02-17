@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :signed_in?
 
+  # Also on ApiController
   def count_new_stuff(stuff, owner:)
     NewStuff.count_stuff stuff, current_user, owner: owner
   end

@@ -13,4 +13,9 @@ UserCarDecorator.new(car).tap do |car|
   json.photos car.photos.sorted do |photo|
     json.partial! 'api/photos/photo', photo: photo
   end
+
+  if car.user == current_user
+    json.new_likes count_new_stuff(car.likes, owner: car.user)
+    json.new_comments count_new_stuff(car.comments, owner: car.user)
+  end
 end

@@ -40,6 +40,21 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_response :ok
   end
 
+  test 'returns whats new' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    car = cars(:current)
+    user.cars << car
+    NewStuff.reset_count(car.likes, user, owner: user, delay: true)
+    NewStuff.reset_count(car.comments, user, owner: user, delay: true)
+    Like.like! car, friend
+    car.comments.create! user: friend, body: 'Howdy'
+    authorize_user user
+    get :show, id: car.id
+    assert_equal 1, json_response['car']['new_likes']
+    assert_equal 1, json_response['car']['new_comments']
+  end
+
   test 'can destroy car' do
     user = users(:john_doe)
     user.cars << cars(:current)

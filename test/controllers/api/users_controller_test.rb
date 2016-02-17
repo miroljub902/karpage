@@ -10,6 +10,20 @@ class Api::UsersControllerTest < ApiControllerTest
     end
   end
 
+  test 'returns whats new' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    NewStuff.reset_count(user.friends_posts, user, owner: nil, delay: true)
+    NewStuff.reset_count(user.follows_by, user, owner: user, delay: true)
+    friend.followers << user
+    user.followers << friend
+    friend.posts.create! body: 'Howdy'
+    authorize_user user
+    get :show
+    assert_equal 1, json_response['user']['new_posts']
+    assert_equal 1, json_response['user']['new_followers']
+  end
+
   test 'can update profile' do
     user = users(:john_doe)
     authorize_user user

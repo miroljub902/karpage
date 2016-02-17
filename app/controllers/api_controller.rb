@@ -7,6 +7,12 @@ class ApiController < ActionController::Base
     render nothing: true, content_type: 'text/plain'
   end
 
+  # Also on ApplicationController
+  def count_new_stuff(stuff, owner:)
+    NewStuff.count_stuff stuff, current_user, owner: owner
+  end
+  helper_method :count_new_stuff
+
   def current_session
     return @current_session if defined?(@current_session)
     @current_session = ::UserSession.new(current_user)
