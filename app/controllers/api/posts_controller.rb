@@ -2,7 +2,8 @@ class Api::PostsController < ApiController
   before_action :require_user, only: %i(create update destroy)
 
   def index
-    @posts = Post.page(params[:page]).per(12)
+    scope = params[:user_id] ? Post.where(user_id: params[:user_id]) : Post
+    @posts = scope.sorted.page(params[:page])
     respond_with @posts
   end
 

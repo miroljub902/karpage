@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     resource :user, only: %i(show create update)
     resources :profiles, only: %i(show), path: 'users'
     resources :cars, only: %i(index show create update destroy)
-    resources :posts, only: %i(index show create update destroy)
+    resources :posts, only: %i(index show create update destroy) do
+      get 'user/:user_id' => 'posts#index'
+    end
   end
 
   scope constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do

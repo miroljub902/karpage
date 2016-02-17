@@ -43,4 +43,15 @@ class Api::PostsControllerTest < ApiControllerTest
     assert_response :no_content
     assert_raise { post.reload }
   end
+
+  test 'returns user posts' do
+    user = users(:john_doe)
+    user_2 = users(:friend)
+    user.posts.create! body: 'Nope'
+    post = user_2.posts.create! body: 'Howdy'
+    authorize_user user
+    get :index, user_id: user_2.id
+    assert_equal 1, json_response['posts'].size
+    assert_equal post.body, json_response['posts'].first['body']
+  end
 end
