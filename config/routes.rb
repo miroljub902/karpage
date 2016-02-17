@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
     resource :session, only: %i(create destroy), path: 'session'
-    resource :user, only: %i(show create update)
+    resource :user, only: %i(show create update) do
+      put :reset_counter
+    end
     resources :profiles, only: %i(show), path: 'users'
     resources :cars, only: %i(index show create update destroy) do
+      put :reset_counter
+
       resource :like, only: %i(create destroy), likeable_type: 'Car'
       resources :comments, commentable_type: 'Car'
     end

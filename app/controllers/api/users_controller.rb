@@ -6,6 +6,17 @@ class Api::UsersController < ApiController
     respond_with @user, status: :created
   end
 
+  COUNTERS = {
+    'friends_posts' => -> (user) { NewStuff.reset_count(user.friends_posts, user, owner: nil) },
+    'followers' => -> (user) { NewStuff.reset_count(user.follows_by, user, owner: user) }
+  }
+
+  def reset_counter
+    return render(nothing: true, status: :not_found) unless COUNTERS.has_key?(params[:counter])
+    COUNTERS[params[:counter]].call current_user
+    render nothing: true, status: :ok
+  end
+
   def update
     @user = current_user
     @user.update_attributes user_params

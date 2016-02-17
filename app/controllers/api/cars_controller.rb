@@ -1,5 +1,5 @@
 class Api::CarsController < ApiController
-  before_action :require_user, only: %i(create update destroy)
+  before_action :require_user, only: %i(create update destroy reset_counter)
 
   def index
     @cars = Car.order(created_at: :desc).includes(:model, :make).has_photos
@@ -11,6 +11,18 @@ class Api::CarsController < ApiController
   def show
     @car = Car.find(params[:id])
     respond_with @car
+  end
+
+  COUNTERS = {
+    'car_likes' => -> (car) { NewStuff.reset_count(car.likes, car.user, owner: car.user) },
+    'car_comments' => -> (car) { NewStuff.reset_count(car.comments, car.user, owner: car.user) }
+  }
+
+  def reset_counter
+    return render(nothing: true, status: :not_found) unless COUNTERS.has_key?(params[:counter])
+    car = current_user.cars.find(params[:id])
+    COUNTERS[params[:counter]].call car
+    render nothing: true, status: :ok
   end
 
   def create
