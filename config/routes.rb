@@ -5,7 +5,9 @@ Rails.application.routes.draw do
     resource :session, only: %i(create destroy), path: 'session'
     resource :user, only: %i(show create update)
     resources :profiles, only: %i(show), path: 'users'
-    resources :cars, only: %i(index show create update destroy)
+    resources :cars, only: %i(index show create update destroy) do
+      resource :like, only: %i(create destroy), likeable_type: 'Car'
+    end
     resources :posts, only: %i(index show create update destroy) do
       get 'user/:user_id' => 'posts#index'
     end
