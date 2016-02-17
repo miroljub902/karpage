@@ -9,4 +9,8 @@ UserCarDecorator.new(car).tap do |car|
   else
     json.image_url nil
   end
+
+  json.photos car.photos.sorted do |photo|
+    json.partial! 'api/photos/photo', photo: photo
+  end
 end
