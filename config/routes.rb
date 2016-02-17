@@ -7,9 +7,11 @@ Rails.application.routes.draw do
     resources :profiles, only: %i(show), path: 'users'
     resources :cars, only: %i(index show create update destroy) do
       resource :like, only: %i(create destroy), likeable_type: 'Car'
+      resources :comments, commentable_type: 'Car'
     end
     resources :posts, only: %i(index show create update destroy) do
       get 'user/:user_id' => 'posts#index'
+      resources :comments, commentable_type: 'Post'
     end
   end
 
