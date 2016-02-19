@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
     resource :session, only: %i(create destroy), path: 'session'
+    resource :password_reset, path: 'password', only: %i(create update)
     resource :user, only: %i(show create update) do
       put :reset_counter
     end

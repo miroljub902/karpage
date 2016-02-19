@@ -7,6 +7,10 @@ class ApiController < ActionController::Base
     render nothing: true, content_type: 'text/plain'
   end
 
+  def render_404
+    render nothing: true, status: :not_found
+  end
+
   # Also on ApplicationController
   def count_new_stuff(stuff, owner:)
     return 0 unless current_user
