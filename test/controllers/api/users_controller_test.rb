@@ -43,6 +43,7 @@ class Api::UsersControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     patch :update, user: { name: 'New Name' }
+    puts response.body
     assert_response :ok
     assert_equal 'New Name', json_response['user']['name']
     assert_equal 'New Name', user.reload.name
