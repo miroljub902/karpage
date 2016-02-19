@@ -9,6 +9,7 @@ class ApiController < ActionController::Base
 
   # Also on ApplicationController
   def count_new_stuff(stuff, owner:)
+    return 0 unless current_user
     NewStuff.count_stuff stuff, current_user, owner: owner
   end
   helper_method :count_new_stuff
