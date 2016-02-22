@@ -11,6 +11,8 @@ class Api::LikesController < ApiController
     render nothing: true, status: :ok
   end
 
+  private
+
   def find_likeable
     klass = params[:likeable_type].constantize
     @likeable = klass.find params["#{klass.model_name.param_key}_id"]
