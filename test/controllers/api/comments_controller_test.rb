@@ -32,6 +32,8 @@ class Api::CommentsControllerTest < ApiControllerTest
       post :create, post_id: user_post.id, commentable_type: 'Post', comment: { body: 'Howdy' }
       assert_response :created
     end
+    assert_equal 1, friend.reload.comments.count
+    assert_equal assigns[:comment].id, friend.comments.first.id
   end
 
   test 'can update comment' do

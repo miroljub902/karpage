@@ -8,7 +8,7 @@ class Api::CommentsController < ApiController
   end
 
   def create
-    @comment = @commentable.comments.create comment_params
+    @comment = current_user.comments.create comment_params.merge(commentable: @commentable)
     respond_with :api, @comment, status: :created
   end
 
