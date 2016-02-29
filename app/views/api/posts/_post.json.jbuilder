@@ -5,3 +5,7 @@ if post.photo_id?
 else
   json.image_url nil
 end
+
+json.user do
+  json.partial! 'api/users/public', user: post.user
+end

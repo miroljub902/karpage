@@ -1,5 +1,5 @@
 json.user do
-  json.partial! 'profile', user: @user
+  json.partial! 'api/users/public', user: @user
 end
 
 json.partial! 'cars', user: @user, cars: @cars
