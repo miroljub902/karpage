@@ -30,7 +30,6 @@ class Api::PostsControllerTest < ApiControllerTest
   test 'returns post' do
     user = users(:john_doe)
     post = user.posts.create! body: 'Howdy'
-    authorize_user user
     get :show, id: post.id
     assert_response :ok
   end
