@@ -7,7 +7,10 @@ Rails.application.routes.draw do
     resource :user, only: %i(show create update) do
       put :reset_counter
     end
-    resources :profiles, only: %i(index show), path: 'users'
+    resources :profiles, only: %i(index show), path: 'users' do
+      post :follow, on: :member
+      delete :unfollow, on: :member
+    end
     resources :cars, only: %i(index show create update destroy) do
       put :reset_counter
 

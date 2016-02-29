@@ -28,4 +28,23 @@ class Api::ProfilesControllerTest < ApiControllerTest
       assert json_response[key].present?, "#{key} not present"
     end
   end
+
+
+  test 'can follow user' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    authorize_user user
+    post :follow, id: friend.login
+    assert_response :created
+    assert user.followee_ids.include?(friend.id)
+  end
+
+  test 'can unfollow user' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    user.follow! friend
+    authorize_user user
+    delete :unfollow, id: friend.login
+    assert !user.followee_ids.include?(friend.id)
+  end
 end
