@@ -2,6 +2,11 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::ProfilesControllerTest < ApiControllerTest
+  test 'returns index' do
+    get :index
+    assert_response :ok
+  end
+
   test 'return other user info' do
     user = users(:john_doe)
     get :show, id: user.login
