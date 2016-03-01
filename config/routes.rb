@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get 'user/:user_id' => 'posts#index'
       get :feed, on: :collection
       resources :comments, commentable_type: 'Post'
+      resource :like, only: %i(create destroy), likeable_type: 'Post'
     end
   end
 

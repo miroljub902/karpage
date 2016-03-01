@@ -25,4 +25,26 @@ class Api::LikesControllerTest < ApiControllerTest
     assert_response :ok
     assert_equal 0, car.reload.likes_count
   end
+
+  test 'can like a post' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    friend_post = friend.posts.create! body: 'Howdy'
+    authorize_user user
+    post :create, post_id: friend_post.id, likeable_type: 'Post'
+    assert_response :created
+    assert_equal 1, friend_post.reload.likes_count
+  end
+
+  test 'can unlike post' do
+    user = users(:john_doe)
+    friend = users(:friend)
+    friend_post = friend.posts.create! body: 'Howdy'
+    Like.like! friend_post, user
+    assert_equal 1, friend_post.reload.likes_count
+    authorize_user user
+    post :destroy, post_id: friend_post.id, likeable_type: 'Post'
+    assert_response :ok
+    assert_equal 0, friend_post.reload.likes_count
+  end
 end
