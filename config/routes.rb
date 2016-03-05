@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resources :comments, commentable_type: 'Car'
     end
     resources :posts, only: %i(index show create update destroy) do
-      get 'user/:user_id' => 'posts#index'
+      get 'user/:user_id' => 'posts#index', on: :collection
       get :feed, on: :collection
       resources :comments, commentable_type: 'Post'
       resource :like, only: %i(create destroy), likeable_type: 'Post'
