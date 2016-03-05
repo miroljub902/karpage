@@ -64,4 +64,19 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_response :no_content
     assert_raise { car.reload }
   end
+
+  test 'can destroy car photo' do
+    user = users(:john_doe)
+    user.cars << cars(:current)
+    car = user.cars.first
+    car.photos << Photo.create(photos(:one).attributes.except('id'))
+    car.photos << Photo.create(photos(:one).attributes.except('id'))
+    photo = car.photos.first
+    authorize_user user
+    stub_request :delete, /s3/
+    patch :update, id: car.id, car: { photos_attributes: { id: photo.id, _destroy: true } }
+    assert_response :no_content
+    assert_equal 1, car.reload.photos.count
+    assert_not_equal photo.id, car.photos.first.id
+  end
 end
