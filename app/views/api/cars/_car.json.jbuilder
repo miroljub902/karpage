@@ -4,6 +4,8 @@ UserCarDecorator.new(car).tap do |car|
   json.make car.make.name
   json.model car.object.model.name # car.model gets a Car since it's a decorator
 
+  json.liked Like.where(likeable: @car, user: current_user).exists? if current_user
+
   if (photo = car.photos.sorted.first)
     json.image_url ix_refile_image_url(photo, :image)
   else
