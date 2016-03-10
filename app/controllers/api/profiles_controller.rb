@@ -7,6 +7,7 @@ class Api::ProfilesController < ApiController
              else
                User.by_cars_owned.page(params[:page])
              end
+    @users = @users.per(params[:per] || User.default_per_page)
     respond_with @users
   end
 
