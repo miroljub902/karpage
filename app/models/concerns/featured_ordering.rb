@@ -32,7 +32,7 @@ module FeaturedOrdering
 
     def featured_order=(order)
       order = order.to_i.to_s == order ? order.to_i : nil unless order.is_a?(Fixnum)
-      write_attribute :featured_order, order * 10
+      write_attribute :featured_order, order ? order * 10 : nil
       order
     end
 
