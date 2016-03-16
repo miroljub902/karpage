@@ -1,0 +1,54 @@
+doctype html
+html
+  head
+    title Kar Page
+    meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"
+    = stylesheet_link_tag 'splash', media: 'all'
+    = csrf_meta_tags
+
+  body
+    .container.content.text-center
+      .col-sm-12.col-md-6.m-t-3
+        .m-b-3= image_tag 'splash/logo.png', size: '180x247'
+
+        h1.shadow APP FOR CAR ENTHUSIASTS
+
+        p.shadow.m-y-3 Show your car and share your car history with other car enthusiasts from around the world
+
+        .hidden-sm.hidden-xs.store-links
+          h2.shadow.m-y-3 GET THE FREE APP
+          a href="#" target="_blank"
+            = image_tag 'splash/itunes_store.png', size: '185x60'
+          a.m-l-2 href="https://play.google.com/store/apps/details?id=com.sjs.karpage" target="_blank"
+            = image_tag 'splash/play_store.png', size: '185x60'
+
+      .col-sm-12.col-md-6.m-t-3
+        = image_tag 'splash/app_sshot.jpg', class: 'fluid'
+
+        .visible-sm.visible-xs.store-links
+          h2.shadow.m-y-3 GET THE FREE APP
+          a href="#" target="_blank"
+            = image_tag 'splash/itunes_store.png', size: '185x60'
+          a.m-l-2 href="https://play.google.com/store/apps/details?id=com.sjs.karpage" target="_blank"
+            = image_tag 'splash/play_store.png', size: '185x60'
+
+        a.btn.m-t-3 href="/" Continue to Website
+
+    .footer
+      .container
+        .col-xs-12.col-md-4.links
+          a href="mailto:hello@karpage.com" HELLO@KARPAGE.COM
+
+        .col-xs-12.col-md-4.text-center
+          a href="https://www.facebook.com/karpage1" target="_blank"
+            .fa.fa-fw.fa-facebook
+          a.m-l-1 href="https://instagram.com/karpage" target="_blank"
+            .fa.fa-fw.fa-instagram
+          a.m-l-1 href="https://twitter.com/karpage1" target="_blank"
+            .fa.fa-fw.fa-twitter
+
+          p.m-t-1.m-b-0 &copy; 2016 Kar Page LLC
+
+        .col-xs-12.col-md-4.links.text-right
+          a href=page_path('terms-and-conditions') target="_blank" TERMS OF USE
+          a.m-l-3 href=page_path('privacy-policy') target="_blank" PRIVACY POLICY

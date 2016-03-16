@@ -1,0 +1,75 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import "font-awesome/less/font-awesome";
+@import "_custom_bootstrap";
+
+@import "_utilities";
+@import "_components";
+
+@blue: #4b90e3;
+
+body {
+  margin-top: 2em;
+  font-family: Montserrat, sans-serif;
+}
+
+img.fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.shadow {
+  text-shadow: 1px 1px 5px rgba(25, 25, 25, 0.2);
+}
+
+.content {
+  color: @blue;
+
+  .btn {
+    border: 1px solid @blue;
+    color: @blue;
+    padding-left: 3em;
+    padding-right: 3em;
+    text-transform: none;
+  }
+
+  @media (max-width: @screen-xs-max) {
+    .store-links a {
+      margin-left: 0 !important;
+      display: block;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.footer {
+  margin-top: 5em;
+  background-color: @blue;
+  color: #fff;
+  padding: 1.5em 0;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .fa {
+    color: @blue;
+    background-color: #fff;
+    border-radius: 50%;
+    font-size: 1.5em;
+    line-height: 2em;
+    width: 2em;
+  }
+
+  .links {
+    line-height: 72px;
+  }
+
+  @media (max-width: @screen-sm-max) {
+    text-align: center;
+
+    .links {
+      text-align: center;
+    }
+  }
+}

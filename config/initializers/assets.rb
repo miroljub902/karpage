@@ -10,3 +10,4 @@ Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'ja
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.precompile << %r(.*.(?:eot|svg|ttf|woff)$)
+Rails.application.config.assets.precompile << 'splash.css'
