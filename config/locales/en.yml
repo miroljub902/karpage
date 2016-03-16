@@ -18,3 +18,9 @@ en:
 
       post:
         created_at: Post
+    errors:
+      models:
+        post:
+          attributes:
+            photo:
+              blank: is required

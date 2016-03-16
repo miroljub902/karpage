@@ -3,12 +3,12 @@ class Api::PostsController < ApiController
 
   def index
     scope = params[:user_id] ? Post.where(user_id: params[:user_id]) : Post
-    @posts = scope.sorted.page(params[:page]).per(params[:per] || Post.default_per_page)
+    @posts = scope.with_photo.sorted.page(params[:page]).per(params[:per] || Post.default_per_page)
     respond_with @posts
   end
 
   def feed
-    @posts = current_user.decorate.friends_posts_for_feed.sorted.page(params[:page]).per(params[:per] || Post.default_per_page).decorate
+    @posts = current_user.decorate.friends_posts_for_feed.with_photo.sorted.page(params[:page]).per(params[:per] || Post.default_per_page).decorate
     respond_with @posts
   end
 
