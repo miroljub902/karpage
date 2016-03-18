@@ -21,6 +21,7 @@ gem 'pundit'
 gem 'draper'
 gem 'kaminari'
 gem 'rails_autolink'
+gem 'browser'
 gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 1.0'
 
