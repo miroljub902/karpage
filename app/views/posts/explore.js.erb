@@ -1,0 +1,12 @@
+var $container = $('#explore-posts');
+var $posts = $container.find('.posts');
+var $btnMore = $container.find('a[data-remote]');
+
+$posts.append("<%= j render 'list', posts: @posts %>");
+
+<% if @posts.total_pages == params[:page].to_i %>
+$btnMore.remove();
+<% else %>
+var newUrl = $btnMore.data('url').replace('__PAGE__', <%= params[:page].to_i + 1 %>);
+$btnMore.attr('href', newUrl);
+<% end %>

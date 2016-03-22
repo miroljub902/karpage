@@ -152,8 +152,9 @@
   .post {
     position: relative;
     display: inline-block;
-    width: ~"calc(50% - 2px)";
+    width: ~"calc(50% - 6px)";
     margin-bottom: 4px;
+    margin-right: 4px;
     .clearfix;
 
     .img {
@@ -165,6 +166,7 @@
 
     @media (max-width: @screen-xs-max) {
       width: 100%;
+      margin-right: 0;
     }
 
     .caption {
@@ -195,14 +197,6 @@
 
     .initials {
       background-color: #fff;
-    }
-  }
-
-  .post + .post {
-    margin-left: 4px;
-
-    @media (max-width: @screen-xs-max) {
-      margin-left: 0;
     }
   }
 }
