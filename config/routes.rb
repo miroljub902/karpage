@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :profiles, only: %i(index show), path: 'users' do
       post :follow, on: :member
       delete :unfollow, on: :member
+      resources :reports, only: :create, reportable_type: 'User'
     end
     resources :cars, only: %i(index show create update destroy) do
       put :reset_counter
