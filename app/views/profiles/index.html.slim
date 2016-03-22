@@ -13,6 +13,9 @@ h1.text-center
     = link_to 'Cars', profile_cars_path
     span.text-muted &nbsp;|
     '  Owners
+      
+  span.text-muted &nbsp;|&nbsp;
+  = link_to 'Posts', posts_explore_path
 
 - if @users.any?
   .row

@@ -14,6 +14,9 @@ h1.text-center
     span.text-muted |&nbsp;
     = link_to 'Owners', profiles_path
 
+  span.text-muted &nbsp;|&nbsp;
+  = link_to 'Posts', posts_explore_path
+
 .car-cards.row
   - @cars.each do |car|
     .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: UserCarDecorator.new(car), car_counter: true

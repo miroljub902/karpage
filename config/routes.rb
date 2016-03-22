@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   resources :profile_cars, only: :index, path: 'cars'
   resources :profiles, only: :index, path: 'users'
 
+  get 'posts/explore' => 'posts#explore'
   get 'posts/feed' => 'posts#feed'
 
   get ':profile_id' => 'profiles#show', as: :profile

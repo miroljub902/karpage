@@ -1,0 +1,23 @@
+= form_tag profile_cars_path, method: :get, class: 'car-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+
+h1.text-center
+  p.text-primary Explore Most Popular
+  = link_to 'Cars', profile_cars_path
+  span.text-muted &nbsp;|&nbsp;
+  = link_to 'Owners', profiles_path
+  span.text-muted &nbsp;|&nbsp;
+  'Posts
+
+#explore-posts.m-t-3.row= render 'list', posts: @posts
+
+- if @posts.size < @posts.total_count
+  .col-md-offset-2.col-md-8
+    a.btn.btn-lg.btn-default.btn-block[
+      href=posts_explore_path(page: (params[:page] || 1).to_i + 1)
+      data-url=posts_explore_path(page: '__PAGE__')
+      data-remote="true"
+    ]
+      'Load More

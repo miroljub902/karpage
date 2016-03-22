@@ -15,7 +15,7 @@ class Post < ActiveRecord::Base
   private
 
   def validate_presence_of_photo
-    return if photo_id.present?
+    return if photo || photo_id.present?
     errors.add :photo, :blank
   end
 end

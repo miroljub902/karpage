@@ -97,7 +97,8 @@ CREATE TABLE cars (
     updated_at timestamp without time zone NOT NULL,
     hits integer DEFAULT 0 NOT NULL,
     featured_order integer,
-    likes_count integer DEFAULT 0 NOT NULL
+    likes_count integer DEFAULT 0 NOT NULL,
+    comments_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -440,7 +441,8 @@ CREATE TABLE posts (
     photo_content_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    likes_count integer DEFAULT 0 NOT NULL
+    likes_count integer DEFAULT 0 NOT NULL,
+    comments_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1194,4 +1196,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160128042415');
 INSERT INTO schema_migrations (version) VALUES ('20160210171251');
 
 INSERT INTO schema_migrations (version) VALUES ('20160301172956');
+
+INSERT INTO schema_migrations (version) VALUES ('20160322210141');
 

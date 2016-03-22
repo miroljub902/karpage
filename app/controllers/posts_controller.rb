@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   respond_to :html, :js
 
-  layout 'simple', only: %i(new create edit update)
+  layout 'simple', only: %i(new create edit update explore)
 
   before_action :require_user, only: %i(new create edit update destroy)
   before_action :find_user
@@ -25,6 +25,10 @@ class PostsController < ApplicationController
     @posts = @user.posts.limit(15).sorted
     @post = @user.posts.new
     reset_new_stuff @posts, owner: nil
+  end
+
+  def explore
+    @posts = Post.sorted.with_photo.page(params[:page])
   end
 
   def show
