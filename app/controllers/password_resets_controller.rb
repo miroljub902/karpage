@@ -19,15 +19,15 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by(perishable_token: params[:token])
+    @user = params[:token].present? ? User.find_by(perishable_token: params[:token]) : nil
     render_404 unless @user
   end
 
   def update
-    @user = User.find_by(perishable_token: params[:token])
+    @user = User.find_by!(perishable_token: params[:token])
     if @user.update_attributes(user_params)
       UserSession.create @user, true
-      redirect_to profile_path(current_user)
+      redirect_to @user.login.present? ? profile_path(@user) : root_path
     else
       render :edit
     end
