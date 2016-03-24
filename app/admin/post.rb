@@ -10,7 +10,7 @@ ActiveAdmin.register Post do
   index do
     selectable_column
     column :photo do |post|
-      ix_refile_image_tag post, :photo, :image, auto: 'enhance,format', fit: 'crop', w: 50, h: 50, size: '50x50'
+      ix_refile_image_tag post, :photo, auto: 'enhance,format', fit: 'crop', w: 50, h: 50, size: '50x50'
     end
     column :body do |post|
       truncate post.body, length: 100
@@ -26,7 +26,7 @@ ActiveAdmin.register Post do
     attributes_table do
       row :user
       row :photo do |post|
-        ix_refile_image_tag post, :photo, :image, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
+        ix_refile_image_tag post, :photo, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
       end
       row :body do |post|
         simple_format post.body
