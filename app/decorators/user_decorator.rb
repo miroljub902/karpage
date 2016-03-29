@@ -15,7 +15,7 @@ class UserDecorator < Draper::Decorator
 
   def friends_posts_for_feed
     followees = model.followees.select('id')
-    Post.where(user_id: followees).sorted
+    Post.not_blocked(model).where(user_id: followees).sorted
   end
 
   def dream_cars_col_offset

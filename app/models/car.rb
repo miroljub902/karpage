@@ -29,6 +29,13 @@ class Car < ActiveRecord::Base
     joins(:make, :user)
       .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term.to_s.strip}%", year: term.to_i)
   }
+  scope :not_blocked, -> (user) {
+    if user
+      joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
+    else
+      all
+    end
+  }
 
   def toggle_like!(user)
     if (like = likes.find_by(user: user))

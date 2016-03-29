@@ -80,6 +80,38 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 
 --
+-- Name: blocks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE blocks (
+    id integer NOT NULL,
+    user_id integer,
+    blocked_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: blocks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE blocks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: blocks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE blocks_id_seq OWNED BY blocks.id;
+
+
+--
 -- Name: cars; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -580,6 +612,13 @@ ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('acti
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY blocks ALTER COLUMN id SET DEFAULT nextval('blocks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY cars ALTER COLUMN id SET DEFAULT nextval('cars_id_seq'::regclass);
 
 
@@ -673,6 +712,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY active_admin_comments
     ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: blocks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY blocks
+    ADD CONSTRAINT blocks_pkey PRIMARY KEY (id);
 
 
 --
@@ -798,6 +845,20 @@ CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments U
 --
 
 CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
+
+
+--
+-- Name: index_blocks_on_blocked_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_blocks_on_blocked_user_id ON blocks USING btree (blocked_user_id);
+
+
+--
+-- Name: index_blocks_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_blocks_on_user_id ON blocks USING btree (user_id);
 
 
 --
@@ -1271,4 +1332,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160301172956');
 INSERT INTO schema_migrations (version) VALUES ('20160322210141');
 
 INSERT INTO schema_migrations (version) VALUES ('20160322213300');
+
+INSERT INTO schema_migrations (version) VALUES ('20160329230214');
 

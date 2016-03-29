@@ -7,12 +7,12 @@ class Api::ProfilesController < ApiController
              else
                User.by_cars_owned.page(params[:page])
              end
-    @users = @users.per(params[:per] || User.default_per_page)
+    @users = @users.not_blocked(current_user).per(params[:per] || User.default_per_page)
     respond_with @users
   end
 
   def show
-    @user = User.includes(:dream_cars, :next_car, cars: %i(make model)).find_by(login: params[:id])
+    @user = User.includes(:dream_cars, :next_car, cars: %i(make model)).not_blocked(current_user).find_by(login: params[:id])
     @cars = UserCarsDecorator.cars(@user)
     respond_with @user
   end

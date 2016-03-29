@@ -2,14 +2,14 @@ class Api::CarsController < ApiController
   before_action :require_user, only: %i(create update destroy reset_counter)
 
   def index
-    @cars = Car.order(created_at: :desc).includes(:model, :make).has_photos
+    @cars = Car.order(created_at: :desc).includes(:model, :make).has_photos.not_blocked(current_user)
     @cars = @cars.simple_search(params[:search]) if params[:search].present?
     @cars = @cars.page(params[:page]).per(params[:per] || Car.default_per_page)
     respond_with @cars
   end
 
   def show
-    @car = Car.find(params[:id])
+    @car = Car.not_blocked(current_user).find(params[:id])
     respond_with @car
   end
 

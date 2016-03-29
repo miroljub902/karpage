@@ -9,6 +9,13 @@ class Post < ActiveRecord::Base
 
   scope :sorted, -> { order(created_at: :desc) }
   scope :with_photo, -> { where.not(photo_id: nil) }
+  scope :not_blocked, -> (user) {
+    if user
+      joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
+    else
+      all
+    end
+  }
 
   paginates_per 15
 

@@ -57,4 +57,15 @@ class Api::CommentsControllerTest < ApiControllerTest
     assert_response :ok
     assert_raise { comment.reload }
   end
+
+  test 'does not return comments from blocked users' do
+    user = users(:john_doe)
+    fiend = users(:friend)
+    post = user.posts.create! body: 'A post', photo_id: 'dummy'
+    comment = post.comments.create! user: fiend, body: 'A comment'
+    user.blocks.create! blocked_user: fiend
+    authorize_user user
+    get :index, post_id: post.id, commentable_type: 'Post'
+    assert !json_response['comments'].detect { |c| c['id'] == comment.id }
+  end
 end

@@ -3,7 +3,7 @@ class Api::CommentsController < ApiController
   before_action :find_commentable
 
   def index
-    @comments = @commentable.comments.sorted.page(params[:page])
+    @comments = @commentable.comments.not_blocked(current_user).sorted.page(params[:page])
     respond_with :api, @comments
   end
 
