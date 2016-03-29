@@ -56,6 +56,22 @@ img.fluid {
       margin-bottom: 1rem;
     }
   }
+
+  .screenshot {
+    @media (max-height: 750px) {
+      max-height: 400px;
+    }
+
+    @media (max-height: 650px) {
+      max-height: 300px;
+    }
+
+    @media (max-height: 550px) {
+      max-height: 200px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
 }
 
 .footer {
