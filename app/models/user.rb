@@ -45,6 +45,14 @@ class User < ActiveRecord::Base
     where like.join(' OR '), term: "%#{term.to_s.strip}%"
   }
 
+  scope :not_blocked, -> (user) {
+    if user
+      where.not(users: { id: user.blocks.select(:blocked_user_id) })
+    else
+      all
+    end
+  }
+
   def self.find_by_login_or_email(login)
     User.find_by(login: login) || User.find_by(email: login)
   end

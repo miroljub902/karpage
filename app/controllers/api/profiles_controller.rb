@@ -3,11 +3,11 @@ class Api::ProfilesController < ApiController
 
   def index
     @users = if params[:search].present?
-               User.by_cars_owned.simple_search(params[:search]).page(params[:page])
+               User.by_cars_owned.not_blocked(current_user).simple_search(params[:search]).page(params[:page])
              else
-               User.by_cars_owned.page(params[:page])
+               User.by_cars_owned.not_blocked(current_user).page(params[:page])
              end
-    @users = @users.not_blocked(current_user).per(params[:per] || User.default_per_page)
+    @users = @users.per(params[:per] || User.default_per_page)
     respond_with @users
   end
 
