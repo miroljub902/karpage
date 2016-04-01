@@ -15,6 +15,7 @@
 
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
+        li= link_to 'Get the App', root_path(m: "1")
         li= link_to 'Explore', profile_cars_path
         - if controller.signed_in?
           li.dropdown

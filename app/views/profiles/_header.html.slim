@@ -5,7 +5,7 @@
       .profile-avatar.huge
         .initials= @user.initials
         - if my_profile?
-          input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
+          /input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
             data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
         .avatar-container data-edit=('Change your profile photo' if my_profile?)
           - if @user.avatar
