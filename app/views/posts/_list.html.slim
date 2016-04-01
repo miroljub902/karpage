@@ -7,7 +7,7 @@
         .pull-left.profile-avatar.small
           .avatar-container
             - if post.user.avatar
-              img src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+              img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
             - else
               .initials
           h3= post.user
