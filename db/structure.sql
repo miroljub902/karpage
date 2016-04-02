@@ -188,6 +188,38 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
+-- Name: filters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE filters (
+    id integer NOT NULL,
+    name character varying,
+    words character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: filters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE filters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: filters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE filters_id_seq OWNED BY filters.id;
+
+
+--
 -- Name: follows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -633,6 +665,13 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY filters ALTER COLUMN id SET DEFAULT nextval('filters_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
 
 
@@ -736,6 +775,14 @@ ALTER TABLE ONLY cars
 
 ALTER TABLE ONLY comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: filters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY filters
+    ADD CONSTRAINT filters_pkey PRIMARY KEY (id);
 
 
 --
@@ -1334,4 +1381,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160322210141');
 INSERT INTO schema_migrations (version) VALUES ('20160322213300');
 
 INSERT INTO schema_migrations (version) VALUES ('20160329230214');
+
+INSERT INTO schema_migrations (version) VALUES ('20160402013322');
 

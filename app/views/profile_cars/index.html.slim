@@ -17,7 +17,12 @@ h1.text-center
   span.text-muted &nbsp;|&nbsp;
   = link_to 'Posts', posts_explore_path
 
-.car-cards.row
+.car-filters
+  span.m-r-2 Filters:
+  - @filters.each do |filter|
+    = link_to filter.name, profile_cars_path(filter: filter), class: "filter"
+
+car-cards.row
   - @cars.each do |car|
     .car-card.col-xs-12.col-sm-6= render 'user_cars/card', car: UserCarDecorator.new(car), car_counter: true
 

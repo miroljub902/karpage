@@ -1,7 +1,12 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+{
+  "BMW": "",
+  "MOPAR": "Dodge, Chrysler, Srt, Srt8, mopar",
+  "WRX": "Subaru, wrx",
+  "MUSTANG": "",
+  "CAMARO": "",
+  "JEEP": "",
+  "TRUCKS": "GMC, Tundra, Ram, Raptor, Silverado, F150, F-150, C10, C-10, 4Runner, Pickup, Hummer, b2200, Hilux",
+  "JDM": "Nissan, Mitsubishi, Honda, Lexus, Acura, Mazda, Infiniti, Supra"
+}.each do |name, words|
+  Filter.create(name: name, words: words) if !Filter.exists?(name: name)
+end
