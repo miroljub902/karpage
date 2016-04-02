@@ -18,7 +18,7 @@ h1.text-center
   = link_to 'Posts', posts_explore_path
 
 .car-filters
-  span.m-r-2 Filters:
+  .m-b-1 Filters:
   - @filters.each do |filter|
     = link_to filter.name, profile_cars_path(filter: filter), class: "filter"
 
