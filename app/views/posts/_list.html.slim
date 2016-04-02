@@ -1,17 +1,28 @@
-- posts.decorate.each do |post|
-  .post
-    = link_to post_path(post.user, post) do
-      .img style="background-image: url(#{ix_refile_image_url(post, :photo, format: 'auto', fit: 'clip', h: 300)})"
+- posts.decorate.group_by { |post| post.created_at.to_date }.each do |date, grouped_posts|
+  h3.date-group
+    - if date.today?
+      strong Today
+    - elsif date == Date.yesterday
+      strong Yesterday
+    - else
+      strong= date.strftime('%A')
+    small.text-muted= date.strftime "%B #{date.day.ordinalize} %Y"
+  .hr
 
-      .caption
-        .pull-left.profile-avatar.small
-          .avatar-container
-            - if post.user.avatar
-              img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
-            - else
-              .initials
-          h3= post.user
+  - grouped_posts.each do |post|
+    .post
+      = link_to post_path(post.user, post) do
+        .img style="background-image: url(#{ix_refile_image_url(post, :photo, format: 'auto', fit: 'clip', h: 300)})"
 
-        .pull-right.m-r-1
-          = pluralize post.comments_count, 'Comment', 'Comments'
-          span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'
+        .caption
+          .pull-left.profile-avatar.small
+            .avatar-container
+              - if post.user.avatar
+                img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+              - else
+                .initials
+            h3= post.user
+
+          .pull-right.m-r-1
+            = pluralize post.comments_count, 'Comment', 'Comments'
+            span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'
