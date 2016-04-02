@@ -6,19 +6,34 @@ ActiveAdmin.register_page 'Dashboard' do
     columns do
       column do
         panel 'Users' do
-          h1 User.count
+          h1 do
+            span User.count
+            span class: "small" do
+              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'User'))).html_safe
+            end
+          end
         end
       end
 
       column do
         panel 'Cars' do
-          h1 Car.count
+          h1 do
+            span Car.count
+            span class: "small" do
+              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Car'))).html_safe
+             end
+          end
         end
       end
 
       column do
         panel 'Posts' do
-          h1 Post.count
+          h1 do
+            span Post.count
+            span class: "small" do
+              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Post'))).html_safe
+            end
+          end
         end
       end
 
