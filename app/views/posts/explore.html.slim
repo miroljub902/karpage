@@ -12,7 +12,7 @@ h1.text-center
   'Posts
 
 #explore-posts
-  .posts.m-t-3.row= render 'list', posts: @posts
+  .posts.m-t-3.row= render 'list', posts: @posts, post: Post.new
 
   - if @posts.size < @posts.total_count
     .col-md-offset-2.col-md-8.m-t-3

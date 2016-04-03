@@ -1,0 +1,8 @@
+.title Post Update
+= f.text_area :body, rows: 8, class: 'form-control', placeholder: 'Post pictures of your car, pictures from car events, car spotting, or anything in between...'
+= f.file_field :photo
+a.btn.btn-default.btn-lg.photobutton
+  = image_tag 'photo-white.png', class: 'icon', size: '28x22'
+  .text= f.object.photo.present? ? 'Change Photo' : 'Add Photo *'
+
+.submit= f.submit 'Post', class: 'btn btn-default btn-lg'

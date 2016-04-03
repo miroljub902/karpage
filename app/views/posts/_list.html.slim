@@ -1,3 +1,8 @@
+- if signed_in?
+  - url = post.new_record? ? user_posts_path : user_post_path(post)
+  = form_for post, url: url, html: { multipart: true, class: 'post-form' } do |f|
+    = render 'posts/fields', f: f
+
 - posts.decorate.group_by { |post| post.created_at.to_date }.each do |date, grouped_posts|
   h3.date-group
     - if date.today?

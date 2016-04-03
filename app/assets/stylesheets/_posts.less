@@ -2,6 +2,7 @@
   margin-top: 10px;
   padding: 15px 40px;
   background-color: @brand-primary;
+  position: relative;
 
   > .title {
     text-transform: uppercase;
@@ -27,6 +28,7 @@
   > .photobutton {
     position: absolute;
     border-color: transparent !important;
+    left: 40px;
     padding-left: 40px;
 
     .icon {
@@ -148,6 +150,12 @@
 
 #explore-posts {
   text-align: center;
+
+  .post-form {
+    textarea {
+      height: 11rem;
+    }
+  }
 
   .post {
     position: relative;
