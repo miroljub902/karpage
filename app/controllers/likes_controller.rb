@@ -13,6 +13,10 @@ class LikesController < ApplicationController
     Car => -> (params) {
       user = User.find_by!(login: params[:profile_id])
       user.cars.find_by!(slug: params[:car_id])
+    },
+    Post => -> (params) {
+      user = User.find_by!(login: params[:profile_id])
+      user.posts.find params[:post_id]
     }
   }
 

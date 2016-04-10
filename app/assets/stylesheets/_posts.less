@@ -157,7 +157,7 @@
     }
   }
 
-  .post {
+  div.post {
     position: relative;
     display: inline-block;
     width: ~"calc(50% - 6px)";
@@ -221,6 +221,56 @@
 
     small {
       margin-left: 1rem;
+    }
+  }
+}
+
+#post-viewer {
+  .loading {
+    content: "Loading...";
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+
+  .media-body {
+    text-align: left;
+
+    h2 {
+      font-size: 22px;
+      margin-top: 0;
+    }
+
+    .date {
+      float: right;
+      color: @text-muted;
+    }
+  }
+
+  .padded {
+    padding: 20px 20px;
+  }
+
+  .comments {
+    background-color: #eef2f5;
+    text-align: left;
+    padding: 5px 15px 15px;
+
+    h3 {
+      font-size: 22px;
+      color: #111;
+      margin-bottom: 0;
+    }
+  }
+
+  .comment {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+
+    .created-at {
+      float: right;
     }
   }
 }

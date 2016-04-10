@@ -74,7 +74,9 @@ Rails.application.routes.draw do
     get 'followers' => 'follows#index', followers: true, as: :user_followers
     get 'following' => 'follows#index', following: true, as: :user_followees
 
-    resources :posts, only: %i(index show)
+    resources :posts, only: %i(index show) do
+      put 'like' => 'likes#toggle', as: :toggle_like, likeable_class: Post
+    end
 
     get ':car_id' => 'profile_cars#show', as: :profile_car
     scope ':car_id' do

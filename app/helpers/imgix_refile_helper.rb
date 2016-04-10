@@ -1,21 +1,21 @@
 module ImgixRefileHelper
   def ix_refile_image_url(obj, key, **opts)
     path = s3_path(obj, key)
-    opts.merge!(default_ix_options(obj, key).except(:class))
+    opts.merge!(default_ix_options(obj, key, opts).except(:class))
     path ? ix_image_url(path, opts) : attachment_url(obj, key) # Get default if any
   end
 
   def ix_refile_image_tag(obj, key, **opts)
     path = s3_path(obj, key)
-    opts.merge!(default_ix_options(obj, key))
+    opts.merge!(default_ix_options(obj, key, opts))
     path ? ix_image_tag(path, opts) : attachment_image_tag(obj, key)
   end
 
   private
 
-  def default_ix_options(obj, key)
+  def default_ix_options(obj, key, opts = {})
     default = {
-      class: "attachnent #{obj.class.model_name.to_s.downcase} #{key}"
+      class: "attachnent #{obj.class.model_name.to_s.downcase} #{key} #{opts[:class]}"
     }
     default.merge!(rot: obj.rotate) if obj.respond_to?(:rotate) && obj.rotate.present?
     default

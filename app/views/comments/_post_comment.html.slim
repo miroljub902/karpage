@@ -1,4 +1,4 @@
-.media.comment
+.media.comment data-id=comment.id
   .media-left
     = link_to profile_path(comment.user), class: 'profile-avatar' do
       .initials= comment.user.decorate.initials
@@ -13,7 +13,7 @@
     - if policy(comment).destroy?
       - post = comment.commentable
       .pull-right
-        = link_to user_post_comment_path(post, comment, return_to: user_post_path(post.user, post)), title: 'Delete this comment', method: :delete, data: { confirm: 'Are you sure?' } do
+        = link_to user_post_comment_path(post, comment, return_to: user_post_path(post.user, post)), title: 'Delete this comment', remote: true, method: :delete, data: { confirm: 'Are you sure?' } do
           .fa.fa-trash-o
 
     = simple_format comment.body

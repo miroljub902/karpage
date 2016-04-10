@@ -34,6 +34,10 @@ class PostsController < ApplicationController
   def show
     @post = @user.posts.find(params[:id]).decorate
     @post.increment! :views unless current_user && current_user.id == @user.id
+    respond_to do |format|
+      format.html
+      format.json { render 'viewer' }
+    end
   end
 
   def create

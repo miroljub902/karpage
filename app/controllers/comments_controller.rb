@@ -3,14 +3,20 @@ class CommentsController < ApplicationController
 
   def create
     @comment = current_user.comments.create(comment_params.merge(commentable: commentable))
-    redirect_to return_to_path
+    respond_to do |format|
+      format.html { redirect_to return_to_path }
+      format.js
+    end
   end
 
   def destroy
     @comment = commentable.comments.find(params[:id])
     authorize @comment
     @comment.destroy
-    redirect_to params[:return_to].presence || root_path
+    respond_to do |format|
+      format.html { redirect_to params[:return_to].presence || root_path }
+      format.js
+    end
   end
 
   private

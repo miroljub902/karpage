@@ -1,0 +1,5 @@
+$form = $('form.new-comment');
+$form[0].reset();
+$comments = $('.comment-list[data-commentable-type=<%= @comment.commentable_type %>][data-commentable-id=<%= @comment.commentable_id %>]');
+$comments.html('<%=j render partial: 'comments/post_comment', collection: @comment.commentable.comments, as: :comment %>');
+$('.comments-count').html(<%= @comment.commentable.comments_count %>);

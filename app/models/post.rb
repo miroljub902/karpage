@@ -19,6 +19,14 @@ class Post < ActiveRecord::Base
 
   paginates_per 15
 
+  def toggle_like!(user)
+    if (like = likes.find_by(user: user))
+      like.destroy
+    else
+      likes.create! user: user
+    end
+  end
+
   private
 
   def validate_presence_of_photo

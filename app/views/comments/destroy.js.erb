@@ -1,0 +1,2 @@
+$('.comment[data-id=<%= @comment.id %>]').remove();
+$('.comments-count').html(<%= @comment.commentable.comments_count %>);

@@ -108,3 +108,37 @@
 .next-prev-pagination {
   margin-top: 20px;
 }
+
+.likes {
+  @size: 80px;
+  margin: ~"calc(-1em - 40px)" auto 0; // Half the @size but can't use interpolation
+  width: @size;
+  height: @size;
+  line-height: @size;
+  background-color: @brand-primary;
+  border-radius: 50%;
+  text-align: center;
+  position: relative;
+  display: block;
+  text-decoration: none !important;
+  box-shadow: rgba(50, 50, 50, 0.4) 0 2px 2px;
+
+  &:before {
+    content: "\f004";
+    font-family: FontAwesome;
+    font-size: @size / 1.5;
+    line-height: @size * 1.1; // So the heart is better centered vertically
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    left: 0;
+    top: 0;
+  }
+
+  .count {
+    position: relative;
+    color: #c00;
+    font-size: 16px;
+  }
+}
