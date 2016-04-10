@@ -9,7 +9,7 @@ class Api::ReportsController < ApiController
   private
 
   def report_params
-    params.require(:report).permit(:reason, :extra_data)
+    params.require(:report).permit(:reason).merge(extra_data: params[:report][:extra_data])
   end
 
   def find_reportable
