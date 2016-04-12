@@ -1,4 +1,4 @@
-= ix_refile_image_tag(post, :photo, auto: 'enhance,format', fit: 'clip', h: 1024, class: 'img-responsive')
+.post-photo= ix_refile_image_tag(post, :photo, auto: 'enhance,format', fit: 'clip', h: 1024, class: 'img-responsive')
 a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method="put"
   .count= post.likes_count
 
