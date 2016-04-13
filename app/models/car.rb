@@ -19,6 +19,7 @@ class Car < ActiveRecord::Base
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
+  after_create :resort
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
@@ -68,6 +69,14 @@ class Car < ActiveRecord::Base
   end
 
   private
+
+  def resort
+    return unless current? || past?
+    update_column :sorting, -1
+    scope = self.class.where(user: user)
+    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope.update_all 'sorting = sorting + 1'
+  end
 
   def find_or_build_make_and_model
     # Set make from existing make name or create it

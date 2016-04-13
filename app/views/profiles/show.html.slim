@@ -1,6 +1,6 @@
 = render 'header'
 
-.container
+.container class=('own-profile' if my_profile?)
   - if my_profile?
     .text-center.m-y-2
       a#welcome-popover.text-muted[tabindex="0" role="button"
@@ -16,20 +16,23 @@
         span click me
 
   - if @cars.current.any? || my_profile?
-    .current-cars.my-cars.text-center
+    .current-cars.my-cars.text-center.draggable
       h2.text-primary Current Cars
       - if my_profile?
         = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
           i.fa.fa-plus
           'Add Car
 
-      .car-cards.row
-        - @cars.current.each do |car|
-          .car-card.col-xs-12.col-sm-6 class=('col-sm-offset-3' if @cars.current.size == 1)
+      .car-cards.row data-update-url=(resort_user_cars_path if my_profile?)
+        .m-b-1.text-muted Drag and drop to rearrange cars
+        - odd_count = @cars.current.size.odd?
+        - @cars.current.each_with_index do |car, index|
+          - last_car = (index == @cars.current.size - 1)
+          .car-card.col-xs-12.col-sm-6 data-id=car.id class=('col-sm-offset-3' if last_car && odd_count)
             = render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   - if @cars.past.any? || my_profile?
-    .previous-cars.my-cars.text-center
+    .previous-cars.my-cars.text-center.draggable
       h2.text-primary Previous Cars
       - if my_profile?
         = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
@@ -37,8 +40,11 @@
           'Add Car
 
       .car-cards.row
-        - @cars.past.each do |car|
-          .car-card.col-xs-12.col-sm-6 class=('col-sm-offset-3' if @cars.past.size == 1)
+        .m-b-1.text-muted Drag and drop to rearrange cars
+        - odd_count = @cars.past.size.odd?
+        - @cars.past.each_with_index do |car, index|
+          - last_car = (index == @cars.past.size - 1)
+          .car-card.col-xs-12.col-sm-6 class=('col-sm-offset-3' if last_car && odd_count)
             = render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   - if @cars.first || my_profile?

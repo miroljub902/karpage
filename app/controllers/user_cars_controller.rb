@@ -29,6 +29,17 @@ class UserCarsController < ApplicationController
     end
   end
 
+  def resort
+    ids = params[:ids].split(',').map(&:to_i)
+    current_user.cars.find(ids).each do |car|
+      car.update_column :sorting, ids.index(car.id)
+    end
+
+    respond_to do |format|
+      format.js { render nothing: true, status: :ok }
+    end
+  end
+
   def destroy
     @car = current_user.cars.friendly.find(params[:id])
     @car.destroy

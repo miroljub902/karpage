@@ -130,7 +130,8 @@ CREATE TABLE cars (
     hits integer DEFAULT 0 NOT NULL,
     featured_order integer,
     likes_count integer DEFAULT 0 NOT NULL,
-    comments_count integer DEFAULT 0 NOT NULL
+    comments_count integer DEFAULT 0 NOT NULL,
+    sorting integer
 );
 
 
@@ -1383,4 +1384,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160322213300');
 INSERT INTO schema_migrations (version) VALUES ('20160329230214');
 
 INSERT INTO schema_migrations (version) VALUES ('20160402013322');
+
+INSERT INTO schema_migrations (version) VALUES ('20160412235731');
 
