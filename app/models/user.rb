@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def link=(value)
-    self[:link] = (/^https?:\/\//i.match(value) || value.strip.empty?) ? value : "http://#{value}"
+    self[:link] = (/^https?:\/\//i.match(value) || value.to_s.strip.empty?) ? value : "http://#{value}"
   end
 
   def follow!(user)
