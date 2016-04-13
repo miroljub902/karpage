@@ -3,7 +3,7 @@ class ProfileCarsController < ApplicationController
 
   def index
     @filters = Filter.all
-    @cars = Car.order(created_at: :desc).has_photos
+    @cars = Car.has_photos
     filter = Filter.find_by(id: params[:filter])
     if params[:search].present?
       @cars = @cars.simple_search(params[:search])
@@ -11,7 +11,18 @@ class ProfileCarsController < ApplicationController
     elsif filter
       @cars = filter.search
     end
-    @cars = @cars.page(params[:page]).per(12)
+
+    # Show random results on first page, order by date for page 2+
+    if params[:page].to_i > 1 || params[:search].present?
+      @cars = @cars.order(created_at: :desc)
+      start_at = params[:page].to_i
+      start_at = 1 if start_at == 0
+      start_at -= 1 unless params[:search].present? # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      @cars = @cars.page(start_at).per(12)
+    else
+      @for_pagination = @cars.page(params[:page]).per(12)
+      @cars = @cars.where(id: @cars.pluck(:id).sample(12))
+    end
   end
 
   def show

@@ -28,5 +28,5 @@ car-cards.row
 
   .col-xs-12.text-center.next-prev-pagination
     .row
-      .col-sm-6= link_to_previous_page @cars, 'Previous Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
-      .col-sm-6= link_to_next_page @cars, 'Next Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6= link_to_previous_page @for_pagination || @cars, 'Previous Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6= link_to_next_page @for_pagination || @cars, 'Next Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
