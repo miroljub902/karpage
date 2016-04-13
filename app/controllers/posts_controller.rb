@@ -28,7 +28,9 @@ class PostsController < ApplicationController
   end
 
   def explore
-    @posts = Post.sorted.with_photo.page(params[:page])
+    @posts = Post.sorted.with_photo
+    @posts = current_user.friends_posts_for_feed if params[:following] && signed_in?
+    @posts = @posts.page(params[:page])
   end
 
   def show

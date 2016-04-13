@@ -4,6 +4,13 @@
   = form_for post, url: url, html: { multipart: true, class: 'post-form' } do |f|
     = render 'posts/fields', f: f
 
+- if signed_in?
+  ul.nav.nav-pills.text-center.m-t-3.m-b-2.nav-posts
+    li class=('active' unless params.has_key?(:following))
+      a.btn.btn-default.btn-block href=posts_explore_path All
+    li class=('active' if params.has_key?(:following))
+      a.btn.btn-default.btn-block href=posts_explore_path(following: 1) Following
+
 - posts.decorate.group_by { |post| post.created_at.to_date }.each do |date, grouped_posts|
   h3.date-group
     - if date.today?
