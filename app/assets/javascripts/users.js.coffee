@@ -135,6 +135,9 @@ $ ->
       error: ->
         alert 'Could not upload your background image, please try again later.'
 
+  cropAvatar = ->
+
+
   $avatar.click (e) ->
     e.preventDefault()
     $avatarInput.click() if $avatar.hasClass('editing')
@@ -166,6 +169,7 @@ $ ->
         else
           $avatar.append("<img src='#{imageUrl}' width='150' height='150' class='avatar'>")
         $avatar.attr 'data-edit', $avatar.data('edit-original')
+        cropAvatar()
       error: ->
         alert 'Could not upload your avatar, please try again later.'
 
