@@ -4,7 +4,7 @@ class Filter < ActiveRecord::Base
     sql = words.split(",").map do |word|
       "cars.slug ILIKE '#{word}' OR makes.name ILIKE '#{word}' OR models.name ILIKE '#{word}'"
     end
-    Car.joins(:make, :model).where(sql.join(" OR "))
+    Car.has_photos.joins(:make, :model).where(sql.join(" OR "))
   end
 end
 
