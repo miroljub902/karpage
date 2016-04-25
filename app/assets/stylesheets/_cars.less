@@ -524,12 +524,16 @@
   .filter {
     background-color: #2b9d87;
     color: white;
-    margin-right: @grid-gutter-width / 2;
+    margin-right: @grid-gutter-width;
     margin-bottom: 10px;
     padding: 5px 5px;
     min-width: 100px;
     display: inline-block;
     text-align: center;
     text-decoration: none;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
