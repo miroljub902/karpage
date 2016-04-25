@@ -16,7 +16,7 @@
         span click me
 
   - if @cars.current.any? || my_profile?
-    .current-cars.my-cars.text-center.draggable
+    .current-cars.my-cars.text-center class=('draggable' if my_profile?)
       h2.text-primary Current Cars
       - if my_profile?
         = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
@@ -24,7 +24,8 @@
           'Add Car
 
       .car-cards.row data-update-url=(resort_user_cars_path if my_profile?)
-        .m-b-1.text-muted Drag and drop to rearrange cars
+        - if my_profile?
+          .m-b-1.text-muted Drag and drop to rearrange cars
         - odd_count = @cars.current.size.odd?
         - @cars.current.each_with_index do |car, index|
           - last_car = (index == @cars.current.size - 1)
@@ -32,7 +33,7 @@
             = render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   - if @cars.past.any? || my_profile?
-    .previous-cars.my-cars.text-center.draggable
+    .previous-cars.my-cars.text-center class=('draggable' if my_profile?)
       h2.text-primary Previous Cars
       - if my_profile?
         = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
@@ -40,7 +41,8 @@
           'Add Car
 
       .car-cards.row
-        .m-b-1.text-muted Drag and drop to rearrange cars
+        - if my_profile?
+          .m-b-1.text-muted Drag and drop to rearrange cars
         - odd_count = @cars.past.size.odd?
         - @cars.past.each_with_index do |car, index|
           - last_car = (index == @cars.past.size - 1)
