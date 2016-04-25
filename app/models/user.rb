@@ -54,7 +54,8 @@ class User < ActiveRecord::Base
   }
 
   def self.find_by_login_or_email(login)
-    User.find_by(login: login) || User.find_by(email: login)
+    normalized = login.to_s.strip.downcase
+    User.find_by(login: normalized) || User.find_by(email: normalized)
   end
 
   concerning :Facebook do
