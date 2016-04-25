@@ -3,33 +3,31 @@
 .container
   = render 'layouts/flash'
 
-  - if my_profile?
-    = render 'form', post: @post
-
   ul.nav.nav-pills.text-center.m-t-3.nav-posts
-    li.active
+    li class=('active' if (my_profile? && (params[:scope] == 'all' || params[:scope].nil?)) || (!my_profile? && !%w(friends all).include?(params[:scope])))
       - if my_profile?
-        a.btn.btn-default.btn-block href="#all-posts" data-toggle="tab" All
+        a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
       - else
-        a.btn.btn-default.btn-block href="#user-posts" data-toggle="tab" User
-    li
+        a.btn.btn-default.btn-block href=posts_path(@user, scope: @user.login) User
+    li class=('active' if (my_profile? && params[:scope] == 'friends') || (!my_profile? && params[:scope] == 'all'))
       - if my_profile?
-        a.btn.btn-default.btn-block href="#friends-posts" data-toggle="tab" Following
+        a.btn.btn-default.btn-block href=posts_path(@user, scope: :friends) Following
       - else
-        a.btn.btn-default.btn-block href="#all-posts" data-toggle="tab" All
+        a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
 
-  .tab-content
-    - if my_profile?
-      #all-posts.tab-pane.active
-        .post-list
-          = render 'posts/loader', posts: Post.all, scope: :all
-      #friends-posts.tab-pane
-        .post-list
-          = render 'posts/loader', posts: current_user.friends_posts_for_feed, scope: :friends
-    - else
-      #user-posts.tab-pane.active
-        .post-list
-          = render 'posts/loader', posts: @user.posts, scope: @user.login
-      #all-posts.tab-pane
-        .post-list
-          = render 'posts/loader', posts: Post.all, scope: :all
+  #explore-posts
+    #post-viewer.modal.fade
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-body
+
+    .posts.m-t-3.row= render 'list', posts: @posts, post: Post.new, show_filters: false
+
+    - if @posts.size < @posts.total_count
+      .col-md-offset-2.col-md-8.m-t-3
+        a.btn.btn-lg.btn-default.btn-block[
+          href=posts_explore_path(page: (params[:page] || 1).to_i + 1, scope: params[:scope])
+          data-url=posts_explore_path(page: '__PAGE__', scope: params[:scope])
+          data-remote="true"
+        ]
+          'Load More

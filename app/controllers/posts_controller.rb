@@ -6,31 +6,14 @@ class PostsController < ApplicationController
   before_action :require_user, only: %i(new create edit update destroy)
   before_action :find_user
 
-  def feed
-    @posts = case params[:scope]
-             when 'all'
-               Post.all
-             when 'friends'
-               current_user.friends_posts_for_feed
-             else
-               @user = User.find_by!(login: params[:scope])
-               @user.posts
-             end.sorted.page(params[:page]).decorate
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def index
-    @posts = @user.posts.limit(15).sorted
+    @posts = filter_posts.where(user: @user).page(params[:page])
     @post = @user.posts.new
     reset_new_stuff @posts, owner: nil
   end
 
   def explore
-    @posts = Post.sorted.with_photo
-    @posts = current_user.friends_posts_for_feed if params[:following] && signed_in?
-    @posts = @posts.page(params[:page])
+    @posts = filter_posts.page(params[:page])
   end
 
   def show
@@ -73,6 +56,21 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def filter_posts
+    scope = params[:following] && signed_in? ? 'friends' : params[:scope]
+    case scope
+    when 'all'
+      Post.all
+    when 'friends'
+      current_user.friends_posts_for_feed
+    when nil
+      Post.all
+    else
+      @user = User.find_by!(login: params[:scope])
+      @user.posts
+    end.sorted.with_photo
+  end
 
   def post_params
     params.require(:post).permit(:body, :photo)

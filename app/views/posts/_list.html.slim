@@ -4,7 +4,8 @@
   = form_for post, url: url, html: { multipart: true, class: 'post-form' } do |f|
     = render 'posts/fields', f: f
 
-- if signed_in?
+- show_filters = true if local_assigns[:show_filters].nil?
+- if signed_in? && params[:page].to_i < 2 && show_filters
   ul.nav.nav-pills.text-center.m-t-3.m-b-2.nav-posts
     li class=('active' unless params.has_key?(:following))
       a.btn.btn-default.btn-block href=posts_explore_path All
