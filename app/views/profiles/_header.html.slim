@@ -1,85 +1,86 @@
-- content_for :header do
-  - back_to_top = false unless defined?(back_to_top)
-  = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: ix_refile_image_url(@user, :profile_background, auto: 'enhance,format', fit: 'clip', w: 1920) do
-    .user-profile data-user-id=@user.id
-      .profile-avatar.huge
-        .initials= @user.initials
+- @user.decorate.tap do |user|
+  - content_for :header do
+    - back_to_top = false unless defined?(back_to_top)
+    = cell :header, nil, nav_back_to_top: back_to_top, nav_affix: true, background: ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'clip', w: 1920) do
+      .user-profile data-user-id=user.id
+        .profile-avatar.huge
+          .initials= user.initials
+          - if my_profile?
+            input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
+              data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+          .avatar-container data-edit=('Change your profile photo' if my_profile?)
+            - if my_profile?
+              = hidden_field_tag :user_avatar_crop_params, user.avatar_crop_params
+            - if user.avatar
+              = ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 150, h: 150, size: '150x150'
+
+        h1
+          .login= user.login
+          .small
+            .location.editable data-label="Location" = user.location
+            .description.editable data-label="Bio" data-type="textarea" = user.description
+            .link.editable data-label="Link" = link_to_if user.link, user.link, user.link, target: '_blank'
+
         - if my_profile?
-          input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
-            data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
-        .avatar-container data-edit=('Change your profile photo' if my_profile?)
-          - if my_profile?
-            = hidden_field_tag :user_avatar_crop_params, @user.avatar_crop_params
-          - if @user.avatar
-            = ix_refile_image_tag @user, :avatar, auto: 'enhance,format', fit: 'crop', w: 150, h: 150, size: '150x150'
+          .actions.clearfix
+            .edit.pull-right
+              = link_to 'Edit Profile', '#', class: 'btn btn-default edit-profile'
 
-      h1
-        .login= @user.login
-        .small
-          .location.editable data-label="Location" = @user.location
-          .description.editable data-label="Bio" data-type="textarea" = @user.description
-          .link.editable data-label="Link" = link_to_if @user.link, @user.link, @user.link, target: '_blank'
+            .editing.clearfix
+              .pull-left
+                = hidden_field_tag :user_profile_background_crop_params, user.profile_background_crop_params
+                input.background-photo[type="file" data-prefix="store" data-update-url=user_path
+                  data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+                = link_to '#', class: 'btn btn-default change-background' do
+                  .sprite.sprite-profile-change-background-image
+                  ' Change Background
 
-      - if my_profile?
-        .actions.clearfix
-          .edit.pull-right
-            = link_to 'Edit Profile', '#', class: 'btn btn-default edit-profile'
+              .pull-right
+                = link_to 'Cancel', '#', class: 'btn btn-default close-edit'
+                = link_to 'Save', '#', class: 'btn btn-default save'
+        - elsif signed_in?
+          .actions.clearfix
+            .edit.pull-right
+              - if current_user.following?(user)
+                = link_to 'Unfollow', unfollow_user_path(user), class: 'btn btn-default', method: :post
+              - else
+                = link_to 'Follow', follow_user_path(user), class: 'btn btn-default', method: :post
 
-          .editing.clearfix
-            .pull-left
-              = hidden_field_tag :user_profile_background_crop_params, @user.profile_background_crop_params
-              input.background-photo[type="file" data-prefix="store" data-update-url=user_path
-                data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
-              = link_to '#', class: 'btn btn-default change-background' do
-                .sprite.sprite-profile-change-background-image
-                ' Change Background
-
-            .pull-right
-              = link_to 'Cancel', '#', class: 'btn btn-default close-edit'
-              = link_to 'Save', '#', class: 'btn btn-default save'
-      - elsif signed_in?
-        .actions.clearfix
-          .edit.pull-right
-            - if current_user.following?(@user)
-              = link_to 'Unfollow', unfollow_user_path(@user), class: 'btn btn-default', method: :post
+  .container
+    .profile-nav.clearfix
+      ul.nav.nav-pills.pull-left
+        li class=('active' if controller_name == 'profiles' && action_name == 'show')
+          = link_to profile_path(user) do
+            .sprite.sprite-profile-cars
+            - if my_profile?
+              'My Cars
             - else
-              = link_to 'Follow', follow_user_path(@user), class: 'btn btn-default', method: :post
+              'Cars
 
-.container
-  .profile-nav.clearfix
-    ul.nav.nav-pills.pull-left
-      li class=('active' if controller_name == 'profiles' && action_name == 'show')
-        = link_to profile_path(@user) do
-          .sprite.sprite-profile-cars
-          - if my_profile?
-            'My Cars
-          - else
-            'Cars
+        li class=('active' if controller_name == 'posts')
+          = link_to posts_path(user) do
+            .sprite.sprite-profile-posts
+            'Posts
+            = new_count_indicator(user.friends_posts, owner: nil) if current_user == user
 
-      li class=('active' if controller_name == 'posts')
-        = link_to posts_path(@user) do
-          .sprite.sprite-profile-posts
-          'Posts
-          = new_count_indicator(@user.friends_posts, owner: nil) if current_user == @user
+        /li
+          = link_to '#' do
+            .sprite.sprite-profile-meetups
+            'Meetups
 
-      /li
-        = link_to '#' do
-          .sprite.sprite-profile-meetups
-          'Meetups
+      ul.nav.nav-pills.pull-right
+        li.car-count
+          = link_to profile_path(user) do
+            span= user.cars.count
+            .sprite.sprite-car-counter
 
-    ul.nav.nav-pills.pull-right
-      li.car-count
-        = link_to profile_path(@user) do
-          span= @user.cars.count
-          .sprite.sprite-car-counter
+        li.follow-count class=('active' if controller_name == 'follows' && params[:followers])
+          = link_to user_followers_path(user) do
+            'Followers
+            span= user.followers.count
+            = new_count_indicator(user.follows_by, owner: user) if current_user == user
 
-      li.follow-count class=('active' if controller_name == 'follows' && params[:followers])
-        = link_to user_followers_path(@user) do
-          'Followers
-          span= @user.followers.count
-          = new_count_indicator(@user.follows_by, owner: @user) if current_user == @user
-
-      li.follow-count class=('active' if controller_name == 'follows' && params[:following])
-        = link_to user_followees_path(@user) do
-          'Following
-          span= @user.followees.count
+        li.follow-count class=('active' if controller_name == 'follows' && params[:following])
+          = link_to user_followees_path(user) do
+            'Following
+            span= user.followees.count

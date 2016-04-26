@@ -3,25 +3,25 @@
 .container
   = render 'layouts/flash'
 
-  ul.nav.nav-pills.text-center.m-t-3.nav-posts
-    li class=('active' if (my_profile? && (params[:scope] == 'all' || params[:scope].nil?)) || (!my_profile? && !%w(friends all).include?(params[:scope])))
-      - if my_profile?
-        a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
-      - else
-        a.btn.btn-default.btn-block href=posts_path(@user, scope: @user.login) User
-    li class=('active' if (my_profile? && params[:scope] == 'friends') || (!my_profile? && params[:scope] == 'all'))
-      - if my_profile?
-        a.btn.btn-default.btn-block href=posts_path(@user, scope: :friends) Following
-      - else
-        a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
-
   #explore-posts
     #post-viewer.modal.fade
       .modal-dialog.modal-lg
         .modal-content
           .modal-body
 
-    .posts.m-t-3.row= render 'list', posts: @posts, post: Post.new, show_filters: false
+    .posts.m-t-3.row
+      = render 'list', posts: @posts, post: Post.new, show_filters: false, filters: ->
+        ul.nav.nav-pills.text-center.m-t-3.nav-posts
+          li class=('active' if (my_profile? && (params[:scope] == 'all' || params[:scope].nil?)) || (!my_profile? && !%w(friends all).include?(params[:scope])))
+            - if my_profile?
+              a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
+            - else
+              a.btn.btn-default.btn-block href=posts_path(@user, scope: @user.login) User
+          li class=('active' if (my_profile? && params[:scope] == 'friends') || (!my_profile? && params[:scope] == 'all'))
+            - if my_profile?
+              a.btn.btn-default.btn-block href=posts_path(@user, scope: :friends) Following
+            - else
+              a.btn.btn-default.btn-block href=posts_path(@user, scope: :all) All
 
     - if @posts.size < @posts.total_count
       .col-md-offset-2.col-md-8.m-t-3

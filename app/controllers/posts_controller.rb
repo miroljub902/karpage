@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   before_action :find_user
 
   def index
-    @posts = filter_posts.where(user: @user).page(params[:page])
+    @posts = filter_posts.page(params[:page])
     @post = @user.posts.new
     reset_new_stuff @posts, owner: nil
   end

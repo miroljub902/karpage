@@ -12,6 +12,8 @@
     li class=('active' if params.has_key?(:following))
       a.btn.btn-default.btn-block href=posts_explore_path(following: 1) Following
 
+- local_assigns[:filters].call if local_assigns[:filters]
+
 - posts.decorate.group_by { |post| post.created_at.to_date }.each do |date, grouped_posts|
   h3.date-group
     - if date.today?
