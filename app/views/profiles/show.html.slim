@@ -92,7 +92,9 @@
                     .sprite.sprite-delete
 
     - if @user.next_car || my_profile?
-      .col-md-4.text-center.car-singles
+      / Center "Next car" if dream cars are empty
+      - col_class = (!my_profile? && @user.dream_cars.empty?) ? 'col-md-offset-4' : nil
+      .col-md-4.text-center.car-singles class=col_class
         h2.text-primary
           'Next Car
           - if my_profile?
