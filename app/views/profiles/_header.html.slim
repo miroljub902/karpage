@@ -27,6 +27,7 @@
 
           .editing.clearfix
             .pull-left
+              = hidden_field_tag :user_profile_background_crop_params, @user.profile_background_crop_params
               input.background-photo[type="file" data-prefix="store" data-update-url=user_path
                 data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
               = link_to '#', class: 'btn btn-default change-background' do

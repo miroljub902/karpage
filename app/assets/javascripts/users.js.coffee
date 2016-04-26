@@ -39,6 +39,7 @@ $ ->
       description: $description.html().trim()
       link: link
       avatar_crop_params: $cropParams.val()
+      profile_background_crop_params: $cropParamsBg.val()
     if $backgroundInput.data('attachment')
       data.profile_background_id = $backgroundInput.data('attachment').id
       data.profile_background_content_type = $backgroundInput.data('attachment').contentType
@@ -133,8 +134,41 @@ $ ->
         imageUrl = xhr.responseURL.replace(/\?.+/, '')
         $background.css('backgroundImage', "url(#{imageUrl})")
         $changeBackground.removeClass('disabled').html($changeBackground.data('original'))
+        cropBackground imageUrl
       error: ->
         alert 'Could not upload your background image, please try again later.'
+
+  $cropModalBg = $('#crop-background')
+  $cropBg = $cropModalBg.find('.cropper-container')
+  $cropParamsBg = $('#user_profile_background_crop_params')
+  $cropModalBg.on 'shown.bs.modal', ->
+    unless $cropBg.data('initialized')
+      $cropBg.croppie
+        url: $cropBg.data('src')
+        boundary:
+          width: 500
+          height: 300
+        viewport:
+          width: 300
+          height: 180
+          type: 'square'
+    $cropBg.data 'initialized', true
+
+  $cropModalBg.find('.js-save').click (e) ->
+    points = $cropBg.croppie('get').points
+    x = points[0]
+    y = points[1]
+    width = points[2] - x
+    height = points[3] - y
+    $cropParamsBg.val "#{x},#{y},#{width},#{height}"
+    imgUrl = $cropBg.find('.cr-image').attr('src') + "?rect=#{$cropParamsBg.val()}"
+    $background.css('backgroundImage', "url(#{imgUrl})")
+    $cropModalBg.modal('hide')
+
+  cropBackground = (url) ->
+    path = url.match(/amazonaws.com\/.+?\/(.*)/)[1]
+    $cropBg.attr 'data-src', "//#{$cropBg.data('asset-host')}/#{path}"
+    $cropModalBg.modal('show')
 
   $cropModal = $('#crop-avatar')
   $crop = $cropModal.find('.cropper-container')

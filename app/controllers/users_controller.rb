@@ -71,7 +71,8 @@ class UsersController < ApplicationController
     params.require(:user).permit(
       :email, :login, :password, :password_confirmation, :location, :description, :link,
       :avatar_id, :avatar_content_type, :avatar_size, :avatar_filename, :avatar_crop_params,
-      :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename
+      :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename,
+      :profile_background_crop_params
     )
   end
 end

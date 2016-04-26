@@ -2,6 +2,7 @@
 
 - if my_profile?
   = render 'crop_avatar', user: current_user
+  = render 'crop_background', user: current_user
 
 .container class=('own-profile' if my_profile?)
   - if my_profile?
