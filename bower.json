@@ -17,6 +17,7 @@
     "evaporatejs": "",
     "Sortable": "~1.4.2",
     "x-editable": "~1.5.1",
-    "lightbox2": "~2.8.2"
+    "lightbox2": "~2.8.2",
+    "Croppie": "croppie#~2.1.0"
   }
 }

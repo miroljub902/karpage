@@ -38,6 +38,7 @@ $ ->
       location: $location.html().trim()
       description: $description.html().trim()
       link: link
+      avatar_crop_params: $cropParams.val()
     if $backgroundInput.data('attachment')
       data.profile_background_id = $backgroundInput.data('attachment').id
       data.profile_background_content_type = $backgroundInput.data('attachment').contentType
@@ -135,8 +136,37 @@ $ ->
       error: ->
         alert 'Could not upload your background image, please try again later.'
 
-  cropAvatar = ->
+  $cropModal = $('#crop-avatar')
+  $crop = $cropModal.find('.cropper-container')
+  $cropParams = $('#user_avatar_crop_params')
+  $cropModal.on 'shown.bs.modal', ->
+    unless $crop.data('initialized')
+      $crop.croppie
+        url: $crop.data('src')
+        boundary:
+          width: 300
+          height: 300
+        viewport:
+          width: 200
+          height: 200
+          type: 'circle'
+    $crop.data 'initialized', true
 
+  $cropModal.find('.js-save').click (e) ->
+    points = $crop.croppie('get').points
+    x = points[0]
+    y = points[1]
+    width = points[2] - x
+    height = points[3] - y
+    $cropParams.val "#{x},#{y},#{width},#{height}"
+    $img = $avatar.find('img')
+    $img.attr 'src', $crop.find('.cr-image').attr('src') + "?rect=#{$cropParams.val()}"
+    $cropModal.modal('hide')
+
+  cropAvatar = (url) ->
+    path = url.match(/amazonaws.com\/.+?\/(.*)/)[1]
+    $crop.attr 'data-src', "//#{$crop.data('asset-host')}/#{path}"
+    $cropModal.modal('show')
 
   $avatar.click (e) ->
     e.preventDefault()
@@ -169,7 +199,7 @@ $ ->
         else
           $avatar.append("<img src='#{imageUrl}' width='150' height='150' class='avatar'>")
         $avatar.attr 'data-edit', $avatar.data('edit-original')
-        cropAvatar()
+        cropAvatar imageUrl
       error: ->
         alert 'Could not upload your avatar, please try again later.'
 

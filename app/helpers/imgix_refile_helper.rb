@@ -18,6 +18,8 @@ module ImgixRefileHelper
       class: "attachnent #{obj.class.model_name.to_s.downcase} #{key} #{opts[:class]}"
     }
     default.merge!(rot: obj.rotate) if obj.respond_to?(:rotate) && obj.rotate.present?
+    crop_params = obj.send("#{key}_crop_params").try(:presence) rescue nil
+    default.merge!(rect: crop_params) if crop_params && !opts.delete(:no_crop)
     default
   end
 

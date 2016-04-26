@@ -611,7 +611,8 @@ CREATE TABLE users (
     admin boolean DEFAULT false NOT NULL,
     cars_count integer DEFAULT 0 NOT NULL,
     featured_order integer,
-    access_token character varying
+    access_token character varying,
+    avatar_crop_params character varying
 );
 
 
@@ -1386,4 +1387,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160329230214');
 INSERT INTO schema_migrations (version) VALUES ('20160402013322');
 
 INSERT INTO schema_migrations (version) VALUES ('20160412235731');
+
+INSERT INTO schema_migrations (version) VALUES ('20160425215002');
 

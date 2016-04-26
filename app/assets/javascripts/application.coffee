@@ -5,6 +5,7 @@
 #= require Sortable/Sortable
 #= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 #= require lightbox2/src/js/lightbox
+#= require Croppie/croppie
 #= require_self
 #= require_tree .
 

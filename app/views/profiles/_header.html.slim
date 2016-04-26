@@ -8,6 +8,8 @@
           input.avatar-input[type="file" data-prefix="store" data-update-url=user_path
             data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
         .avatar-container data-edit=('Change your profile photo' if my_profile?)
+          - if my_profile?
+            = hidden_field_tag :user_avatar_crop_params, @user.avatar_crop_params
           - if @user.avatar
             = ix_refile_image_tag @user, :avatar, auto: 'enhance,format', fit: 'crop', w: 150, h: 150, size: '150x150'
 
