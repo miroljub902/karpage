@@ -3,7 +3,7 @@ class ProfileCarsController < ApplicationController
 
   def index
     @filters = Filter.all
-    @cars = Car.has_photos
+    @cars = Car.has_photos.owner_has_login
     filter = Filter.find_by(id: params[:filter])
     if params[:search].present?
       @cars = @cars.simple_search(params[:search])
