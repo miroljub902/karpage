@@ -7,4 +7,3 @@ class Filter < ActiveRecord::Base
     Car.has_photos.owner_has_login.joins(:make, :model).where(sql.join(" OR "))
   end
 end
-

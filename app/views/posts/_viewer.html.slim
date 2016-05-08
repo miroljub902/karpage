@@ -14,6 +14,11 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
       .date= post.created_at.strftime('%B %d, %Y - %l:%M %p')
       h2= post.user.name.presence || post.user
       .body= post.html_body
+      - if signed_in? && post.user == current_user
+        = link_to 'Edit', edit_user_post_path(post)
+        '  |
+        = link_to 'Delete', user_post_path(post), method: :delete, data: { confirm: 'Are you sure?' }
+
 
 .comments
   - if signed_in?
