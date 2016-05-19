@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resource :password_reset, path: 'password', only: %i(create update)
     resource :user, only: %i(show create update) do
       put :reset_counter
+      resources :friends, only: :index
     end
     resources :profiles, only: %i(index show), path: 'users' do
       post :follow, on: :member

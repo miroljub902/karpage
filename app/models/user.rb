@@ -77,6 +77,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def friends
+    User
+      .joins('INNER JOIN follows ON follows.user_id = users.id OR follows.followee_id = users.id')
+      .where('follows.user_id = :id OR follows.followee_id = :id', id: id)
+      .where.not(id: id)
+      .distinct
+  end
+
   def friends_posts
     Post.where(user_id: followees.select(:id))
   end
