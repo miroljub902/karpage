@@ -12,6 +12,22 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_response :ok
   end
 
+  test 'filters cars' do
+    filter = Filter.create! name: 'BMW', words: 'bmw'
+    user = users(:john_doe)
+    car_1 = cars(:current)
+    car_2 = cars(:first)
+    car_1.update_column :slug, 'bmw-i7'
+    car_1.photos.create! image_id: 'dummy'
+    car_2.photos.create! image_id: 'dummy2'
+    user.cars << car_1
+    user.cars << car_2
+    get :index, filter_id: filter.id
+    assert_response :ok
+    assert_equal 1, json_response['cars'].size
+    assert_equal car_1.id, json_response['cars'].first['id']
+  end
+
   test 'can create car' do
     user = users(:john_doe)
     authorize_user user

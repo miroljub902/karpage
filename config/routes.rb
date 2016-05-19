@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :reports, only: :create, reportable_type: 'User'
       resource :block, only: :create
     end
+    resources :filters, only: :index
     resources :cars, only: %i(index show create update destroy) do
       put :reset_counter
 
