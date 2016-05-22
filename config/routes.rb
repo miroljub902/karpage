@@ -71,8 +71,8 @@ Rails.application.routes.draw do
   get 'posts/explore' => 'posts#explore'
   get 'posts/feed' => 'posts#feed'
 
-  get ':profile_id' => 'profiles#show', as: :profile
-  scope ':profile_id' do
+  get ':profile_id' => 'profiles#show', as: :profile, constraints: { profile_id: /[^\/]+/ }
+  scope ':profile_id', constraints: { profile_id: /[^\/]+/ } do
     post 'follow' => 'profiles#follow', as: :follow_user
     post 'unfollow' => 'profiles#unfollow', as: :unfollow_user
     get 'followers' => 'follows#index', followers: true, as: :user_followers
