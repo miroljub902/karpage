@@ -8,11 +8,11 @@ Rails.application.routes.draw do
       put :reset_counter
       resources :friends, only: :index
     end
-    resources :profiles, only: %i(index show), path: 'users' do
+    resources :profiles, only: %i(index show), path: 'users', constraints: { id: /[^\/]+/ } do
       post :follow, on: :member
       delete :unfollow, on: :member
-      resources :reports, only: :create, reportable_type: 'User'
-      resource :block, only: :create
+      resources :reports, only: :create, reportable_type: 'User', constraints: { profile_id: /[^\/]+/ }
+      resource :block, only: :create, constraints: { profile_id: /[^\/]+/ }
     end
     resources :filters, only: :index
     resources :cars, only: %i(index show create update destroy) do
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       resources :reports, only: :create, reportable_type: 'Car'
     end
     resources :posts, only: %i(index show create update destroy) do
-      get 'user/:user_id' => 'posts#index', on: :collection
+      get 'user/:user_id' => 'posts#index', on: :collection, constraints: { user_id: /[^\/]+/ }
       get :feed, on: :collection
       resources :comments, commentable_type: 'Post'
       resource :like, only: %i(create destroy), likeable_type: 'Post'
