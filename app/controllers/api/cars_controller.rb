@@ -10,15 +10,17 @@ class Api::CarsController < ApiController
       @cars = Filter.find(params[:filter_id]).search
     end
 
+    per = params[:per] ? params[:per].to_i : Car.default_per_page
+
     if params[:page].to_i > 1 || params[:search].present?
       start_at = params[:page].to_i
       start_at = 1 if start_at == 0
       start_at -= 1 unless params[:search].present? # Start at page 1 when user is at page 2 (since page 1 is really a random set)
-      @cars = @cars.page(start_at).per(params[:per] || Car.default_per_page)
+      @cars = @cars.page(start_at).per(per)
       @total_count = @cars.total_count
     else
       @total_count = @cars.count
-      @cars = @cars.where(id: @cars.pluck(:id).sample(params[:per] || Car.default_per_page))
+      @cars = @cars.where(id: @cars.pluck(:id).sample(per))
     end
 
     respond_with @cars
