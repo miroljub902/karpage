@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     resource :password_reset, path: 'password', only: %i(create update)
     resource :user, only: %i(show create update) do
       put :reset_counter
-      resources :friends, only: :index
+      resources :friends, only: [] do
+        get 'followers', on: :collection
+        get 'following', on: :collection
+      end
     end
     resources :profiles, only: %i(index show), path: 'users', constraints: { id: /[^\/]+/ } do
       post :follow, on: :member
