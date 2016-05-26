@@ -1,13 +1,19 @@
 class Api::FriendsController < ApiController
-  before_action :require_user
+  before_action :find_user
 
   def followers
-    @users = current_user.followers.page(params[:page]).per(params[:per])
+    @users = @user.followers.page(params[:page]).per(params[:per])
     render 'index'
   end
 
   def following
-    @users = current_user.followees.page(params[:page]).per(params[:per])
+    @users = @user.followees.page(params[:page]).per(params[:per])
     render 'index'
+  end
+
+  private
+
+  def find_user
+    @user = User.find(params[:profile_id])
   end
 end

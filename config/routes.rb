@@ -6,16 +6,16 @@ Rails.application.routes.draw do
     resource :password_reset, path: 'password', only: %i(create update)
     resource :user, only: %i(show create update) do
       put :reset_counter
-      resources :friends, only: [] do
-        get 'followers', on: :collection
-        get 'following', on: :collection
-      end
     end
     resources :profiles, only: %i(index show), path: 'users', constraints: { id: /[^\/]+/ } do
       post :follow, on: :member
       delete :unfollow, on: :member
       resources :reports, only: :create, reportable_type: 'User', constraints: { profile_id: /[^\/]+/ }
       resource :block, only: :create, constraints: { profile_id: /[^\/]+/ }
+      resources :friends, only: [] do
+        get 'followers', on: :collection
+        get 'following', on: :collection
+      end
     end
     resources :filters, only: :index
     resources :cars, only: %i(index show create update destroy) do

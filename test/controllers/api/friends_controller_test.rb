@@ -6,8 +6,7 @@ class Api::FriendsControllerTest < ApiControllerTest
     user = users(:john_doe)
     friend = users(:friend)
     friend.follow! user
-    authorize_user user
-    get :followers
+    get :followers, profile_id: user.id
     assert_response :ok
     assert_equal 1, json_response['users'].size
     assert_equal friend.id, json_response['users'].first['id']
@@ -17,8 +16,7 @@ class Api::FriendsControllerTest < ApiControllerTest
     user = users(:john_doe)
     friend = users(:friend)
     user.follow! friend
-    authorize_user user
-    get :following
+    get :following, profile_id: user.id
     assert_response :ok
     assert_equal 1, json_response['users'].size
     assert_equal friend.id, json_response['users'].first['id']
