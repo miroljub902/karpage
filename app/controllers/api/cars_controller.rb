@@ -2,14 +2,25 @@ class Api::CarsController < ApiController
   before_action :require_user, only: %i(create update destroy reset_counter)
 
   def index
-    @cars = if params[:filter_id]
-      Filter.find(params[:filter_id]).search
-    else
-      Car.has_photos
+    @cars = Car.has_photos.owner_has_login.includes(:model, :make).not_blocked(current_user)
+    if params[:search].present?
+      @cars = @cars.simple_search(params[:search])
+      @user_count = User.simple_search(params[:search]).count
+    elsif params[:filter_id]
+      @cars = Filter.find(params[:filter_id]).search
     end
-    @cars = @cars.simple_search(params[:search]) if params[:search].present?
-    @cars = @cars.order(created_at: :desc).includes(:model, :make).not_blocked(current_user)
-    @cars = @cars.page(params[:page]).per(params[:per] || Car.default_per_page)
+
+    if params[:page].to_i > 1 || params[:search].present?
+      start_at = params[:page].to_i
+      start_at = 1 if start_at == 0
+      start_at -= 1 unless params[:search].present? # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      @cars = @cars.page(start_at).per(params[:per] || Car.default_per_page)
+      @total_count = @cars.total_count
+    else
+      @total_count = @cars.count
+      @cars = @cars.where(id: @cars.pluck(:id).sample(params[:per] || Car.default_per_page))
+    end
+
     respond_with @cars
   end
 

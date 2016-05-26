@@ -12,6 +12,16 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_response :ok
   end
 
+  test 'search cars' do
+    user = users(:john_doe)
+    user.cars << cars(:current)
+    car = user.cars.first
+    car.photos.create! image_id: 'dummy'
+    car.comments.create! user: users(:friend), body: 'Nice car'
+    get :index, search: 'audi'
+    assert_response :ok
+  end
+
   test 'filters cars' do
     filter = Filter.create! name: 'BMW', words: 'bmw'
     user = users(:john_doe)
