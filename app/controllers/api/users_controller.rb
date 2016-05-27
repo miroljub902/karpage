@@ -1,5 +1,6 @@
 class Api::UsersController < ApiController
   before_action :require_user, except: :create
+  after_action :track_signup, only: :create, if: -> { @user.persisted? }
 
   def create
     @user = User.create user_params
@@ -29,6 +30,13 @@ class Api::UsersController < ApiController
   end
 
   private
+
+  def track_signup
+    os = request.headers['X-User-OS'].to_s.downcase.presence || 'unknown'
+    # Future usage:
+    _version, _screen_res = request.headers['X-User-Agent'].to_s.split(' ')
+    GATracker.event! @user, category: 'user', action: 'signup', label: os, value: 1
+  end
 
   def user_params
     params.require(:user).permit(

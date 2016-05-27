@@ -10,6 +10,21 @@ class Api::UsersControllerTest < ApiControllerTest
     end
   end
 
+  test 'tracks signup' do
+    User.any_instance.stubs(:send_welcome_email)
+    GATracker.expects(:event!).with do |user, opts|
+      user.is_a?(User) && opts[:category] == 'user' && opts[:action] == 'signup' && opts[:label] == 'android' && opts[:value] == 1
+    end
+    @request.headers['X-User-OS'] = 'Android'
+    post :create, user: { login: Faker::Internet.user_name.gsub('.', '-'), email: Faker::Internet.email, password: 'password' }
+  end
+
+  test 'does not track failed signup' do
+    User.any_instance.stubs(:send_welcome_email)
+    GATracker.expects(:event!).never
+    post :create, user: { login: '' }
+  end
+
   test 'returns whats new' do
     user = users(:john_doe)
     friend = users(:friend)

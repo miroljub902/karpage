@@ -24,6 +24,7 @@ gem 'rails_autolink'
 gem 'browser'
 gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 1.0'
+gem 'staccato'
 
 gem 'slim-rails'
 gem 'less-rails'

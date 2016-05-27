@@ -1,6 +1,7 @@
 class UserSessionsController < ApplicationController
-  before_filter :require_no_user, only: %i(new create)
-  before_filter :require_user, only: :destroy
+  before_action :require_no_user, only: %i(new create)
+  before_action :require_user, only: :destroy
+  after_action :track_signup, only: :create, if: -> { @user_session.valid? && @user_session.user.created_at > 10.seconds.ago }
 
   def new
     @user_session = UserSession.new
@@ -43,6 +44,10 @@ class UserSessionsController < ApplicationController
   end
 
   private
+
+  def track_signup
+    GATracker.event! @user_session.user, category: 'user', action: 'signup', label: 'website', value: 1
+  end
 
   def omniauth_session
     return nil unless env['omniauth.auth']
