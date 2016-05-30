@@ -15,7 +15,7 @@ class Api::UsersControllerTest < ApiControllerTest
     GATracker.expects(:event!).with do |user, opts|
       user.is_a?(User) && opts[:category] == 'user' && opts[:action] == 'signup' && opts[:label] == 'android' && opts[:value] == 1
     end
-    @request.headers['X-User-OS'] = 'Android'
+    @request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 5.1.1; Coolpad 3320A Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.106 Mobile Safari/537.36'
     post :create, user: { login: Faker::Internet.user_name.gsub('.', '-'), email: Faker::Internet.email, password: 'password' }
   end
 

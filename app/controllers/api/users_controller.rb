@@ -32,9 +32,9 @@ class Api::UsersController < ApiController
   private
 
   def track_signup
-    os = request.headers['X-User-OS'].to_s.downcase.presence || 'unknown'
+    os = Browser.new(request.headers['User-Agent']).platform.name.downcase
     # Future usage:
-    _version, _screen_res = request.headers['X-User-Agent'].to_s.split(' ')
+    _res, _density = request.headers['X-Resolution'].to_s.split('@')
     GATracker.event! @user, category: 'user', action: 'signup', label: os, value: 1
   end
 
