@@ -2,12 +2,12 @@ class Api::FriendsController < ApiController
   before_action :find_user
 
   def followers
-    @users = @user.followers.page(params[:page]).per(params[:per])
+    @users = @user.followers.order('follows.created_at DESC').page(params[:page]).per(params[:per])
     render 'index'
   end
 
   def following
-    @users = @user.followees.page(params[:page]).per(params[:per])
+    @users = @user.followees.order('follows.created_at DESC').page(params[:page]).per(params[:per])
     render 'index'
   end
 
