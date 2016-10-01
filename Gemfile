@@ -26,6 +26,9 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 1.0'
 gem 'staccato'
 gem 'browser'
+gem 'sidekiq'
+gem 'rmagick'
+gem "mini_magick"
 
 gem 'slim-rails'
 gem 'less-rails'

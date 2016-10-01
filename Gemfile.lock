@@ -95,6 +95,8 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     commonjs (0.2.7)
+    concurrent-ruby (1.0.2)
+    connection_pool (2.2.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     debug_inspector (0.0.2)
@@ -260,6 +262,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.2)
+    redis (3.3.1)
     ref (2.0.0)
     refile (0.6.1)
       mime-types
@@ -278,6 +281,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rmagick (2.16.0)
     safe_yaml (1.0.4)
     sass (3.4.19)
     sass-rails (5.0.4)
@@ -289,6 +293,11 @@ GEM
     scrypt (2.0.2)
       ffi-compiler (>= 0.0.2)
       rake
+    sidekiq (4.2.2)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (~> 1.5)
+      redis (~> 3.2, >= 3.2.1)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -358,6 +367,7 @@ DEPENDENCIES
   kaminari
   koala
   less-rails
+  mini_magick
   mocha
   newrelic_rpm
   non-stupid-digest-assets
@@ -375,6 +385,8 @@ DEPENDENCIES
   refile-mini_magick
   refile-s3
   responders
+  rmagick
+  sidekiq
   slim-rails
   staccato
   therubyracer
