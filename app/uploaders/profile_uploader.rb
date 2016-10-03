@@ -1,15 +1,6 @@
 class ProfileUploader
-  include CarrierWave::RMagick
-
-  # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
-  include Sprockets::Helpers::RailsHelper
-  include Sprockets::Helpers::IsolatedHelper
-  require 'mini_magick'
-
-  storage :file
-
   def initialize(object)
-    @user = User.find(2)
+    @user = User.find(object['user_id'])
   end
 
   def blank_base_image
@@ -60,6 +51,12 @@ class ProfileUploader
       else
         MiniMagick::Image.new('app/assets/images/profile/header-bg.jpg')
       end
+
+    car_image.combine_options do |i|
+      i.colorspace 'Gray'
+      i.gamma '0.8'
+    end
+
     car_image.resize "1000x420^"
   end
 
