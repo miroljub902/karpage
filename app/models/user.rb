@@ -137,6 +137,10 @@ class User < ActiveRecord::Base
   private
 
   def send_welcome_email
-    UserMailer.new(self).welcome_email!
+    begin
+      UserMailer.new(self).welcome_email!
+    rescue
+      puts 'Error in mailer'
+    end
   end
 end
