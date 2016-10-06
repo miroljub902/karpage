@@ -46,8 +46,10 @@ gem 'rails_12factor', group: :production
 gem 'newrelic_rpm'
 
 group :development, :test do
-  gem 'byebug'
+  # gem 'byebug'
   gem 'quiet_assets'
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
