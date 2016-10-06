@@ -25,8 +25,12 @@ gem 'browser'
 gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 1.0'
 gem 'staccato'
-gem 'browser'
+
 gem 'sidekiq'
+gem 'sidekiq-failures'
+gem 'sidekiq-unique-jobs'
+gem 'sinatra', require: nil
+
 gem 'rmagick'
 gem "mini_magick"
 

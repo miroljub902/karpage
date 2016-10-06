@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
+  after_save -> { ProfileThumbnailJob.perform_later(id) }
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 

@@ -20,6 +20,7 @@ class Car < ActiveRecord::Base
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
   after_create :resort
+  after_create -> { ProfileThumbnailJob.perform_later(user_id) }
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
