@@ -24,7 +24,9 @@ class Car < ActiveRecord::Base
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
+  scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
+  scope :current, -> { where(current: true) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
   scope :simple_search, -> (term) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil

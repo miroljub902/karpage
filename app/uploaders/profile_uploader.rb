@@ -1,6 +1,8 @@
 class ProfileUploader
-  def initialize(object)
-    @user = User.find(object['user_id'])
+  attr_reader :user
+
+  def initialize(user)
+    @user = user
   end
 
   def blank_base_image
@@ -13,17 +15,17 @@ class ProfileUploader
 
   def image_header
     header_image =
-      if @user.profile_background_id
-        MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{@user.profile_background_id}")
+      if user.profile_background_id
+        MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.profile_background_id}")
       else
-        MiniMagick::Image.new('app/assets/images/profile/header-bg.jpg')
+        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg')
       end
     header_image.resize "1000x420^"
   end
 
   def image_profile_picture
-    if @user.avatar_id
-      MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{@user.avatar_id}")
+    if user.avatar_id
+      MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
     else
       MiniMagick::Image.new('app/assets/images/profile/default_profile_image.jpeg')
     end
@@ -35,8 +37,7 @@ class ProfileUploader
 
   def car
     car_image =
-      if cars = @user.cars
-        car = cars.where(sorting: 0).first
+      if (car = user.cars.current.has_photos.sorted.first)
         car_image = MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{car.photos.sorted.first.image_id}")
         car_image.resize "1000x420^" # this is just to make sure this image is converted before writing the text
         car_image.combine_options do |i|
@@ -47,7 +48,7 @@ class ProfileUploader
           i.draw "text 0,0 '#{car.year} #{car.make.name} #{car.model.name}'"
         end
       else
-        MiniMagick::Image.new('app/assets/images/profile/header-bg.jpg')
+        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg')
       end
 
     car_image.combine_options do |i|
@@ -66,7 +67,7 @@ class ProfileUploader
       i.font "app/assets/fonts/helvetica.ttf"
       i.gravity "Center"
       i.pointsize 50
-      i.draw "text 0,0 '#{@user.name}'"
+      i.draw "text 0,0 '#{user.login}'"
     end
   end
 
@@ -128,7 +129,7 @@ class ProfileUploader
       i.font "app/assets/fonts/helvetica.ttf"
       i.gravity "Center"
       i.pointsize 50
-      i.draw "text 0,0 ' #{@user.followers.count} '"
+      i.draw "text 0,0 ' #{user.followers.count} '"
     end
 
     result = result.composite(follower_counter) do |c|
@@ -145,7 +146,7 @@ class ProfileUploader
       i.font "app/assets/fonts/helvetica.ttf"
       i.gravity "Center"
       i.pointsize 50
-      i.draw "text 0,0 '#{@user.cars.count}'"
+      i.draw "text 0,0 '#{user.cars.count}'"
     end
 
     result = result.composite(car_counter) do |c|
@@ -162,7 +163,7 @@ class ProfileUploader
       i.font "app/assets/fonts/helvetica.ttf"
       i.gravity "Center"
       i.pointsize 50
-      i.draw "text 0,0 '#{@user.followees.count}'"
+      i.draw "text 0,0 '#{user.followees.count}'"
     end
 
     result = result.composite(followee_counter) do |c|
@@ -177,12 +178,8 @@ class ProfileUploader
 
     #### Counter Templating ####
 
-    result.write 'public/images/temp_thumbnail_image.jpg'
-
-    File.open(result.path, "rb") do |file|
-      @user.profile_thumbnail = file
-    end
-
-    @user.save
+    result.write "tmp/thumbnail_#{user.id}.jpg"
+    user.profile_thumbnail = File.open(result.path)
+    user.save
   end
 end
