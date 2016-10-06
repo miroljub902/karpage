@@ -10,5 +10,3 @@
 }.each do |name, words|
   Filter.create(name: name, words: words) if !Filter.exists?(name: name)
 end
-
-User.create(name: 'Psalmuel Aguilar', email:"psalmuelaguilar@gmail.com", password:'password', password_confirmation:'password')
