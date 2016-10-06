@@ -181,5 +181,11 @@ class ProfileUploader
     result.write "tmp/thumbnail_#{user.id}.jpg"
     user.profile_thumbnail = File.open(result.path)
     user.save
+  rescue => e
+    message = "Could not generate thumbnail for user #{user.id}: #{e.message}"
+    puts message
+    Rails.logger.info '*' * 80
+    Rails.logger.info message
+    Rails.logger.info '*' * 80
   end
 end
