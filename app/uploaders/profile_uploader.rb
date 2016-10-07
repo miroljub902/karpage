@@ -1,4 +1,7 @@
 class ProfileUploader
+  include ImgixRefileHelper
+  include Imgix::Rails::UrlHelper
+
   attr_reader :user
 
   def initialize(user)
@@ -14,13 +17,16 @@ class ProfileUploader
   end
 
   def image_header
-    header_image =
-      if user.profile_background_id
-        MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.profile_background_id}")
-      else
-        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg')
+    if user.profile_background_id
+      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 420)
+      MiniMagick::Image.open(url)
+    else
+      MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
+        i.resize "1000x420^"
+        i.gravity "Center"
+        i.crop "1000x420+0+0"
       end
-    header_image.resize "1000x420^"
+    end
   end
 
   def image_profile_picture
@@ -38,13 +44,9 @@ class ProfileUploader
   def car
     car_image =
       if (car = user.cars.current.has_photos.sorted.first)
-        car_image = MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{car.photos.sorted.first.image_id}")
-        car_image.combine_options do |i|
-          i.resize "1000x420^" # this is just to make sure this image is converted before writing the text
-          i.gravity "Center"
-          i.crop "1000x420+0+0"
-        end
-        car_image.combine_options do |i|
+        photo = car.photos.sorted.first
+        url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 480)
+        MiniMagick::Image.open(url).combine_options do |i|
           i.font "app/assets/fonts/helvetica.ttf"
           i.gravity "Center"
           i.pointsize 80
@@ -52,12 +54,16 @@ class ProfileUploader
           i.draw "text 0,0 '#{car.year} #{car.make.name} #{car.model.name}'"
         end
       else
-        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg')
+        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
+          i.resize "1000x420^"
+          i.gravity "Center"
+          i.crop "1000x480+0+0"
+        end
       end
 
     car_image.combine_options do |i|
-      i.colorspace 'Gray'
-      i.gamma '0.5'
+      i.fill 'white'
+      i.tint '70'
     end
   end
 
@@ -138,7 +144,7 @@ class ProfileUploader
 
     result = result.composite(follower_counter) do |c|
       c.compose "Over"
-      c.geometry "+718+985"
+      c.geometry "+718+1000"
     end
 
     ### Car Counter
@@ -172,7 +178,7 @@ class ProfileUploader
 
     result = result.composite(followee_counter) do |c|
       c.compose "Over"
-      c.geometry "+1390+985"
+      c.geometry "+1390+1000"
     end
 
     result = result.composite(name_template) do |c|
