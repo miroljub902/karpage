@@ -39,7 +39,11 @@ class ProfileUploader
     car_image =
       if (car = user.cars.current.has_photos.sorted.first)
         car_image = MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{car.photos.sorted.first.image_id}")
-        car_image.resize "1000x420^" # this is just to make sure this image is converted before writing the text
+        car_image.combine_options do |i|
+          i.resize "1000x420^" # this is just to make sure this image is converted before writing the text
+          i.gravity "Center"
+          i.crop "1000x420+0+0"
+        end
         car_image.combine_options do |i|
           i.font "app/assets/fonts/helvetica.ttf"
           i.gravity "Center"
