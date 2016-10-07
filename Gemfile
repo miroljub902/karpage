@@ -23,7 +23,7 @@ gem 'kaminari'
 gem 'rails_autolink'
 gem 'browser'
 gem 'activeadmin', github: 'activeadmin'
-gem 'appsignal', '~> 1.0'
+gem 'appsignal', '~> 1.3.6'
 gem 'staccato'
 
 gem 'sidekiq'
