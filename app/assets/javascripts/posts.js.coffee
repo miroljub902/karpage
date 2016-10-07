@@ -16,7 +16,7 @@ $ ->
       $text.html('Add Photo')
 
   $viewer = $('#post-viewer').modal(show: false)
-  $('#explore-posts .post a').click (e) ->
+  $('#explore-posts').on 'click', '.post a', (e) ->
     e.preventDefault()
     $viewer.modal('show')
     $body = $viewer.find('.modal-body').html('Loading...')
