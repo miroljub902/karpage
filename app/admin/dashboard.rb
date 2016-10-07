@@ -20,7 +20,7 @@ ActiveAdmin.register_page 'Dashboard' do
           h1 do
             span Car.count
             span class: "small" do
-              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Car'))).html_safe
+              ("- " + link_to('Reported (' + Report.cars.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Car'))).html_safe
              end
           end
         end
@@ -31,7 +31,7 @@ ActiveAdmin.register_page 'Dashboard' do
           h1 do
             span Post.count
             span class: "small" do
-              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Post'))).html_safe
+              ("- " + link_to('Reported (' + Report.posts.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Post'))).html_safe
             end
           end
         end
