@@ -103,7 +103,7 @@ class ProfileUploader
 
     name_template = name_container
 
-    profile_image.resize "335^x265"
+    profile_image.resize "350^x320"
 
     result = blank_base.composite(header_image) do |c|
       c.compose "Over"
@@ -122,7 +122,7 @@ class ProfileUploader
 
     result = result.composite(created_profile_image) do |c|
       c.compose "Over"
-      c.geometry "+1046+455"
+      c.geometry "+1039+453"
     end
 
     result = result.composite(template) do |c|
@@ -183,7 +183,7 @@ class ProfileUploader
 
     result = result.composite(name_template) do |c|
       c.compose "Over"
-      c.geometry "+713+725"
+      c.geometry "+713+774"
     end
 
     #### Counter Templating ####
