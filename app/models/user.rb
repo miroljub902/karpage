@@ -39,7 +39,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
-  after_save -> { ProfileThumbnailJob.perform_later(id) }, unless: :profile_thumbnail_id_changed?
+  after_save -> { ProfileThumbnailJob.perform_later(id) },
+    if: -> { changes.keys.any? { |attr| %w(login name avatar_id description profile_background_id).include?(attr) } }
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 
