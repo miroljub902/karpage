@@ -4,6 +4,7 @@ html
     title Kar Page
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
+    = yield :html_head
 
   body
     = yield :header

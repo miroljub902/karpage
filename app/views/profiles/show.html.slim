@@ -1,3 +1,11 @@
+- if @user.profile_thumbnail
+  - content_for :html_head do
+    meta property="og:url" content=profile_url(@user)
+    meta property="og:title" content=@user.to_s
+    meta property="og:description" content="See #{@user}'s profile on KarPage.com"
+    meta property="og:image" content=ix_refile_image_url(@user, :profile_thumbnail)
+    meta property="fb:app_id" content=ENV['FACEBOOK_APP_ID']
+
 = render 'header'
 
 - if my_profile?
