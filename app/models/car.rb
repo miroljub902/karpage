@@ -30,9 +30,10 @@ class Car < ActiveRecord::Base
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
   scope :simple_search, -> (term) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil
+    term = term.to_s.split(' ').map(&:strip).join('%')
     year_condition = "cars.year = #{year} OR" if year
     joins(:make, :user)
-      .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term.to_s.strip}%", year: term.to_i)
+      .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
   }
   scope :not_blocked, -> (user) {
     if user
