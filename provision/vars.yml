@@ -1,0 +1,9 @@
+---
+user: deploy
+ssh_key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
+
+timezone: 'America/Chicago'
+home_dir: /home/{{ user }}
+app_name: "karpage"
+app_root: "{{ home_dir }}/{{ app_name }}"
+repo_host: git@bitbucket.org

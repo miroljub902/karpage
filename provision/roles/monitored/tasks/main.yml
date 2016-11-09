@@ -1,0 +1,25 @@
+- name: longview | apt key
+  get_url: url=https://apt-longview.linode.com/linode.gpg dest=/etc/apt/trusted.gpg.d/linode.gpg
+  tags: monitoring
+
+- name: longview | apt repository
+  apt_repository: "repo='deb http://apt-longview.linode.com/ {{ ansible_distribution_release }} main'"
+  tags: monitoring
+
+- name: longview | config dir
+  file: dest=/etc/linode state=directory
+  tags: monitoring
+
+- name: longview | config
+  copy: content={{ longview_api_key }} dest=/etc/linode/longview.key
+  register: longview_config
+  tags: monitoring
+
+- name: longview | install
+  apt: pkg=linode-longview
+  tags: monitoring
+
+- name: longview | restart
+  service: name=longview state=restarted
+  when: longview_config.changed
+  tags: monitoring

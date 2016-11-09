@@ -1,0 +1,24 @@
+- name: install pre-requisites
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - ca-certificates
+    - apt-transport-https
+
+- name: apt key
+  apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x561F9B9CAC40B2F7
+
+- name: apt repository
+  apt_repository: repo='deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_distribution_release }} main'
+
+- name: install
+  apt: pkg={{ item }} state=latest
+  register: passenger
+  with_items:
+    - nginx-extras
+    - passenger
+
+- name: enable nginx module
+  lineinfile: dest=/etc/nginx/nginx.conf regexp='include.*passenger' line='include /etc/nginx/passenger.conf;'
+
+- name: disable default site
+  file: path=/etc/nginx/sites-enabled/default state=absent

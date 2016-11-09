@@ -1,0 +1,11 @@
+/{{ app_root }}/shared/log/*.log {
+  daily
+  rotate 7
+  notifempty
+  maxage 60
+  dateext
+  dateyesterday
+  copytruncate
+  compress
+  delaycompress
+}

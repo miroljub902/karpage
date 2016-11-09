@@ -1,0 +1,20 @@
+#- hosts: appservers
+#  remote_user: "{{ user }}"
+#  sudo: true
+#  vars_files:
+#    - vars.yml
+#  roles:
+#  - { role: common }
+#  - { role: ruby }
+#  - { role: passenger }
+#  - { role: app_server }
+#  - { role: monitored }
+
+- hosts: dbservers
+  remote_user: "{{ user }}"
+  sudo: true
+  vars_files:
+    - vars.yml
+  roles:
+  - { role: db_server }
+#  - { role: monitored }

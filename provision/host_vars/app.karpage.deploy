@@ -1,0 +1,8 @@
+domain: www.karpage.com
+hostname: www.karpage.com
+ruby_version: 2.3.1
+passenger_max_pool_size: 6
+passenger_min_instances: 2
+public_ip: 66.175.221.244
+
+longview_api_key: C5614616-F198-163B-1A0F673ADF37645E
