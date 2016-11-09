@@ -12,6 +12,8 @@ set :forward_agent, true
 
 set :shared_files, fetch(:shared_files, []).push('.env.production')
 
+set :rbenv_path, '/usr/local/rbenv'
+
 task :environment do
   invoke :'rbenv:load'
 end
