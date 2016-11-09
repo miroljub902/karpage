@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.3'
+ruby '2.3.1'
 
 gem 'rails', '4.2.4'
 gem 'pg'
@@ -58,6 +58,7 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
+  gem 'mina', '~> 1.0'
 end
 
 group :test do
