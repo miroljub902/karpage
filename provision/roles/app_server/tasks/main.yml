@@ -13,7 +13,13 @@
 #  tags: app
 
 - name: prerequisites
-  apt: pkg=imagemagick
+  apt: pkg={{ item }}
+  with_items:
+    - webp
+    - libwebp-dev
+    - imagemagick
+    - libmagickcore-dev
+    - libmagickwand-dev
   tags: app
 
 - name: configure vhost
