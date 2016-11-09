@@ -614,7 +614,8 @@ CREATE TABLE users (
     access_token character varying,
     avatar_crop_params character varying,
     profile_background_crop_params character varying,
-    profile_thumbnail_id character varying
+    profile_thumbnail_id character varying,
+    instagram_id character varying
 );
 
 
@@ -1395,4 +1396,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160425215002');
 INSERT INTO schema_migrations (version) VALUES ('20160426005009');
 
 INSERT INTO schema_migrations (version) VALUES ('20161002151711');
+
+INSERT INTO schema_migrations (version) VALUES ('20161109004348');
 
