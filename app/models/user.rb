@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
     config.perishable_token_valid_for 3.hours
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options(
-      with: /\A\w[.\w+\-_ ]+\z/,
+      with: /\A\w[.\w+\-_]+\z/,
       if: -> { identities.empty? || login.present? || login_was.present? },
-      message: 'login should use only letters numbers spaces and .-_ please'
+      message: 'login should use only letters numbers and .-_ please'
     )
     config.merge_validates_length_of_login_field_options if: -> { identities.empty? || login.present? || login_was.present? }
     config.merge_validates_length_of_password_field_options if: -> { identities.empty? && password.present? }
