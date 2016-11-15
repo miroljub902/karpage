@@ -1,7 +1,7 @@
 UserCarDecorator.new(car).tap do |car|
   json.(car, :id, :year, :description, :created_at, :updated_at, :likes_count)
 
-  json.make car.make.name
+  json.make car.make&.name
   json.model car.object.model.name # car.model gets a Car since it's a decorator
 
   json.liked Like.where(likeable: @car, user: current_user).exists? if current_user
