@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
     config.merge_validates_format_of_login_field_options(
       with: /\A\w[.\w+\-_]+\z/,
       if: -> { identities.empty? || login.present? || login_was.present? },
-      message: 'login should use only letters numbers and .-_ please'
+      message: 'should use only letters numbers and .-_ please'
     )
     config.merge_validates_length_of_login_field_options if: -> { identities.empty? || login.present? || login_was.present? }
     config.merge_validates_length_of_password_field_options if: -> { identities.empty? && password.present? }
