@@ -8,3 +8,7 @@
 `ansible-playbook -i hosts.ini --ask-pass setup.yml`
 
 `ansible-playbook -i hosts.ini provision.yml`
+
+## Notes
+
+* systemd: https://www.digitalocean.com/community/tutorials/systemd-essentials-working-with-services-units-and-the-journal
