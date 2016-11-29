@@ -16,6 +16,7 @@ class Car < ActiveRecord::Base
   validates :year, numericality: true
   validates :make_name, :car_model_name, presence: true
   validates_associated :model
+  validate :validate_current_past_first, on: :create
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
@@ -74,6 +75,16 @@ class Car < ActiveRecord::Base
   end
 
   private
+
+  def validate_current_past_first
+    if first && current
+      errors.add :base, "Car cannot be both first and current"
+    elsif first && past
+      errors.add :base, "Car cannot be both first and past"
+    elsif past && current
+      errors.add :base, "Car cannot be both past and current"
+    end
+  end
 
   def resort
     return unless current? || past?
