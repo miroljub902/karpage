@@ -52,13 +52,13 @@
           i.fa.fa-plus
           'Add Car
 
-      .car-cards.row
+      .car-cards.row data-update-url=(resort_user_cars_path if my_profile?)
         - if my_profile?
           .m-b-1.text-muted Drag and drop to rearrange cars
         - odd_count = @cars.past.size.odd?
         - @cars.past.each_with_index do |car, index|
           - last_car = (index == @cars.past.size - 1)
-          .car-card.col-xs-12.col-sm-6 class=('col-sm-offset-3' if last_car && odd_count)
+          .car-card.col-xs-12.col-sm-6 data-id=car.id class=('col-sm-offset-3' if last_car && odd_count)
             = render my_profile? ? 'user_cars/car' : 'user_cars/card', car: car, whole_actions_link: false
 
   - if @cars.first || my_profile?
