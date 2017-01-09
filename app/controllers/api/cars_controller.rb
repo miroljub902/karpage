@@ -71,6 +71,7 @@ class Api::CarsController < ApiController
       :first,
       :current,
       :past,
+      :sorting,
       photos_attributes: %i(id _destroy image_id image_content_type image_size image_filename sorting)
     )
   end
