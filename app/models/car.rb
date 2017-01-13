@@ -20,8 +20,9 @@ class Car < ActiveRecord::Base
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
-  after_create :resort
-  after_create -> { ProfileThumbnailJob.perform_later(user_id) }
+  after_create :resort_first
+  after_create :update_user_profile_thumbnail
+  after_update :resort_all, if: :sorting_changed?
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
@@ -86,10 +87,17 @@ class Car < ActiveRecord::Base
     end
   end
 
-  def resort
+  def resort_first
     return unless current? || past?
     update_column :sorting, -1
     scope = self.class.where(user: user)
+    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope.update_all 'sorting = sorting + 1'
+  end
+
+  def resort_all
+    return unless current? || past?
+    scope = self.class.where(user: user).where('sorting >= ?', sorting).where.not(id: id)
     scope = current? ? scope.where(current: true) : scope.where(past: true)
     scope.update_all 'sorting = sorting + 1'
   end
@@ -105,6 +113,10 @@ class Car < ActiveRecord::Base
     end
 
     true
+  end
+
+  def update_user_profile_thumbnail
+    ProfileThumbnailJob.perform_later user_id
   end
 
   def slug_candidates
