@@ -21,8 +21,8 @@ class Car < ActiveRecord::Base
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
   after_create :resort_first
-  after_create :update_user_profile_thumbnail
   after_update :resort_all, if: :sorting_changed?
+  after_save :update_user_profile_thumbnail
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
