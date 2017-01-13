@@ -21,4 +21,8 @@ class UserDecorator < Draper::Decorator
   def dream_cars_col_offset
     { 1 => 'col-sm-offset-4', 2 => 'col-sm-offset-2' }[dream_cars.size]
   end
+
+  def instagram_link
+    "https://www.instagram.com/#{instagram_id}"
+  end
 end

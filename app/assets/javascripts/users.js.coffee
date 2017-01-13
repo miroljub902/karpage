@@ -14,10 +14,12 @@ $ ->
   $location = $('.location', $userProfile)
   $description = $('.description', $userProfile)
   $link = $('.link', $userProfile)
+  $instagram = $('.instagram', $userProfile)
 
   $location.data('original', $location.html())
   $description.data('original', $description.html())
   $link.data('original', $link.html())
+  $instagram.data('original', $instagram.html())
 
   startEditing = ->
     options = { emptytext: ' ' }
@@ -30,14 +32,21 @@ $ ->
       link = value.trim()
       if link.length == 0 then $(this).html('') else $(this).html "<a href='#{link}'>#{link}</a>"
 
+    instagramDisplay = (value) ->
+      link = value.trim()
+      if link.length == 0 then $(this).html('') else $(this).html "<a href='https://www.instagram.com/#{link}'>#{link}</a>"
+
     $link.editable($.extend(display: linkDisplay, options))
+    $instagram.editable($.extend(display: instagramDisplay, options))
 
   saveEdits = ->
     link = if $link.find('a').length > 0 then $link.find('a').html().trim() else ''
+    instagramId = if $instagram.find('a').length > 0 then $instagram.find('a').html().trim() else ''
     data =
       location: $location.html().trim()
       description: $description.html().trim()
       link: link
+      instagram_id: instagramId
       avatar_crop_params: $cropParams.val()
       profile_background_crop_params: $cropParamsBg.val()
     if $backgroundInput.data('attachment')
@@ -69,6 +78,9 @@ $ ->
         if xhr.responseJSON['link']
           errors = xhr.responseJSON['link'][0]
           $link.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
+        if xhr.responseJSON['instagram_id']
+          errors = xhr.responseJSON['instagram_id'][0]
+          $instagram.addClass('error').tooltip(title: errors, trigger: 'manual', placement: 'right').tooltip('show')
         if xhr.responseJSON['profile_background_id']
           errors = xhr.responseJSON['profile_background_id'][0]
           alert errors

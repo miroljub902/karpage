@@ -19,7 +19,8 @@
           .small
             .location.editable data-label="Location" = user.location
             .description.editable data-label="Bio" data-type="textarea" = user.description
-            .link.editable data-label="Link" = link_to_if user.link, user.link, user.link, target: '_blank'
+            .link.editable data-label="Link" = link_to_if user.link.present?, user.link, user.link, target: '_blank'
+            .instagram.editable data-label="Instagram ID" = link_to_if user.instagram_id.present?, user.instagram_id, user.instagram_link, target: '_blank'
 
         - if my_profile?
           .actions.clearfix
