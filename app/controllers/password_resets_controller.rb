@@ -1,5 +1,6 @@
 class PasswordResetsController < ApplicationController
   before_action :require_no_user
+  skip_before_action :verify_authenticity_token
 
   layout 'simple'
 
