@@ -33,6 +33,7 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
+    puts `bin/rake deploy:notify_appsignal`
 
     on :launch do
       in_path(fetch(:current_path)) do

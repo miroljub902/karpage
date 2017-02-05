@@ -13,3 +13,7 @@
 
 The app uses Postmark to send transactional e-mails. 
 The `example.env` file has the variables that need to be set.
+
+## Deployment
+
+1. `mina deploy`
