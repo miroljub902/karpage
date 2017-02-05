@@ -105,4 +105,27 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_equal 1, car.reload.photos.count
     assert_not_equal photo.id, car.photos.first.id
   end
+
+  test 'can add with parts list' do
+    mock_request 's3'
+    user = users(:john_doe)
+    authorize_user user
+    post :create, car: {
+      year: '2015', make_name: 'Audi', car_model_name: 'R8',
+      parts_attributes: [
+        { type: 'Wheel', manufacturer: 'Michelin', model: 'X100', price: 500,
+          photo_attributes: { image_id: 'dummy', image_content_type: 'image/jpeg', image_size: 123456, image_filename: 'part.jpg' } },
+        { type: 'Wheel', manufacturer: 'Michelin', model: 'X100', price: 200 }
+      ]
+    }
+    assert_response :created
+    car = user.cars.last
+    assert_equal 2, car.parts.count
+    assert_equal 700, car.parts.sum(:price)
+    assert car.parts.first.photo.present?
+
+    car.photos.create! image_id: 'dummy'
+    get :index
+    puts json_response['cars'].first['build_list']
+  end
 end

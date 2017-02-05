@@ -112,6 +112,41 @@ ALTER SEQUENCE blocks_id_seq OWNED BY blocks.id;
 
 
 --
+-- Name: car_parts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE car_parts (
+    id integer NOT NULL,
+    car_id integer,
+    type character varying,
+    manufacturer character varying,
+    model character varying,
+    price numeric(12,2),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: car_parts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE car_parts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: car_parts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE car_parts_id_seq OWNED BY car_parts.id;
+
+
+--
 -- Name: cars; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -656,6 +691,13 @@ ALTER TABLE ONLY blocks ALTER COLUMN id SET DEFAULT nextval('blocks_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY car_parts ALTER COLUMN id SET DEFAULT nextval('car_parts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY cars ALTER COLUMN id SET DEFAULT nextval('cars_id_seq'::regclass);
 
 
@@ -764,6 +806,14 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY blocks
     ADD CONSTRAINT blocks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: car_parts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY car_parts
+    ADD CONSTRAINT car_parts_pkey PRIMARY KEY (id);
 
 
 --
@@ -911,6 +961,13 @@ CREATE INDEX index_blocks_on_blocked_user_id ON blocks USING btree (blocked_user
 --
 
 CREATE INDEX index_blocks_on_user_id ON blocks USING btree (user_id);
+
+
+--
+-- Name: index_car_parts_on_car_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_car_parts_on_car_id ON car_parts USING btree (car_id);
 
 
 --
@@ -1398,4 +1455,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160426005009');
 INSERT INTO schema_migrations (version) VALUES ('20161002151711');
 
 INSERT INTO schema_migrations (version) VALUES ('20161109004348');
+
+INSERT INTO schema_migrations (version) VALUES ('20170205214738');
 

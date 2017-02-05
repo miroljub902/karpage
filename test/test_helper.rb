@@ -16,7 +16,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   def omniauth_mock_facebook
-    OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+    OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new(
       provider: 'facebook',
       uid: identities(:facebook).uid,
       info: {
@@ -52,7 +52,7 @@ class ActiveSupport::TestCase
           updated_time: '2011-11-11T06:21:03+0000'
         }
       }
-    })
+    )
   end
 
   def mock_request(request, response: nil)

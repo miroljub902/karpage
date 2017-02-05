@@ -1,0 +1,3 @@
+method: any
+url: ".*s3.amazonaws.com.*"
+url_type: regex

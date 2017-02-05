@@ -8,4 +8,3 @@ responses:
   invalid_token:
     status: 400
     body: '{"error":{"message":"Invalid OAuth access token.","type":"OAuthException","code":190,"fbtrace_id":"F13ea+UbPlJ"}}'
-

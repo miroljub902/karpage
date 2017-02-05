@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resource :like, only: %i(create destroy), likeable_type: 'Car'
       resources :comments, commentable_type: 'Car'
       resources :reports, only: :create, reportable_type: 'Car'
+      resources :car_parts, only: %i(create update destroy), path: 'parts', as: :parts
     end
     resources :posts, only: %i(index show create update destroy) do
       get 'user/:user_id' => 'posts#index', on: :collection, constraints: { user_id: /[^\/]+/ }
