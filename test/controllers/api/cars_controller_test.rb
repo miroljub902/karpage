@@ -123,9 +123,5 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_equal 2, car.parts.count
     assert_equal 700, car.parts.sum(:price)
     assert car.parts.first.photo.present?
-
-    car.photos.create! image_id: 'dummy'
-    get :index
-    puts json_response['cars'].first['build_list']
   end
 end
