@@ -2,7 +2,7 @@ class Api::CarsController < ApiController
   before_action :require_user, only: %i(create update destroy reset_counter)
 
   def index
-    @cars = Car.has_photos.owner_has_login.includes(:model, :make).not_blocked(current_user)
+    @cars = Car.has_photos.owner_has_login.includes(:model, :make, parts: :photo).not_blocked(current_user)
     if params[:search].present?
       @cars = @cars.simple_search(params[:search])
       @user_count = User.simple_search(params[:search]).count
@@ -27,7 +27,7 @@ class Api::CarsController < ApiController
   end
 
   def show
-    @car = Car.not_blocked(current_user).find(params[:id])
+    @car = Car.not_blocked(current_user).includes(parts: :photo).find(params[:id])
     respond_with @car
   end
 
