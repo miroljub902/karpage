@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :delete_all
 
-  attachment :photo
+  attachment :photo, content_type: :image
 
   validate :validate_presence_of_photo
 

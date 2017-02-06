@@ -15,9 +15,9 @@ class User < ActiveRecord::Base
     config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? && password.present? }
   end
 
-  attachment :avatar
-  attachment :profile_background
-  attachment :profile_thumbnail
+  attachment :avatar, content_type: :image
+  attachment :profile_background, content_type: :image
+  attachment :profile_thumbnail, content_type: :image
 
   has_many :identities, dependent: :delete_all
   has_many :cars, dependent: :destroy

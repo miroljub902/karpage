@@ -5,7 +5,7 @@ aws = {
   bucket: ENV['S3_BUCKET'],
   region: ENV['S3_REGION']
 }
-Refile.store = Refile::S3.new(prefix: 'store', **aws)
+Refile.store = Refile::S3.new(prefix: 'store', max_size: 5.megabytes, **aws)
 Refile.cdn_host = ENV['CDN_HOST'] if ENV['CDN_HOST'].present?
 
 %i(fit fill).each do |method|

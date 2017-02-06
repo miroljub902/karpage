@@ -3,7 +3,7 @@ class Photo < ActiveRecord::Base
 
   scope :sorted, -> { order(sorting: :asc) }
 
-  attachment :image
+  attachment :image, content_type: :image
 
   before_save -> do
     if attachable.respond_to?(:photos)
