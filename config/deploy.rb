@@ -47,8 +47,7 @@ end
 
 namespace :deploy do
   task :notify do
-    run :local do
-      command 'bin/rake deploy:notify_appsignal'
-    end
+    # Trying to run this automatically inside a run :local block causes madness
+    comment 'Run: bin/rake deploy:notify_appsignal'
   end
 end

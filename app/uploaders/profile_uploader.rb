@@ -65,6 +65,8 @@ class ProfileUploader
       i.fill 'white'
       i.tint '70'
     end
+  rescue OpenURI::HTTPError
+    nil
   end
 
   def name_container
@@ -92,6 +94,7 @@ class ProfileUploader
   def profile_image_generator
     header_image = image_header
     car_image = car
+    return if car_image.nil?
     profile_image = image_profile_picture
     blank_base = MiniMagick::Image.new(blank_base_image)
     template = MiniMagick::Image.new(image_template)
