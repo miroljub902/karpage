@@ -1,4 +1,6 @@
 module ImgixRefileHelper
+  include Refile::AttachmentHelper
+
   def ix_refile_image_url(obj, key, **opts)
     path = s3_path(obj, key)
     opts.merge!(default_ix_options(obj, key, opts).except(:class))
