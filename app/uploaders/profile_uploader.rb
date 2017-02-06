@@ -22,16 +22,16 @@ class ProfileUploader
 
   def default_image_header
     MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
-      i.resize "1000x420^"
-      i.gravity "Center"
-      i.crop "1000x420+0+0"
+      i.resize '1235x658^'
+      i.gravity 'Center'
+      i.crop '1235x658+0+0'
     end
   end
 
   def image_header
     retries = 0
     if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
-      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 420)
+      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1235, h: 658)
       MiniMagick::Image.open(url)
     else
       default_image_header
@@ -69,9 +69,9 @@ class ProfileUploader
 
   def default_car_image
     MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
-      i.resize "1000x420^"
-      i.gravity "Center"
-      i.crop "1000x480+0+0"
+      i.resize '1238x677^'
+      i.gravity 'Center'
+      i.crop '1238x677+0+0'
     end
   end
 
@@ -81,13 +81,23 @@ class ProfileUploader
     photo = car.photos.sorted.first if car
     car_image =
       if photo && photo.image_content_type.starts_with?('image/')
-        url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 480)
+        url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
+        text = "#{car.year} #{car.make.name} #{car.model.name}"
+        point_size = case text.size
+                     when 0..32 then 80
+                     when 33..43 then 60
+                     when 44..54 then 40
+                     else
+                       20
+                     end
         MiniMagick::Image.open(url).combine_options do |i|
-          i.font "app/assets/fonts/helvetica.ttf"
-          i.gravity "Center"
-          i.pointsize 80
+          i.font 'app/assets/fonts/helvetica.ttf'
+          i.gravity 'Center'
+          i.pointsize point_size
+          i.fill 'Gray'
+          i.draw "text 3,3 '#{text}'"
           i.fill 'White'
-          i.draw "text 0,0 '#{car.year} #{car.make.name} #{car.model.name}'"
+          i.draw "text 0,0 '#{text}'"
         end
       else
         default_car_image
@@ -109,13 +119,14 @@ class ProfileUploader
   def name_container
     name_container = MiniMagick::Image.open('app/assets/images/profile/name_template_container.png')
     result = name_container.composite(name_container) do |c|
-      c.compose "Over"
+      c.compose 'Over'
     end
 
     result.combine_options do |i|
-      i.font "app/assets/fonts/helvetica.ttf"
-      i.gravity "Center"
+      i.font 'app/assets/fonts/helvetica.ttf'
+      i.gravity 'Center'
       i.pointsize 50
+      i.fill 'Black'
       i.draw "text 0,0 '#{user.login}'"
     end
   end
@@ -128,108 +139,116 @@ class ProfileUploader
     'app/assets/images/profile/counter_template.png'
   end
 
-  def profile_image_generator
+  def generate(inline: false)
     header_image = image_header
     car_image = car
     profile_image = image_profile_picture
     blank_base = MiniMagick::Image.open(blank_base_image)
     template = MiniMagick::Image.open(image_template)
     profile_template_image = MiniMagick::Image.open(profile_template)
-    follower_counter = MiniMagick::Image.open(counter_container)
-    car_counter = MiniMagick::Image.open(counter_container)
-    followee_counter = MiniMagick::Image.open(counter_container)
-    template_counter = MiniMagick::Image.open(counter_template)
 
+    ### Disabled on latest template version
+    # follower_counter = MiniMagick::Image.open(counter_container)
+    # car_counter = MiniMagick::Image.open(counter_container)
+    # followee_counter = MiniMagick::Image.open(counter_container)
+    # template_counter = MiniMagick::Image.open(counter_template)
     name_template = name_container
 
-    profile_image.resize "350^x320"
-
     result = blank_base.composite(header_image) do |c|
-      c.compose "Over"
-      c.geometry "+713+165"
+      c.compose 'Over'
+      c.geometry '+348+230'
     end
 
     result = result.composite(car_image) do |c|
-      c.compose "Over"
-      c.geometry "+713+1200"
+      c.compose 'Over'
+      c.geometry '+347+1370'
     end
 
+    profile_image.resize '409x408'
     created_profile_image = profile_template_image.composite(profile_image) do |c|
-      c.compose "atop"
-      c.gravity "center"
+      c.compose 'atop'
+      c.gravity 'center'
     end
 
     result = result.composite(created_profile_image) do |c|
-      c.compose "Over"
-      c.geometry "+1039+453"
+      c.compose 'Over'
+      c.geometry '+761+685'
     end
 
     result = result.composite(template) do |c|
-      c.compose "Over"
+      c.compose 'Over'
     end
+
     #### Counter Templating ####
 
     ### follower Counter
-    follower_counter = template_counter.composite(follower_counter) do |c|
-      c.compose "Over"
-    end
-
-    follower_counter.combine_options do |i|
-      i.font "app/assets/fonts/helvetica.ttf"
-      i.gravity "Center"
-      i.pointsize 50
-      i.draw "text 0,0 ' #{user.followers.count} '"
-    end
-
-    result = result.composite(follower_counter) do |c|
-      c.compose "Over"
-      c.geometry "+718+1000"
-    end
+    ### Disabled on latest template version
+    # follower_counter = template_counter.composite(follower_counter) do |c|
+    #   c.compose "Over"
+    # end
+    #
+    # follower_counter.combine_options do |i|
+    #   i.font "app/assets/fonts/helvetica.ttf"
+    #   i.gravity "Center"
+    #   i.pointsize 50
+    #   i.draw "text 0,0 ' #{user.followers.count} '"
+    # end
+    #
+    # result = result.composite(follower_counter) do |c|
+    #   c.compose "Over"
+    #   c.geometry "+718+1000"
+    # end
 
     ### Car Counter
-    car_counter = template_counter.composite(car_counter) do |c|
-      c.compose "Over"
-    end
-
-    car_counter.combine_options do |i|
-      i.font "app/assets/fonts/helvetica.ttf"
-      i.gravity "Center"
-      i.pointsize 50
-      i.draw "text 0,0 '#{user.cars.count}'"
-    end
-
-    result = result.composite(car_counter) do |c|
-      c.compose "Over"
-      c.geometry "+1055+985"
-    end
+    ### Disabled on latest template version
+    # car_counter = template_counter.composite(car_counter) do |c|
+    #   c.compose "Over"
+    # end
+    #
+    # car_counter.combine_options do |i|
+    #   i.font "app/assets/fonts/helvetica.ttf"
+    #   i.gravity "Center"
+    #   i.pointsize 50
+    #   i.draw "text 0,0 '#{user.cars.count}'"
+    # end
+    #
+    # result = result.composite(car_counter) do |c|
+    #   c.compose "Over"
+    #   c.geometry "+1055+985"
+    # end
 
     ### Followee counter
-    followee_counter = template_counter.composite(followee_counter) do |c|
-      c.compose "Over"
-    end
-
-    followee_counter.combine_options do |i|
-      i.font "app/assets/fonts/helvetica.ttf"
-      i.gravity "Center"
-      i.pointsize 50
-      i.draw "text 0,0 '#{user.followees.count}'"
-    end
-
-    result = result.composite(followee_counter) do |c|
-      c.compose "Over"
-      c.geometry "+1390+1000"
-    end
+    ### Disabled on latest template version
+    # followee_counter = template_counter.composite(followee_counter) do |c|
+    #   c.compose "Over"
+    # end
+    #
+    # followee_counter.combine_options do |i|
+    #   i.font "app/assets/fonts/helvetica.ttf"
+    #   i.gravity "Center"
+    #   i.pointsize 50
+    #   i.draw "text 0,0 '#{user.followees.count}'"
+    # end
+    #
+    # result = result.composite(followee_counter) do |c|
+    #   c.compose "Over"
+    #   c.geometry "+1390+1000"
+    # end
 
     result = result.composite(name_template) do |c|
-      c.compose "Over"
-      c.geometry "+713+774"
+      c.compose 'Over'
+      c.geometry '+348+1110'
     end
 
-    #### Counter Templating ####
-
-    result.write "tmp/thumbnail_#{user.id}.jpg"
-    user.profile_thumbnail = File.open(result.path)
-    user.save
+    if inline # For testing
+      filename = "thumbnail_#{user.id}.jpg"
+      result.write filename
+      puts "Written to #{filename}"
+    else
+      result.write "tmp/thumbnail_#{user.id}.jpg"
+      user.profile_thumbnail = File.open(result.path)
+      user.save
+    end
 
     force_facebook_og_refresh if Rails.env.production?
   end

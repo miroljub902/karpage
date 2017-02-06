@@ -1,8 +1,9 @@
 namespace :thumbnails do
-  task generate: :environment do
-    User.find_each do |user|
+  task :generate, [:user_id] => :environment do |_t, args|
+    users = args[:user_id] ? User.where(id: args[:user_id]) : User.all
+    users.find_each do |user|
       uploader = ProfileUploader.new(user)
-      uploader.profile_image_generator
+      uploader.generate(inline: true)
     end
   end
 
