@@ -1,6 +1,10 @@
+require 'net/http'
+require 'uri'
+
 class ProfileUploader
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
+  include Rails.application.routes.url_helpers
 
   attr_reader :user
 
@@ -16,35 +20,67 @@ class ProfileUploader
     'app/assets/images/profile/new-design-blank.png'
   end
 
-  def image_header
-    if user.profile_background_id.present?
-      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 420)
-      MiniMagick::Image.open(url)
-    else
-      MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
-        i.resize "1000x420^"
-        i.gravity "Center"
-        i.crop "1000x420+0+0"
-      end
+  def default_image_header
+    MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
+      i.resize "1000x420^"
+      i.gravity "Center"
+      i.crop "1000x420+0+0"
     end
   end
 
-  def image_profile_picture
-    if user.avatar_id
-      MiniMagick::Image.open('https://'+ ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
+  def image_header
+    retries = 0
+    if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
+      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 420)
+      MiniMagick::Image.open(url)
     else
-      MiniMagick::Image.new('app/assets/images/profile/default_profile_image.jpeg')
+      default_image_header
     end
+  rescue OpenURI::HTTPError
+    default_image_header
+  rescue Net::ReadTimeout
+    retries += 1
+    retry if retries < 4
+    default_image_header
+  end
+
+  def default_image_profile
+    MiniMagick::Image.new('app/assets/images/profile/default_profile_image.jpeg')
+  end
+
+  def image_profile_picture
+    retries = 0
+    if user.avatar_id.present? && user.avatar_content_type.starts_with?('image/')
+      MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
+    else
+      default_image_profile
+    end
+  rescue OpenURI::HTTPError
+    default_image_profile
+  rescue Net::ReadTimeout
+    retries += 1
+    retry if retries < 4
+    default_image_profile
   end
 
   def profile_template
     'app/assets/images/profile/profile_image_template.png'
   end
 
+  def default_car_image
+    MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
+      i.resize "1000x420^"
+      i.gravity "Center"
+      i.crop "1000x480+0+0"
+    end
+  end
+
   def car
+    retries = 0
+    car = user.cars.current.has_photos.sorted.first
+    photo = car.photos.sorted.first if car
     car_image =
-      if (car = user.cars.current.has_photos.sorted.first)
-        photo = car.photos.sorted.first
+      if photo && photo.image_content_type.starts_with?('image/')
         url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 480)
         MiniMagick::Image.open(url).combine_options do |i|
           i.font "app/assets/fonts/helvetica.ttf"
@@ -54,19 +90,20 @@ class ProfileUploader
           i.draw "text 0,0 '#{car.year} #{car.make.name} #{car.model.name}'"
         end
       else
-        MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
-          i.resize "1000x420^"
-          i.gravity "Center"
-          i.crop "1000x480+0+0"
-        end
+        default_car_image
       end
-
+  rescue OpenURI::HTTPError
+    car_image = default_car_image
+  rescue Net::ReadTimeout
+    retries += 1
+    retry if retries < 4
+    default_car_image
+  ensure
     car_image.combine_options do |i|
       i.fill 'white'
       i.tint '70'
     end
-  rescue OpenURI::HTTPError
-    nil
+    car_image
   end
 
   def name_container
@@ -94,7 +131,6 @@ class ProfileUploader
   def profile_image_generator
     header_image = image_header
     car_image = car
-    return if car_image.nil?
     profile_image = image_profile_picture
     blank_base = MiniMagick::Image.new(blank_base_image)
     template = MiniMagick::Image.new(image_template)
@@ -194,5 +230,17 @@ class ProfileUploader
     result.write "tmp/thumbnail_#{user.id}.jpg"
     user.profile_thumbnail = File.open(result.path)
     user.save
+
+    force_facebook_og_refresh if Rails.env.production?
+  end
+
+  def force_facebook_og_refresh
+    uri = URI.parse('https://graph.facebook.com')
+    params = { id: profile_url(user), scrape: true }
+    Net::HTTP.post_form uri, params
+  end
+
+  def default_url_options
+    { host: ENV.fetch('HOSTNAME') }
   end
 end
