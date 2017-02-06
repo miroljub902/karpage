@@ -33,7 +33,6 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-    invoke :'deploy:notify'
 
     on :launch do
       in_path(fetch(:current_path)) do
@@ -43,15 +42,9 @@ task :deploy do
       end
     end
   end
-end
 
-namespace :deploy do
-  task :notify do
-    # Trying to run this automatically inside a run :local block causes madness
-    comment '-' * 40
-    comment '-' * 40
-    comment 'Run: bin/rake deploy:notify_appsignal'
-    comment '-' * 40
-    comment '-' * 40
+  run :local do
+    comment 'Notify Appsignal'
+    `Run: bin/rake deploy:notify_appsignal`
   end
 end
