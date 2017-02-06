@@ -90,6 +90,19 @@ $ ->
       aws_url: $files.data('s3-host')
       bucket: $files.data('s3-bucket')
 
+    validateFile = (file) ->
+      maxSize = 1024 * 1024 * 5
+      validSize = file.size < maxSize
+      validType = /image\//.test(file.type)
+      if validSize && validType
+        return true
+      else if !validSize
+        error = "File is too big, maximum is #{maxSize / 1048576} MB"
+      else if !validType
+        error = "File is not a valid image file"
+      alert error
+    false
+
     $files.change (e) ->
       start = $('.photo.has-photo', $photos).length
       total = start + e.target.files.length
@@ -103,6 +116,10 @@ $ ->
       $.each e.target.files, (i) ->
         file = this
         $photo = $(".photo:nth-child(#{start + i + 1})", $photos)
+        unless validateFile(file)
+          updateButtonText()
+          i -= 1 # So next file is on proper slot in thumbnail list
+
         $photo.addClass('uploading').attr('data-progress', '0%')
 
         image_id = randomHex()
@@ -146,7 +163,7 @@ $ ->
 
       $files.wrap('<form>').closest('form').get(0).reset()
       $files.unwrap()
-      $files.stopPropagation()
-      $files.preventDefault()
+      e.stopPropagation()
+      e.preventDefault()
 
     $files.click()

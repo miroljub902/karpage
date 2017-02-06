@@ -119,6 +119,22 @@ $ ->
     aws_url: $backgroundInput.data('s3-host')
     bucket: $backgroundInput.data('s3-bucket')
 
+  validateFile = (file) ->
+    maxSize = 1024 * 1024 * 5
+    validSize = file.size < maxSize
+    validType = /image\//.test(file.type)
+    if validSize && validType
+      return true
+    else if !validSize
+      error = "File is too big, maximum is #{maxSize / 1048576} MB"
+    else if !validType
+      error = "File is not a valid image file"
+    alert error
+    false
+
+  completeUpload = ($control) ->
+    $control.removeClass('disabled').html($control.data('original'))
+
   $changeBackground.click (e) ->
     e.preventDefault()
     $backgroundInput.click()
@@ -126,6 +142,7 @@ $ ->
   $backgroundInput.change (e) ->
     $changeBackground.addClass('disabled').data('original', $changeBackground.html()).html('Uploading...')
     file = e.target.files[0]
+    return completeUpload($changeBackground) unless validateFile(file)
     imageId = randomHex()
     uploader.add
       name: "#{$backgroundInput.data('prefix')}/#{imageId}"
@@ -145,7 +162,7 @@ $ ->
           filename: file.name
         imageUrl = xhr.responseURL.replace(/\?.+/, '')
         $background.css('backgroundImage', "url(#{imageUrl})")
-        $changeBackground.removeClass('disabled').html($changeBackground.data('original'))
+        completeUpload $changeBackground
         cropBackground imageUrl
       error: ->
         alert 'Could not upload your background image, please try again later.'
@@ -221,6 +238,7 @@ $ ->
   $avatarInput.change (e) ->
     $avatar.data('edit-original', $avatar.attr('data-edit')).attr('data-edit', 'Uploading...')
     file = e.target.files[0]
+    return completeUpload($avatar) unless validateFile(file)
     imageId = randomHex()
     uploader.add
       name: "#{$avatarInput.data('prefix')}/#{imageId}"

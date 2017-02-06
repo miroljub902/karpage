@@ -1,11 +1,14 @@
 {
   "name": "evaporatejs",
+  "version": "1.6.4",
   "description": "Javascript library for browser to S3 multipart resumable uploads",
   "main": "evaporate.js",
   "keywords": [
     "s3",
     "aws",
-    "uploads"
+    "uploads",
+    "transfer",
+    "acceleration"
   ],
   "authors": [
     "Tom Saffell"
@@ -19,13 +22,13 @@
     "test",
     "tests"
   ],
-  "_release": "1a80699795",
+  "_release": "1.6.4",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "1a806997959df2e14cd4b7ce21120e75ec9e4fe7"
+    "type": "version",
+    "tag": "1.6.4",
+    "commit": "ea2433f1e81cf4001e349ff04fed60a48ebbbf79"
   },
-  "_source": "git://github.com/TTLabs/EvaporateJS.git",
-  "_target": "*",
+  "_source": "https://github.com/TTLabs/EvaporateJS.git",
+  "_target": "~1.6.4",
   "_originalSource": "evaporatejs"
 }
