@@ -97,7 +97,7 @@ class ProfileUploader
   rescue Net::ReadTimeout
     retries += 1
     retry if retries < 4
-    default_car_image
+    car_image = default_car_image
   ensure
     car_image.combine_options do |i|
       i.fill 'white'
