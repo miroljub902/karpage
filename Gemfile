@@ -3,6 +3,7 @@ ruby '2.3.1'
 
 gem 'rails', '4.2.4'
 gem 'pg'
+gem 'strip_attributes'
 gem 'puma'
 gem 'dotenv-rails'
 gem 'authlogic'

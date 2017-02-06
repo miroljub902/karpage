@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include FeaturedOrdering
 
+  strip_attributes allow_empty: true
+
   acts_as_authentic do |config|
     config.crypto_provider Authlogic::CryptoProviders::BCrypt
     config.perishable_token_valid_for 3.hours
