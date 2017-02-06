@@ -45,6 +45,6 @@ task :deploy do
 
   run :local do
     comment 'Notify Appsignal'
-    `Run: bin/rake deploy:notify_appsignal`
+    puts `bin/rake deploy:notify_appsignal`
   end
 end
