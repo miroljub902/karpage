@@ -30,8 +30,9 @@ class ProfileCarsController < ApplicationController
 
   def show
     user = User.find_by(login: params[:profile_id])
-    @car = UserCarDecorator.new(user.cars.friendly.find_by(id: params[:car_id])) if user
-    return render_404 if user.nil? || @car.nil?
+    car = user.cars.friendly.find(params[:car_id]) rescue nil
+    return render_404 if user.nil? || car.nil?
+    @car = UserCarDecorator.new(car)
     @car.increment! :hits unless @car.user_id == current_user.try(:id)
   end
 end
