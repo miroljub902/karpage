@@ -17,7 +17,7 @@ class ProfileUploader
   end
 
   def image_header
-    if user.profile_background_id
+    if user.profile_background_id.present?
       url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1000, h: 420)
       MiniMagick::Image.open(url)
     else

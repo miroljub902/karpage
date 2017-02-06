@@ -3,7 +3,9 @@ class ProfileThumbnailJob < ActiveJob::Base
 
   def perform(user_id)
     user = User.find_by(id: user_id)
-    uploader = ProfileUploader.new(user)
-    uploader.profile_image_generator
+    if user
+      uploader = ProfileUploader.new(user)
+      uploader.profile_image_generator
+    end
   end
 end
