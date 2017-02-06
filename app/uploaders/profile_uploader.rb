@@ -6,7 +6,7 @@ class ProfileUploader
   include Imgix::Rails::UrlHelper
   include Rails.application.routes.url_helpers
 
-  attr_reader :user
+  attr_reader :user, :tempfiles
 
   def initialize(user)
     @user = user
@@ -45,7 +45,7 @@ class ProfileUploader
   end
 
   def default_image_profile
-    MiniMagick::Image.new('app/assets/images/profile/default_profile_image.jpeg')
+    MiniMagick::Image.open('app/assets/images/profile/default_profile_image.jpeg')
   end
 
   def image_profile_picture
@@ -107,7 +107,7 @@ class ProfileUploader
   end
 
   def name_container
-    name_container = MiniMagick::Image.new('app/assets/images/profile/name_template_container.png')
+    name_container = MiniMagick::Image.open('app/assets/images/profile/name_template_container.png')
     result = name_container.composite(name_container) do |c|
       c.compose "Over"
     end
@@ -132,13 +132,13 @@ class ProfileUploader
     header_image = image_header
     car_image = car
     profile_image = image_profile_picture
-    blank_base = MiniMagick::Image.new(blank_base_image)
-    template = MiniMagick::Image.new(image_template)
-    profile_template_image = MiniMagick::Image.new(profile_template)
-    follower_counter = MiniMagick::Image.new(counter_container)
-    car_counter = MiniMagick::Image.new(counter_container)
-    followee_counter = MiniMagick::Image.new(counter_container)
-    template_counter = MiniMagick::Image.new(counter_template)
+    blank_base = MiniMagick::Image.open(blank_base_image)
+    template = MiniMagick::Image.open(image_template)
+    profile_template_image = MiniMagick::Image.open(profile_template)
+    follower_counter = MiniMagick::Image.open(counter_container)
+    car_counter = MiniMagick::Image.open(counter_container)
+    followee_counter = MiniMagick::Image.open(counter_container)
+    template_counter = MiniMagick::Image.open(counter_template)
 
     name_template = name_container
 
