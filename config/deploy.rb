@@ -33,6 +33,7 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
+    invoke :'deploy:notify'
 
     on :launch do
       in_path(fetch(:current_path)) do
@@ -40,6 +41,14 @@ task :deploy do
         command %{touch tmp/restart.txt}
         command %{sudo systemctl restart karpage.target}
       end
+    end
+  end
+end
+
+namespace :deploy do
+  task :notify do
+    run :local do
+      command 'bin/rake deploy:notify_appsignal'
     end
   end
 end
