@@ -48,6 +48,10 @@ end
 namespace :deploy do
   task :notify do
     # Trying to run this automatically inside a run :local block causes madness
+    comment '-' * 40
+    comment '-' * 40
     comment 'Run: bin/rake deploy:notify_appsignal'
+    comment '-' * 40
+    comment '-' * 40
   end
 end
