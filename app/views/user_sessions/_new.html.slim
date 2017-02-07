@@ -1,4 +1,5 @@
-#modalSignIn.session.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalSignInLabel"
+- inline ||= false
+#modalSignIn.session.modal.fade class=('modal-inline' if inline) tabindex="-1" role="dialog" aria-labelledby="#modalSignInLabel"
   .modal-dialog role="document"
     .modal-content
       = form_for @user_session, url: user_session_path, data: { remote: true } do |f|
@@ -9,6 +10,8 @@
           h4#modalSignInLabel.modal-title.text-center Sign In
 
           .inputs
+            - if @user_session.errors[:base].any?
+              .alert.alert-danger= @user_session.errors[:base].to_sentence
             .form-group class=(@user_session.errors[:login].any? ? 'error' : nil)
               = f.text_field :login, class: 'form-control input-lg', placeholder: 'E-mail or Username', required: true
               - if @user_session.errors[:login].any?

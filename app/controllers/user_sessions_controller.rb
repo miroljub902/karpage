@@ -2,10 +2,14 @@ class UserSessionsController < ApplicationController
   before_action :require_no_user, only: %i(new create)
   before_action :require_user, only: :destroy
   after_action :track_signup, only: :create, if: -> { @user_session.valid? && @user_session.user.created_at > 10.seconds.ago }
+  skip_before_action :require_complete_profile, only: :destroy
+
+  layout 'simple'
 
   def new
     @user_session = UserSession.new
     respond_to do |format|
+      format.html
       format.js { render '_modals/new', locals: { id: 'modalSignIn', content: 'new' } }
     end
   end
@@ -15,7 +19,8 @@ class UserSessionsController < ApplicationController
     user = @user_session.user
     respond_to do |format|
       format.js {
-        if @user_session.valid?
+        # Double check with empty errors so we con't clear previously set errors
+        if @user_session.errors.empty? && @user_session.valid?
           location = user.incomplete_profile? ? edit_user_path : profile_path(user)
           render inline: "window.location = '#{location}';"
         else
@@ -23,7 +28,8 @@ class UserSessionsController < ApplicationController
         end
       }
       format.html {
-        if @user_session.valid?
+        # Double check with empty errors so we con't clear previously set errors
+        if @user_session.errors.empty? && @user_session.valid?
           location = user.incomplete_profile? ? edit_user_path : profile_path(user)
           redirect_to location, notice: nil
         else
@@ -53,6 +59,10 @@ class UserSessionsController < ApplicationController
     return nil unless env['omniauth.auth']
     identity = Identity.from_omniauth(env['omniauth.auth'])
     UserSession.create(identity.user, true)
+  rescue ActiveRecord::StatementInvalid
+    UserSession.new.tap do |session|
+      session.errors.add :base, 'An unexpected error occurred. Please try again later.'
+    end
   end
 
   def normal_session

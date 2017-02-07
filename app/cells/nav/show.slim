@@ -31,5 +31,5 @@
               li= link_to 'Edit Account', edit_user_path, data: { remote: true }
               li= link_to 'Sign Out', user_session_path, method: :delete
         - else
-          li= link_to 'Sign In', new_user_session_path, data: { remote: true }
+          li= link_to 'Sign In', new_user_session_path, data: { remote: true }, id: 'js-sign-in'
           li= link_to 'Join Us', new_user_path, data: { remote: true }

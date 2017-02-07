@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :dream_cars, :next_car, allow_destroy: true
 
   validates_associated :identities
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, allow_blank: true
 
   before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }

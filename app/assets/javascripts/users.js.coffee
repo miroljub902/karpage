@@ -1,4 +1,7 @@
 $ ->
+  handler() if $('.user-profile').length > 0
+
+handler = ->
   $userProfile = $('.user-profile')
   $edit = $('.edit', $userProfile)
   $editing = $('.editing', $userProfile)
