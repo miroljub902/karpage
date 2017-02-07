@@ -23,8 +23,12 @@ class Car < ActiveRecord::Base
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
   after_create :resort_first
-  after_update :resort_all, if: :sorting_changed?
+  after_update -> { @sorting_changed = sorting_changed? }
   after_save :update_user_profile_thumbnail
+
+  attr_reader :sorting_changed
+  # Do this in after commit to avoid deadlocks:
+  after_commit :resort_all, if: -> { sorting_changed }, on: :update
 
   scope :popular, -> { order(hits: :desc) }
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
@@ -97,6 +101,7 @@ class Car < ActiveRecord::Base
     scope.update_all 'sorting = sorting + 1'
   end
 
+  # This can't happen inside same transaction as car update or deadlocks can occur
   def resort_all
     return unless current? || past?
     scope = self.class.where(user: user).where('sorting >= ?', sorting).where.not(id: id)

@@ -2,6 +2,11 @@ require 'test_helper'
 
 class CarTest < ActiveSupport::TestCase
   test 'resorting set of cars' do
+    # This happens on after_commit on the model but we have to override it
+    # here so tests pass as Rails won't run the after_commit for fixtures
+    # (not even with self.transactional_fixtures = true)
+    Car.after_update :resort_all, if: :sorting_changed?
+
     user = users(:john_doe)
     model = models(:audi_r8)
     Car.any_instance.expects(:update_user_profile_thumbnail).at_least_once
