@@ -138,6 +138,11 @@ class User < ActiveRecord::Base
   def generate_access_token!
     generate_access_token
     save!
+  rescue ActiveRecord::RecordNotUnique => e
+    # This sometimes happens on the API, somehow bypassing the uniqueness validation so rescue here
+    # Parse "DETAIL: Key (<attribute>)=(<value>) already exists"
+    attribute = e.message.match(/Key \((.*?)\)=.+already exists/m)[1]
+    errors.add attribute, :taken
   end
 
   private

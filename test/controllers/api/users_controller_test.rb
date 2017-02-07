@@ -10,6 +10,14 @@ class Api::UsersControllerTest < ApiControllerTest
     end
   end
 
+  test 'returns validation errors' do
+    existing = users(:john_doe)
+    assert_no_difference 'User.count' do
+      post :create, user: { email: existing.email, login: Faker::Internet.user_name, password: 'password' }
+      assert_response :unprocessable_entity
+    end
+  end
+
   test 'tracks signup' do
     User.any_instance.stubs(:send_welcome_email)
     GATracker.expects(:event!).with do |user, opts|
