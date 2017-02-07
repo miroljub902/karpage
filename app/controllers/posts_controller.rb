@@ -17,7 +17,9 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = @user.posts.find(params[:id]).decorate
+    @post = @user.posts.find_by(id: params[:id])
+    return render_404 unless @post
+    @post = @post.decorate
     @post.increment! :views unless current_user && current_user.id == @user.id
     respond_to do |format|
       format.html
@@ -78,7 +80,9 @@ class PostsController < ApplicationController
 
   def find_user
     @user = if params[:profile_id]
-      User.find_by!(login: params[:profile_id]).decorate
+      user = User.find_by(login: params[:profile_id])
+      return render_404 unless user
+      user.decorate
     else
       current_user
     end

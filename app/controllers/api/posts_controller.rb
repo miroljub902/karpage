@@ -13,7 +13,8 @@ class Api::PostsController < ApiController
   end
 
   def show
-    @post = Post.not_blocked(current_user).find(params[:id])
+    @post = Post.not_blocked(current_user).find_by(id: params[:id])
+    return render_404 unless @post
     respond_with @post
   end
 

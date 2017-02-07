@@ -13,7 +13,9 @@ class ProfilesController < ApplicationController
   end
 
   def show
-    @user = User.find_by!(login: params[:profile_id]).decorate
+    @user = User.find_by(login: params[:profile_id])
+    return render_404 unless @user
+    @user = @user.decorate
     @cars = UserCarsDecorator.cars(@user)
   end
 
