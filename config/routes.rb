@@ -92,8 +92,8 @@ Rails.application.routes.draw do
       put 'like' => 'likes#toggle', as: :toggle_like, likeable_class: Post
     end
 
-    get ':car_id' => 'profile_cars#show', as: :profile_car
-    scope ':car_id' do
+    get ':car_id' => 'profile_cars#show', as: :profile_car, constraints: { car_id: /[^\/]+/ }
+    scope ':car_id', constraints: { car_id: /[^\/]+/ } do
       put 'like' => 'likes#toggle', as: :toggle_like_car, likeable_class: Car
     end
   end
