@@ -117,9 +117,14 @@
       vertical-align: middle;
     }
 
+    &.empty.instagram:before {
+      display: none;
+    }
+
     &.editable-click:before {
       content: attr(data-label);
       position: absolute;
+      display: block !important;
       font-family: @font-family-base;
       left: 0;
       top: 0;
