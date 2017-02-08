@@ -650,7 +650,10 @@ CREATE TABLE users (
     avatar_crop_params character varying,
     profile_background_crop_params character varying,
     profile_thumbnail_id character varying,
-    instagram_id character varying
+    instagram_id character varying,
+    profile_thumbnail_filename character varying,
+    profile_thumbnail_size integer,
+    profile_thumbnail_content_type character varying
 );
 
 
@@ -1457,4 +1460,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161002151711');
 INSERT INTO schema_migrations (version) VALUES ('20161109004348');
 
 INSERT INTO schema_migrations (version) VALUES ('20170205214738');
+
+INSERT INTO schema_migrations (version) VALUES ('20170208023905');
 

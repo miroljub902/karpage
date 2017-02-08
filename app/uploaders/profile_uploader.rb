@@ -6,7 +6,7 @@ class ProfileUploader
   include Imgix::Rails::UrlHelper
   include Rails.application.routes.url_helpers
 
-  attr_reader :user, :tempfiles
+  attr_reader :user, :image
 
   def initialize(user)
     @user = user
@@ -139,7 +139,7 @@ class ProfileUploader
     'app/assets/images/profile/counter_template.png'
   end
 
-  def generate(inline: false)
+  def generate
     header_image = image_header
     car_image = car
     profile_image = image_profile_picture
@@ -235,19 +235,27 @@ class ProfileUploader
     #   c.geometry "+1390+1000"
     # end
 
-    result = result.composite(name_template) do |c|
+    @image = result.composite(name_template) do |c|
       c.compose 'Over'
       c.geometry '+348+1110'
     end
+  end
 
+  def generate_and_save(inline: false)
+    generate
+    save inline: inline
+  end
+
+  def save(inline: false)
     if inline # For testing
       filename = "thumbnail_#{user.id}.jpg"
-      result.write filename
+      image.write filename
       puts "Written to #{filename}"
     else
-      result.write "tmp/thumbnail_#{user.id}.jpg"
-      user.profile_thumbnail = File.open(result.path)
-      user.save
+      image.write "tmp/thumbnail_#{user.id}.jpg"
+      img = File.open(image.path)
+      user.profile_thumbnail = img
+      user.save!
     end
 
     force_facebook_og_refresh if Rails.env.production?

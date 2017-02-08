@@ -3,7 +3,7 @@ namespace :thumbnails do
     users = args[:user_id] ? User.where(id: args[:user_id]) : User.all
     users.find_each do |user|
       uploader = ProfileUploader.new(user)
-      uploader.generate(inline: args[:inline].present?)
+      uploader.generate_and_save(inline: args[:inline].present?)
     end
   end
 
