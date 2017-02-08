@@ -110,9 +110,17 @@
     border-radius: 5px;
     min-height: 1.15em;
 
+    &.instagram:before {
+      content: "\f16d";
+      font-family: FontAwesome;
+      font-size: 120%;
+      vertical-align: middle;
+    }
+
     &.editable-click:before {
       content: attr(data-label);
       position: absolute;
+      font-family: @font-family-base;
       left: 0;
       top: 0;
       font-size: 16px;
