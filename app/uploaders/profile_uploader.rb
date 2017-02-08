@@ -254,8 +254,11 @@ class ProfileUploader
   end
 
   def force_facebook_og_refresh
+    uri = URI.parse("https://graph.facebook.com/oauth/access_token?client_id=#{ENV.fetch('FACEBOOK_APP_ID')}&client_secret=#{ENV.fetch('FACEBOOK_SECRET')}&grant_type=client_credentials")
+    _dummy, token = Net::HTTP.get_response(uri).body.split('access_token=')
+
     uri = URI.parse('https://graph.facebook.com')
-    params = { id: profile_url(user), scrape: true }
+    params = { id: profile_url(user), scrape: true, access_token: token }
     Net::HTTP.post_form uri, params
   end
 
