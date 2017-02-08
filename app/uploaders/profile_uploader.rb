@@ -79,41 +79,37 @@ class ProfileUploader
     retries = 0
     car = user.cars.current.has_photos.sorted.first
     photo = car.photos.sorted.first if car
-    car_image =
-      if photo && photo.image_content_type.to_s.starts_with?('image/')
-        url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
-        text = "#{car.year} #{car.make.name} #{car.model.name}"
-        point_size = case text.size
-                     when 0..32 then 80
-                     when 33..43 then 60
-                     when 44..54 then 40
-                     else
-                       20
-                     end
-        MiniMagick::Image.open(url).combine_options do |i|
-          i.font 'app/assets/fonts/helvetica.ttf'
-          i.gravity 'Center'
-          i.pointsize point_size
-          i.fill 'Gray'
-          i.draw "text 3,3 '#{text}'"
-          i.fill 'White'
-          i.draw "text 0,0 '#{text}'"
-        end
-      else
-        default_car_image
+    car_image = nil
+    if photo && photo.image_content_type.to_s.starts_with?('image/')
+      url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
+      text = "#{car.year} #{car.make.name} #{car.model.name}"
+      point_size = case text.size
+                   when 0..32 then 80
+                   when 33..43 then 60
+                   when 44..54 then 40
+                   else
+                     20
+                   end
+      car_image = MiniMagick::Image.open(url).combine_options do |i|
+        i.font 'app/assets/fonts/helvetica.ttf'
+        i.gravity 'Center'
+        i.pointsize point_size
+        i.fill 'Gray'
+        i.draw "text 3,3 '#{text}'"
+        i.fill 'White'
+        i.draw "text 0,0 '#{text}'"
       end
+    end
   rescue OpenURI::HTTPError
-    car_image = default_car_image
   rescue Net::ReadTimeout
     retries += 1
     retry if retries < 4
-    car_image = default_car_image
   ensure
+    car_image ||= default_car_image
     car_image.combine_options do |i|
       i.fill 'white'
       i.tint '70'
     end
-    car_image
   end
 
   def name_container
