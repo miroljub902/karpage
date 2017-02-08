@@ -255,7 +255,7 @@ class ProfileUploader
       image.write "tmp/thumbnail_#{user.id}.jpg"
       img = File.open(image.path)
       user.profile_thumbnail = img
-      user.save!
+      user.save! validate: false
     end
 
     force_facebook_og_refresh if Rails.env.production?
