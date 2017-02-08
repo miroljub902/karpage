@@ -27,6 +27,7 @@ gem 'sass-rails', '5.0.6'
 gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 2.0.1'
 gem 'staccato'
+gem 'rack-attack'
 
 gem 'sidekiq'
 gem 'sidekiq-failures'

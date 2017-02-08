@@ -26,6 +26,8 @@ module KarPage
     config.active_record.raise_in_transactional_callbacks = true
     config.active_record.schema_format = :sql
 
+    config.middleware.use Rack::Attack
+
     config.generators do |generate|
       generate.assets false
       generate.helper false
