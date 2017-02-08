@@ -25,7 +25,7 @@ gem 'rails_autolink'
 gem 'browser'
 gem 'sass-rails', '5.0.6'
 gem 'activeadmin', github: 'activeadmin'
-gem 'appsignal', '~> 2.0.1'
+gem 'appsignal', '~> 2.1.0'
 gem 'staccato'
 gem 'rack-attack'
 

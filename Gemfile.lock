@@ -55,7 +55,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    appsignal (2.0.1)
+    appsignal (2.1.0)
       rack
       thread_safe
     arbre (1.0.3)
@@ -375,7 +375,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin!
-  appsignal (~> 2.0.1)
+  appsignal (~> 2.1.0)
   authlogic
   bcrypt
   browser
