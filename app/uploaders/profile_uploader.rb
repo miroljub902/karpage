@@ -20,6 +20,22 @@ class ProfileUploader
     'app/assets/images/profile/new-design-blank.png'
   end
 
+  def profile_template
+    'app/assets/images/profile/profile_image_template.png'
+  end
+
+  def handle_network_errors(default:, max_retries: 4)
+    retries = 0
+    result = yield
+  rescue OpenURI::HTTPError
+    # No retries
+  rescue Net::ReadTimeout, SocketError
+    retries += 1
+    retry if retries <= max_retries
+  ensure
+    result || default.call
+  end
+
   def default_image_header
     MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
       i.resize '1235x658^'
@@ -29,19 +45,12 @@ class ProfileUploader
   end
 
   def image_header
-    retries = 0
-    if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
-      url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1235, h: 658)
-      MiniMagick::Image.open(url)
-    else
-      default_image_header
+    handle_network_errors default: ->{ default_image_header } do
+      if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
+        url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1235, h: 658)
+        MiniMagick::Image.open(url)
+      end
     end
-  rescue OpenURI::HTTPError
-    default_image_header
-  rescue Net::ReadTimeout
-    retries += 1
-    retry if retries < 4
-    default_image_header
   end
 
   def default_image_profile
@@ -49,22 +58,11 @@ class ProfileUploader
   end
 
   def image_profile_picture
-    retries = 0
-    if user.avatar_id.present? && user.avatar_content_type.starts_with?('image/')
-      MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
-    else
-      default_image_profile
+    handle_network_errors default: ->{ default_image_profile } do
+      if user.avatar_id.present? && user.avatar_content_type.starts_with?('image/')
+        MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
+      end
     end
-  rescue OpenURI::HTTPError
-    default_image_profile
-  rescue Net::ReadTimeout
-    retries += 1
-    retry if retries < 4
-    default_image_profile
-  end
-
-  def profile_template
-    'app/assets/images/profile/profile_image_template.png'
   end
 
   def default_car_image
@@ -76,37 +74,32 @@ class ProfileUploader
   end
 
   def car
-    retries = 0
-    car = user.cars.current.has_photos.sorted.first
-    photo = car.photos.sorted.first if car
-    car_image = nil
-    if photo && photo.image_content_type.to_s.starts_with?('image/')
-      url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
-      text = "#{car.year} #{car.make.name} #{car.model.name}"
-      point_size = case text.size
-                   when 0..32 then 80
-                   when 33..43 then 60
-                   when 44..54 then 40
-                   else
-                     20
-                   end
-      car_image = MiniMagick::Image.open(url).combine_options do |i|
-        i.font 'app/assets/fonts/helvetica.ttf'
-        i.gravity 'Center'
-        i.pointsize point_size
-        i.fill 'Gray'
-        i.draw "text 3,3 '#{text}'"
-        i.fill 'White'
-        i.draw "text 0,0 '#{text}'"
+    image = handle_network_errors default: ->{ default_car_image } do
+      car = user.cars.current.has_photos.sorted.first
+      photo = car.photos.sorted.first if car
+      if photo && photo.image_content_type.to_s.starts_with?('image/')
+        url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
+        text = "#{car.year} #{car.make.name} #{car.model.name}"
+        point_size = case text.size
+                     when 0..32 then 80
+                     when 33..43 then 60
+                     when 44..54 then 40
+                     else
+                       20
+                     end
+        MiniMagick::Image.open(url).combine_options do |i|
+          i.font 'app/assets/fonts/helvetica.ttf'
+          i.gravity 'Center'
+          i.pointsize point_size
+          i.fill 'Gray'
+          i.draw "text 3,3 '#{text}'"
+          i.fill 'White'
+          i.draw "text 0,0 '#{text}'"
+        end
       end
     end
-  rescue OpenURI::HTTPError
-  rescue Net::ReadTimeout
-    retries += 1
-    retry if retries < 4
-  ensure
-    car_image ||= default_car_image
-    car_image.combine_options do |i|
+
+    image.combine_options do |i|
       i.fill 'white'
       i.tint '70'
     end
