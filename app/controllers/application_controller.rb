@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   before_action :require_complete_profile
 
+  rescue_from ActionController::UnknownFormat, with: :render_404
+
   def signed_in?
     current_user.present?
   end
