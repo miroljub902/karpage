@@ -3,6 +3,8 @@ class ApiController < ActionController::Base
 
   before_action :cors_set_headers
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
   def route_options
     render nothing: true, content_type: 'text/plain'
   end

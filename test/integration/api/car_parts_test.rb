@@ -5,6 +5,7 @@ class Api::CarPartsTest < ActionDispatch::IntegrationTest
     mock_request 's3'
     @user = users(:john_doe)
     @car = cars(:current)
+    @car.expects(:update_user_profile_thumbnail)
     @user.cars << @car
     @car.reload
     @part_params = {
