@@ -33,7 +33,8 @@ class ProfileUploader
     retries += 1
     retry if retries <= max_retries
   ensure
-    result || default.call
+    # Need explicit return otherwise return value will be nil
+    return result || default.call
   end
 
   def default_image_header
