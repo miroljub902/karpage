@@ -123,7 +123,9 @@ CREATE TABLE car_parts (
     model character varying,
     price numeric(12,2),
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    review character varying,
+    sorting integer
 );
 
 
@@ -974,6 +976,13 @@ CREATE INDEX index_car_parts_on_car_id ON car_parts USING btree (car_id);
 
 
 --
+-- Name: index_car_parts_on_sorting; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_car_parts_on_sorting ON car_parts USING btree (sorting);
+
+
+--
 -- Name: index_cars_on_current; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1462,4 +1471,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161109004348');
 INSERT INTO schema_migrations (version) VALUES ('20170205214738');
 
 INSERT INTO schema_migrations (version) VALUES ('20170208023905');
+
+INSERT INTO schema_migrations (version) VALUES ('20170310064003');
 
