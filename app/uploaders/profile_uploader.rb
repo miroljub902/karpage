@@ -39,16 +39,16 @@ class ProfileUploader
 
   def default_image_header
     MiniMagick::Image.open('app/assets/images/profile/header-bg.jpg').combine_options do |i|
-      i.resize '1235x658^'
+      i.resize '874x462^'
       i.gravity 'Center'
-      i.crop '1235x658+0+0'
+      i.crop '874x462+0+0'
     end
   end
 
   def image_header
     handle_network_errors default: ->{ default_image_header } do
       if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
-        url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1235, h: 658)
+        url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 874, h: 462)
         MiniMagick::Image.open(url)
       end
     end
@@ -131,7 +131,7 @@ class ProfileUploader
 
   def generate
     header_image = image_header
-    car_image = car
+    # car_image = car
     profile_image = image_profile_picture
     blank_base = MiniMagick::Image.open(blank_base_image)
     template = MiniMagick::Image.open(image_template)
@@ -146,15 +146,15 @@ class ProfileUploader
 
     result = blank_base.composite(header_image) do |c|
       c.compose 'Over'
-      c.geometry '+348+230'
+      c.geometry '+43+35'
     end
 
-    result = result.composite(car_image) do |c|
-      c.compose 'Over'
-      c.geometry '+347+1370'
-    end
+    # result = result.composite(car_image) do |c|
+    #   c.compose 'Over'
+    #   c.geometry '+347+1370'
+    # end
 
-    profile_image.resize '409x408'
+    profile_image.resize '288x288'
     created_profile_image = profile_template_image.composite(profile_image) do |c|
       c.compose 'atop'
       c.gravity 'center'
@@ -162,7 +162,7 @@ class ProfileUploader
 
     result = result.composite(created_profile_image) do |c|
       c.compose 'Over'
-      c.geometry '+761+685'
+      c.geometry '+334+355'
     end
 
     result = result.composite(template) do |c|
@@ -227,7 +227,7 @@ class ProfileUploader
 
     @image = result.composite(name_template) do |c|
       c.compose 'Over'
-      c.geometry '+348+1110'
+      c.geometry '+45+670'
     end
   end
 
