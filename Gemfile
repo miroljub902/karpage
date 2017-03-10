@@ -50,9 +50,6 @@ gem 'cells-slim'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 
-gem 'rails_12factor', group: :production
-gem 'newrelic_rpm'
-
 group :development, :test do
   # gem 'byebug'
   gem 'quiet_assets'
