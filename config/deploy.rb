@@ -2,7 +2,14 @@ require 'mina/rails'
 require 'mina/git'
 require 'mina/rbenv'
 
-set :domain, 'app.karpage.deploy'
+task :worker do
+  set :domain, 'worker.karpage.deploy'
+end
+
+task :www do
+  set :domain, 'app.karpage.deploy'
+end
+
 set :deploy_to, '/home/deploy/karpage'
 set :repository, 'git@bitbucket.org:paxx/karpage.git'
 set :branch, 'master'
