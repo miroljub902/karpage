@@ -112,6 +112,48 @@ ALTER SEQUENCE blocks_id_seq OWNED BY blocks.id;
 
 
 --
+-- Name: businesses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE businesses (
+    id integer NOT NULL,
+    user_id integer,
+    name character varying,
+    address character varying,
+    state character varying,
+    city character varying,
+    post_code character varying,
+    phone character varying,
+    email character varying,
+    url character varying,
+    instagram_id character varying,
+    description character varying,
+    keywords character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: businesses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE businesses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: businesses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE businesses_id_seq OWNED BY businesses.id;
+
+
+--
 -- Name: car_parts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -568,6 +610,43 @@ ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
 
 
 --
+-- Name: products; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE products (
+    id integer NOT NULL,
+    business_id integer,
+    title character varying,
+    subtitle character varying,
+    price numeric(8,2),
+    link character varying,
+    description character varying,
+    category character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE products_id_seq OWNED BY products.id;
+
+
+--
 -- Name: reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -696,6 +775,13 @@ ALTER TABLE ONLY blocks ALTER COLUMN id SET DEFAULT nextval('blocks_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY businesses ALTER COLUMN id SET DEFAULT nextval('businesses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY car_parts ALTER COLUMN id SET DEFAULT nextval('car_parts_id_seq'::regclass);
 
 
@@ -787,6 +873,13 @@ ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
 
 
@@ -811,6 +904,14 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY blocks
     ADD CONSTRAINT blocks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: businesses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY businesses
+    ADD CONSTRAINT businesses_pkey PRIMARY KEY (id);
 
 
 --
@@ -918,6 +1019,14 @@ ALTER TABLE ONLY posts
 
 
 --
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -966,6 +1075,20 @@ CREATE INDEX index_blocks_on_blocked_user_id ON blocks USING btree (blocked_user
 --
 
 CREATE INDEX index_blocks_on_user_id ON blocks USING btree (user_id);
+
+
+--
+-- Name: index_businesses_on_keywords; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_businesses_on_keywords ON businesses USING btree (keywords);
+
+
+--
+-- Name: index_businesses_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_businesses_on_user_id ON businesses USING btree (user_id);
 
 
 --
@@ -1263,6 +1386,20 @@ CREATE INDEX index_posts_on_user_id ON posts USING btree (user_id);
 
 
 --
+-- Name: index_products_on_business_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_products_on_business_id ON products USING btree (business_id);
+
+
+--
+-- Name: index_products_on_category; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_products_on_category ON products USING btree (category);
+
+
+--
 -- Name: index_reports_on_reason; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1473,4 +1610,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170205214738');
 INSERT INTO schema_migrations (version) VALUES ('20170208023905');
 
 INSERT INTO schema_migrations (version) VALUES ('20170310064003');
+
+INSERT INTO schema_migrations (version) VALUES ('20170322035428');
+
+INSERT INTO schema_migrations (version) VALUES ('20170322035621');
 

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  apipie
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
   end if Rails.env.production?
@@ -23,6 +24,11 @@ Rails.application.routes.draw do
         get 'following', on: :collection
       end
     end
+
+    resources :businesses do
+      resources :products
+    end
+
     resources :filters, only: :index
     resources :cars, only: %i(index show create update destroy) do
       put :reset_counter

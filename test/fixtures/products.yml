@@ -1,0 +1,15 @@
+one:
+  title: Off-Road Tire
+  subtitle: Toyo Off-Road Tires
+  price: 500
+  link: http://example.com
+  description: Great tires for off-roading
+  category: Tires
+
+two:
+  title: Flame sticker
+  subtitle: Flame on!
+  price: 100
+  link: http://example.com
+  description: Feel fast and furious!
+  category: Stickers

@@ -28,6 +28,8 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'appsignal', '~> 2.1.0'
 gem 'staccato'
 gem 'rack-attack'
+gem 'active_model_serializers', '~> 0.10.5'
+gem 'apipie-rails'
 
 gem 'sidekiq'
 gem 'sidekiq-failures'

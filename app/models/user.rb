@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :follows_by, source: :user
   has_many :followees, through: :follows
   has_many :blocks, dependent: :delete_all
+  has_one :business, dependent: :destroy
 
   accepts_nested_attributes_for :dream_cars, :next_car, allow_destroy: true
 

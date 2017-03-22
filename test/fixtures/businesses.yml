@@ -1,0 +1,12 @@
+full:
+  name: Business Name
+  address: 123 West 1st Street
+  city: Los Angeles
+  state: CA
+  post_code: 90210
+  description: Business description
+  phone: "(123) 456 7890"
+  email: business@example.com
+  url: http://example.com
+  instagram_id: businessX
+  keywords: key1, key2
