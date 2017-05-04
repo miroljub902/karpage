@@ -734,7 +734,8 @@ CREATE TABLE users (
     instagram_id character varying,
     profile_thumbnail_filename character varying,
     profile_thumbnail_size integer,
-    profile_thumbnail_content_type character varying
+    profile_thumbnail_content_type character varying,
+    device_info jsonb
 );
 
 
@@ -1614,4 +1615,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170310064003');
 INSERT INTO schema_migrations (version) VALUES ('20170322035428');
 
 INSERT INTO schema_migrations (version) VALUES ('20170322035621');
+
+INSERT INTO schema_migrations (version) VALUES ('20170504233731');
 
