@@ -1,5 +1,6 @@
 module ImgixRefileHelper
   include Refile::AttachmentHelper
+  include Imgix::Rails::UrlHelper
 
   def ix_refile_image_url(obj, key, **opts)
     path = s3_path(obj, key)

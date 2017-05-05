@@ -532,6 +532,45 @@ ALTER SEQUENCE new_stuffs_id_seq OWNED BY new_stuffs.id;
 
 
 --
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    user_id integer,
+    notifiable_id integer,
+    notifiable_type character varying,
+    source_id integer,
+    source_type character varying,
+    type character varying NOT NULL,
+    message character varying,
+    sent_at timestamp without time zone,
+    status_message character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
+
+
+--
 -- Name: photos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -861,6 +900,13 @@ ALTER TABLE ONLY new_stuffs ALTER COLUMN id SET DEFAULT nextval('new_stuffs_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY photos ALTER COLUMN id SET DEFAULT nextval('photos_id_seq'::regclass);
 
 
@@ -1002,6 +1048,14 @@ ALTER TABLE ONLY models
 
 ALTER TABLE ONLY new_stuffs
     ADD CONSTRAINT new_stuffs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1353,6 +1407,41 @@ CREATE INDEX index_new_stuffs_on_user_id ON new_stuffs USING btree (user_id);
 
 
 --
+-- Name: index_notifications_on_notifiable_type_and_notifiable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_notifiable_type_and_notifiable_id ON notifications USING btree (notifiable_type, notifiable_id);
+
+
+--
+-- Name: index_notifications_on_sent_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_sent_at ON notifications USING btree (sent_at);
+
+
+--
+-- Name: index_notifications_on_source_type_and_source_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_source_type_and_source_id ON notifications USING btree (source_type, source_id);
+
+
+--
+-- Name: index_notifications_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_type ON notifications USING btree (type);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_user_id ON notifications USING btree (user_id);
+
+
+--
 -- Name: index_photos_on_attachable_type_and_attachable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1620,4 +1709,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170322035621');
 INSERT INTO schema_migrations (version) VALUES ('20170504233731');
 
 INSERT INTO schema_migrations (version) VALUES ('20170505002924');
+
+INSERT INTO schema_migrations (version) VALUES ('20170505015732');
 
