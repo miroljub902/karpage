@@ -66,7 +66,6 @@ class Api::UsersControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     patch :update, user: { name: 'New Name' }
-    puts response.body
     assert_response :ok
     assert_equal 'New Name', json_response['user']['name']
     assert_equal 'New Name', user.reload.name
@@ -124,5 +123,13 @@ class Api::UsersControllerTest < ApiControllerTest
     assert_response :ok
     assert user.next_car.present?
     assert_equal 'dummy', user.next_car.image_id
+  end
+
+  test 'can update push settings' do
+    user = users(:john_doe)
+    authorize_user user
+    setting = User::DEFAULT_PUSH_SETTINGS.first
+    patch :update, user: { push_settings: { setting[0] => !setting[1] } }
+    assert_equal !setting[1], user.reload.push_setting?(setting[0])
   end
 end

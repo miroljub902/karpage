@@ -85,6 +85,32 @@ class User < ActiveRecord::Base
     end
   end
 
+  concerning :PushNotifications do
+    DEFAULT_PUSH_SETTINGS = {
+      'your_car_like' => true,
+      'your_car_comment' => true,
+      'your_post_like' => true,
+      'your_post_comment' => true,
+      'new_follower' => true,
+      'following_new_car' => true,
+      'following_moves_new_car' => true,
+      'following_next_car' => true,
+      'following_dream_car' => true,
+      'following_new_post' => true
+    }.freeze
+
+    def push_settings
+      DEFAULT_PUSH_SETTINGS.each_with_object({}) do |(setting, default), settings|
+        value = self[:push_settings].key?(setting) ? self[:push_settings][setting] : default
+        settings[setting] = value
+      end
+    end
+
+    def push_setting?(setting)
+      push_settings[setting]
+    end
+  end
+
   def friends
     User
       .joins('INNER JOIN follows ON follows.user_id = users.id OR follows.followee_id = users.id')

@@ -8,3 +8,4 @@ json.instagram_id user.instagram_id
 
 json.new_posts count_new_stuff(user.friends_posts, owner: nil)
 json.new_followers count_new_stuff(user.follows_by, owner: user)
+json.push_settings user.push_settings
