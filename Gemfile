@@ -52,6 +52,10 @@ gem 'cells-slim'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 
+group :production do
+  gem 'rails_12factor'
+end
+
 group :development, :test do
   # gem 'byebug'
   gem 'quiet_assets'
