@@ -7,6 +7,10 @@ class PushNotification
 
   delegate :user, :notifiable, :source, to: :notification
 
+  def self.for(notification)
+    "PushNotification::#{notification.type.classify}".constantize.new(notification)
+  end
+
   def initialize(notification)
     @notification = notification
   end
@@ -21,6 +25,10 @@ class PushNotification
     else
       notification.update_attributes status_message: response.body
     end
+  end
+
+  def image_url
+    source.avatar ? ix_refile_image_url(source, :avatar) : nil
   end
 
   private
@@ -55,10 +63,12 @@ class PushNotification
 
   def metadata
     {
+      notification_id: notification.id,
       notification_type: notification.type,
       notifiable_id: notifiable.id,
       created_at: notification.created_at,
-      image_url: source.avatar ? ix_refile_image_url(source, :avatar) : nil
+      image_url: image_url,
+      notifiable_image_url: notifiable_image_url
     }
   end
 end

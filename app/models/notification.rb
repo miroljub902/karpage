@@ -9,7 +9,7 @@ class Notification < ActiveRecord::Base
 
   def push!
     raise 'Cannot push non-persisted notification' unless persisted?
-    "Notification::#{type.classify}".constantize.new(self).push!
+    "PushNotification::#{type.classify}".constantize.new(self).push!
   end
 
   def sent?

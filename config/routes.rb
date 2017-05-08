@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resource :user, only: %i(show create update) do
       put :reset_counter
     end
+    resources :notifications, only: :index
     resources :profiles, only: %i(index show), path: 'users', constraints: { id: /[^\/]+/ } do
       post :follow, on: :member
       delete :unfollow, on: :member
