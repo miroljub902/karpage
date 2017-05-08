@@ -17,7 +17,7 @@ class PushNotification
     response = make_http_request!
 
     if response.code == '200'
-      notification.update_attributes sent_at: Time.zone.now, status_message: nil
+      notification.update_attributes sent_at: Time.zone.now, status_message: nil, message: message
     else
       notification.update_attributes status_message: response.body
     end
