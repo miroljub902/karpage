@@ -17,12 +17,13 @@ class Like < ActiveRecord::Base
   def notify_user
     owner = likeable.try(:user)
     return unless owner
-    case likeable
-    when Car
-      owner.notifications.create! type: 'your_car_like', notifiable: likeable, source: user
-    when Post
-      owner.notifications.create! type: 'your_post_like', notifiable: likeable, source: user
-    end
+    type = case likeable
+           when Car
+             Notification.types[:your_car_like]
+           when Post
+             Notification.types[:your_post_like]
+           end
+    owner.notifications.create!(type: type, notifiable: likeable, source: user) if type
     true
   end
 end

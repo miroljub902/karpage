@@ -51,6 +51,24 @@ class Car < ActiveRecord::Base
     end
   }
 
+  concerning :Notifications do
+    included do
+      after_create -> {
+        type = Notification.types[:following_new_car]
+        user.followers.each do |follower|
+          follower.notifications.create! type: type, notifiable: self, source: user
+        end
+      }, if: :current?
+
+      after_update -> {
+        type = Notification.types[:following_moves_new_car]
+        user.followers.each do |follower|
+          follower.notifications.create! type: type, notifiable: self, source: user
+        end
+      }, if: -> { past && current_was }
+    end
+  end
+
   def toggle_like!(user)
     if (like = likes.find_by(user: user))
       like.destroy

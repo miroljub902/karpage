@@ -27,6 +27,17 @@ class Post < ActiveRecord::Base
     end
   end
 
+  concerning :Notifications do
+    included do
+      after_create -> {
+        type = Notification.types[:following_new_post]
+        user.followers.each do |follower|
+          follower.notifications.create! type: type, notifiable: self, source: user
+        end
+      }
+    end
+  end
+
   private
 
   def validate_presence_of_photo

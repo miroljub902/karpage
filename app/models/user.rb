@@ -88,16 +88,16 @@ class User < ActiveRecord::Base
 
   concerning :PushNotifications do
     DEFAULT_PUSH_SETTINGS = {
-      'your_car_like' => true,
-      'your_car_comment' => true,
-      'your_post_like' => true,
-      'your_post_comment' => true,
-      'new_follower' => true,
-      'following_new_car' => true,
-      'following_moves_new_car' => true,
-      'following_next_car' => true,
-      'following_dream_car' => true,
-      'following_new_post' => true
+      Notification.types[:your_car_like] => true,
+      Notification.types[:your_car_comment] => true,
+      Notification.types[:your_post_like] => true,
+      Notification.types[:your_post_comment] => true,
+      Notification.types[:new_follower] => true,
+      Notification.types[:following_new_car] => true,
+      Notification.types[:following_moves_new_car] => true,
+      Notification.types[:following_next_car] => true,
+      Notification.types[:following_dream_car] => true,
+      Notification.types[:following_new_post] => true
     }.freeze
 
     def push_settings

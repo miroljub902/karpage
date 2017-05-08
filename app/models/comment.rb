@@ -4,6 +4,8 @@ class Comment < ActiveRecord::Base
 
   validates :body, presence: true
 
+  after_create :notify_user
+
   scope :sorted, -> { order(created_at: :desc) }
   scope :not_blocked, -> (user) {
     if user
@@ -12,4 +14,17 @@ class Comment < ActiveRecord::Base
       all
     end
   }
+
+  private
+
+  def notify_user
+    type = case commentable
+           when Car
+             Notification.types[:your_car_comment]
+           when Post
+             Notification.types[:your_post_comment]
+           end
+    commentable.user.notifications.create!(type: type, notifiable: self, source: user) if type
+    true
+  end
 end

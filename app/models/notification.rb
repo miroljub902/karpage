@@ -5,6 +5,19 @@ class Notification < ActiveRecord::Base
 
   self.inheritance_column = '_disabled'
 
+  enum type: {
+    your_car_like: 'your_car_like',
+    your_post_like: 'your_post_like',
+    your_car_comment: 'your_car_comment',
+    your_post_comment: 'your_post_comment',
+    new_follower: 'new_follower',
+    following_new_car: 'following_new_car',
+    following_moves_new_car: 'following_moves_new_car',
+    following_next_car: 'following_next_car',
+    following_dream_car: 'following_dream_car',
+    following_new_post: 'following_new_post'
+  }
+
   after_create :queue_push
 
   def push!
