@@ -3,7 +3,7 @@ class Api::SessionsController < ApiController
 
   def create
     @session = facebook_session || UserSession.create(session_params)
-    @session.user.update_attribute :device_info, session_params[:device_info] if session_params.key?(:device_info)
+    update_device_info @session.user if @session.user
     respond_with @session, status: :created
   end
 
@@ -15,6 +15,10 @@ class Api::SessionsController < ApiController
   end
 
   private
+
+  def update_device_info(user)
+    user.update_attribute :device_info, session_params[:device_info] if session_params.key?(:device_info)
+  end
 
   def facebook_session
     UserSession.from_facebook(session_params[:facebook_token]) if session_params[:facebook_token]
