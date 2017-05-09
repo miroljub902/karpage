@@ -2,10 +2,12 @@ default: &defaults
   push_api_key: "<%= ENV['APPSIGNAL_PUSH_API_KEY'] %>"
   name: "Kar Page"
 
+  ignore_errors:
+    - ActionController::ParameterMissing
+
   # Actions that should not be monitored by AppSignal
   # ignore_actions:
   #   - ApplicationController#isup
-
   # See http://docs.appsignal.com/gem-settings/configuration.html for
   # all configuration options.
 
