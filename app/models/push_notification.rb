@@ -16,7 +16,7 @@ class PushNotification
   end
 
   def push!
-    return mark_as_sent! unless device_token.present?
+    return mark_as_sent! unless device_token.present? && notifiable.present?
 
     response = make_http_request!
 
@@ -56,7 +56,7 @@ class PushNotification
     {
       app_id: ENV.fetch('ONESIGNAL_APP_ID'),
       contents: { en: message },
-      included_player_ids: [device_token],
+      include_player_ids: [device_token],
       data: metadata
     }
   end
