@@ -8,4 +8,8 @@ class PushNotification::YourCarComment < PushNotification
     photo = notifiable.commentable.photos.sorted.first
     photo ? ix_refile_image_url(photo, :image) : nil
   end
+
+  def notifiable_id
+    notifiable.commentable_id
+  end
 end

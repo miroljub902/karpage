@@ -65,10 +65,14 @@ class PushNotification
     {
       notification_id: notification.id,
       notification_type: notification.type,
-      notifiable_id: notifiable.id,
+      notifiable_id: notifiable_id,
       created_at: notification.created_at,
       image_url: image_url,
       notifiable_image_url: notifiable_image_url
     }
+  end
+
+  def notifiable_id
+    notifiable.id
   end
 end
