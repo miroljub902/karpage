@@ -66,7 +66,7 @@ class PushNotification
       notification_id: notification.id,
       notification_type: notification.type,
       notifiable_id: notifiable_id,
-      source_id: notification.source_id,
+      source_id: source_id,
       created_at: notification.created_at,
       image_url: image_url,
       notifiable_image_url: notifiable_image_url
@@ -75,5 +75,9 @@ class PushNotification
 
   def notifiable_id
     notifiable.id
+  end
+
+  def source_id
+    source.to_param
   end
 end
