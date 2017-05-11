@@ -2,6 +2,10 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::CarsControllerTest < ApiControllerTest
+  setup do
+    mock_request 's3'
+  end
+
   test 'returns cars' do
     user = users(:john_doe)
     user.cars << cars(:current)
