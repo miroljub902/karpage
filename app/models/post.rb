@@ -17,6 +17,17 @@ class Post < ActiveRecord::Base
     end
   }
 
+  scope :select_all, -> { select('posts.*') }
+  scope :select_upvoted, -> (user) do
+    joins("LEFT OUTER JOIN upvotes ON upvotes.voteable_type = 'Post' AND upvotes.voteable_id = posts.id AND upvotes.user_id = #{user.id}")
+      .select('(upvotes.id IS NOT NULL) AS upvoted')
+  end
+
+  scope :select_liked, -> (user) do
+    joins("LEFT OUTER JOIN likes ON likes.likeable_type = 'Post' AND likes.likeable_id = posts.id AND likes.user_id = #{user.id}")
+      .select('(likes.id IS NOT NULL) AS liked')
+  end
+
   paginates_per 15
 
   def toggle_like!(user)

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       resources :comments, commentable_type: 'Post'
       resource :like, only: %i(create destroy), likeable_type: 'Post'
       resources :reports, only: :create, reportable_type: 'Post'
+      resource :upvote, only: %i[create destroy], voteable_type: 'Post'
     end
   end
 

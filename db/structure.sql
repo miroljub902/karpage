@@ -625,7 +625,8 @@ CREATE TABLE posts (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     likes_count integer DEFAULT 0 NOT NULL,
-    comments_count integer DEFAULT 0 NOT NULL
+    comments_count integer DEFAULT 0 NOT NULL,
+    upvotes_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -727,6 +728,39 @@ ALTER SEQUENCE reports_id_seq OWNED BY reports.id;
 CREATE TABLE schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: upvotes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE upvotes (
+    id integer NOT NULL,
+    voteable_id integer,
+    voteable_type character varying,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: upvotes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE upvotes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: upvotes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE upvotes_id_seq OWNED BY upvotes.id;
 
 
 --
@@ -935,6 +969,13 @@ ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY upvotes ALTER COLUMN id SET DEFAULT nextval('upvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -1088,6 +1129,14 @@ ALTER TABLE ONLY products
 
 ALTER TABLE ONLY reports
     ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: upvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY upvotes
+    ADD CONSTRAINT upvotes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1512,6 +1561,27 @@ CREATE INDEX index_reports_on_user_id ON reports USING btree (user_id);
 
 
 --
+-- Name: index_upvotes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_upvotes_on_user_id ON upvotes USING btree (user_id);
+
+
+--
+-- Name: index_upvotes_on_voteable_id_and_voteable_type_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_upvotes_on_voteable_id_and_voteable_type_and_user_id ON upvotes USING btree (voteable_id, voteable_type, user_id);
+
+
+--
+-- Name: index_upvotes_on_voteable_type_and_voteable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_upvotes_on_voteable_type_and_voteable_id ON upvotes USING btree (voteable_type, voteable_id);
+
+
+--
 -- Name: index_users_on_access_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1711,4 +1781,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170504233731');
 INSERT INTO schema_migrations (version) VALUES ('20170505002924');
 
 INSERT INTO schema_migrations (version) VALUES ('20170505015732');
+
+INSERT INTO schema_migrations (version) VALUES ('20170515182604');
+
+INSERT INTO schema_migrations (version) VALUES ('20170515182939');
 
