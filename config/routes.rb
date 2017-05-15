@@ -46,6 +46,9 @@ Rails.application.routes.draw do
       resource :like, only: %i(create destroy), likeable_type: 'Post'
       resources :reports, only: :create, reportable_type: 'Post'
       resource :upvote, only: %i[create destroy], voteable_type: 'Post'
+      collection do
+        resources :posts_channels, path: 'channels', only: :show
+      end
     end
   end
 
