@@ -15,6 +15,10 @@ class Api::NotificationSerializer < ActiveModel::Serializer
     push_object.notifiable_image_url
   end
 
+  def source_id
+    source.to_param
+  end
+
   private
 
   def push_object
