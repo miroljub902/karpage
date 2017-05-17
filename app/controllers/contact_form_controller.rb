@@ -1,12 +1,18 @@
 class ContactFormController < ApplicationController
+  layout 'simple'
+
   def new
     @form = ContactForm.new
   end
 
   def create
     @form = ContactForm.new(contact_form_params)
-    @form.submit
-    redirect_back_or_default root_path, notice: 'Thanks for your message'
+    if @form.valid?
+      @form.submit
+      redirect_back_or_default root_path, notice: 'Thanks for your message'
+    else
+      render :new
+    end
   end
 
   private

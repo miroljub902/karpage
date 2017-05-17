@@ -1,0 +1,11 @@
+p
+  'We'd love to hear from you!
+  br
+  'Send us a message using the form below.
+
+  .form-group
+    = f.text_field :name, placeholder: 'Your name', class: 'form-control'
+  .form-group
+    = f.text_field :email, placeholder: 'Your e-mail', type: 'email', required: true, class: 'form-control'
+  .form-group
+    = f.text_area :message, placeholder: 'Message', required: true, class: 'form-control', rows: 4

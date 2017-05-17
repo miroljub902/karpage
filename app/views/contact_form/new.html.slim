@@ -1,0 +1,10 @@
+.row
+  .col-xs-12.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2.col-lg-6.col-lg-push-3
+    h1 Get In Touch
+    = form_for @form, url: contact_form_path do |f|
+      = render 'fields', f: f
+
+      - if @form.errors.any?
+        .alert.alert-warning= @form.errors.full_messages.to_sentence
+      .pull-right
+        button.btn.btn-primary.btn-lg type="submit" Submit
