@@ -4,13 +4,13 @@ class Api::UsersController < ApiController
 
   def create
     @user = User.create user_params
-    respond_with @user, status: :created
+    render :show, status: :created
   end
 
   COUNTERS = {
-    'friends_posts' => -> (user) { NewStuff.reset_count(user.friends_posts, user, owner: nil) },
-    'followers' => -> (user) { NewStuff.reset_count(user.follows_by, user, owner: user) }
-  }
+    'friends_posts' => ->(user) { NewStuff.reset_count(user.friends_posts, user, owner: nil) },
+    'followers' => ->(user) { NewStuff.reset_count(user.follows_by, user, owner: user) }
+  }.freeze
 
   def reset_counter
     return render(nothing: true, status: :not_found) unless COUNTERS.has_key?(params[:counter])
@@ -26,7 +26,6 @@ class Api::UsersController < ApiController
 
   def show
     @user = current_user
-    respond_with @user
   end
 
   private
