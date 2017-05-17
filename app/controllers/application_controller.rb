@@ -60,7 +60,15 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    redirect_to root_path unless current_user
+    respond_to do |format|
+      format.html do
+        redirect_to root_path unless current_user
+      end
+      format.js do
+        @user_session = UserSession.new
+        render '_modals/new', locals: { id: 'modalSignIn', content: 'user_sessions/new' }
+      end
+    end
   end
 
   def redirect_back_or_default(default, options = {})
