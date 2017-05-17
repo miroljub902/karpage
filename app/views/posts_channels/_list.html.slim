@@ -20,9 +20,14 @@
     .posts-channel__upvote
       .vote-box data-voteable-type="Post" data-voteable-id=post.id
         .vote-box__count= post.upvotes_count
-        = link_to toggle_post_upvote_path(post),
-          remote: true,
-          data: { method: 'post' },
-          class: "btn btn-default vote-box__vote #{'active' if post['upvoted']}" do
-          .fa.fa-caret-up
-          'Upvote
+        - if current_user
+          = link_to toggle_post_upvote_path(post),
+            remote: true,
+            data: { method: 'post' },
+            class: "btn btn-default vote-box__vote #{'active' if post['upvoted']}" do
+            .fa.fa-caret-up
+            'Upvote
+        - else
+          = link_to new_user_session_path, data: { remote: true }, class: 'btn btn-default vote-box__vote' do
+            .fa.fa-caret-up
+            'Upvote
