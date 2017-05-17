@@ -20,6 +20,12 @@ class ApiController < ActionController::Base
   end
   helper_method :count_new_stuff
 
+  def reset_new_stuff(stuff, owner:)
+    return unless current_user
+    NewStuff.reset_count stuff, current_user, owner: owner
+  end
+  helper_method :reset_new_stuff
+
   def current_session
     return @current_session if defined?(@current_session)
     @current_session = ::UserSession.new(current_user)

@@ -18,6 +18,7 @@ class Notification < ActiveRecord::Base
     following_new_post: 'following_new_post'
   }
 
+  before_create :set_message
   after_create :queue_push
 
   def push!
@@ -34,6 +35,10 @@ class Notification < ActiveRecord::Base
   end
 
   private
+
+  def set_message
+    self.message = PushNotification.for(self).message
+  end
 
   def queue_push
     device_id = user.device_info.try(:[], 'user_id').presence

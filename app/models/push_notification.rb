@@ -21,7 +21,7 @@ class PushNotification
     response = make_http_request!
 
     if response.code == '200'
-      notification.update_attributes sent_at: Time.zone.now, status_message: nil, message: message
+      notification.update_attributes sent_at: Time.zone.now, status_message: nil
     else
       notification.update_attributes status_message: response.body
     end
@@ -34,7 +34,7 @@ class PushNotification
   private
 
   def mark_as_sent!
-    update_attributes sent_at: Time.zone.now, status_message: 'No device token present'
+    notification.update_attributes sent_at: Time.zone.now, status_message: 'No device token present'
   end
 
   def make_http_request!
