@@ -133,7 +133,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow!(user)
-    follows.where(followee_id: user.id).delete_all
+    follows.where(followee_id: user.id).destroy_all
   end
 
   def following?(user)
