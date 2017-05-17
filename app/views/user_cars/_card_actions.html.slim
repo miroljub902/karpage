@@ -15,5 +15,5 @@
       = car.likes_count
 
 .user
-  = car.user
+  = car.user.login.presence || car.user
   .location.small= car.user.location
