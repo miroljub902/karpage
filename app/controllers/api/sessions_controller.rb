@@ -25,6 +25,6 @@ class Api::SessionsController < ApiController
   end
 
   def session_params
-    params.require(:session).permit(:login, :password, :facebook_token, device_info: %i(user_id))
+    params.require(:session).permit(:login, :password, :facebook_token, device_info: %i[user_id])
   end
 end

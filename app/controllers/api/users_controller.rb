@@ -44,7 +44,8 @@ class Api::UsersController < ApiController
       :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename,
       dream_cars_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
       next_car_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
-      push_settings: User::DEFAULT_PUSH_SETTINGS.keys
+      push_settings: User::DEFAULT_PUSH_SETTINGS.keys,
+      device_info: %i[user_id]
     ).merge(password_confirmation: params[:user][:password])
   end
 end
