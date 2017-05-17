@@ -19,7 +19,8 @@ h1.text-center
 
 .car-filters
   - @filters.each do |filter|
-    = link_to filter.name, profile_cars_path(filter: filter), class: "filter"
+    = link_to profile_cars_path(filter: filter), class: "filter" do
+      = image_tag "car_filters/#{filter.name.downcase}.png", size: '473x211', class: 'img-responsive'
 
 .car-cards.row
   - @cars.each do |car|
