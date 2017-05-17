@@ -2,6 +2,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :delete_all
+  has_many :notifications, as: :notifiable, dependent: :delete_all
 
   attachment :photo, type: :image
 

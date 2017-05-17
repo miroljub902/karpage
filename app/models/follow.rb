@@ -1,6 +1,7 @@
 class Follow < ActiveRecord::Base
   belongs_to :user
   belongs_to :followee, class_name: 'User'
+  has_many :notifications, as: :notifiable, dependent: :delete_all
 
   after_create :notify_user
 

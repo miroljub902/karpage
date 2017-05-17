@@ -9,6 +9,7 @@ class Car < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :delete_all
   has_many :parts, -> { sorted }, class_name: 'CarPart', dependent: :destroy
+  has_many :notifications, as: :notifiable, dependent: :delete_all
 
   accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :parts, allow_destroy: true
