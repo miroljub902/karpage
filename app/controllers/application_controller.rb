@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :require_complete_profile
 
   rescue_from ActionController::UnknownFormat, with: :render_404
+  rescue_from ActionController::InvalidCrossOriginRequest, with: :render_403
 
   def signed_in?
     current_user.present?
@@ -30,6 +31,17 @@ class ApplicationController < ActionController::Base
   def require_complete_profile
     return if !signed_in? || (controller_name == 'users' && %w(edit update).include?(action_name))
     redirect_to edit_user_path, notice: 'Please provide a username and e-mail' if current_user.incomplete_profile?
+  end
+
+  def render_403
+    respond_to do |format|
+      format.html do
+        render file: 'public/404', status: :forbidden, layout: false
+      end
+      format.any do
+        head :forbidden
+      end
+    end
   end
 
   def render_404
