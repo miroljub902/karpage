@@ -4,7 +4,7 @@ ActiveAdmin.register User do
   filter :featured_order_present, as: :select, collection: [['Yes', '1'], ['No', nil]], label: 'Featured'
   filter :email
   filter :name
-  filter :login
+  filter :login, as: :string
   filter :location
   filter :current_login_at
   filter :last_login_at
