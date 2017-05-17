@@ -82,7 +82,7 @@ class PushNotification
       notification_id: notification.id,
       notification_type: notification.type,
       notifiable_id: notifiable_id,
-      source_type: source_type,
+      source_type: notification.source_type,
       source_id: source_id,
       related_type: related_type,
       related_id: related_id,
