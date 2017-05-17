@@ -21,6 +21,15 @@ class Notification < ActiveRecord::Base
   before_create :set_message
   after_create :queue_push
 
+  scope :recent, -> { order(created_at: :desc) }
+
+  def self.belay_create(user:, source:, type:, notifiable:)
+    return if source == user # Skip notifications to "myself"
+    last_created_at = user.notifications.recent.where(type: type).first&.created_at
+    return if last_created_at && last_created_at > 30.seconds.ago
+    Notification.create! user: user, source: source, type: type, notifiable: notifiable
+  end
+
   def push!
     raise 'Cannot push non-persisted notification' unless persisted?
     PushNotification.for(self).push!

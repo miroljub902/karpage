@@ -57,14 +57,14 @@ class Car < ActiveRecord::Base
       after_create -> {
         type = Notification.types[:following_new_car]
         user.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: user
+          Notification.belay_create user: follower, type: type, notifiable: self, source: user
         end
       }, if: :current?
 
       after_update -> {
         type = Notification.types[:following_moves_new_car]
         user.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: user
+          Notification.belay_create user: follower, type: type, notifiable: self, source: user
         end
       }, if: -> { past && current_was }
     end

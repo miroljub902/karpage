@@ -72,4 +72,5 @@ group :test do
   gem 'faker'
   gem 'mocha'
   gem 'webmock'
+  gem 'timecop'
 end
