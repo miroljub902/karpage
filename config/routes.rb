@@ -92,6 +92,14 @@ Rails.application.routes.draw do
   get 'posts/explore' => 'posts#explore'
   get 'posts/feed' => 'posts#feed'
 
+  get 'posts/:id' => 'posts_channels#show', as: :posts_channel,
+      constraints: { id: /monday|tuesday|wednesday|thursday|friday|saturday|sunday/ }
+  resources :posts, only: [] do
+    resource :upvote, only: [], voteable_type: 'Post' do
+      post :toggle
+    end
+  end
+
   get ':profile_id' => 'profiles#show', as: :profile, constraints: { profile_id: /[^\/]+/ }
   scope ':profile_id', constraints: { profile_id: /[^\/]+/ } do
     post 'follow' => 'profiles#follow', as: :follow_user

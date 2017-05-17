@@ -1,15 +1,5 @@
-- posts.decorate.group_by { |post| post.created_at.to_date }.each do |date, grouped_posts|
-  h3.date-group
-    - if date.today?
-      strong Today
-    - elsif date == Date.yesterday
-      strong Yesterday
-    - else
-      strong= date.strftime('%A')
-    small.text-muted= date.strftime "%B #{date.day.ordinalize} %Y"
-  .hr
-
-  - grouped_posts.each do |post|
+- posts.decorate.each do |post|
+  .posts-channel__post
     .post
       = link_to post_path(post.user, post) do
         .img style="background-image: url(#{ix_refile_image_url(post, :photo, format: 'auto', fit: 'clip', h: 300)})"
@@ -26,3 +16,13 @@
           .pull-right.m-r-1
             = pluralize post.comments_count, 'Comment', 'Comments'
             span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'
+
+    .posts-channel__upvote
+      .vote-box data-voteable-type="Post" data-voteable-id=post.id
+        .vote-box__count= post.upvotes_count
+        = link_to toggle_post_upvote_path(post),
+          remote: true,
+          data: { method: 'post' },
+          class: "btn btn-default vote-box__vote #{'active' if post['upvoted']}" do
+          .fa.fa-caret-up
+          'Upvote

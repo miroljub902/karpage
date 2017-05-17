@@ -1,0 +1,40 @@
+= form_tag profile_cars_path, method: :get, class: 'car-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+
+h1.text-center
+  p.text-primary Explore Most Popular
+  = link_to 'Cars', profile_cars_path
+  span.text-muted &nbsp;|&nbsp;
+  = link_to 'Owners', profiles_path
+  span.text-muted &nbsp;|&nbsp;
+  'Posts
+
+
+#explore-posts
+  #post-viewer.modal.fade
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-body
+
+  - if signed_in? && params[:page].nil?
+    - post = local_assigns[:post] || Post.new
+    - url = post.new_record? ? user_posts_path : user_post_path(post)
+    = form_for post, url: url, html: { multipart: true, class: 'post-form m-t-3' } do |f|
+      = render 'posts/fields', f: f
+
+  .posts-channel.m-y-3
+    = link_to posts_explore_path do
+      = image_tag "post-channels/#{params[:id]}.jpg", size: '1125x361', class: 'img-responsive posts-image'
+
+    .posts= render 'list', posts: @posts
+
+  - if @posts.size < @posts.total_count
+    .col-md-offset-2.col-md-8.m-t-3
+      a.btn.btn-lg.btn-default.btn-block.js-load-more[
+        href=posts_channel_path(params[:id], page: (params[:page] || 1).to_i + 1)
+        data-url=posts_channel_path(params[:id], page: '__PAGE__')
+        data-remote="true"
+      ]
+        'Load More

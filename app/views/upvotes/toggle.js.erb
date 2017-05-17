@@ -1,0 +1,7 @@
+$('.vote-box[data-voteable-type="<%= @upvote.voteable_type %>"][data-voteable-id=<%= @voteable.id %>]')
+  .find('.vote-box__count').html('<%= @voteable.upvotes_count %>').end()
+  <% if @upvote.destroyed? %>
+  .find('.vote-box__vote').removeClass('active')
+  <% else %>
+  .find('.vote-box__vote').addClass('active')
+  <% end %>

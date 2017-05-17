@@ -1,0 +1,50 @@
+.posts-channel {
+  .posts-image {
+    padding: 0 15%;
+  }
+
+  @media (max-width: @screen-xs-max) {
+    padding: 0;
+  }
+
+  .posts {
+    margin-top: 3rem;
+  }
+}
+
+.posts-channels {
+  display: flex;
+  justify-content: space-between;
+
+  .posts-channel {
+    display: inline-block;
+    width: 14%;
+    padding: 0;
+
+    a {
+      display: inline-block;
+    }
+  }
+}
+
+.posts-channel__post {
+  .clearfix;
+  display: flex;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid @gray-lighter;
+
+  .post {
+    width: 50% !important;
+    margin: 0 !important;
+    float: left;
+  }
+
+  .posts-channel__upvote {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+  }
+}
