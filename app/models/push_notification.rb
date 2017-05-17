@@ -40,7 +40,7 @@ class PushNotification
   end
 
   def related_type
-    source_type
+    notification.source_type
   end
 
   def source_id
