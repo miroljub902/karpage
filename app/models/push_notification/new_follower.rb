@@ -7,7 +7,11 @@ class PushNotification::NewFollower < PushNotification
     user.avatar ? ix_refile_image_url(user, :avatar) : nil
   end
 
-  def notifiable_id
+  def related_id
     notifiable.user_id
+  end
+
+  def related_type
+    'User'
   end
 end

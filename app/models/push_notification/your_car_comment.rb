@@ -9,7 +9,11 @@ class PushNotification::YourCarComment < PushNotification
     photo ? ix_refile_image_url(photo, :image) : nil
   end
 
-  def notifiable_id
+  def related_id
     notifiable.commentable_id
+  end
+
+  def related_type
+    'Car'
   end
 end
