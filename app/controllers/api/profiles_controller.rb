@@ -12,19 +12,20 @@ class Api::ProfilesController < ApiController
   end
 
   def show
-    @user = User.includes(:dream_cars, :next_car, cars: %i(make model)).not_blocked(current_user).find_by(login: params[:id])
+    @user = User.includes(:dream_cars, :next_car, cars: %i(make model)).not_blocked(current_user)
+    @user = @user.find_by(login: params[:id]) || @user.find(params[:id])
     @cars = UserCarsDecorator.cars(@user)
     respond_with @user
   end
 
   def follow
-    @user = User.find_by!(login: params[:id])
+    @user = User.find_by(login: params[:id]) || User.find(params[:id])
     current_user.follow! @user
     render nothing: true, status: :created
   end
 
   def unfollow
-    @user = User.find_by!(login: params[:id])
+    @user = User.find_by(login: params[:id]) || User.find(params[:id])
     current_user.unfollow! @user
     render nothing: true, status: :ok
   end
