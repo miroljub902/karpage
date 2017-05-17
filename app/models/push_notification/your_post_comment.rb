@@ -4,8 +4,7 @@ class PushNotification::YourPostComment < PushNotification
   end
 
   def notifiable_image_url
-    photo = notifiable.commentable.photo
-    photo ? ix_refile_image_url(photo, :image) : nil
+    notifiable.commentable.photo ? ix_refile_image_url(notifiable.commentable, :photo) : nil
   end
 
   def notifiable_id

@@ -4,6 +4,6 @@ class PushNotification::YourPostLike < PushNotification
   end
 
   def notifiable_image_url
-    notifiable.photo ? ix_refile_image_url(notifiable.photo, :image) : nil
+    notifiable.photo ? ix_refile_image_url(notifiable, :photo) : nil
   end
 end
