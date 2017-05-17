@@ -171,6 +171,8 @@ class User < ActiveRecord::Base
     # Parse "DETAIL: Key (<attribute>)=(<value>) already exists"
     attribute = e.message.match(/Key \((.*?)\)=.+already exists/m)[1]
     errors.add attribute, :taken
+  rescue ActiveRecord::RecordInvalid => _e
+    errors.add :base, 'Invalid login'
   end
 
   private
