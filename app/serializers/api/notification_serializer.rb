@@ -16,7 +16,7 @@ class Api::NotificationSerializer < ActiveModel::Serializer
   end
 
   def source_id
-    source.to_param
+    object.source.to_param
   end
 
   private
