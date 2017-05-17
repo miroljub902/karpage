@@ -12,7 +12,7 @@ end
 
 set :deploy_to, '/home/deploy/karpage'
 set :repository, 'git@bitbucket.org:paxx/karpage.git'
-set :branch, 'master'
+set :branch, 'production'
 
 set :user, 'deploy'
 set :forward_agent, true
