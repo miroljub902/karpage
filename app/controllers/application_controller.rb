@@ -60,10 +60,9 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
+    return if current_user
     respond_to do |format|
-      format.html do
-        redirect_to root_path unless current_user
-      end
+      format.html { redirect_to root_path, notice: 'You must be logged in' }
       format.js do
         @user_session = UserSession.new
         render '_modals/new', locals: { id: 'modalSignIn', content: 'user_sessions/new' }
