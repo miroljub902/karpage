@@ -3,20 +3,10 @@ class Api::NotificationSerializer < ActiveModel::Serializer
   attributes :image_url, :notifiable_image_url
   attribute :following, if: -> { object.new_follower? }
 
+  delegate :source_id, :image_url, :notifiable_image_url, :notifiable_id, to: :push_object
+
   def following
     object.notifiable.user.following?(object.source)
-  end
-
-  def image_url
-    push_object.image_url
-  end
-
-  def notifiable_image_url
-    push_object.notifiable_image_url
-  end
-
-  def source_id
-    object.source.to_param
   end
 
   private
