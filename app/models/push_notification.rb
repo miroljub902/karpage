@@ -31,6 +31,22 @@ class PushNotification
     source.avatar ? ix_refile_image_url(source, :avatar) : nil
   end
 
+  def notifiable_id
+    notifiable.id
+  end
+
+  def related_id
+    source_id
+  end
+
+  def related_type
+    source_type
+  end
+
+  def source_id
+    source.to_param
+  end
+
   private
 
   def mark_as_sent!
@@ -74,21 +90,5 @@ class PushNotification
       image_url: image_url,
       notifiable_image_url: notifiable_image_url
     }
-  end
-
-  def notifiable_id
-    notifiable.id
-  end
-
-  def related_id
-    source_id
-  end
-
-  def related_type
-    source_type
-  end
-
-  def source_id
-    source.to_param
   end
 end
