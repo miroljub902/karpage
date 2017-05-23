@@ -290,7 +290,8 @@ CREATE TABLE filters (
     name character varying,
     words character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    type character varying DEFAULT 'Filter'::character varying NOT NULL
 );
 
 
@@ -1799,4 +1800,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170505015732');
 INSERT INTO schema_migrations (version) VALUES ('20170515182604');
 
 INSERT INTO schema_migrations (version) VALUES ('20170515182939');
+
+INSERT INTO schema_migrations (version) VALUES ('20170523202028');
 

@@ -530,10 +530,18 @@
   .filter {
     margin-bottom: 10px;
     min-width: 100px;
-    width: 12%;
+    width: 19%;
 
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  @media (max-width: @screen-sm-max) {
+    justify-content: space-around;
+
+    .filter {
+      width: 24%;
     }
   }
 }
