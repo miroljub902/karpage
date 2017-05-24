@@ -26,7 +26,7 @@ class Notification < ActiveRecord::Base
   def self.belay_create(user:, source:, type:, notifiable:)
     return if source == user # Skip notifications to "myself"
     last_created_at = user.notifications.recent.where(type: type).first&.created_at
-    return if last_created_at && last_created_at > 30.seconds.ago
+    # return if last_created_at && last_created_at > 1.minute.ago # Disable during dev
     Notification.create! user: user, source: source, type: type, notifiable: notifiable
   end
 
