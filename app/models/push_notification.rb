@@ -32,7 +32,7 @@ class PushNotification
   end
 
   def notifiable_id
-    notifiable.id
+    notification.notifiable_id
   end
 
   def related_id
