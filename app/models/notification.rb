@@ -19,7 +19,7 @@ class Notification < ActiveRecord::Base
   }
 
   before_create :set_message
-  after_create :queue_push
+  after_commit :queue_push, on: :create
 
   scope :recent, -> { order(created_at: :desc) }
 

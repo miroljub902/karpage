@@ -7,9 +7,10 @@ class PushNotificationJob < ActiveJob::Base
     if notification.nil? && Notification.find_by(id: notification_id)
       Appsignal.send_error(StandardError.new("Notification found without includes: #{notification_id}"))
     elsif notification.nil?
-      Appsignal.send_error(StandardError.new("Notification not found: #{notification_id}")) unless notification
+      Appsignal.send_error(StandardError.new("Notification not found: #{notification_id}"))
+    else
+      notification.update_attribute :status_message, "Pushing... #{notification.unsent?}"
     end
-    notification.update_attribute :status_message, "Pushing... #{notification.unsent?}" if notification
     notification.push! if notification&.unsent?
   end
 end
