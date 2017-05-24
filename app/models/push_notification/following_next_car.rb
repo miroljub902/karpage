@@ -1,6 +1,6 @@
 class PushNotification::FollowingNextCar < PushNotification
   def message
-    "#{source} added a next car"
+    "#{source} changed a next car"
   end
 
   def notifiable_image_url
