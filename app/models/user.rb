@@ -87,6 +87,14 @@ class User < ActiveRecord::Base
   end
 
   concerning :PushNotifications do
+    included do
+      after_save -> {
+        self.class
+            .where('device_info @> ?', %Q({"user_id": "#{self.device_info['user_id']}"}))
+            .where.not(id: id).update_all device_info: nil
+      }, if: -> { (device_info || {}).key?('user_id') }
+    end
+
     DEFAULT_PUSH_SETTINGS = {
       Notification.types[:your_car_like] => true,
       Notification.types[:your_car_comment] => true,

@@ -17,7 +17,7 @@ class Api::SessionsController < ApiController
   private
 
   def update_device_info(user)
-    user.update_attribute :device_info, session_params[:device_info] if session_params.key?(:device_info)
+    user.update_attributes(device_info: session_params[:device_info]) if session_params.key?(:device_info)
   end
 
   def facebook_session

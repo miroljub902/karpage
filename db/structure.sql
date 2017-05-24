@@ -1611,6 +1611,13 @@ CREATE INDEX index_users_on_admin ON users USING btree (admin);
 
 
 --
+-- Name: index_users_on_device_info; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_device_info ON users USING gin (device_info);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1802,4 +1809,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170515182604');
 INSERT INTO schema_migrations (version) VALUES ('20170515182939');
 
 INSERT INTO schema_migrations (version) VALUES ('20170523202028');
+
+INSERT INTO schema_migrations (version) VALUES ('20170524171229');
 
