@@ -26,6 +26,7 @@ class Notification < ActiveRecord::Base
   def self.belay_create(user:, source:, type:, notifiable:)
     return if source == user # Skip notifications to "myself"
     last_created_at = user.notifications.recent.where(type: type).first&.created_at
+    # TODO: Uncomment
     # return if last_created_at && last_created_at > 1.minute.ago # Disable during dev
     Notification.create! user: user, source: source, type: type, notifiable: notifiable
   end
@@ -51,7 +52,10 @@ class Notification < ActiveRecord::Base
 
   def queue_push
     device_id = user.device_info.try(:[], 'user_id').presence
+    # TODO: Remove logging
+    update_attribute :status_message, "Queuing... #{user.push_setting?(type)}/#{device_id}"
     return unless user.push_setting?(type) && device_id
+    update_attribute :status_message, 'Queued'
     PushNotificationJob.perform_later id
   end
 end
