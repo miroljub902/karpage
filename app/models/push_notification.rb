@@ -16,7 +16,8 @@ class PushNotification
   end
 
   def push!
-    return mark_as_sent! unless device_token.present? && notifiable.present?
+    return mark_as_sent!('No device token present') unless device_token.present? && notifiable.present?
+    return mark_as_sent!('Notifiable object missing') unless notifiable
 
     response = make_http_request!
 
@@ -49,8 +50,8 @@ class PushNotification
 
   private
 
-  def mark_as_sent!
-    notification.update_attributes sent_at: Time.zone.now, status_message: 'No device token present'
+  def mark_as_sent!(status)
+    notification.update_attributes sent_at: Time.zone.now, status_message: status
   end
 
   def make_http_request!

@@ -4,6 +4,6 @@ class PushNotification::FollowingNextCar < PushNotification
   end
 
   def notifiable_image_url
-    ix_refile_image_url notifiable, :image
+    ix_refile_image_url notifiable, :image if notifiable
   end
 end
