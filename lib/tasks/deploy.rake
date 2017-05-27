@@ -7,7 +7,8 @@ namespace :deploy do
     appsignal_config = Appsignal::Config.new(
       ENV['PWD'],
       env,
-      push_api_key: ENV.fetch('APPSIGNAL_PUSH_API_KEY')
+      push_api_key: ENV.fetch('APPSIGNAL_PUSH_API_KEY'),
+      name: ENV['APPSIGNAL_APP_NAME'] || 'Kar Page'
     )
 
     marker_data = { revision: revision, user: user }
