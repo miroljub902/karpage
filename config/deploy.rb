@@ -4,15 +4,21 @@ require 'mina/rbenv'
 
 task :worker do
   set :domain, 'worker.karpage.deploy'
+  set :branch, 'production'
 end
 
 task :www do
   set :domain, 'app.karpage.deploy'
+  set :branch, 'production'
+end
+
+task :staging do
+  set :domain, 'beta.karpage.com'
+  set :branch, 'master'
 end
 
 set :deploy_to, '/home/deploy/karpage'
 set :repository, 'git@bitbucket.org:paxx/karpage.git'
-set :branch, 'production'
 
 set :user, 'deploy'
 set :forward_agent, true
