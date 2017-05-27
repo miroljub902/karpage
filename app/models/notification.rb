@@ -19,7 +19,7 @@ class Notification < ActiveRecord::Base
   }
 
   before_create :set_message
-  after_commit :queue_push, on: :create
+  after_commit :queue_push, on: :create, unless: -> { @skip_callback }
 
   scope :recent, -> { order(created_at: :desc) }
 
@@ -53,9 +53,11 @@ class Notification < ActiveRecord::Base
   def queue_push
     device_id = user.device_info.try(:[], 'user_id').presence
     # TODO: Remove logging
+    @skip_callback = true
     update_attribute :status_message, "Queuing... #{user.push_setting?(type)}/#{device_id}"
     return unless user.push_setting?(type) && device_id
     update_attribute :status_message, 'Queued'
+    @skip_callback = false
     PushNotificationJob.perform_later id
   end
 end
