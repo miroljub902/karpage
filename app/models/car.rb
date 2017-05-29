@@ -54,19 +54,17 @@ class Car < ActiveRecord::Base
 
   concerning :Notifications do
     included do
-      after_create -> {
-        type = Notification.types[:following_new_car]
-        user.followers.each do |follower|
-          Notification.belay_create user: follower, type: type, notifiable: self, source: user
-        end
-      }, if: :current?
+      after_create -> { notify_followers :following_new_car }, if: :current?
+      after_create -> { notify_followers :following_new_first_car }, if: :first?
+      after_create -> { nofify_followers :following_new_past_car }, if: :past?
+      after_update -> { nofify_followers :following_moves_new_car }, if: -> { past? && current_was }
+    end
 
-      after_update -> {
-        type = Notification.types[:following_moves_new_car]
-        user.followers.each do |follower|
-          Notification.belay_create user: follower, type: type, notifiable: self, source: user
-        end
-      }, if: -> { past && current_was }
+    def notify_followers(notification)
+      type = Notification.types[notification]
+      user.followers.each do |follower|
+        Notification.belay_create user: follower, type: type, notifiable: self, source: user
+      end
     end
   end
 

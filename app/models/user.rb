@@ -102,6 +102,8 @@ class User < ActiveRecord::Base
       Notification.types[:your_post_comment] => true,
       Notification.types[:new_follower] => true,
       Notification.types[:following_new_car] => true,
+      Notification.types[:following_new_first_car] => true,
+      Notification.types[:following_new_past_car] => true,
       Notification.types[:following_moves_new_car] => true,
       Notification.types[:following_next_car] => true,
       Notification.types[:following_dream_car] => true,
