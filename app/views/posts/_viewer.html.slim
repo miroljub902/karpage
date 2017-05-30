@@ -3,6 +3,10 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
   .count= post.likes_count
 
 .padded
+  = link_to post_path(post.user, post) do
+    .fa.fa-link
+    |&nbsp;Permalink
+
   .media
     .media-left
       = link_to profile_path(post.user), class: 'profile-avatar' do
