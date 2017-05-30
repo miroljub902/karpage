@@ -12,3 +12,7 @@
   Filter.create(name: name, words: words) unless Filter.exists?(name: name)
 end
 Filter.create(name: 'CLASSIC', words: '', type: 'FilterClassicCar') unless Filter.exists?(name: 'CLASSIC')
+
+%w[monday tuesday wednesday thursday friday saturday sunday].each do |day|
+  PostChannel.where(name: day).first_or_create!
+end

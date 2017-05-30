@@ -19,9 +19,10 @@ h1.text-center
         .modal-body
 
   - if signed_in? && params[:page].nil?
-    - post = local_assigns[:post] || Post.new
+    - post = local_assigns[:post] || Post.new(post_channel: @channel)
     - url = post.new_record? ? user_posts_path : user_post_path(post)
     = form_for post, url: url, html: { multipart: true, class: 'post-form m-t-3' } do |f|
+      = hidden_field_tag :return_to, posts_channel_path(@channel.name)
       = render 'posts/fields', f: f
 
   .posts-channel.m-y-3

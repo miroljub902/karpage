@@ -2,7 +2,7 @@ class PostsChannelsController < ApplicationController
   layout 'simple'
 
   def show
-    channel = PostChannel.new(params[:id], user: current_user, page: params[:page], per: params[:per])
-    @posts = channel.posts
+    @channel = PostChannel.find_by!(name: params[:id])
+    @posts = PostChannel.get_posts(@channel, user: current_user, page: params[:page], per: params[:per])
   end
 end

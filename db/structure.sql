@@ -625,6 +625,35 @@ ALTER SEQUENCE photos_id_seq OWNED BY photos.id;
 
 
 --
+-- Name: post_channels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE post_channels (
+    id integer NOT NULL,
+    name character varying
+);
+
+
+--
+-- Name: post_channels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE post_channels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: post_channels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE post_channels_id_seq OWNED BY post_channels.id;
+
+
+--
 -- Name: posts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -641,7 +670,8 @@ CREATE TABLE posts (
     updated_at timestamp without time zone NOT NULL,
     likes_count integer DEFAULT 0 NOT NULL,
     comments_count integer DEFAULT 0 NOT NULL,
-    upvotes_count integer DEFAULT 0 NOT NULL
+    upvotes_count integer DEFAULT 0 NOT NULL,
+    post_channel_id integer
 );
 
 
@@ -963,6 +993,13 @@ ALTER TABLE ONLY photos ALTER COLUMN id SET DEFAULT nextval('photos_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY post_channels ALTER COLUMN id SET DEFAULT nextval('post_channels_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
 
 
@@ -1120,6 +1157,14 @@ ALTER TABLE ONLY notifications
 
 ALTER TABLE ONLY photos
     ADD CONSTRAINT photos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: post_channels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY post_channels
+    ADD CONSTRAINT post_channels_pkey PRIMARY KEY (id);
 
 
 --
@@ -1527,10 +1572,24 @@ CREATE INDEX index_photos_on_photo_type ON photos USING btree (photo_type);
 
 
 --
+-- Name: index_post_channels_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_post_channels_on_name ON post_channels USING btree (name);
+
+
+--
 -- Name: index_posts_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_posts_on_created_at ON posts USING btree (created_at);
+
+
+--
+-- Name: index_posts_on_post_channel_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_posts_on_post_channel_id ON posts USING btree (post_channel_id);
 
 
 --
@@ -1811,4 +1870,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170515182939');
 INSERT INTO schema_migrations (version) VALUES ('20170523202028');
 
 INSERT INTO schema_migrations (version) VALUES ('20170524171229');
+
+INSERT INTO schema_migrations (version) VALUES ('20170529140830');
 

@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   def create
     @post = @user.posts.new(post_params)
     if @post.save
-      redirect_to posts_path(@user)
+      redirect_to params[:return_to] || posts_path(@user)
     else
       flash.now.alert = @post.errors.full_messages.to_sentence
       render :edit
@@ -75,7 +75,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:body, :photo)
+    params.require(:post).permit(:body, :photo, :post_channel_id)
   end
 
   def find_user
