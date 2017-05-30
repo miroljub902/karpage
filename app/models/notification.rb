@@ -12,6 +12,8 @@ class Notification < ActiveRecord::Base
     your_post_comment: 'your_post_comment',
     new_follower: 'new_follower',
     following_new_car: 'following_new_car',
+    following_new_first_car: 'following_new_first_car',
+    following_new_past_car: 'following_new_past_car',
     following_moves_new_car: 'following_moves_new_car',
     following_next_car: 'following_next_car',
     following_dream_car: 'following_dream_car',
