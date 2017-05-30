@@ -37,13 +37,20 @@ task :setup do
   # command %{rbenv install 2.3.0}
 end
 
-desc "Deploys the current version to the server."
+namespace :rails do
+  task :db_seed do
+    command %{#{fetch(:rake)} db:seed}
+  end
+end
+
+desc 'Deploys the current version to the server.'
 task :deploy do
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
+    invoke :'rails:db_seed'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
