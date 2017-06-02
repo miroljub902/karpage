@@ -56,8 +56,8 @@ class Car < ActiveRecord::Base
     included do
       after_create -> { notify_followers :following_new_car }, if: :current?
       after_create -> { notify_followers :following_new_first_car }, if: :first?
-      after_create -> { nofify_followers :following_new_past_car }, if: :past?
-      after_update -> { nofify_followers :following_moves_new_car }, if: -> { past? && current_was }
+      after_create -> { notify_followers :following_new_past_car }, if: :past?
+      after_update -> { notify_followers :following_moves_new_car }, if: -> { past? && current_was }
     end
 
     def notify_followers(notification)

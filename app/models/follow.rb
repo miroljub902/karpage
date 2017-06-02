@@ -5,6 +5,10 @@ class Follow < ActiveRecord::Base
 
   after_create :notify_user
 
+  validate -> {
+    errors.add :followee_id, 'You cannot follow yourself' if followee_id == user_id
+  }
+
   private
 
   def notify_user

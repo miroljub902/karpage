@@ -23,4 +23,14 @@ class CarTest < ActiveSupport::TestCase
     car.update_attribute :sorting, 0
     assert_equal [2017, 2019, 2018, 2016, 2015], sorting.call
   end
+
+  test 'creates past car notification' do
+    mock_request 's3'
+    user = users(:john_doe)
+    follower = users(:friend)
+    follower.follow! user
+    assert_difference 'follower.notifications.following_new_past_car.count' do
+      user.cars.create! year: 2015, make_name: 'Audi', car_model_name: 'R8', past: true
+    end
+  end
 end
