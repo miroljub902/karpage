@@ -4,7 +4,7 @@ class Api::UsersController < ApiController
 
   def create
     @user = User.create user_params
-    render :show, status: :created
+    respond_with @user, status: @user.persisted? ? :created : :unprocessable_entity
   end
 
   COUNTERS = {

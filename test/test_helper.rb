@@ -55,14 +55,16 @@ class ActiveSupport::TestCase
     )
   end
 
-  def mock_request(request, response: nil)
-    yaml = YAML.load_file(Rails.root.join('test/webmock', "#{request}.yml"))
-    url = yaml['url_type'] == 'regex' ? /#{yaml['url']}/ : yaml['url']
-    method = yaml['method'].to_sym
-    if response
-      stub_request(method, url).to_return(yaml['responses'][response.to_s])
-    else
-      stub_request method, url
+  def mock_request(requests, response: nil)
+    Array(requests).each do |request|
+      yaml = YAML.load_file(Rails.root.join('test/webmock', "#{request}.yml"))
+      url = yaml['url_type'] == 'regex' ? /#{yaml['url']}/ : yaml['url']
+      method = yaml['method'].to_sym
+      if response
+        stub_request(method, url).to_return(yaml['responses'][response.to_s])
+      else
+        stub_request method, url
+      end
     end
   end
 end

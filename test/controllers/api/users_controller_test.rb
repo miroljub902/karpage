@@ -4,13 +4,14 @@ require_relative '../api_controller_test'
 class Api::UsersControllerTest < ApiControllerTest
   test 'can sign up' do
     User.any_instance.stubs(:send_welcome_email)
+    mock_request %w[s3 ga]
     assert_difference 'User.count' do
       post :create, user: { login: Faker::Internet.user_name.gsub('.', '-'), email: Faker::Internet.email, password: 'password' }
       assert_response :created
     end
   end
 
-  test 'returns validation errors' do
+  test 'disallow duplicate email' do
     existing = users(:john_doe)
     assert_no_difference 'User.count' do
       post :create, user: { email: existing.email, login: Faker::Internet.user_name, password: 'password' }
@@ -18,8 +19,17 @@ class Api::UsersControllerTest < ApiControllerTest
     end
   end
 
+  test 'disallow duplicate login' do
+    existing = users(:john_doe)
+    assert_no_difference 'User.count' do
+      post :create, user: { email: Faker::Internet.email, login: existing.login, password: 'password' }
+      assert_response :unprocessable_entity
+    end
+  end
+
   test 'tracks signup' do
     User.any_instance.stubs(:send_welcome_email)
+    mock_request 's3'
     GATracker.expects(:event!).with do |user, opts|
       user.is_a?(User) && opts[:category] == 'user' && opts[:action] == 'signup' && opts[:label] == 'android' && opts[:value] == 1
     end
@@ -40,7 +50,7 @@ class Api::UsersControllerTest < ApiControllerTest
     NewStuff.reset_count(user.follows_by, user, owner: user, delay: true)
     friend.followers << user
     user.followers << friend
-    friend.posts.create! body: 'Howdy'
+    friend.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
     get :show
     assert_equal 1, json_response['user']['new_posts']
@@ -54,7 +64,7 @@ class Api::UsersControllerTest < ApiControllerTest
     NewStuff.reset_count(user.follows_by, user, owner: user, delay: true)
     friend.followers << user
     user.followers << friend
-    friend.posts.create! body: 'Howdy'
+    friend.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
     put :reset_counter, counter: 'friends_posts'
     get :show
@@ -65,6 +75,7 @@ class Api::UsersControllerTest < ApiControllerTest
   test 'can update profile' do
     user = users(:john_doe)
     authorize_user user
+    mock_request :s3
     patch :update, user: { name: 'New Name' }
     assert_response :ok
     assert_equal 'New Name', json_response['user']['name']
@@ -73,6 +84,7 @@ class Api::UsersControllerTest < ApiControllerTest
 
   test 'can signup with facebook token' do
     User.any_instance.stubs(:send_welcome_email)
+    mock_request %i[s3 ga]
     mock_request :facebook_get_me, response: :valid_token
     assert_difference 'User.count + Identity.count', +2 do
       post :create, user: {
@@ -100,6 +112,7 @@ class Api::UsersControllerTest < ApiControllerTest
 
   test 'returns avatar url' do
     user = users(:john_doe)
+    mock_request :s3
     user.update_attribute :avatar_id, '1234567890'
     authorize_user user
     get :show
