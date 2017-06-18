@@ -32,6 +32,10 @@ class Post < ActiveRecord::Base
 
   paginates_per 15
 
+  def post_channel_name=(name)
+    self.post_channel = PostChannel.find_by(name: name)
+  end
+
   def toggle_like!(user)
     if (like = likes.find_by(user: user))
       like.destroy

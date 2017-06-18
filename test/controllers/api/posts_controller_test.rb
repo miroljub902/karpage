@@ -18,6 +18,18 @@ class Api::PostsControllerTest < ApiControllerTest
     end
   end
 
+  test 'can create post on channel by name' do
+    user = users(:john_doe)
+    authorize_user user
+    channel = PostChannel.create! name: 'monday'
+    assert_difference 'user.posts.count' do
+      post :create, post: { body: 'Howdy', post_channel_name: 'monday', photo_id: 'dummy' }
+      assert_response :created
+    end
+    post = Post.find json_response['post']['id']
+    assert_equal post.post_channel_id, channel.id
+  end
+
   test 'can update post' do
     user = users(:john_doe)
     post = user.posts.create! body: 'Howdy'
