@@ -2,9 +2,14 @@ class Api::UserSerializer < ApiSerializer
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
 
-  attributes %i[id name email login location description link access_token cars_count]
-  attributes %i[avatar_url profile_background_url followers_count following_count profile_thumbnail_url instagram_id
-                new_posts new_followers push_settings]
+  # Not for the PublicProfile
+  if self === Api::UserSerializer
+    attributes %i[
+      id name email login location description link access_token cars_count
+      avatar_url profile_background_url followers_count following_count profile_thumbnail_url instagram_id
+      new_posts new_followers push_settings
+    ]
+  end
 
   class PublicProfile < Api::UserSerializer
     attributes %i[id name login location description link instagram_id profile_url cars_count

@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       resources :reports, only: :create, reportable_type: 'Post'
       resource :upvote, only: %i[create destroy], voteable_type: 'Post'
       collection do
-        resources :posts_channels, path: 'channels', only: :show
+        resources :posts_channels, path: 'channels', only: %i[index show]
       end
     end
   end

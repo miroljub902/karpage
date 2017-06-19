@@ -8,6 +8,11 @@ class Api::PostsChannelsControllerTest < ApiControllerTest
     @post = @channel.posts.create!(body: 'dummy', photo_id: 'dummy', user: users(:john_doe))
   end
 
+  test 'returns channels' do
+    get :index
+    assert_response :ok
+  end
+
   test 'retrieves channel posts' do
     get :show, id: @channel.name
     assert_response :ok
