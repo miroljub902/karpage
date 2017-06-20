@@ -71,7 +71,7 @@ class PostsController < ApplicationController
     else
       @user = User.find_by!(login: params[:scope])
       @user.posts
-    end.sorted.with_photo
+    end.sorted.with_photo.global
   end
 
   def post_params

@@ -10,6 +10,7 @@ class Post < ActiveRecord::Base
   validate :validate_presence_of_photo
 
   scope :sorted, -> { order(created_at: :desc) }
+  scope :global, -> { where(post_channel_id: nil) }
   scope :with_photo, -> { where.not(photo_id: nil) }
   scope :not_blocked, -> (user) {
     if user

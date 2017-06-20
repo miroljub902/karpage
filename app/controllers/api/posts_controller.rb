@@ -3,7 +3,7 @@ class Api::PostsController < ApiController
 
   def index
     scope = params[:user_id] ? Post.where(user_id: params[:user_id]) : Post
-    @posts = scope.with_photo.sorted.not_blocked(current_user).page(params[:page]).per(params[:per] || Post.default_per_page)
+    @posts = scope.with_photo.sorted.global.not_blocked(current_user).page(params[:page]).per(params[:per] || Post.default_per_page)
     respond_with @posts, include: %w(user comments.user)
   end
 
