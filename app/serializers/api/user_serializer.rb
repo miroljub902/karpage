@@ -3,7 +3,7 @@ class Api::UserSerializer < ApiSerializer
   include Imgix::Rails::UrlHelper
 
   # Not for the PublicProfile
-  if self === Api::UserSerializer
+  if self == Api::UserSerializer
     attributes %i[
       id name email login location description link access_token cars_count
       avatar_url profile_background_url followers_count following_count profile_thumbnail_url instagram_id
