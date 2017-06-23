@@ -93,7 +93,7 @@ Rails.application.routes.draw do
   get 'posts/feed' => 'posts#feed'
 
   get 'posts/:id' => 'posts_channels#show', as: :posts_channel,
-      constraints: { id: /#{PostChannel.pluck(:name).join('|')}/ }
+      constraints: { id: /monday|tuesday|wednesday|thursday|friday|saturday|sunday/ }
   resources :posts, only: [] do
     resource :upvote, only: [], voteable_type: 'Post' do
       post :toggle
