@@ -121,6 +121,20 @@ class User < ActiveRecord::Base
     end
   end
 
+  concerning :DemoAccount do
+    included do
+      %i[password email login device_info].each do |method|
+        define_method "#{method}=" do |value|
+          super(value) if new_record? || !demo_account?
+        end
+      end
+
+      def demo_account?
+        login.casecmp('demo').zero?
+      end
+    end
+  end
+
   def friends
     User
       .joins('INNER JOIN follows ON follows.user_id = users.id OR follows.followee_id = users.id')
