@@ -6,6 +6,8 @@ class Like < ActiveRecord::Base
 
   def self.like!(likeable, user)
     find_or_create_by! likeable: likeable, user: user
+  rescue ActiveRecord::RecordNotUnique
+    find_by! likeable: likeable, user: user
   end
 
   def self.unlike!(likeable, user)
