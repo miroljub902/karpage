@@ -31,7 +31,7 @@
     .current-cars.my-cars.text-center class=('draggable' if my_profile?)
       h2.text-primary Current Cars
       - if my_profile?
-        = link_to new_user_car_path(current: true), class: 'btn btn-default', data: { remote: true } do
+        = link_to new_user_car_path(type: Car.types[:current_car]), class: 'btn btn-default', data: { remote: true } do
           i.fa.fa-plus
           'Add Car
 
@@ -48,7 +48,7 @@
     .previous-cars.my-cars.text-center class=('draggable' if my_profile?)
       h2.text-primary Previous Cars
       - if my_profile?
-        = link_to new_user_car_path(past: true), class: 'btn btn-default', data: { remote: true } do
+        = link_to new_user_car_path(type: Car.types[:past_car]), class: 'btn btn-default', data: { remote: true } do
           i.fa.fa-plus
           'Add Car
 
@@ -70,7 +70,7 @@
             .fa.fa-lightbulb-o
 
       - if my_profile? && @cars.first.nil?
-        = link_to new_user_car_path(first: true), class: 'btn btn-default', data: { remote: true } do
+        = link_to new_user_car_path(type: Car.types[:first_car]), class: 'btn btn-default', data: { remote: true } do
           i.fa.fa-plus
           'Add Car
 

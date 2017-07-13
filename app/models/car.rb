@@ -5,7 +5,9 @@ class Car < ActiveRecord::Base
   self.inheritance_column = '_no_sti'
 
   enum type: {
-    unset_type: nil,
+    first_car: 'first_car',
+    current_car: 'current_car',
+    past_car: 'past_car',
     next_car: 'next_car'
   }
 
@@ -26,7 +28,6 @@ class Car < ActiveRecord::Base
   validates :year, numericality: true
   validates :make_name, :car_model_name, presence: true
   validates_associated :model
-  validate :validate_current_past_first, on: :create
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
@@ -42,7 +43,6 @@ class Car < ActiveRecord::Base
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
-  scope :current, -> { where(current: true) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
   scope :simple_search, -> (term) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil
@@ -61,10 +61,10 @@ class Car < ActiveRecord::Base
 
   concerning :Notifications do
     included do
-      after_create -> { notify_followers :following_new_car }, if: :current?
-      after_create -> { notify_followers :following_new_first_car }, if: :first?
-      after_create -> { notify_followers :following_new_past_car }, if: :past?
-      after_update -> { notify_followers :following_moves_new_car }, if: -> { past? && current_was }
+      after_create -> { notify_followers :following_new_car }, if: :current_car?
+      after_create -> { notify_followers :following_new_first_car }, if: :first_car?
+      after_create -> { notify_followers :following_new_past_car }, if: :past_car?
+      after_update -> { notify_followers :following_moves_new_car }, if: -> { past_car? && type_was == Car.types[:current_car] }
       after_create -> { notify_followers :following_next_car }, if: :next_car?
     end
 
@@ -100,37 +100,21 @@ class Car < ActiveRecord::Base
     "#{year} #{model}"
   end
 
-  def past=(_value)
-    super.tap do
-      self.current = false if past === true
-    end
-  end
-
   private
 
-  def validate_current_past_first
-    if first && current
-      errors.add :base, "Car cannot be both first and current"
-    elsif first && past
-      errors.add :base, "Car cannot be both first and past"
-    elsif past && current
-      errors.add :base, "Car cannot be both past and current"
-    end
-  end
-
   def resort_first
-    return unless current? || past?
+    return unless current_car? || past_car?
     update_column :sorting, -1
     scope = self.class.where(user: user)
-    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope = current_car? ? scope.current_car : scope.past_car
     scope.update_all 'sorting = sorting + 1'
   end
 
   # This can't happen inside same transaction as car update or deadlocks can occur
   def resort_all
-    return unless current? || past?
+    return unless current_car? || past_car?
     scope = self.class.where(user: user).where('sorting >= ?', sorting).where.not(id: id)
-    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope = current_car? ? scope.current_car : scope.past_car
     scope.update_all 'sorting = sorting + 1'
   end
 

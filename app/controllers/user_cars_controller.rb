@@ -49,7 +49,7 @@ class UserCarsController < ApplicationController
   private
 
   def new_car_params
-    params.permit!.slice(:past, :current, :first, :type).merge(current: params[:current] == 'true')
+    params.permit!.slice(:type)
   end
 
   def car_params
@@ -58,9 +58,6 @@ class UserCarsController < ApplicationController
       :make_name,
       :car_model_name,
       :description,
-      :first,
-      :current,
-      :past,
       :type,
       photos_attributes: %i(image_id image_content_type image_size image_filename sorting)
     )

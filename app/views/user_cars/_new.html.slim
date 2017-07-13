@@ -2,9 +2,6 @@
   .modal-dialog role="document"
     .modal-content
       = form_for [:user, car], data: { remote: true } do |f|
-        = f.hidden_field :first
-        = f.hidden_field :current
-        = f.hidden_field :past
         = f.hidden_field :type
 
         .modal-header
