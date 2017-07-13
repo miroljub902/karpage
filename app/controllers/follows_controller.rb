@@ -1,4 +1,5 @@
 class FollowsController < ApplicationController
+  before_action :require_user
   before_action :find_user
 
   def index
@@ -13,8 +14,9 @@ class FollowsController < ApplicationController
   private
 
   def find_user
-    @user = User.find_by(login: params[:profile_id])
-    return render_404 unless @user
-    @user = @user.decorate
+    requested_user = User.find_by(login: params[:profile_id])
+    return render_404 unless requested_user
+    return render_403 unless requested_user == current_user
+    @user = current_user.decorate
   end
 end

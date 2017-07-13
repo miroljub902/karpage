@@ -75,13 +75,14 @@
             span= user.cars.count
             .sprite.sprite-car-counter
 
-        li.follow-count class=('active' if controller_name == 'follows' && params[:followers])
-          = link_to user_followers_path(user) do
-            'Followers
-            span= user.followers.count
-            = new_count_indicator(user.follows_by, owner: user) if current_user == user
+        - if my_profile?
+          li.follow-count class=('active' if controller_name == 'follows' && params[:followers])
+            = link_to user_followers_path(user) do
+              'Followers
+              span= user.followers.count
+              = new_count_indicator(user.follows_by, owner: user) if current_user == user
 
-        li.follow-count class=('active' if controller_name == 'follows' && params[:following])
-          = link_to user_followees_path(user) do
-            'Following
-            span= user.followees.count
+          li.follow-count class=('active' if controller_name == 'follows' && params[:following])
+            = link_to user_followees_path(user) do
+              'Following
+              span= user.followees.count
