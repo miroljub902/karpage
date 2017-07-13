@@ -39,7 +39,7 @@ class Api::UsersController < ApiController
 
   def user_params
     params.require(:user).permit(
-      :email, :login, :password, :facebook_token, :location, :description, :link, :name,
+      :email, :login, :password, :facebook_token, :location, :description, :link, :name, :gender,
       :avatar_id, :avatar_content_type, :avatar_size, :avatar_filename, :instagram_id,
       :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename,
       dream_cars_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
