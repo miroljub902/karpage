@@ -135,6 +135,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  concerning :NormalizeAttributes do
+    included do
+      before_save -> do
+        self.instagram_id = instagram_id.delete('@')
+      end
+
+      def link=(value)
+        self[:link] = (/^https?:\/\//i.match(value) || value.to_s.strip.empty?) ? value : "http://#{value}"
+      end
+    end
+  end
+
   def friends
     User
       .joins('INNER JOIN follows ON follows.user_id = users.id OR follows.followee_id = users.id')
@@ -145,10 +157,6 @@ class User < ActiveRecord::Base
 
   def friends_posts
     Post.where(user_id: followees.select(:id))
-  end
-
-  def link=(value)
-    self[:link] = (/^https?:\/\//i.match(value) || value.to_s.strip.empty?) ? value : "http://#{value}"
   end
 
   def follow!(user)
