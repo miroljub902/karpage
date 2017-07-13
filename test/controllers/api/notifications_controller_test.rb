@@ -19,6 +19,6 @@ class Api::NotificationsControllerTest < ApiControllerTest
     get :index
     assert_response :ok
     assert_equal 1, json_response.size
-    assert_equal 'Dummy', json_response.first['message']
+    assert_equal 'Dummy', json_response['notifications'].first['message']
   end
 end

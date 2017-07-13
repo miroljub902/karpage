@@ -7,7 +7,8 @@ class PushNotificationTest < ActiveSupport::TestCase
     @car = cars(:first)
     @car.photos << photos(:one)
 
-    Notification.any_instance.expects(:queue_push).at_least_once
+    # Cannot test this since we use an after_commit hook now
+    # Notification.any_instance.expects(:queue_push).at_least_once
 
     @notification = Notification.create!(
       user: @user,

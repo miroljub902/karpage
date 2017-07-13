@@ -15,6 +15,7 @@ class Api::ProfilesControllerTest < ApiControllerTest
   end
 
   test 'returns cars' do
+    mock_request :s3
     user = users(:john_doe)
     user.dream_cars.create! image_id: 'dummy'
     user.cars << cars(:first)
@@ -28,7 +29,6 @@ class Api::ProfilesControllerTest < ApiControllerTest
       assert json_response[key].present?, "#{key} not present"
     end
   end
-
 
   test 'can follow user' do
     user = users(:john_doe)

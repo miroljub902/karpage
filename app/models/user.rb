@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
       end
 
       def demo_account?
-        login.casecmp('demo').zero?
+        login.to_s.casecmp('demo').zero?
       end
     end
   end

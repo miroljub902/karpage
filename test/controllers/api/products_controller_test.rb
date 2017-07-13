@@ -13,7 +13,7 @@ class Api::ProductsControllerTest < ApiControllerTest
     get :index, business_id: @business.id
     assert_response :ok
     assert_equal 1, json_response.size
-    assert_equal product.title, json_response.first['title']
+    assert_equal product.title, json_response['products'].first['title']
   end
 
   test 'get product details' do
@@ -21,7 +21,7 @@ class Api::ProductsControllerTest < ApiControllerTest
     @business.products = [product]
     get :show, business_id: @business.id, id: product.id
     assert_response :ok
-    assert_equal product.id, json_response['id']
+    assert_equal product.id, json_response['product']['id']
   end
 
   test 'business user can create product' do

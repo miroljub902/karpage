@@ -11,7 +11,7 @@ class CarTest < ActiveSupport::TestCase
     model = models(:audi_r8)
     Car.any_instance.expects(:update_user_profile_thumbnail).at_least_once
     5.times do |i|
-      user.cars.create model: model, year: 2015 + i, current: true
+      user.cars.create model: model, year: 2015 + i, type: Car.types[:current_car]
     end
     sorting = -> { user.cars.order(sorting: :asc).pluck(:year) }
     assert_equal [2019, 2018, 2017, 2016, 2015], sorting.call
@@ -30,7 +30,7 @@ class CarTest < ActiveSupport::TestCase
     follower = users(:friend)
     follower.follow! user
     assert_difference 'follower.notifications.following_new_past_car.count' do
-      user.cars.create! year: 2015, make_name: 'Audi', car_model_name: 'R8', past: true
+      user.cars.create! year: 2015, make_name: 'Audi', car_model_name: 'R8', type: Car.types[:past_car]
     end
   end
 end
