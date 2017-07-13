@@ -854,7 +854,8 @@ CREATE TABLE users (
     profile_thumbnail_size integer,
     profile_thumbnail_content_type character varying,
     device_info jsonb,
-    push_settings jsonb DEFAULT '{}'::jsonb NOT NULL
+    push_settings jsonb DEFAULT '{}'::jsonb NOT NULL,
+    gender character varying
 );
 
 
@@ -1872,4 +1873,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170523202028');
 INSERT INTO schema_migrations (version) VALUES ('20170524171229');
 
 INSERT INTO schema_migrations (version) VALUES ('20170529140830');
+
+INSERT INTO schema_migrations (version) VALUES ('20170713204100');
 

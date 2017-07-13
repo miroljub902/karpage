@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
   concerning :NormalizeAttributes do
     included do
       before_save -> do
-        self.instagram_id = instagram_id.delete('@')
+        self.instagram_id = instagram_id.delete('@') if instagram_id
       end
 
       def link=(value)
