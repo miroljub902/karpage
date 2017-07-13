@@ -11,8 +11,6 @@ class CarSinglesController < ApplicationController
     case params[:type]
     when 'dream-cars'
       current_user.dream_cars.create(single_params)
-    when 'next-car'
-      current_user.create_next_car(single_params) unless current_user.next_car
     else
       return render_404
     end
@@ -30,8 +28,6 @@ class CarSinglesController < ApplicationController
 
   def car_limit?
     case params[:type]
-    when 'next-car'
-      current_user.next_car.present?
     when 'dream-cars'
       current_user.dream_cars.count == 3
     end

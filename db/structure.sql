@@ -224,7 +224,8 @@ CREATE TABLE cars (
     featured_order integer,
     likes_count integer DEFAULT 0 NOT NULL,
     comments_count integer DEFAULT 0 NOT NULL,
-    sorting integer
+    sorting integer,
+    type character varying
 );
 
 
@@ -1321,6 +1322,13 @@ CREATE INDEX index_cars_on_past ON cars USING btree (past);
 
 
 --
+-- Name: index_cars_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_cars_on_type ON cars USING btree (type);
+
+
+--
 -- Name: index_cars_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1875,4 +1883,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170524171229');
 INSERT INTO schema_migrations (version) VALUES ('20170529140830');
 
 INSERT INTO schema_migrations (version) VALUES ('20170713204100');
+
+INSERT INTO schema_migrations (version) VALUES ('20170713205922');
 

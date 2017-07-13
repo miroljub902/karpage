@@ -2,6 +2,13 @@ class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
 
+  self.inheritance_column = '_no_sti'
+
+  enum type: {
+    unset_type: nil,
+    next_car: 'next_car'
+  }
+
   belongs_to :user, counter_cache: true
   belongs_to :model
   has_one :make, through: :model
@@ -58,6 +65,7 @@ class Car < ActiveRecord::Base
       after_create -> { notify_followers :following_new_first_car }, if: :first?
       after_create -> { notify_followers :following_new_past_car }, if: :past?
       after_update -> { notify_followers :following_moves_new_car }, if: -> { past? && current_was }
+      after_create -> { notify_followers :following_next_car }, if: :next_car?
     end
 
     def notify_followers(notification)

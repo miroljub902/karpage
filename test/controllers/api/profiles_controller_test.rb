@@ -17,10 +17,10 @@ class Api::ProfilesControllerTest < ApiControllerTest
   test 'returns cars' do
     user = users(:john_doe)
     user.dream_cars.create! image_id: 'dummy'
-    user.create_next_car! image_id: 'dummy'
     user.cars << cars(:first)
     user.cars << cars(:current)
     user.cars << cars(:past)
+    user.cars << cars(:next)
     get :show, id: user.login
     %w(next_car first_car current_cars previous_cars dream_cars).each do |key|
       assert json_response.has_key?(key), "No #{key} key"

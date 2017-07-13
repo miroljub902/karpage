@@ -20,3 +20,8 @@ past:
   <<: *REQUIRED
   past: true
   slug: <%= "2015-audi-r8-#{rand(100000000)}" %>
+
+next:
+  <<: *REQUIRED
+  type: next_car
+  slug: <%= "2015-audi-r8-#{rand(100000000)}" %>

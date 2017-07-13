@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   has_many :cars, dependent: :destroy
   has_many :singles, class_name: 'Photo', as: :attachable, dependent: :destroy
   has_many :dream_cars, -> { where(photo_type: 'dream-car') }, class_name: 'Photo', as: :attachable
-  has_one :next_car, -> { where(photo_type: 'next-car') }, class_name: 'Photo', as: :attachable
+  has_one :next_car, -> { where(type: Car.types[:next_car]) }, class_name: 'Car'
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :car_comments, through: :cars, source: :comments
@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   has_one :business, dependent: :destroy
   has_many :notifications, dependent: :delete_all
 
-  accepts_nested_attributes_for :dream_cars, :next_car, allow_destroy: true
+  accepts_nested_attributes_for :dream_cars, allow_destroy: true
 
   validates_associated :identities
 

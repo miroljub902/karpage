@@ -80,7 +80,7 @@
 
   .row
     - if @user.dream_cars.any? || my_profile?
-      .col-md-8.text-center.car-singles
+      .col-lg-8.text-center.car-singles
         h2.text-primary
           'Dream Cars
           - if my_profile?
@@ -102,21 +102,17 @@
     - if @user.next_car || my_profile?
       / Center "Next car" if dream cars are empty
       - col_class = (!my_profile? && @user.dream_cars.empty?) ? 'col-md-offset-4' : nil
-      .col-md-4.text-center.car-singles class=col_class
+      .col-lg-4.text-center.car-singles class=col_class
         h2.text-primary
           'Next Car
-          - if my_profile?
-            = link_to new_user_single_path(type: 'next-car'), class: "btn btn-default add-car #{'disabled' if @user.next_car}", data: { remote: true } do
-              .sprite.sprite-add-photo
-              '  Add Image
+          - if my_profile? && !@cars.next_car
+            = link_to new_user_car_path(type: Car.types[:next_car]), class: 'btn btn-default add-car', data: { remote: true } do
+              i.fa.fa-plus
+              'Add Car
             .small.m-t-0
               small &nbsp;
 
         .row.singles
-          .car-single.col-xs-12.col-sm-offset-2.col-sm-8
+          .car-card.car-single.col-xs-12.col-sm-6.col-sm-offset-3.col-lg-12.col-lg-offset-0
             - if @user.next_car
-              .img
-                = ix_refile_image_tag @user.next_car, :image, auto: 'enhance,format', fit: 'crop', w: 450, h: 240
-                - if my_profile?
-                  = link_to user_single_path(@user.next_car.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'remove' do
-                    .sprite.sprite-delete
+              = render(my_profile? ? 'user_cars/car' : 'user_cars/card', car: @cars.next_car, whole_actions_link: false)
