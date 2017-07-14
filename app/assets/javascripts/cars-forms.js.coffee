@@ -1,9 +1,13 @@
 $ ->
   $selectButton = null
+  maxPhotos = 10
 
   updateButtonText = ->
     total = $('.car-form .photo.has-photo').length
-    text = if total == 0 then 'Add Photos' else 'Add More Photos'
+    if maxPhotos == 1
+      text = 'Add Photo'
+    else
+      text = if total == 0 then 'Add Photos' else 'Add More Photos'
     $selectButton.html(text)
     sortablePhotos()
 
@@ -57,6 +61,7 @@ $ ->
     $modal = $(e.target)
     return unless $modal.hasClass('car-form')
     $photos = $modal.find('.photos')
+    maxPhotos = $photos.data('max-photos')
     sortablePhotos()
 
   $(document).on 'click', '.photo .remove', (e) ->
@@ -107,11 +112,11 @@ $ ->
       start = $('.photo.has-photo', $photos).length
       total = start + e.target.files.length
 
-      if total > 10
-        alert 'You can only add up to 10 total photos'
+      if total > maxPhotos
+        alert "You can only add up to #{maxPhotos} total photo(s)"
         return
 
-      disableButton() if total == 10
+      disableButton() if total == maxPhotos
 
       $.each e.target.files, (i) ->
         file = this

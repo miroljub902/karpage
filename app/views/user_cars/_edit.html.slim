@@ -19,10 +19,10 @@
               .col-xs-12
                 = f.text_area :description, class: 'form-control', rows: 5, placeholder: 'Tell us about this car... (optional)'
 
-                - if car.current? && car.persisted?
+                - if car.current_car? && car.persisted?
                   .checkbox
                     label
-                      = f.check_box :past
+                      = f.check_box :type, {}, Car.types[:past_car], car.type
                       'I no longer own this car
 
             .row

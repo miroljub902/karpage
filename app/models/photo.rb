@@ -17,13 +17,6 @@ class Photo < ActiveRecord::Base
   concerning :Notifications do
     included do
       after_create -> {
-        type = Notification.types[:following_next_car]
-        attachable.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: attachable
-        end
-      }, if: -> { photo_type == 'next-car' }
-
-      after_create -> {
         type = Notification.types[:following_dream_car]
         attachable.followers.each do |follower|
           follower.notifications.create! type: type, notifiable: self, source: attachable

@@ -215,16 +215,14 @@ CREATE TABLE cars (
     year integer NOT NULL,
     slug character varying NOT NULL,
     description text,
-    first boolean DEFAULT false NOT NULL,
-    current boolean DEFAULT true NOT NULL,
-    past boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     hits integer DEFAULT 0 NOT NULL,
     featured_order integer,
     likes_count integer DEFAULT 0 NOT NULL,
     comments_count integer DEFAULT 0 NOT NULL,
-    sorting integer
+    sorting integer,
+    type character varying
 );
 
 
@@ -1272,13 +1270,6 @@ CREATE INDEX index_car_parts_on_sorting ON car_parts USING btree (sorting);
 
 
 --
--- Name: index_cars_on_current; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_cars_on_current ON cars USING btree (current);
-
-
---
 -- Name: index_cars_on_description; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1290,13 +1281,6 @@ CREATE INDEX index_cars_on_description ON cars USING btree (description);
 --
 
 CREATE INDEX index_cars_on_featured_order ON cars USING btree (featured_order);
-
-
---
--- Name: index_cars_on_first; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_cars_on_first ON cars USING btree (first);
 
 
 --
@@ -1314,10 +1298,10 @@ CREATE INDEX index_cars_on_model_id ON cars USING btree (model_id);
 
 
 --
--- Name: index_cars_on_past; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cars_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_cars_on_past ON cars USING btree (past);
+CREATE INDEX index_cars_on_type ON cars USING btree (type);
 
 
 --
@@ -1875,4 +1859,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170524171229');
 INSERT INTO schema_migrations (version) VALUES ('20170529140830');
 
 INSERT INTO schema_migrations (version) VALUES ('20170713204100');
+
+INSERT INTO schema_migrations (version) VALUES ('20170713205922');
+
+INSERT INTO schema_migrations (version) VALUES ('20170713221529');
 

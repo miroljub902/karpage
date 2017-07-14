@@ -4,7 +4,7 @@ json.current_cars cars.current, partial: 'api/cars/car', as: :car
 json.previous_cars cars.past, partial: 'api/cars/car', as: :car
 
 if user.next_car
-  json.next_car user.next_car, partial: 'api/photos/photo', as: :photo
+  json.next_car user.next_car, partial: 'api/cars/car', as: :car
 else
   json.next_car nil
 end

@@ -2,6 +2,10 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::ReportsControllerTest < ApiControllerTest
+  setup do
+    mock_request :s3
+  end
+
   test 'can report user' do
     user = users(:john_doe)
     fiend = users(:friend)

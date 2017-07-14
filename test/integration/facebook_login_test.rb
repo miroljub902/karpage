@@ -1,8 +1,14 @@
 require 'test_helper'
 
 class FacebookLoginTest < ActionDispatch::IntegrationTest
-  test 'facebook signup' do
+  setup do
     omniauth_mock_facebook
+    mock_request :s3
+    mock_request :ga
+  end
+
+  test 'facebook signup' do
+    User.any_instance.expects(:send_welcome_email)
     assert_difference 'User.count' do
       auth = OmniAuth.config.mock_auth[:facebook].merge(uid: rand(999999999))
       post '/session', { provider: :facebook }, { 'omniauth.auth' => auth }
@@ -13,7 +19,6 @@ class FacebookLoginTest < ActionDispatch::IntegrationTest
   end
 
   test 'facebook login' do
-    omniauth_mock_facebook
     assert_no_difference 'User.count' do
       post '/session', { provider: :facebook }, { 'omniauth.auth' => OmniAuth.config.mock_auth[:facebook] }
       assert_response :found

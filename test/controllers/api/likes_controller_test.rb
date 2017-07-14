@@ -2,6 +2,10 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::LikesControllerTest < ApiControllerTest
+  setup do
+    mock_request :s3
+  end
+
   test 'can like a car' do
     user = users(:john_doe)
     friend = users(:friend)
@@ -29,7 +33,7 @@ class Api::LikesControllerTest < ApiControllerTest
   test 'can like a post' do
     user = users(:john_doe)
     friend = users(:friend)
-    friend_post = friend.posts.create! body: 'Howdy'
+    friend_post = friend.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
     post :create, post_id: friend_post.id, likeable_type: 'Post'
     assert_response :created
@@ -39,7 +43,7 @@ class Api::LikesControllerTest < ApiControllerTest
   test 'can unlike post' do
     user = users(:john_doe)
     friend = users(:friend)
-    friend_post = friend.posts.create! body: 'Howdy'
+    friend_post = friend.posts.create! body: 'Howdy', photo_id: 'dummy'
     Like.like! friend_post, user
     assert_equal 1, friend_post.reload.likes_count
     authorize_user user

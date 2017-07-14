@@ -2,18 +2,17 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   test 'user can signup with e-mail and password' do
+    User.any_instance.expects(:send_welcome_email)
+    mock_request :s3
     assert_difference 'User.count' do
-      post :create, user: { email: Faker::Internet.email, login: Faker::Internet.user_name, password: 'password', password_confirmation: 'password' }
-      assert_response :found
+      post :create, user: { email: Faker::Internet.email, login: Faker::Internet.user_name, password: 'password', password_confirmation: 'password' }, format: 'js'
+      assert_response :ok
     end
-    assert_redirected_to profile_path(User.first)
   end
 
   test 'halts on invalid params' do
     assert_no_difference 'User.count' do
       post :create, user: { email: 'invalid' }
     end
-    assert flash[:alert].present?
-    assert_template :new
   end
 end

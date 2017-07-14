@@ -4,7 +4,7 @@ require_relative '../api_controller_test'
 class Api::PostsControllerTest < ApiControllerTest
   test 'returns posts' do
     user = users(:john_doe)
-    user.posts.create! body: 'Howdy'
+    user.posts.create! body: 'Howdy', photo_id: 'dummy'
     get :index
     assert_response :ok
   end
@@ -13,7 +13,7 @@ class Api::PostsControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     assert_difference 'user.posts.count' do
-      post :create, post: { body: 'Howdy' }
+      post :create, post: { body: 'Howdy', photo_id: 'dummy' }
       assert_response :created
     end
   end
@@ -32,7 +32,7 @@ class Api::PostsControllerTest < ApiControllerTest
 
   test 'can update post' do
     user = users(:john_doe)
-    post = user.posts.create! body: 'Howdy'
+    post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
     patch :update, id: post.id, post: { body: 'Updated' }
     assert_response :no_content
@@ -41,14 +41,15 @@ class Api::PostsControllerTest < ApiControllerTest
 
   test 'returns post' do
     user = users(:john_doe)
-    post = user.posts.create! body: 'Howdy'
+    post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
     get :show, id: post.id
     assert_response :ok
   end
 
   test 'can destroy post' do
+    mock_request :s3
     user = users(:john_doe)
-    post = user.posts.create! body: 'Howdy'
+    post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
     delete :destroy, id: post.id
     assert_response :no_content

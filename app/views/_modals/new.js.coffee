@@ -2,11 +2,12 @@ $newModal = $("<%= escape_javascript(render(content, (options ||= {}))) %>")
 # Have to re-trigger it so other scripts catch it
 singleTrigger = ->
   $newModal.off 'show.bs.modal', singleTrigger
-  $newModal.trigger 'show.bs.modal'
+  $('#<%= id %>').trigger 'show.bs.modal'
 $newModal.on 'show.bs.modal', singleTrigger
 
 $modal = $('#<%= id %>')
 if $modal.length == 0
+  $newModal.appendTo('body')
   show = ->
     $newModal.modal('show')
     singleTrigger()
