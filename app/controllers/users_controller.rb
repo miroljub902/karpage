@@ -20,7 +20,7 @@ class UsersController < ApplicationController
         if @user.save
           render inline: "window.location = '#{profile_path(@user)}'"
         else
-          render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
+          render '_modals/new', locals: { id: 'modalSignUp', content: 'new' }
         end
       }
     end
