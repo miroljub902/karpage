@@ -19,14 +19,14 @@ class Photo < ActiveRecord::Base
       after_create -> {
         type = Notification.types[:following_next_car]
         attachable.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: attachable
+          Notification.belay_create user: follower, type: type, notifiable: self, source: attachable
         end
       }, if: -> { photo_type == 'next-car' }
 
       after_create -> {
         type = Notification.types[:following_dream_car]
         attachable.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: attachable
+          Notification.belay_create user: follower, type: type, notifiable: self, source: attachable
         end
       }, if: -> { photo_type == 'dream-car' }
     end

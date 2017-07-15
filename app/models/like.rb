@@ -25,7 +25,7 @@ class Like < ActiveRecord::Base
            when Post
              Notification.types[:your_post_like]
            end
-    owner.notifications.create!(type: type, notifiable: likeable, source: user) if type
+    Notification.belay_create user: owner, type: type, notifiable: likeable, source: user if type
     true
   end
 end
