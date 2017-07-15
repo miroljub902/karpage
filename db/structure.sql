@@ -628,7 +628,18 @@ ALTER SEQUENCE photos_id_seq OWNED BY photos.id;
 
 CREATE TABLE post_channels (
     id integer NOT NULL,
-    name character varying
+    name character varying,
+    description character varying,
+    image_id character varying,
+    image_filename character varying,
+    image_size integer,
+    image_content_type character varying,
+    thumb_id character varying,
+    thumb_filename character varying,
+    thumb_size integer,
+    thumb_content_type character varying,
+    ordering integer DEFAULT 0 NOT NULL,
+    active boolean DEFAULT true NOT NULL
 );
 
 
@@ -1863,4 +1874,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170713204100');
 INSERT INTO schema_migrations (version) VALUES ('20170713205922');
 
 INSERT INTO schema_migrations (version) VALUES ('20170713221529');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715005644');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715012409');
 
