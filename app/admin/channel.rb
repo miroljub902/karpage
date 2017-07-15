@@ -5,6 +5,7 @@ ActiveAdmin.register PostChannel, as: 'Channels' do
 
   index do
     selectable_column
+    column :ordering
     column :name do |channel|
       link_to channel, admin_channel_path(channel)
     end
