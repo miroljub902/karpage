@@ -16,6 +16,11 @@ class ContactForm
     clear
   end
 
+  def message=(value)
+    # Fix invalid utf8 byte sequence
+    @message = value.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+  end
+
   def clear
     self.name = ''
     self.email = ''
