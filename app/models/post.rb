@@ -50,7 +50,7 @@ class Post < ActiveRecord::Base
       after_create -> {
         type = Notification.types[:following_new_post]
         user.followers.each do |follower|
-          follower.notifications.create! type: type, notifiable: self, source: user
+          Notification.belay_create user: follower, type: type, notifiable: self, source: user
         end
       }
     end

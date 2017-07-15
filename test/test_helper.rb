@@ -11,6 +11,14 @@ class ActionController::TestCase
   setup :activate_authlogic
 end
 
+class ActionDispatch::IntegrationTest
+  def sign_in(user, password)
+    mock_request :ga
+    post user_session_path, user_session: { login: user.login, password: password }
+    assert_response :found
+  end
+end
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

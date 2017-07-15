@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
            when Post
              Notification.types[:your_post_comment]
            end
-    commentable.user.notifications.create!(type: type, notifiable: self, source: user) if type
+    Notification.belay_create user: commentable.user, type: type, notifiable: self, source: user if type
     true
   end
 end

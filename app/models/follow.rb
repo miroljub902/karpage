@@ -12,6 +12,6 @@ class Follow < ActiveRecord::Base
   private
 
   def notify_user
-    followee.notifications.create! type: Notification.types[:new_follower], notifiable: self, source: user
+    Notification.belay_create user: followee, type: Notification.types[:new_follower], notifiable: self, source: user
   end
 end
