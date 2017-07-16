@@ -42,6 +42,7 @@ class Api::UsersController < ApiController
       :email, :login, :password, :facebook_token, :location, :description, :link, :name, :gender,
       :avatar_id, :avatar_content_type, :avatar_size, :avatar_filename, :instagram_id,
       :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename,
+      :lat, :lng,
       dream_cars_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
       next_car_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
       push_settings: User::DEFAULT_PUSH_SETTINGS.keys,

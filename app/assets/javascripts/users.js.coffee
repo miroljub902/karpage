@@ -15,11 +15,15 @@ handler = ->
 
   $editables = $('.editable', $userProfile)
   $location = $('.location', $userProfile)
+  $lat = $('#user_profile_lat', $userProfile)
+  $lng = $('#user_profile_lng', $userProfile)
   $description = $('.description', $userProfile)
   $link = $('.link', $userProfile)
   $instagram = $('.instagram', $userProfile)
 
   $location.data('original', $location.html())
+  $lat.data('original', $lat.html())
+  $lng.data('original', $lng.html())
   $description.data('original', $description.html())
   $link.data('original', $link.html())
   $instagram.data('original', $instagram.html())
@@ -29,6 +33,19 @@ handler = ->
     $userProfile.addClass('editing').parents('.jumbo-header').addClass('editing')
 
     $location.editable(options)
+    $location.on 'shown', (e, editable) ->
+      $this = editable.input.$input
+      return if $this.data('autocomplete-initialized')
+      options =
+        types: ['geocode']
+      autocomplete = new google.maps.places.Autocomplete($this.get(0), options)
+      autocomplete.addListener 'place_changed', ->
+        place = autocomplete.getPlace()
+        $lat.val place.geometry.location.lat()
+        $lng.val place.geometry.location.lng()
+
+      $this.data 'autocomplete-initialized', true
+
     $description.editable(options)
 
     linkDisplay = (value) ->
@@ -47,6 +64,8 @@ handler = ->
     instagramId = if $instagram.find('a').length > 0 then $instagram.find('a').html().trim() else ''
     data =
       location: $location.html().trim()
+      lat: $lat.val()
+      lng: $lng.val()
       description: $description.html().trim()
       link: link
       instagram_id: instagramId
@@ -98,6 +117,8 @@ handler = ->
         $editables.editable('destroy').addClass('editable').removeClass('error').tooltip('destroy').each ->
           $this = $(this)
           $this.data('original', $this.html()).removeAttr('style')
+        $lat.data 'original', $lat.val()
+        $lng.data 'original', $lng.val()
         $avatar.removeClass 'editing'
         $editing.fadeOut -> $edit.fadeIn()
 
@@ -107,6 +128,8 @@ handler = ->
     $editables.editable('destroy').addClass('editable').removeClass('error').tooltip('destroy').each ->
       $this = $(this)
       $this.html($this.data('original')).removeAttr('style')
+    $lat.val $lat.data('original')
+    $lng.val $lng.data('original')
     $background.css('backgroundImage', $backgroundInput.data('original'))
     $avatarInput.val('')
     if $avatarInput.data('original')
