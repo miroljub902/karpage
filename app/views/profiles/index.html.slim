@@ -1,11 +1,19 @@
 = form_tag profiles_path, method: :get, class: 'car-search' do
-  .searchfield
-    .sprite.sprite-search-magnifying-glass
-    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+  .searchfield.clearfix
+    .col-sm-5
+      .sprite.sprite-search-magnifying-glass
+      = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners', class: 'with-sprite'
+    .col-sm-2.text-center style="line-height: 43px"
+      'within 20mi of
+    .col-sm-5
+      = text_field_tag :location, params[:location], placeholder: 'Location... (optional)'
+    = hidden_field_tag :lat, params[:lat]
+    = hidden_field_tag :lng, params[:lng]
+  .hidden= submit_tag 'Search'
 
 h1.text-center
   - if params[:search].present?
-    = link_to "Cars (#{@car_count})", profile_cars_path(search: params[:search])
+    = link_to "Cars (#{@car_count})", profile_cars_path(search: params[:search], location: params[:location], lat: params[:lat], lng: params[:lng])
     span.text-muted &nbsp;|
     '  Owners (#{@users.total_count})
   - else
@@ -13,7 +21,7 @@ h1.text-center
     = link_to 'Cars', profile_cars_path
     span.text-muted &nbsp;|
     '  Owners
-      
+
   span.text-muted &nbsp;|&nbsp;
   = link_to 'Posts', posts_explore_path
 
@@ -23,5 +31,11 @@ h1.text-center
 
   .col-xs-12.text-center.next-prev-pagination
     .row
-      .col-sm-6= link_to_previous_page @users, 'Previous Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
-      .col-sm-6= link_to_next_page @users, 'Next Page', params: { search: params[:search] }, class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6
+        = link_to_previous_page @users, 'Previous Page',
+          params: { search: params[:search], location: params[:location], lat: params[:lat], lng: params[:lng] },
+          class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6
+        = link_to_next_page @users, 'Next Page',
+          params: { search: params[:search], location: params[:location], lat: params[:lat], lng: params[:lng] },
+          class: 'btn btn-default btn-lg btn-block'
