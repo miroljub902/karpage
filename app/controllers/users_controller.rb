@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  respond_to :html, :js, :json
-
   layout 'simple', only: %i(edit update)
 
   before_action :require_no_user, only: %i(new create)
