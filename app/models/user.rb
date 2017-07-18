@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     config.perishable_token_valid_for 3.hours
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options(
-      with: /\A\w[.\w+\-_]+\z/,
+      with: /\A\w[.\w+_]+\z/,
       if: -> { identities.empty? || login.present? || login_was.present? },
       message: 'should use only letters numbers and .-_ please'
     )
