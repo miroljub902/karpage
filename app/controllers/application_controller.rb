@@ -11,7 +11,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidCrossOriginRequest, with: :render_403
 
   def api_base
-    "#{ENV.fetch('API_SUBDOMAIN')}.#{ENV.fetch('HOSTNAME')}"
+    subdomain = ENV.fetch('API_SUBDOMAIN')
+    host = ENV.fetch('HOSTNAME')
+    subdomain = host.start_with?("#{subdomain}.") ? '' : "#{subdomain}."
+    "#{subdomain}#{host}"
   end
   helper_method :api_base
 
