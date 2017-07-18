@@ -5,10 +5,13 @@ aws = {
   bucket: ENV['S3_BUCKET'],
   region: ENV['S3_REGION']
 }
-Refile.store = Refile::S3.new(prefix: 'store', max_size: 5.megabytes, **aws)
+
+# Also update max_size on car-forms.js:
+Refile.cache = Refile::Backend::FileSystem.new('tmp/uploads/cache', max_size: 10.megabytes)
+Refile.store = Refile::S3.new(prefix: 'store', max_size: 10.megabytes, **aws)
 Refile.cdn_host = ENV['CDN_HOST'] if ENV['CDN_HOST'].present?
 
-%i(fit fill).each do |method|
+%i[fit fill].each do |method|
   Refile.processor :"#{method}_and_orient" do |file, *args, format, &block|
     magick = Refile::MiniMagick.new(method)
     magick.call file, *args[0..1], format: format[:format] do |cmd|

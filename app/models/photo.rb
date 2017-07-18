@@ -5,6 +5,8 @@ class Photo < ActiveRecord::Base
 
   attachment :image, type: :image
 
+  validate :validate_image_size
+
   before_save -> do
     if attachable.respond_to?(:photos)
       self.sorting ||= (attachable.photos.maximum(:sorting) || -1) + 1
@@ -30,5 +32,12 @@ class Photo < ActiveRecord::Base
         end
       }, if: -> { photo_type == 'dream-car' }
     end
+  end
+
+  private
+
+  def validata_image_size
+    return if !image || image.size < image.backend.max_size
+    errors.add :image, :too_large
   end
 end
