@@ -3,6 +3,7 @@ module ImgixRefileHelper
   include Imgix::Rails::UrlHelper
 
   def ix_refile_image_url(obj, key, **opts)
+    return nil unless obj
     path = s3_path(obj, key)
     opts.merge!(default_ix_options(obj, key, opts).except(:class))
     path ? ix_image_url(path, opts) : attachment_url(obj, key) # Get default if any
