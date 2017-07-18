@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :js_config
+
   def index
     force_splash = params[:m] == "1"
     if !force_splash && ((cookies[:splash] && !browser.device.mobile?) || params[:h] == '1')
@@ -7,6 +9,12 @@ class HomeController < ApplicationController
     else
       cookies[:splash] = true
       render 'splash', layout: false
+    end
+  end
+
+  def js_config
+    respond_to do |format|
+      format.js
     end
   end
 end

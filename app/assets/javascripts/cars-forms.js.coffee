@@ -1,4 +1,26 @@
 $ ->
+  $(document).on 'change', 'select#car_make_id', (e) ->
+    $models = $('select#car_model_id')
+    $models.find('option[value!=""]').remove()
+    $trims = $('select#car_trim_id')
+    $trims.find('option[value!=""]').remove()
+
+    makeId = $(this).val()
+    return if makeId == ''
+    $.getJSON "//#{Config.apiBase}/api/makes/#{makeId}/models", (data) ->
+      $models.append $.map data.models, (model) ->
+        "<option value='#{model.id}'>#{model.name}</option>"
+
+  $(document).on 'change', 'select#car_model_id', (e) ->
+    $makes = $('select#car_make_id')
+    $trims = $('select#car_trim_id')
+    $trims.find('option[value!=""]').remove()
+    modelId = $(this).val()
+    return if modelId == ''
+    $.getJSON "//#{Config.apiBase}/api/makes/#{$makes.val()}/models/#{modelId}/trims", (data) ->
+      $trims.append $.map data.trims, (trim) ->
+        "<option value='#{trim.id}'>#{trim.name}</option>"
+
   $selectButton = null
 
   updateButtonText = ->

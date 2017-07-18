@@ -3,6 +3,7 @@ class Car < ActiveRecord::Base
   include FeaturedOrdering
 
   belongs_to :user, counter_cache: true
+  belongs_to :trim
   belongs_to :model
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy
@@ -17,8 +18,7 @@ class Car < ActiveRecord::Base
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
   validates :year, numericality: true
-  validates :make_name, :car_model_name, presence: true
-  validates_associated :model
+  validates :make_id, :model_id, presence: true
   validate :validate_current_past_first, on: :create
 
   attr_accessor :make_name, :car_model_name
@@ -74,6 +74,10 @@ class Car < ActiveRecord::Base
     else
       likes.create! user: user
     end
+  end
+
+  def make_id
+    make.try :id
   end
 
   def make_name

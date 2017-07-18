@@ -51,7 +51,35 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
 SET search_path = public, pg_catalog;
+
+--
+-- Name: set_point_from_lat_lng(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION set_point_from_lat_lng() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        NEW.point := ST_SetSRID(ST_Point(NEW.lng, NEW.lat), 4326);
+        RETURN NEW;
+      END;
+      $$;
+
 
 SET default_tablespace = '';
 
@@ -215,16 +243,17 @@ CREATE TABLE cars (
     year integer NOT NULL,
     slug character varying NOT NULL,
     description text,
-    first boolean DEFAULT false NOT NULL,
-    current boolean DEFAULT true NOT NULL,
-    past boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     hits integer DEFAULT 0 NOT NULL,
     featured_order integer,
     likes_count integer DEFAULT 0 NOT NULL,
     comments_count integer DEFAULT 0 NOT NULL,
-    sorting integer
+    sorting integer,
+    first boolean DEFAULT false NOT NULL,
+    current boolean DEFAULT true NOT NULL,
+    past boolean DEFAULT false NOT NULL,
+    trim_id integer
 );
 
 
@@ -456,7 +485,8 @@ CREATE TABLE makes (
     name character varying NOT NULL,
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    official boolean DEFAULT false NOT NULL
 );
 
 
@@ -489,7 +519,8 @@ CREATE TABLE models (
     name character varying NOT NULL,
     slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    official boolean DEFAULT false NOT NULL
 );
 
 
@@ -630,7 +661,18 @@ ALTER SEQUENCE photos_id_seq OWNED BY photos.id;
 
 CREATE TABLE post_channels (
     id integer NOT NULL,
-    name character varying
+    name character varying,
+    ordering integer DEFAULT 0 NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    description character varying,
+    image_id character varying,
+    image_filename character varying,
+    image_size integer,
+    image_content_type character varying,
+    thumb_id character varying,
+    thumb_filename character varying,
+    thumb_size integer,
+    thumb_content_type character varying
 );
 
 
@@ -776,6 +818,40 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: trims; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE trims (
+    id integer NOT NULL,
+    model_id integer NOT NULL,
+    name character varying NOT NULL,
+    slug character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    official boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: trims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE trims_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: trims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE trims_id_seq OWNED BY trims.id;
+
+
+--
 -- Name: upvotes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -855,7 +931,10 @@ CREATE TABLE users (
     profile_thumbnail_content_type character varying,
     device_info jsonb,
     push_settings jsonb DEFAULT '{}'::jsonb NOT NULL,
-    gender character varying
+    gender character varying,
+    point geography,
+    lat numeric(9,5),
+    lng numeric(9,5)
 );
 
 
@@ -1016,6 +1095,13 @@ ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq':
 --
 
 ALTER TABLE ONLY reports ALTER COLUMN id SET DEFAULT nextval('reports_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY trims ALTER COLUMN id SET DEFAULT nextval('trims_id_seq'::regclass);
 
 
 --
@@ -1193,6 +1279,14 @@ ALTER TABLE ONLY reports
 
 
 --
+-- Name: trims_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY trims
+    ADD CONSTRAINT trims_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: upvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1272,13 +1366,6 @@ CREATE INDEX index_car_parts_on_sorting ON car_parts USING btree (sorting);
 
 
 --
--- Name: index_cars_on_current; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_cars_on_current ON cars USING btree (current);
-
-
---
 -- Name: index_cars_on_description; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1290,13 +1377,6 @@ CREATE INDEX index_cars_on_description ON cars USING btree (description);
 --
 
 CREATE INDEX index_cars_on_featured_order ON cars USING btree (featured_order);
-
-
---
--- Name: index_cars_on_first; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_cars_on_first ON cars USING btree (first);
 
 
 --
@@ -1314,10 +1394,10 @@ CREATE INDEX index_cars_on_model_id ON cars USING btree (model_id);
 
 
 --
--- Name: index_cars_on_past; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cars_on_trim_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_cars_on_past ON cars USING btree (past);
+CREATE INDEX index_cars_on_trim_id ON cars USING btree (trim_id);
 
 
 --
@@ -1636,6 +1716,27 @@ CREATE INDEX index_reports_on_user_id ON reports USING btree (user_id);
 
 
 --
+-- Name: index_trims_on_model_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_trims_on_model_id ON trims USING btree (model_id);
+
+
+--
+-- Name: index_trims_on_model_id_and_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_trims_on_model_id_and_slug ON trims USING btree (model_id, slug);
+
+
+--
+-- Name: index_trims_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_trims_on_name ON trims USING btree (model_id, lower((name)::text));
+
+
+--
 -- Name: index_upvotes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1724,6 +1825,13 @@ CREATE INDEX index_users_on_single_access_token ON users USING btree (single_acc
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: trigger_users_on_lat_lng; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER trigger_users_on_lat_lng BEFORE INSERT OR UPDATE OF lat, lng ON users FOR EACH ROW EXECUTE PROCEDURE set_point_from_lat_lng();
 
 
 --
@@ -1875,4 +1983,22 @@ INSERT INTO schema_migrations (version) VALUES ('20170524171229');
 INSERT INTO schema_migrations (version) VALUES ('20170529140830');
 
 INSERT INTO schema_migrations (version) VALUES ('20170713204100');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715005644');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715012409');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715020644');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715230125');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715230340');
+
+INSERT INTO schema_migrations (version) VALUES ('20170715230436');
+
+INSERT INTO schema_migrations (version) VALUES ('20170718014548');
+
+INSERT INTO schema_migrations (version) VALUES ('20170718015645');
+
+INSERT INTO schema_migrations (version) VALUES ('20170718015754');
 
