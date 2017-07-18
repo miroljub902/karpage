@@ -53,7 +53,7 @@ handler = ->
       if link.length == 0 then $(this).html('') else $(this).html "<a href='#{link}'>#{link}</a>"
 
     instagramDisplay = (value) ->
-      link = value.trim()
+      link = value.trim().replace('@', '')
       if link.length == 0 then $(this).html('') else $(this).html "<a href='https://www.instagram.com/#{link}'>#{link}</a>"
 
     $link.editable($.extend(display: linkDisplay, options))
