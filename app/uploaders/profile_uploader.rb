@@ -245,7 +245,13 @@ class ProfileUploader
       image.write "tmp/thumbnail_#{user.id}.jpg"
       img = File.open(image.path)
       user.profile_thumbnail = img
-      user.save! validate: false
+      begin
+        save_retries = 0
+        user.save! validate: false
+      rescue Seahorse::Client::NetworkingError
+        save_retries += 1
+        retry if save_retries == 1
+      end
     end
 
     force_facebook_og_refresh if Rails.env.production?

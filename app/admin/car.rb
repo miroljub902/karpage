@@ -99,5 +99,9 @@ ActiveAdmin.register Car do
     def edit_resource_path(resource)
       edit_admin_car_path resource.id
     end
+
+    def resource_path(resource)
+      admin_car_path resource.id
+    end
   end
 end
