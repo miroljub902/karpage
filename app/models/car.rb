@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
@@ -44,14 +45,19 @@ class Car < ActiveRecord::Base
   scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
-  scope :simple_search, -> (term) {
+  scope :simple_search, ->(term, lat, lng) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil
     term = term.to_s.split(' ').map(&:strip).join('%')
     year_condition = "cars.year = #{year} OR" if year
-    joins(:make, :user)
-      .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
+    scope = joins(:make, :user)
+            .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
+    if lat.present? && lng.present?
+      meters = 20 * 1600 # (20 miles)
+      scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
+    end
+    scope
   }
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else

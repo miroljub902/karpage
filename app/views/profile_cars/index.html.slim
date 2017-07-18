@@ -1,13 +1,21 @@
 = form_tag profile_cars_path, method: :get, class: 'car-search' do
-  .searchfield
-    .sprite.sprite-search-magnifying-glass
-    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+  .searchfield.clearfix
+    .col-sm-5
+      .sprite.sprite-search-magnifying-glass
+      = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners', class: 'with-sprite'
+    .col-sm-2.text-center style="line-height: 43px"
+      'within 20mi of
+    .col-sm-5
+      = text_field_tag :location, params[:location], placeholder: 'Location... (optional)'
+    = hidden_field_tag :lat, params[:lat]
+    = hidden_field_tag :lng, params[:lng]
+  .hidden= submit_tag 'Search'
 
 h1.text-center
   - if params[:search].present?
     'Cars (#{@cars.total_count})
     span.text-muted |&nbsp;
-    = link_to "Owners (#{@user_count})", profiles_path(search: params[:search])
+    = link_to "Owners (#{@user_count})", profiles_path(search: params[:search], location: params[:location], lat: params[:lat], lng: params[:lng])
   - else
     p.text-primary Explore Most Popular
     'Cars
@@ -28,7 +36,16 @@ h1.text-center
 
   .col-xs-12.text-center.next-prev-pagination
     .row
-      .col-sm-6= link_to_previous_page @for_pagination || @cars, 'Previous Page', params: { search: params[:search], filter: params[:filter] }, class: 'btn btn-default btn-lg btn-block'
       .col-sm-6
-        = link_to_next_page @for_pagination || @cars, 'Next Page', params: { search: params[:search], filter: params[:filter] }, class: 'btn btn-default btn-lg btn-block' do
-          = link_to 'Next Page', profile_cars_path(page: 2), class: 'btn btn-default btn-lg btn-block'
+        = link_to_previous_page @for_pagination || @cars, 'Previous Page',
+          params: { search: params[:search], filter: params[:filter], location: params[:location], lat: params[:lat], lng: params[:lng] },
+          class: 'btn btn-default btn-lg btn-block'
+      .col-sm-6
+        - if params[:lat].present? && @cars.total_pages > 1
+          = link_to_next_page @for_pagination || @cars, 'Next Page',
+            params: { search: params[:search], filter: params[:filter], location: params[:location], lat: params[:lat], lng: params[:lng] },
+            class: 'btn btn-default btn-lg btn-block'
+        - elsif !params[:lat].present?
+          = link_to_next_page @for_pagination || @cars, 'Next Page',
+            params: { search: params[:search], filter: params[:filter], location: params[:location], lat: params[:lat], lng: params[:lng] }, class: 'btn btn-default btn-lg btn-block' do
+              = link_to 'Next Page', profile_cars_path(page: 2), class: 'btn btn-default btn-lg btn-block'

@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 class User < ActiveRecord::Base
   include FeaturedOrdering
 
@@ -48,12 +49,17 @@ class User < ActiveRecord::Base
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 
-  scope :simple_search, -> (term) {
-    like = %w(name login description link location).map { |column| "#{column} ILIKE :term" }
-    where like.join(' OR '), term: "%#{term.to_s.strip}%"
+  scope :simple_search, ->(term, lat, lng) {
+    like = %w[name login description link location].map { |column| "#{column} ILIKE :term" }
+    scope = where(like.join(' OR '), term: "%#{term.to_s.strip}%")
+    if lat.present? && lng.present?
+      meters = 20 * 1600 # (20 miles)
+      scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
+    end
+    scope
   }
 
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else
