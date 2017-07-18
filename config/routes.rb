@@ -30,6 +30,12 @@ Rails.application.routes.draw do
       resources :products
     end
 
+    resources :makes, only: :index do
+      resources :models, only: :index do
+        resources :trims, only: :index
+      end
+    end
+
     resources :filters, only: :index
     resources :cars, only: %i(index show create update destroy) do
       put :reset_counter
@@ -57,6 +63,7 @@ Rails.application.routes.draw do
   end
 
   root to: 'home#index'
+  get 'config', to: 'home#js_config', as: :js_config
 
   get 'auth/:provider/callback', to: 'user_sessions#create'
   get 'auth/failure', to: redirect('/')

@@ -12,10 +12,21 @@
             .row
               .col-md-2
                 = f.text_field :year, class: 'form-control', placeholder: '* Year'
-              .col-md-5
-                = f.text_field :make_name, class: 'form-control', placeholder: '* Make'
-              .col-md-5
-                = f.text_field :car_model_name, class: 'form-control', placeholder: '* Model'
+              .col-md-3
+                = f.select :make_id,
+                  Make.official.sorted.pluck(:name, :id),
+                  { include_blank: '* MAKE' },
+                  class: 'form-control'
+              .col-md-3
+                = f.select :model_id,
+                  f.object.make ? f.object.make.models.official.sorted.pluck(:name, :id) : [],
+                  { include_blank: '* MODEL' },
+                  class: 'form-control'
+              .col-md-4
+                = f.select :trim_id,
+                  f.object.model ? f.object.model.trims.official.sorted.pluck(:name, :id) : [],
+                  { include_blank: 'TRIM' },
+                  class: 'form-control'
 
             .row
               .col-xs-12

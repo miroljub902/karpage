@@ -55,8 +55,8 @@ class UserCarsController < ApplicationController
   def car_params
     params.require(:car).permit(
       :year,
-      :make_name,
-      :car_model_name,
+      :model_id,
+      :trim_id,
       :description,
       :type,
       photos_attributes: %i(image_id image_content_type image_size image_filename sorting)
