@@ -118,7 +118,7 @@ $ ->
       bucket: $files.data('s3-bucket')
 
     validateFile = (file) ->
-      maxSize = 1024 * 1024 * 5
+      maxSize = 1024 * 1024 * 10
       validSize = file.size < maxSize
       validType = /image\//.test(file.type)
       if validSize && validType
@@ -128,7 +128,7 @@ $ ->
       else if !validType
         error = "File is not a valid image file"
       alert error
-    false
+      false
 
     $files.change (e) ->
       start = $('.photo.has-photo', $photos).length
@@ -146,6 +146,7 @@ $ ->
         unless validateFile(file)
           updateButtonText()
           i -= 1 # So next file is on proper slot in thumbnail list
+          return
 
         $photo.addClass('uploading').attr('data-progress', '0%')
 

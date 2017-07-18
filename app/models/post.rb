@@ -7,7 +7,7 @@ class Post < ActiveRecord::Base
 
   attachment :photo, type: :image
 
-  validate :validate_presence_of_photo
+  validate :validate_presence_of_photo, :validate_photo_size
 
   scope :sorted, -> { order(created_at: :desc) }
   scope :global, -> { where(post_channel_id: nil) }
@@ -61,5 +61,10 @@ class Post < ActiveRecord::Base
   def validate_presence_of_photo
     return if photo || photo_id.present?
     errors.add :photo, :blank
+  end
+
+  def validate_photo_size
+    return if !photo || photo.size < photo.backend.max_size
+    errors.add :photo, :too_large
   end
 end
