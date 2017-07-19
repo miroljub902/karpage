@@ -36,7 +36,7 @@ class Photo < ActiveRecord::Base
 
   private
 
-  def validata_image_size
+  def validate_image_size
     return if !image || image.size < image.backend.max_size
     errors.add :image, :too_large
   end
