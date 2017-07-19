@@ -12,6 +12,7 @@ class Model < ActiveRecord::Base
   scope :official, -> { where(official: true) }
   scope :sorted, -> { order(name: :asc) }
   scope :with_make_id, ->(id) { where(make_id: id) }
+  scope :has_year, ->(year) { year.present? ? distinct.joins(:trims).where(trims: { year: year }) : all }
 
   def to_s
     "#{make} #{name}"

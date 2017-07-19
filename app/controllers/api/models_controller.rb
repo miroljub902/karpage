@@ -1,5 +1,5 @@
 class Api::ModelsController < ApiController
   def index
-    render json: Model.with_make_id(params[:make_id]).official.sorted
+    render json: Model.with_make_id(params[:make_id]).official.has_year(params[:year]).sorted
   end
 end
