@@ -13,10 +13,10 @@
           .inputs
             .row
               .col-md-2
-                = f.text_field :year, class: 'form-control', placeholder: '* Year'
+                = f.text_field :year, class: 'form-control', placeholder: '* Year', maxlength: 4
               .col-md-3
                 = f.select :make_id,
-                  Make.official.sorted.pluck(:name, :id),
+                  f.object.year ? Make.official.has_year(f.object.year).sorted.pluck(:name, :id) : [],
                   { include_blank: '* MAKE' },
                   class: 'form-control'
               .col-md-3

@@ -1,23 +1,54 @@
 $ ->
+  previousYear = null
+  checkYearTimeout = null
+  $(document).on 'keyup', 'input#car_year', (e) ->
+    $this = $(this)
+    $form = $this.parents('form')
+    year = $.trim($this.val())
+    previousYear ||= year
+    $makes = $form.find('select#car_make_id')
+    $models = $form.find('select#car_model_id')
+    $trims = $form.find('select#car_trim_id')
+    if previousYear != year
+      previousYear = year
+      clearTimeout checkYearTimeout if checkYearTimeout
+      checkYearTimeout = setTimeout ->
+        $makes.find('option[value!=""]').remove()
+        $models.find('option[value!=""]').remove()
+        $trims.find('option[value!=""]').remove()
+
+        return unless /^\d\d\d\d$/.test(year)
+        $.getJSON "//#{Config.apiBase}/api/makes", year: year, (data) ->
+          $makes.append $.map data.makes, (make) ->
+            "<option value='#{make.id}'>#{make.name}</option>"
+      , 200
+
   $(document).on 'change', 'select#car_make_id', (e) ->
-    $models = $('select#car_model_id')
+    $this = $(this)
+    $form = $this.parents('form')
+    year = $.trim($form.find('input#car_year').val())
+    $models = $form.find('select#car_model_id')
     $models.find('option[value!=""]').remove()
-    $trims = $('select#car_trim_id')
+    $trims = $form.find('select#car_trim_id')
     $trims.find('option[value!=""]').remove()
 
-    makeId = $(this).val()
+    makeId = $this.val()
     return if makeId == ''
-    $.getJSON "//#{Config.apiBase}/api/makes/#{makeId}/models", (data) ->
+    $.getJSON "//#{Config.apiBase}/api/makes/#{makeId}/models", year: year, (data) ->
       $models.append $.map data.models, (model) ->
         "<option value='#{model.id}'>#{model.name}</option>"
 
   $(document).on 'change', 'select#car_model_id', (e) ->
-    $makes = $('select#car_make_id')
-    $trims = $('select#car_trim_id')
+    $this = $(this)
+    $form = $this.parents('form')
+
+    year = $.trim($form.find('input#car_year').val())
+    $makes = $form.find('select#car_make_id')
+    $trims = $form.find('select#car_trim_id')
     $trims.find('option[value!=""]').remove()
-    modelId = $(this).val()
+    modelId = $this.val()
     return if modelId == ''
-    $.getJSON "//#{Config.apiBase}/api/makes/#{$makes.val()}/models/#{modelId}/trims", (data) ->
+    $.getJSON "//#{Config.apiBase}/api/makes/#{$makes.val()}/models/#{modelId}/trims", year: year, (data) ->
       $trims.append $.map data.trims, (trim) ->
         "<option value='#{trim.id}'>#{trim.name}</option>"
 

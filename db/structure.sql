@@ -51,35 +51,7 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
-
-
 SET search_path = public, pg_catalog;
-
---
--- Name: set_point_from_lat_lng(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION set_point_from_lat_lng() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-      BEGIN
-        NEW.point := ST_SetSRID(ST_Point(NEW.lng, NEW.lat), 4326);
-        RETURN NEW;
-      END;
-      $$;
-
 
 SET default_tablespace = '';
 
@@ -661,18 +633,7 @@ ALTER SEQUENCE photos_id_seq OWNED BY photos.id;
 
 CREATE TABLE post_channels (
     id integer NOT NULL,
-    name character varying,
-    ordering integer DEFAULT 0 NOT NULL,
-    active boolean DEFAULT true NOT NULL,
-    description character varying,
-    image_id character varying,
-    image_filename character varying,
-    image_size integer,
-    image_content_type character varying,
-    thumb_id character varying,
-    thumb_filename character varying,
-    thumb_size integer,
-    thumb_content_type character varying
+    name character varying
 );
 
 
@@ -825,10 +786,10 @@ CREATE TABLE trims (
     id integer NOT NULL,
     model_id integer NOT NULL,
     name character varying NOT NULL,
-    slug character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    official boolean DEFAULT false NOT NULL
+    official boolean DEFAULT false NOT NULL,
+    year integer
 );
 
 
@@ -931,10 +892,7 @@ CREATE TABLE users (
     profile_thumbnail_content_type character varying,
     device_info jsonb,
     push_settings jsonb DEFAULT '{}'::jsonb NOT NULL,
-    gender character varying,
-    point geography,
-    lat numeric(9,5),
-    lng numeric(9,5)
+    gender character varying
 );
 
 
@@ -1723,17 +1681,10 @@ CREATE INDEX index_trims_on_model_id ON trims USING btree (model_id);
 
 
 --
--- Name: index_trims_on_model_id_and_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_trims_on_model_id_and_slug ON trims USING btree (model_id, slug);
-
-
---
 -- Name: index_trims_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_trims_on_name ON trims USING btree (model_id, lower((name)::text));
+CREATE UNIQUE INDEX index_trims_on_name ON trims USING btree (model_id, year, lower((name)::text));
 
 
 --
@@ -1825,13 +1776,6 @@ CREATE INDEX index_users_on_single_access_token ON users USING btree (single_acc
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
--- Name: trigger_users_on_lat_lng; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER trigger_users_on_lat_lng BEFORE INSERT OR UPDATE OF lat, lng ON users FOR EACH ROW EXECUTE PROCEDURE set_point_from_lat_lng();
 
 
 --
@@ -1986,19 +1930,13 @@ INSERT INTO schema_migrations (version) VALUES ('20170713204100');
 
 INSERT INTO schema_migrations (version) VALUES ('20170715005644');
 
-INSERT INTO schema_migrations (version) VALUES ('20170715012409');
-
-INSERT INTO schema_migrations (version) VALUES ('20170715020644');
-
-INSERT INTO schema_migrations (version) VALUES ('20170715230125');
-
-INSERT INTO schema_migrations (version) VALUES ('20170715230340');
-
-INSERT INTO schema_migrations (version) VALUES ('20170715230436');
-
 INSERT INTO schema_migrations (version) VALUES ('20170718014548');
 
 INSERT INTO schema_migrations (version) VALUES ('20170718015645');
 
 INSERT INTO schema_migrations (version) VALUES ('20170718015754');
+
+INSERT INTO schema_migrations (version) VALUES ('20170718194953');
+
+INSERT INTO schema_migrations (version) VALUES ('20170718203928');
 
