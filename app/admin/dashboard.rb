@@ -43,5 +43,16 @@ ActiveAdmin.register_page 'Dashboard' do
         end
       end
     end
+
+    columns do
+      column do
+        panel 'Signups' do
+          chart = Admin::Charts::SignupsChart.new(params[:signups_chart] || :yesterday)
+          render 'chart_signups', labels: chart.labels, data: chart.data
+        end
+      end
+
+      column
+    end
   end
 end
