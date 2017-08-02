@@ -3,6 +3,9 @@ ActiveAdmin.register Post do
 
   actions :all, except: %i(new)
 
+  scope :all, default: true
+  scope :sorted
+
   filter :body
   filter :views
   filter :created_at

@@ -138,6 +138,8 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    groupdate (3.2.0)
+      activesupport (>= 3)
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
@@ -398,6 +400,7 @@ DEPENDENCIES
   draper
   faker
   friendly_id
+  groupdate
   imgix-rails
   jbuilder (~> 2.0)
   jquery-rails
