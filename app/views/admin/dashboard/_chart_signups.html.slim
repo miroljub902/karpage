@@ -1,7 +1,7 @@
 ul.scopes.table_tools_segmented_control style="float: right"
-  li.scope.all class=('selected' if params[:signups_chart] == 'yesterday' || params[:signups_chart].blank?)
-    a.table_tools_button href="?signups_chart=yesterday"
-      'Yesterday
+  li.scope.all class=('selected' if params[:signups_chart] == 'today' || params[:signups_chart].blank?)
+    a.table_tools_button href="?signups_chart=today"
+      'Today
   li.scope.all class=('selected' if params[:signups_chart] == 'last_7')
     a.table_tools_button href="?signups_chart=last_7"
       'Last 7 Days

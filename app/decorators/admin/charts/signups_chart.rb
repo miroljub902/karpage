@@ -1,7 +1,7 @@
 class Admin::Charts::SignupsChart < Draper::Decorator
   attr_reader :labels, :data
 
-  PERIODS = %i[yesterday last_7 last_30 this_year last_year].freeze
+  PERIODS = %i[today yesterday last_7 last_30 this_year last_year].freeze
 
   def initialize(period)
     @period = PERIODS.include?(period.to_sym) ? period.to_sym : :yesterday
@@ -12,6 +12,11 @@ class Admin::Charts::SignupsChart < Draper::Decorator
 
   def z
     @_z ||= ActiveSupport::TimeZone['Pacific Time (US & Canada)']
+  end
+
+  def retrieve_today
+    @labels = ['Today']
+    @data = query(from: z.now, to: z.now, span: :day)
   end
 
   def retrieve_yesterday
