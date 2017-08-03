@@ -4,7 +4,7 @@ class Admin::Charts::SignupsChart < Draper::Decorator
   PERIODS = %i[today yesterday last_7 last_30 this_year last_year].freeze
 
   def initialize(period)
-    @period = PERIODS.include?(period.to_sym) ? period.to_sym : :yesterday
+    @period = PERIODS.include?(period.to_sym) ? period.to_sym : :today
     __send__ "retrieve_#{period}"
   end
 
