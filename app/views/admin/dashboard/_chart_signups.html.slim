@@ -1,0 +1,43 @@
+ul.scopes.table_tools_segmented_control style="float: right"
+  li.scope.all class=('selected' if params[:signups_chart] == 'today' || params[:signups_chart].blank?)
+    a.table_tools_button href="?signups_chart=today"
+      'Today
+  li.scope.all class=('selected' if params[:signups_chart] == 'last_7')
+    a.table_tools_button href="?signups_chart=last_7"
+      'Last 7 Days
+  li.scope.all class=('selected' if params[:signups_chart] == 'last_30')
+    a.table_tools_button href="?signups_chart=last_30"
+      'Last 30 Days
+  li.scope.all class=('selected' if params[:signups_chart] == 'this_year')
+    a.table_tools_button href="?signups_chart=this_year"
+      'This Year
+  li.scope.all class=('selected' if params[:signups_chart] == 'last_year')
+    a.table_tools_button href="?signups_chart=last_year"
+      'Last Year
+  li.scope.all class=('selected' if params[:signups_chart] == 'lifetime')
+    a.table_tools_button href="?signups_chart=lifetime"
+      'Lifetime
+
+canvas#signupsChart width="500" height="300"
+javascript:
+  var ctx = document.getElementById("signupsChart").getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: #{raw labels},
+      datasets: [{
+        label: 'Sign Ups',
+        data: #{raw data},
+        backgroundColor: 'rgba(56, 103, 139, 0.2)',
+        borderColor: '#38678b',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: { min: 0 }
+        }]
+      }
+    }
+  });

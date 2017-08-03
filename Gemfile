@@ -30,6 +30,7 @@ gem 'staccato'
 gem 'rack-attack'
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'apipie-rails'
+gem 'groupdate'
 
 gem 'sidekiq'
 gem 'sidekiq-failures'
