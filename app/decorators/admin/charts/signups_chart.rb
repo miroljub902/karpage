@@ -1,11 +1,11 @@
 class Admin::Charts::SignupsChart < Draper::Decorator
   attr_reader :labels, :data
 
-  PERIODS = %i[today yesterday last_7 last_30 this_year last_year].freeze
+  PERIODS = %i[today yesterday last_7 last_30 this_year last_year lifetime].freeze
 
   def initialize(period)
-    @period = PERIODS.include?(period.to_sym) ? period.to_sym : :yesterday
-    __send__ "retrieve_#{period}"
+    @period = period && PERIODS.include?(period.to_sym) ? period.to_sym : :today
+    __send__ "retrieve_#{@period}"
   end
 
   private
