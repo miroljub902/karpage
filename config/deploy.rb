@@ -2,6 +2,8 @@ require 'mina/rails'
 require 'mina/git'
 require 'mina/rbenv'
 
+set :appsignal_app_name, 'Kar Page'
+
 task :worker do
   set :domain, 'worker.karpage.deploy'
   set :branch, 'production'
@@ -15,6 +17,7 @@ end
 task :staging do
   set :domain, 'beta.karpage.com'
   set :branch, 'master'
+  set :appsignal_app_name, 'Kar Page Staging'
 end
 
 set :deploy_to, '/home/deploy/karpage'
@@ -65,6 +68,6 @@ task :deploy do
 
   run :local do
     comment 'Notify Appsignal'
-    puts `bin/rake deploy:notify_appsignal`
+    puts `APPSIGNAL_APP_NAME="#{fetch(:appsignal_app_name)}" bin/rake deploy:notify_appsignal`
   end
 end
