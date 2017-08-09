@@ -37,7 +37,9 @@ class Photo < ActiveRecord::Base
   private
 
   def validate_image_size
-    return if !image || image.size < image.backend.max_size
+    # Sometimes image.size will be nil so treat as too big
+    image_size = self.image_size.presence || image&.size || image&.backend&.max_size
+    return if image.nil? || image_size < image.backend.max_size
     errors.add :image, :too_large
   end
 end
