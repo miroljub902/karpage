@@ -17,7 +17,7 @@ class Car < ActiveRecord::Base
 
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
-  validates :year, numericality: true
+  validates :year, numericality: { less_than: 9999, greater_than_or_equal_to: 1885 }
   validates :make_id, :model_id, presence: true
   validate :validate_current_past_first, on: :create
 
