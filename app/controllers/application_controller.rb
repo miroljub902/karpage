@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def api_base
     subdomain = ENV.fetch('API_SUBDOMAIN')
-    host = ENV.fetch('HOSTNAME')
+    host = ENV.fetch('HOSTNAME').sub(/^www\./, '')
     subdomain = host.start_with?("#{subdomain}.") ? '' : "#{subdomain}."
     "#{subdomain}#{host}"
   end
