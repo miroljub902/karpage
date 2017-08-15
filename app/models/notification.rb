@@ -48,7 +48,7 @@ class Notification < ActiveRecord::Base
   private
 
   def set_message
-    self.message = PushNotification.for(self).message
+    self.message ||= PushNotification.for(self).message
   end
 
   def queue_push

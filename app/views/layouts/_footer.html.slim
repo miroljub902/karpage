@@ -43,4 +43,6 @@
 
   p.copyright.small= copyright_notice
 
+  = javascript_include_tag js_config_path
+  = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV.fetch('GOOGLE_CLIENT_API_KEY')}&libraries=places"
   = javascript_include_tag 'application'

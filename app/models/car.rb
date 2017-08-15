@@ -1,8 +1,19 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
 
+  self.inheritance_column = '_no_sti'
+
+  enum type: {
+    first_car: 'first_car',
+    current_car: 'current_car',
+    past_car: 'past_car',
+    next_car: 'next_car'
+  }
+
   belongs_to :user, counter_cache: true
+  belongs_to :trim
   belongs_to :model
   has_one :make, through: :model
   has_many :photos, as: :attachable, dependent: :destroy
@@ -16,10 +27,8 @@ class Car < ActiveRecord::Base
 
   friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
 
-  validates :year, numericality: true
-  validates :make_name, :car_model_name, presence: true
-  validates_associated :model
-  validate :validate_current_past_first, on: :create
+  validates :year, numericality: { less_than: 9999, greater_than_or_equal_to: 1885 }
+  validates :make_id, :model_id, presence: true
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
@@ -35,16 +44,20 @@ class Car < ActiveRecord::Base
   scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
-  scope :current, -> { where(current: true) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
-  scope :simple_search, -> (term) {
+  scope :simple_search, ->(term, lat, lng) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil
     term = term.to_s.split(' ').map(&:strip).join('%')
     year_condition = "cars.year = #{year} OR" if year
-    joins(:make, :user)
-      .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
+    scope = joins(:make, :user)
+            .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
+    if lat.present? && lng.present?
+      meters = 20 * 1600 # (20 miles)
+      scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
+    end
+    scope
   }
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else
@@ -54,10 +67,11 @@ class Car < ActiveRecord::Base
 
   concerning :Notifications do
     included do
-      after_create -> { notify_followers :following_new_car }, if: :current?
-      after_create -> { notify_followers :following_new_first_car }, if: :first?
-      after_create -> { notify_followers :following_new_past_car }, if: :past?
-      after_update -> { notify_followers :following_moves_new_car }, if: -> { past? && current_was }
+      after_create -> { notify_followers :following_new_car }, if: :current_car?
+      after_create -> { notify_followers :following_new_first_car }, if: :first_car?
+      after_create -> { notify_followers :following_new_past_car }, if: :past_car?
+      after_update -> { notify_followers :following_moves_new_car }, if: -> { past_car? && type_was == Car.types[:current_car] }
+      after_create -> { notify_followers :following_next_car }, if: :next_car?
     end
 
     def notify_followers(notification)
@@ -76,6 +90,10 @@ class Car < ActiveRecord::Base
     end
   end
 
+  def make_id
+    make.try :id
+  end
+
   def make_name
     @make_name.nil? ? make.try(:name) : @make_name
   end
@@ -92,37 +110,21 @@ class Car < ActiveRecord::Base
     "#{year} #{model}"
   end
 
-  def past=(_value)
-    super.tap do
-      self.current = false if past === true
-    end
-  end
-
   private
 
-  def validate_current_past_first
-    if first && current
-      errors.add :base, "Car cannot be both first and current"
-    elsif first && past
-      errors.add :base, "Car cannot be both first and past"
-    elsif past && current
-      errors.add :base, "Car cannot be both past and current"
-    end
-  end
-
   def resort_first
-    return unless current? || past?
+    return unless current_car? || past_car?
     update_column :sorting, -1
     scope = self.class.where(user: user)
-    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope = current_car? ? scope.current_car : scope.past_car
     scope.update_all 'sorting = sorting + 1'
   end
 
   # This can't happen inside same transaction as car update or deadlocks can occur
   def resort_all
-    return unless current? || past?
+    return unless current_car? || past_car?
     scope = self.class.where(user: user).where('sorting >= ?', sorting).where.not(id: id)
-    scope = current? ? scope.where(current: true) : scope.where(past: true)
+    scope = current_car? ? scope.current_car : scope.past_car
     scope.update_all 'sorting = sorting + 1'
   end
 

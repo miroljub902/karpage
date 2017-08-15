@@ -129,15 +129,6 @@ class Api::UsersControllerTest < ApiControllerTest
     assert_equal 'dummy', user.dream_cars.first.image_id
   end
 
-  test 'can add next car' do
-    user = users(:john_doe)
-    authorize_user user
-    patch :update, user: { next_car_attributes: { image_id: 'dummy' } }
-    assert_response :ok
-    assert user.next_car.present?
-    assert_equal 'dummy', user.next_car.image_id
-  end
-
   test 'can update push settings' do
     user = users(:john_doe)
     authorize_user user

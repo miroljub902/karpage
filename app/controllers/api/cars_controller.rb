@@ -4,8 +4,8 @@ class Api::CarsController < ApiController
   def index
     @cars = Car.has_photos.owner_has_login.includes(:user, :model, :make, parts: :photo).not_blocked(current_user)
     if params[:search].present?
-      @cars = @cars.simple_search(params[:search])
-      @user_count = User.simple_search(params[:search]).count
+      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng])
+      @user_count = User.simple_search(params[:search], params[:lat], params[:lng]).count
     elsif params[:filter_id]
       @cars = Filter.find(params[:filter_id]).search
     end
@@ -65,13 +65,11 @@ class Api::CarsController < ApiController
   def car_params
     params.require(:car).permit(
       :year,
-      :make_name,
-      :car_model_name,
+      :model_id,
+      :trim_id,
       :description,
-      :first,
-      :current,
-      :past,
       :sorting,
+      :type,
       photos_attributes: %i(id _destroy image_id image_content_type image_size image_filename sorting),
       parts_attributes: [
         :type, :manufacturer, :model, :price,

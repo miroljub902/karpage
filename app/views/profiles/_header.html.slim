@@ -23,6 +23,8 @@
             .instagram.editable class=('empty' if user.instagram_id.blank?) data-label="Instagram ID" = link_to_if user.instagram_id.present?, user.instagram_id, user.instagram_link, target: '_blank'
 
         - if my_profile?
+          = hidden_field_tag :user_profile_lat, user.lat
+          = hidden_field_tag :user_profile_lng, user.lng
           .actions.clearfix
             .edit.pull-right
               = link_to 'Edit Profile', '#', class: 'btn btn-default edit-profile'

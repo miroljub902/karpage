@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::UnknownFormat, with: :render_404
   rescue_from ActionController::InvalidCrossOriginRequest, with: :render_403
 
+  def api_base
+    subdomain = ENV.fetch('API_SUBDOMAIN')
+    host = ENV.fetch('HOSTNAME')
+    subdomain = host.start_with?("#{subdomain}.") ? '' : "#{subdomain}."
+    "#{subdomain}#{host}"
+  end
+  helper_method :api_base
+
   def signed_in?
     current_user.present?
   end

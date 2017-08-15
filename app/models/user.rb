@@ -1,3 +1,4 @@
+# rubocop:disable Lint/AmbiguousBlockAssociation
 class User < ActiveRecord::Base
   include FeaturedOrdering
 
@@ -25,7 +26,7 @@ class User < ActiveRecord::Base
   has_many :cars, dependent: :destroy
   has_many :singles, class_name: 'Photo', as: :attachable, dependent: :destroy
   has_many :dream_cars, -> { where(photo_type: 'dream-car') }, class_name: 'Photo', as: :attachable
-  has_one :next_car, -> { where(photo_type: 'next-car') }, class_name: 'Photo', as: :attachable
+  has_one :next_car, -> { where(type: Car.types[:next_car]) }, class_name: 'Car'
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :car_comments, through: :cars, source: :comments
@@ -37,7 +38,7 @@ class User < ActiveRecord::Base
   has_one :business, dependent: :destroy
   has_many :notifications, dependent: :delete_all
 
-  accepts_nested_attributes_for :dream_cars, :next_car, allow_destroy: true
+  accepts_nested_attributes_for :dream_cars, allow_destroy: true
 
   validates_associated :identities
 
@@ -48,12 +49,17 @@ class User < ActiveRecord::Base
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 
-  scope :simple_search, -> (term) {
-    like = %w(name login description link location).map { |column| "#{column} ILIKE :term" }
-    where like.join(' OR '), term: "%#{term.to_s.strip}%"
+  scope :simple_search, ->(term, lat, lng) {
+    like = %w[name login description link location].map { |column| "#{column} ILIKE :term" }
+    scope = where(like.join(' OR '), term: "%#{term.to_s.strip}%")
+    if lat.present? && lng.present?
+      meters = 20 * 1600 # (20 miles)
+      scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
+    end
+    scope
   }
 
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else

@@ -1,3 +1,4 @@
 dummy:
+  user: john_doe
   body: Lorem ipsum dolor sit amet
   photo_id: dummy

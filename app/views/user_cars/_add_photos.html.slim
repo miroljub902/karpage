@@ -1,12 +1,15 @@
 - car = f.object
-h5.text-center Upload up to 20 photos
+- max_photos = CarPolicy.new(current_user, car).max_photos
+h5.text-center Upload up to #{pluralize max_photos, 'photo', 'photos'}
 
-p.text-center
-  i.text-muted Drag photos to rearrange them
+- if max_photos > 1
+  p.text-center
+    i.text-muted Drag photos to rearrange them
 
 .photos[data-create-url=(user_car_photos_path(car) if car.persisted?)
   data-update-url=(user_car_photo_path(car, id: '_ID_') if car.persisted?)
-  data-sort-url=(reorder_user_car_photos_path(car) if car.persisted?)]
+  data-sort-url=(reorder_user_car_photos_path(car) if car.persisted?)
+  data-max-photos=max_photos]
   ul.sortable
     / No AR sort because we'll have non-saved photos for new cars
     - car.photos.sort_by { |p| p.sorting || 20 }.each_with_index do |photo, n|
@@ -22,8 +25,8 @@ p.text-center
             = pf.hidden_field :image_filename
             = pf.hidden_field :sorting, class: 'sorting'
 
-    - (1..20 - car.photos.size).each do |n|
-      li.photo
+    - (1..max_photos - car.photos.size).each do |n|
+      li.photo class=('single-photo' if max_photos == 1)
         .img
           .remove.sprite.sprite-delete
         span.index= n + car.photos.size
@@ -31,5 +34,8 @@ p.text-center
   .col-md-offset-2.col-md-8
     input.car-photos[type="file" multiple accept="image/*" data-prefix="store"
       data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
-    a.btn.btn-default.btn-block.btn-lg.car-photo-upload class=('disabled' if car.photos.size == 20) href="#"
-      = car.photos.any? ? 'Add More Photos' : 'Add Photos'
+    a.btn.btn-default.btn-block.btn-lg.car-photo-upload class=('disabled' if car.photos.size == max_photos) href="#"
+      - if max_photos == 1
+        'Add Photo
+      - else
+        = car.photos.any? ? 'Add More Photos' : 'Add Photos'

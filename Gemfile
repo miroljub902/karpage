@@ -52,6 +52,8 @@ gem 'cells-slim'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 
+gem 'progress_bar', require: false
+
 group :production do
   gem 'rails_12factor'
 end

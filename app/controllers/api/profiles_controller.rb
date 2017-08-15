@@ -3,16 +3,23 @@ class Api::ProfilesController < ApiController
 
   def index
     @users = if params[:search].present?
-               User.by_cars_owned.not_blocked(current_user).simple_search(params[:search]).page(params[:page])
+               User
+                 .by_cars_owned
+                 .not_blocked(current_user)
+                 .simple_search(params[:search], params[:lat], params[:lng])
+                 .page(params[:page])
              else
-               User.by_cars_owned.not_blocked(current_user).page(params[:page])
+               User
+                 .by_cars_owned
+                 .not_blocked(current_user)
+                 .page(params[:page])
              end
     @users = @users.distinct.per(params[:per] || User.default_per_page)
     respond_with @users
   end
 
   def show
-    @user = User.includes(:dream_cars, :next_car, cars: %i(make model)).not_blocked(current_user)
+    @user = User.includes(:dream_cars, cars: %i(make model)).not_blocked(current_user)
     @user = @user.find_by(login: params[:id]) || @user.find(params[:id])
     @cars = UserCarsDecorator.cars(@user)
     respond_with @user

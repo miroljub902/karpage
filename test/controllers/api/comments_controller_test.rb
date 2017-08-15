@@ -2,6 +2,10 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::CommentsControllerTest < ApiControllerTest
+  setup do
+    mock_request :s3
+  end
+
   test 'list car comments' do
     user = users(:john_doe)
     friend = users(:friend)
@@ -16,7 +20,7 @@ class Api::CommentsControllerTest < ApiControllerTest
   test 'list post comments' do
     user = users(:john_doe)
     friend = users(:friend)
-    post = user.posts.create! body: 'A post'
+    post = user.posts.create! body: 'A post', photo_id: 'dummy'
     post.comments.create! user: friend, body: 'A comment'
     get :index, post_id: post.id, commentable_type: 'Post'
     assert_response :ok
@@ -26,7 +30,7 @@ class Api::CommentsControllerTest < ApiControllerTest
   test 'can create comment' do
     user = users(:john_doe)
     friend = users(:friend)
-    user_post = user.posts.create! body: 'A post'
+    user_post = user.posts.create! body: 'A post', photo_id: 'dummy'
     assert_difference 'user_post.comments.count' do
       authorize_user friend
       post :create, post_id: user_post.id, commentable_type: 'Post', comment: { body: 'Howdy' }
@@ -39,7 +43,7 @@ class Api::CommentsControllerTest < ApiControllerTest
   test 'can update comment' do
     user = users(:john_doe)
     friend = users(:friend)
-    post = user.posts.create! body: 'A post'
+    post = user.posts.create! body: 'A post', photo_id: 'dummy'
     comment = post.comments.create! user: friend, body: 'A comment'
     authorize_user friend
     patch :update, post_id: post.id, commentable_type: 'Post', id: comment.id, comment: { body: 'Changed' }
@@ -50,7 +54,7 @@ class Api::CommentsControllerTest < ApiControllerTest
   test 'can delete comment' do
     user = users(:john_doe)
     friend = users(:friend)
-    post = user.posts.create! body: 'A post'
+    post = user.posts.create! body: 'A post', photo_id: 'dummy'
     comment = post.comments.create! user: friend, body: 'A comment'
     authorize_user friend
     delete :destroy, post_id: post.id, commentable_type: 'Post', id: comment.id
