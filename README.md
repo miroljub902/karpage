@@ -20,5 +20,4 @@ The `example.env` file has the variables that need to be set.
 
 ## Development
 
-Run `overcommit --sign` or make sure to run rubocop before every commit.
-
+Run `overcommit --install && overcommit --sign` or make sure to run rubocop before every commit.
