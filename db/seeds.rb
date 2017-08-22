@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # IMPORTANT: This is run in production so should be idempotent
 # Separate non-idempotent seeds on other seeder files with a flag or something to that effect
 

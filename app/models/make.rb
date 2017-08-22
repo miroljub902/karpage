@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Make < ActiveRecord::Base
   include FriendlyId
 

@@ -1,6 +1,9 @@
-class Api::ProfilesController < ApiController
-  before_action :require_user, except: %i(index show)
+# frozen_string_literal: true
 
+class Api::ProfilesController < ApiController
+  before_action :require_user, except: %i[index show]
+
+  # rubocop:disable Metrics/AbcSize
   def index
     @users = if params[:search].present?
                User
@@ -19,7 +22,7 @@ class Api::ProfilesController < ApiController
   end
 
   def show
-    @user = User.includes(:dream_cars, cars: %i(make model)).not_blocked(current_user)
+    @user = User.includes(:dream_cars, cars: %i[make model]).not_blocked(current_user)
     @user = @user.find_by(login: params[:id]) || @user.find(params[:id])
     @cars = UserCarsDecorator.cars(@user)
     respond_with @user

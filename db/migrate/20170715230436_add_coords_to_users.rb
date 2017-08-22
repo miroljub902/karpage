@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class AddCoordsToUsers < ActiveRecord::Migration
+  # rubocop:disable Metrics/MethodLength
   def change
     add_column :users, :point, :geography
     add_column :users, :lat, :decimal, precision: 9, scale: 5

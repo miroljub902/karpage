@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Photo < ActiveRecord::Base
   belongs_to :attachable, polymorphic: true
 
@@ -8,11 +10,11 @@ class Photo < ActiveRecord::Base
   validate :validate_image_size
 
   before_save -> do
-    if attachable.respond_to?(:photos)
-      self.sorting ||= (attachable.photos.maximum(:sorting) || -1) + 1
-    else
-      self.sorting ||= 0
-    end
+    self.sorting ||= if attachable.respond_to?(:photos)
+                       (attachable.photos.maximum(:sorting) || -1) + 1
+                     else
+                       0
+                     end
     true
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCarsCountToUsers < ActiveRecord::Migration
   def change
     add_column :users, :cars_count, :integer, null: false, default: 0

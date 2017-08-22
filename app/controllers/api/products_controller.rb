@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Api::ProductsController < ApiController
-  before_action :require_user, except: %i(index show)
-  before_action :find_business, only: %i(index show)
-  before_action :find_own_business, only: %i(create update destroy)
+  before_action :require_user, except: %i[index show]
+  before_action :find_business, only: %i[index show]
+  before_action :find_own_business, only: %i[create update destroy]
 
   def_param_group :product do
     param :product, Hash, required: true, desc: 'Root for product attributes if passing JSON' do
@@ -64,8 +66,8 @@ class Api::ProductsController < ApiController
 
   def product_params
     params.require(:product).permit(
-      %i(title subtitle price link description category),
-      photos_attributes: %i(id _destroy image_id image_content_type image_size image_filename sorting)
+      %i[title subtitle price link description category],
+      photos_attributes: %i[id _destroy image_id image_content_type image_size image_filename sorting]
     )
   end
 

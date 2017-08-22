@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Notification < ActiveRecord::Base
   belongs_to :user
   belongs_to :notifiable, polymorphic: true
@@ -27,7 +29,7 @@ class Notification < ActiveRecord::Base
 
   def self.belay_create(user:, source:, type:, notifiable:)
     return if source == user # Skip notifications to "myself"
-    last_created_at = user.notifications.recent.where(type: type).first&.created_at
+    last_created_at = user.notifications.recent.find_by(type: type)&.created_at
     return if last_created_at && last_created_at > (ENV['NOTIFICATION_THROTTLE'].presence || 1).to_i.minutes.ago
     Notification.create! user: user, source: source, type: type, notifiable: notifiable
   end

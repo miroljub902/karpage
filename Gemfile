@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 ruby '2.3.1'
 
@@ -63,6 +65,8 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'pry-rails'
   gem 'pry-byebug'
+  gem 'rubocop'
+  gem 'overcommit'
 end
 
 group :development do

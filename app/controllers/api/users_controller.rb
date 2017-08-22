@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::UsersController < ApiController
   before_action :require_user, except: :create
   after_action :track_signup, only: :create, if: -> { @user.persisted? }
@@ -13,7 +15,7 @@ class Api::UsersController < ApiController
   }.freeze
 
   def reset_counter
-    return render(nothing: true, status: :not_found) unless COUNTERS.has_key?(params[:counter])
+    return render(nothing: true, status: :not_found) unless COUNTERS.key?(params[:counter])
     COUNTERS[params[:counter]].call current_user
     render nothing: true, status: :ok
   end
@@ -43,7 +45,7 @@ class Api::UsersController < ApiController
       :avatar_id, :avatar_content_type, :avatar_size, :avatar_filename, :instagram_id,
       :profile_background_id, :profile_background_content_type, :profile_background_size, :profile_background_filename,
       :lat, :lng,
-      dream_cars_attributes: %i(id _destroy image_id image_content_type image_size image_filename),
+      dream_cars_attributes: %i[id _destroy image_id image_content_type image_size image_filename],
       push_settings: User::DEFAULT_PUSH_SETTINGS.keys,
       device_info: %i[user_id]
     ).merge(password_confirmation: params[:user][:password])

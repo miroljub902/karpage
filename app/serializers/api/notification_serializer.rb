@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::NotificationSerializer < ActiveModel::Serializer
   attributes %i[id type notifiable_id notifiable_type related_id related_type source_id source_type message created_at]
   attributes :image_url, :notifiable_image_url

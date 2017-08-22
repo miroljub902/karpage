@@ -1,4 +1,6 @@
-json.(post, :id, :user_id, :body, :created_at, :likes_count)
+# frozen_string_literal: true
+
+json.call(post, :id, :user_id, :body, :created_at, :likes_count)
 
 if current_user
   json.liked Like.where(likeable: post, user: current_user).exists?

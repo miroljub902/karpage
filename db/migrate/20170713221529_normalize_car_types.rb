@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NormalizeCarTypes < ActiveRecord::Migration
   def up
     execute "UPDATE cars SET type = 'first_car' WHERE first = 't'"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::FriendsController < ApiController
   before_action :find_user
 

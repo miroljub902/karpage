@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rbenv'
@@ -42,7 +44,7 @@ end
 
 namespace :rails do
   task :db_seed do
-    command %{#{fetch(:rake)} db:seed}
+    command %(#{fetch(:rake)} db:seed)
   end
 end
 
@@ -59,13 +61,14 @@ task :deploy do
 
     on :launch do
       in_path(fetch(:current_path)) do
-        command %{mkdir -p tmp/}
-        command %{touch tmp/restart.txt}
-        command %{sudo systemctl restart karpage.target}
+        command %(mkdir -p tmp/)
+        command %(touch tmp/restart.txt)
+        command %(sudo systemctl restart karpage.target)
       end
     end
   end
 
+  # rubocop:disable Rails/Output
   run :local do
     comment 'Notify Appsignal'
     puts `APPSIGNAL_APP_NAME="#{fetch(:appsignal_app_name)}" bin/rake deploy:notify_appsignal`

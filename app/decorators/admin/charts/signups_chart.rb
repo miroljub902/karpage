@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::Charts::SignupsChart < Draper::Decorator
   attr_reader :labels, :data
 
@@ -37,7 +39,7 @@ class Admin::Charts::SignupsChart < Draper::Decorator
   end
 
   def retrieve_this_year
-    range = (z.now.beginning_of_year).to_date..z.yesterday
+    range = z.now.beginning_of_year.to_date..z.yesterday
     @labels = range.map { |d| d.strftime '%b' }.uniq
     @data = query(from: range.first, to: range.last, span: :month)
   end

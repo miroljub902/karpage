@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CarPart < ActiveRecord::Base
   self.inheritance_column = '_no_sti'
 

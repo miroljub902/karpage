@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.total @total_count
 json.cars @cars do |car|
   json.partial! 'car', car: car

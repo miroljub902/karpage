@@ -1,4 +1,6 @@
-# rubocop:disable Lint/AmbiguousBlockAssociation
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/ClassLength
 class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
@@ -25,7 +27,7 @@ class Car < ActiveRecord::Base
   accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :parts, allow_destroy: true
 
-  friendly_id :slug_candidates, scope: :user, use: %i(slugged scoped)
+  friendly_id :slug_candidates, scope: :user, use: %i[slugged scoped]
 
   validates :year, numericality: { less_than: 9999, greater_than_or_equal_to: 1885 }
   validates :make_id, :model_id, presence: true
@@ -49,8 +51,11 @@ class Car < ActiveRecord::Base
     year = term.to_i.to_s == term.strip ? term.to_i : nil
     term = term.to_s.split(' ').map(&:strip).join('%')
     year_condition = "cars.year = #{year} OR" if year
-    scope = joins(:make, :user)
-            .where("users.name ILIKE :term OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term", term: "%#{term}%", year: term.to_i)
+    query = <<-SQL
+      users.name ILIKE :term
+      OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term
+    SQL
+    scope = joins(:make, :user).where(query, term: "%#{term}%", year: term.to_i)
     if lat.present? && lng.present?
       meters = 20 * 1600 # (20 miles)
       scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
@@ -70,7 +75,9 @@ class Car < ActiveRecord::Base
       after_create -> { notify_followers :following_new_car }, if: :current_car?
       after_create -> { notify_followers :following_new_first_car }, if: :first_car?
       after_create -> { notify_followers :following_new_past_car }, if: :past_car?
-      after_update -> { notify_followers :following_moves_new_car }, if: -> { past_car? && type_was == Car.types[:current_car] }
+      after_update -> { notify_followers :following_moves_new_car }, if: -> {
+        past_car? && type_was == Car.types[:current_car]
+      }
       after_create -> { notify_followers :following_next_car }, if: :next_car?
     end
 
@@ -147,6 +154,6 @@ class Car < ActiveRecord::Base
 
   def slug_candidates
     base = "#{year} #{make_name} #{car_model_name}"
-    [base, *(2..10).map { |n| "#{base} #{n}"}]
+    [base, *(2..10).map { |n| "#{base} #{n}" }]
   end
 end

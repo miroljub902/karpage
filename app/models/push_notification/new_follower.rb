@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::NewFollower < PushNotification
   def message
     "#{source} started following you"

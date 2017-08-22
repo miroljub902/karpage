@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
+# rubocop:disable Rails/Output
+# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register User do
   menu priority: 10
 
-  filter :featured_order_present, as: :select, collection: [['Yes', '1'], ['No', nil]], label: 'Featured'
+  filter :featured_order_present, as: :select, collection: [%w[Yes 1], ['No', nil]], label: 'Featured'
   filter :email
   filter :name
   filter :login, as: :string
@@ -13,7 +17,11 @@ ActiveAdmin.register User do
 
   member_action :toggle_featured, method: :put do
     resource.toggle_featured!
-    notice = resource.featured? ? "#{resource} featured in position ##{resource.featured_order}" : "#{resource} un-featured"
+    notice = if resource.featured?
+               "#{resource} featured in position ##{resource.featured_order}"
+             else
+               "#{resource} un-featured"
+             end
     redirect_to admin_users_path, notice: notice
   end
 
@@ -38,7 +46,11 @@ ActiveAdmin.register User do
       label = user.featured? ? 'Unfeature' : 'Feature'
       item label, toggle_featured_admin_user_path(user), class: 'member_link', method: :put
       item 'Edit', edit_admin_user_path(user), class: 'member_link'
-      item 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'member_link'
+      item 'Delete',
+           admin_user_path(user),
+           method: :delete,
+           data: { confirm: 'Are you sure you want to delete this?' },
+           class: 'member_link'
     end
   end
 
@@ -56,7 +68,9 @@ ActiveAdmin.register User do
         ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
       end
       row :profile_background do |user|
-        ix_refile_image_tag user, :profile_background, auto: 'enhance,format', fit: 'crop', w: 300, h: 100, size: '300x100'
+        ix_refile_image_tag user,
+                            :profile_background,
+                            auto: 'enhance,format', fit: 'crop', w: 300, h: 100, size: '300x100'
       end
       row :login do |user|
         link_to user, profile_path(user.login), target: '_blank' if user.login.present?
@@ -88,12 +102,12 @@ ActiveAdmin.register User do
           column :description
           column :type do |car|
             label = if car.first?
-              'First Car'
-            elsif car.current?
-              'Current Car'
-            elsif car.past?
-              'Past Car'
-            end
+                      'First Car'
+                    elsif car.current?
+                      'Current Car'
+                    elsif car.past?
+                      'Past Car'
+                    end
             status_tag label if label
           end
           column :created_at do |car|
@@ -177,7 +191,8 @@ ActiveAdmin.register User do
     end
   end
 
-  permit_params :email, :name, :login, :avatar, :profile_background, :description, :link, :location, :admin, :featured_order
+  permit_params :email, :name, :login, :avatar, :profile_background, :description, :link, :location, :admin,
+                :featured_order
 
   form do |_f|
     inputs do
@@ -198,7 +213,7 @@ ActiveAdmin.register User do
 
   controller do
     def find_resource
-      params[:id] =~ /^\d+$/ ? User.find(params[:id]) : User.find_by(login: params[:id])
+      params[:id].match?(/^\d+$/) ? User.find(params[:id]) : User.find_by(login: params[:id])
     end
   end
 end

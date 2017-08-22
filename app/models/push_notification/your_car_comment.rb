@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::YourCarComment < PushNotification
   def message
     body = notifiable.body.truncate(20)

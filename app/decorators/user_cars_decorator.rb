@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserCarsDecorator
   class << self
     def cars(user)

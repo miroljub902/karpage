@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFeaturedOrderToCarsAndUsers < ActiveRecord::Migration
   def change
     add_column :cars, :featured_order, :integer

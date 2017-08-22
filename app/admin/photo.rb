@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Photo do
   menu false
 
-  actions :all, except: %i(new show create)
+  actions :all, except: %i[new show create]
 
   controller do
     def update

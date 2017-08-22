@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'net/http'
 require 'uri'
 
+# rubocop:disable Metrics/ClassLength
 class ProfileUploader
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
@@ -24,6 +27,8 @@ class ProfileUploader
     'app/assets/images/profile/profile_image_template.png'
   end
 
+  # rubocop:disable Lint/EnsureReturn
+  # rubocop:disable Lint/HandleExceptions
   def handle_network_errors(default:, max_retries: 4)
     retries = 0
     result = yield
@@ -46,9 +51,10 @@ class ProfileUploader
   end
 
   def image_header
-    handle_network_errors default: ->{ default_image_header } do
+    handle_network_errors default: -> { default_image_header } do
       if user.profile_background_id.present? && user.profile_background_content_type.starts_with?('image/')
-        url = ix_refile_image_url(user, :profile_background, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 874, h: 462)
+        url = ix_refile_image_url(user, :profile_background,
+                                  auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 874, h: 462)
         MiniMagick::Image.open(url)
       end
     end
@@ -59,7 +65,7 @@ class ProfileUploader
   end
 
   def image_profile_picture
-    handle_network_errors default: ->{ default_image_profile } do
+    handle_network_errors default: -> { default_image_profile } do
       if user.avatar_id.present? && user.avatar_content_type.starts_with?('image/')
         MiniMagick::Image.open('https://' + ENV.fetch('IMGIX_SOURCE') + "/store/#{user.avatar_id}")
       end
@@ -74,8 +80,10 @@ class ProfileUploader
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def car
-    image = handle_network_errors default: ->{ default_car_image } do
+    image = handle_network_errors default: -> { default_car_image } do
       car = user.cars.current.has_photos.sorted.first
       photo = car.photos.sorted.first if car
       if photo && photo.image_content_type.to_s.starts_with?('image/')
@@ -236,6 +244,7 @@ class ProfileUploader
     save inline: inline
   end
 
+  # rubocop:disable Rails/Output
   def save(inline: false)
     if inline # For testing
       filename = "thumbnail_#{user.id}.jpg"
@@ -258,7 +267,8 @@ class ProfileUploader
   end
 
   def force_facebook_og_refresh
-    uri = URI.parse("https://graph.facebook.com/oauth/access_token?client_id=#{ENV.fetch('FACEBOOK_APP_ID')}&client_secret=#{ENV.fetch('FACEBOOK_SECRET')}&grant_type=client_credentials")
+    uri = URI.parse("https://graph.facebook.com/oauth/access_token?client_id=#{ENV.fetch('FACEBOOK_APP_ID')}&" \
+                    "client_secret=#{ENV.fetch('FACEBOOK_SECRET')}&grant_type=client_credentials")
     _dummy, token = Net::HTTP.get_response(uri).body.split('access_token=')
 
     uri = URI.parse('https://graph.facebook.com')

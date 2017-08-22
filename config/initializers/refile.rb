@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'refile/s3'
 aws = {
   access_key_id: ENV['S3_ACCESS_KEY'],
@@ -12,7 +14,7 @@ Refile.store = Refile::S3.new(prefix: 'store', max_size: 10.megabytes, **aws)
 Refile.cdn_host = ENV['CDN_HOST'] if ENV['CDN_HOST'].present?
 
 %i[fit fill].each do |method|
-  Refile.processor :"#{method}_and_orient" do |file, *args, format, &block|
+  Refile.processor :"#{method}_and_orient" do |file, *args, format|
     magick = Refile::MiniMagick.new(method)
     magick.call file, *args[0..1], format: format[:format] do |cmd|
       if args[2].present? # Manual angle

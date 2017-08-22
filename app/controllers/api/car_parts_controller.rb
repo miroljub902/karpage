@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::CarPartsController < ApiController
   before_action :require_user
   before_action :find_car
@@ -24,7 +26,7 @@ class Api::CarPartsController < ApiController
   def car_part_params
     params.require(:car_part).permit(
       :type, :manufacturer, :model, :price, :review, :sorting,
-      photo_attributes: %i(id _destroy image_id image_content_type image_size image_filename)
+      photo_attributes: %i[id _destroy image_id image_content_type image_size image_filename]
     )
   end
 

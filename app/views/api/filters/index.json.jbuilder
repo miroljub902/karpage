@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.filters @filters do |filter|
-  json.(filter, :id, :name)
+  json.call(filter, :id, :name)
 end

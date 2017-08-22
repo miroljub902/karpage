@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HeaderCell < Cell::ViewModel
   def show
     render
@@ -5,8 +7,8 @@ class HeaderCell < Cell::ViewModel
 
   def nav_cell_options
     {}.tap do |opts|
-      opts[:affix] = options[:nav_affix] if options.has_key?(:nav_affix)
-      opts[:back_to_top] = options[:nav_back_to_top] if options.has_key?(:nav_back_to_top)
+      opts[:affix] = options[:nav_affix] if options.key?(:nav_affix)
+      opts[:back_to_top] = options[:nav_back_to_top] if options.key?(:nav_back_to_top)
     end
   end
 
@@ -15,7 +17,7 @@ class HeaderCell < Cell::ViewModel
   end
 
   def css_class
-    @options.has_key?(:class) ? @options[:class] : 'jumbo-header'
+    @options.key?(:class) ? @options[:class] : 'jumbo-header'
   end
 
   def background
@@ -23,6 +25,6 @@ class HeaderCell < Cell::ViewModel
   end
 
   def style
-    "background-image: url(#{background})" unless @options[:background] === false
+    "background-image: url(#{background})" if @options[:background]
   end
 end

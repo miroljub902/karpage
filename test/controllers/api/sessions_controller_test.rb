@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require_relative '../api_controller_test'
 
@@ -16,7 +18,7 @@ class Api::SessionsControllerTest < ApiControllerTest
 
   test 'sign out resets access token' do
     token = @user.access_token
-    @user.send :generate_access_token!
+    @user.__send__ :generate_access_token!
     authorize_user @user
     post :destroy
     assert_response :ok
@@ -57,10 +59,9 @@ class Api::SessionsControllerTest < ApiControllerTest
   end
 
   test 'sign out clears device info' do
-    token = @user.access_token
-    @user.send :generate_access_token!
+    @user.__send__ :generate_access_token!
     authorize_user @user
-    @user.update_attribute :device_info, { user_id: 'dummy' }
+    @user.update_attribute :device_info, user_id: 'dummy'
     post :destroy
     assert_response :ok
     assert @user.reload.device_info.nil?, "Device info is not nil (#{@user.device_info})"

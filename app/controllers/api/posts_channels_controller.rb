@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::PostsChannelsController < ApiController
   def index
     @channels = PostChannel.active.sorted

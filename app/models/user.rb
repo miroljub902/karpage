@@ -1,4 +1,6 @@
-# rubocop:disable Lint/AmbiguousBlockAssociation
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/ClassLength
 class User < ActiveRecord::Base
   include FeaturedOrdering
 
@@ -13,7 +15,9 @@ class User < ActiveRecord::Base
       if: -> { identities.empty? || login.present? || login_was.present? },
       message: 'should use only letters numbers and .-_ please'
     )
-    config.merge_validates_length_of_login_field_options if: -> { identities.empty? || login.present? || login_was.present? }
+    config.merge_validates_length_of_login_field_options if: -> {
+      identities.empty? || login.present? || login_was.present?
+    }
     config.merge_validates_length_of_password_field_options if: -> { identities.empty? && password.present? }
     config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? && password.present? }
   end
@@ -45,7 +49,9 @@ class User < ActiveRecord::Base
   before_create :generate_access_token
   after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
   after_save -> { ProfileThumbnailJob.perform_later(id) },
-    if: -> { changes.keys.any? { |attr| %w(login name avatar_id description profile_background_id).include?(attr) } }
+             if: -> {
+               changes.keys.any? { |attr| %w[login name avatar_id description profile_background_id].include?(attr) }
+             }
 
   scope :by_cars_owned, -> { order(cars_count: :desc) }
 
@@ -82,7 +88,7 @@ class User < ActiveRecord::Base
       facebook = Koala::Facebook::API.new(facebook_token).get_object('me')
       identity = Identity.find_or_initialize_by provider: 'facebook', uid: facebook['id']
       if identity.new_record?
-        self.identities << identity
+        identities << identity
       else
         errors.add :facebook_token, :taken
       end
@@ -91,11 +97,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  # rubocop:disable Metrics/BlockLength
   concerning :PushNotifications do
     included do
       after_save -> {
         self.class
-            .where('device_info @> ?', %Q({"user_id": "#{self.device_info['user_id']}"}))
+            .where('device_info @> ?', %({"user_id": "#{device_info['user_id']}"}))
             .where.not(id: id).update_all device_info: nil
       }, if: -> { (device_info || {}).key?('user_id') }
     end
@@ -148,7 +155,7 @@ class User < ActiveRecord::Base
       end
 
       def link=(value)
-        self[:link] = (/^https?:\/\//i.match(value) || value.to_s.strip.empty?) ? value : "http://#{value}"
+        self[:link] = %r{^https?:\/\/}i.match(value) || value.to_s.strip.empty? ? value : "http://#{value}"
       end
     end
   end
@@ -195,9 +202,10 @@ class User < ActiveRecord::Base
   end
 
   def generate_access_token
-    begin
+    loop do
       self.access_token = SecureRandom.hex(32)
-    end while User.where(access_token: access_token).exists?
+      break unless User.where(access_token: access_token).exists?
+    end
   end
 
   def generate_access_token!

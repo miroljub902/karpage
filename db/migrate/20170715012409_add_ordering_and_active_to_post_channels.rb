@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOrderingAndActiveToPostChannels < ActiveRecord::Migration
   def change
     add_column :post_channels, :ordering, :integer, index: true, null: false, default: 0

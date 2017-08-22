@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Filter < ActiveRecord::Base
   def search
     words = self.words.presence || name

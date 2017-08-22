@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Filter do
   menu priority: 60
   permit_params :name, :words

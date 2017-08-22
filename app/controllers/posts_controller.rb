@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class PostsController < ApplicationController
   respond_to :html, :js
 
-  layout 'simple', only: %i(new create edit update explore)
+  layout 'simple', only: %i[new create edit update explore]
 
-  before_action :require_user, only: %i(new create edit update destroy)
+  before_action :require_user, only: %i[new create edit update destroy]
   before_action :find_user
 
   def index
@@ -80,11 +82,11 @@ class PostsController < ApplicationController
 
   def find_user
     @user = if params[:profile_id]
-      user = User.find_by(login: params[:profile_id])
-      return render_404 unless user
-      user.decorate
-    else
-      current_user
-    end
+              user = User.find_by(login: params[:profile_id])
+              return render_404 unless user
+              user.decorate
+            else
+              current_user
+            end
   end
 end

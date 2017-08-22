@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :post_channel
@@ -12,7 +14,7 @@ class Post < ActiveRecord::Base
   scope :sorted, -> { order(created_at: :desc) }
   scope :global, -> { where(post_channel_id: nil) }
   scope :with_photo, -> { where.not(photo_id: nil) }
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else
@@ -21,13 +23,24 @@ class Post < ActiveRecord::Base
   }
 
   scope :select_all, -> { select('posts.*') }
-  scope :select_upvoted, -> (user) do
-    joins("LEFT OUTER JOIN upvotes ON upvotes.voteable_type = 'Post' AND upvotes.voteable_id = posts.id AND upvotes.user_id = #{user.id}")
+  scope :select_upvoted, ->(user) do
+    joins(<<-SQL
+      LEFT OUTER JOIN upvotes ON upvotes.voteable_type = 'Post'
+        AND upvotes.voteable_id = posts.id
+        AND upvotes.user_id = #{user.id}
+    SQL
+         )
       .select('(upvotes.id IS NOT NULL) AS upvoted')
   end
 
-  scope :select_liked, -> (user) do
-    joins("LEFT OUTER JOIN likes ON likes.likeable_type = 'Post' AND likes.likeable_id = posts.id AND likes.user_id = #{user.id}")
+  scope :select_liked, ->(user) do
+    joins(
+      <<-SQL
+      LEFT OUTER JOIN likes ON likes.likeable_type = 'Post'
+        AND likes.likeable_id = posts.id
+        AND likes.user_id = #{user.id}
+      SQL
+    )
       .select('(likes.id IS NOT NULL) AS liked')
   end
 

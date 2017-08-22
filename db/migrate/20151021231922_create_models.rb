@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateModels < ActiveRecord::Migration
   def change
     create_table :models do |t|
@@ -8,7 +10,7 @@ class CreateModels < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :models, %i(make_id slug), unique: true
+    add_index :models, %i[make_id slug], unique: true
 
     reversible do |dir|
       dir.up { execute 'CREATE UNIQUE INDEX index_models_on_name ON models (make_id, LOWER(name))' }

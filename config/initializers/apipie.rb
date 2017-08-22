@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Apipie.configure do |config|
   config.app_name                = 'Kar Page'
   config.api_base_url            = '/api'
@@ -7,7 +9,7 @@ Apipie.configure do |config|
   config.api_controllers_matcher = "#{Rails.root}/app/controllers/api/**/*.rb"
 
   if Rails.env.production?
-    config.authenticate = Proc.new do
+    config.authenticate = proc do
       authenticate_or_request_with_http_basic do |username, password|
         username == ENV.fetch('APIPIE_USER') && password == ENV.fetch('APIPIE_PASSWORD')
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.dream_cars user.dream_cars, partial: 'api/photos/photo', as: :photo
 
 json.current_cars cars.current, partial: 'api/cars/car', as: :car

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :import do
   task makes_models: :environment do
     # {
@@ -22,12 +24,14 @@ namespace :import do
       make.save! if make.changed?
 
       models[row['make']] ||= {}
-      models[row['make']][row['model']] ||= make.models.where('name ILIKE ?', row['model']).first_or_initialize(name: row['model'])
+      models[row['make']][row['model']] ||=
+        make.models.where('name ILIKE ?', row['model']).first_or_initialize(name: row['model'])
       model = models[row['make']][row['model']]
       model.official = true
       model.save! if model.changed?
 
-      trim = model.trims.where('name ILIKE ? AND year = ?', row['trim'], row['year'].to_i).first_or_initialize(name: row['trim'], year: row['year'].to_i)
+      trim = model.trims.where('name ILIKE ? AND year = ?', row['trim'], row['year'].to_i)
+                  .first_or_initialize(name: row['trim'], year: row['year'].to_i)
       trim.official = true
       trim.save!(validate: false) if trim.changed?
 

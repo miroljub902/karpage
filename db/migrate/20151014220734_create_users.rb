@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def change
     create_table :users do |t|
       t.string :email

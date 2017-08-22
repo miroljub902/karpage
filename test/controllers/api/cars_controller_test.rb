@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require_relative '../api_controller_test'
 
+# rubocop:disable Metrics/ClassLength
 class Api::CarsControllerTest < ApiControllerTest
   setup do
     mock_request 's3'
@@ -22,31 +25,31 @@ class Api::CarsControllerTest < ApiControllerTest
     car = user.cars.first
     car.photos.create! image_id: 'dummy'
     car.comments.create! user: users(:friend), body: 'Nice car'
-    get :index, search: 'audi'
+    get :index, params: { search: 'audi' }
     assert_response :ok
   end
 
   test 'filters cars' do
     filter = Filter.create! name: 'BMW', words: 'bmw'
     user = users(:john_doe)
-    car_1 = cars(:current)
-    car_2 = cars(:first)
-    car_1.update_column :slug, 'bmw-i7'
-    car_1.photos.create! image_id: 'dummy'
-    car_2.photos.create! image_id: 'dummy2'
-    user.cars << car_1
-    user.cars << car_2
-    get :index, filter_id: filter.id
+    car1 = cars(:current)
+    car2 = cars(:first)
+    car1.update_column :slug, 'bmw-i7'
+    car1.photos.create! image_id: 'dummy'
+    car2.photos.create! image_id: 'dummy2'
+    user.cars << car1
+    user.cars << car2
+    get :index, params: { filter_id: filter.id }
     assert_response :ok
     assert_equal 1, json_response['cars'].size
-    assert_equal car_1.id, json_response['cars'].first['id']
+    assert_equal car1.id, json_response['cars'].first['id']
   end
 
   test 'can create car' do
     user = users(:john_doe)
     authorize_user user
     assert_difference 'user.cars.count' do
-      post :create, car: { year: '2015', make_name: 'Audi', car_model_name: 'R8' }
+      post :create, params: { car: { year: '2015', make_name: 'Audi', car_model_name: 'R8' } }
       assert_response :created
     end
   end
@@ -56,7 +59,7 @@ class Api::CarsControllerTest < ApiControllerTest
     user.cars << cars(:current)
     car = user.cars.first
     authorize_user user
-    patch :update, id: car.id, car: { description: 'Updated' }
+    patch :update, params: { id: car.id, car: { description: 'Updated' } }
     assert_response :no_content
     assert_equal 'Updated', car.reload.description
   end
@@ -66,7 +69,7 @@ class Api::CarsControllerTest < ApiControllerTest
     user.cars << cars(:current)
     car = user.cars.first
     authorize_user user
-    get :show, id: car.id
+    get :show, params: { id: car.id }
     assert_response :ok
   end
 
@@ -80,7 +83,7 @@ class Api::CarsControllerTest < ApiControllerTest
     Like.like! car, friend
     car.comments.create! user: friend, body: 'Howdy'
     authorize_user user
-    get :show, id: car.id
+    get :show, params: { id: car.id }
     assert_equal 1, json_response['car']['new_likes']
     assert_equal 1, json_response['car']['new_comments']
   end
@@ -90,7 +93,7 @@ class Api::CarsControllerTest < ApiControllerTest
     user.cars << cars(:current)
     car = user.cars.first
     authorize_user user
-    delete :destroy, id: car.id
+    delete :destroy, params: { id: car.id }
     assert_response :no_content
     assert_raise { car.reload }
   end
@@ -104,7 +107,7 @@ class Api::CarsControllerTest < ApiControllerTest
     photo = car.photos.first
     authorize_user user
     stub_request :delete, /s3/
-    patch :update, id: car.id, car: { photos_attributes: { id: photo.id, _destroy: true } }
+    patch :update, params: { id: car.id, car: { photos_attributes: { id: photo.id, _destroy: true } } }
     assert_response :no_content
     assert_equal 1, car.reload.photos.count
     assert_not_equal photo.id, car.photos.first.id
@@ -114,14 +117,19 @@ class Api::CarsControllerTest < ApiControllerTest
     mock_request 's3'
     user = users(:john_doe)
     authorize_user user
-    post :create, car: {
+    post :create, params: { car: {
       year: '2015', make_name: 'Audi', car_model_name: 'R8',
       parts_attributes: [
         { type: 'Wheel', manufacturer: 'Michelin', model: 'X100', price: 500,
-          photo_attributes: { image_id: 'dummy', image_content_type: 'image/jpeg', image_size: 123456, image_filename: 'part.jpg' } },
+          photo_attributes: {
+            image_id: 'dummy',
+            image_content_type: 'image/jpeg',
+            image_size: 123_456,
+            image_filename: 'part.jpg'
+          } },
         { type: 'Wheel', manufacturer: 'Michelin', model: 'X100', price: 200 }
       ]
-    }
+    } }
     assert_response :created
     car = user.cars.last
     assert_equal 2, car.parts.count

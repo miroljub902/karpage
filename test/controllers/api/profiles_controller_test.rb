@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require_relative '../api_controller_test'
 
@@ -9,9 +11,9 @@ class Api::ProfilesControllerTest < ApiControllerTest
 
   test 'return other user info' do
     user = users(:john_doe)
-    get :show, id: user.login
+    get :show, params: { id: user.login }
     assert_response :ok
-    assert !json_response['user'].has_key?('email')
+    assert !json_response['user'].key?('email')
   end
 
   test 'returns cars' do
@@ -22,9 +24,9 @@ class Api::ProfilesControllerTest < ApiControllerTest
     user.cars << cars(:current)
     user.cars << cars(:past)
     user.cars << cars(:next)
-    get :show, id: user.login
-    %w(next_car first_car current_cars previous_cars dream_cars).each do |key|
-      assert json_response.has_key?(key), "No #{key} key"
+    get :show, params: { id: user.login }
+    %w[next_car first_car current_cars previous_cars dream_cars].each do |key|
+      assert json_response.key?(key), "No #{key} key"
       assert_equal 1, json_response[key].size, "#{key} != 1" if json_response[key].is_a?(Array)
       assert json_response[key].present?, "#{key} not present"
     end
@@ -34,7 +36,7 @@ class Api::ProfilesControllerTest < ApiControllerTest
     user = users(:john_doe)
     friend = users(:friend)
     authorize_user user
-    post :follow, id: friend.login
+    post :follow, params: { id: friend.login }
     assert_response :created
     assert user.followee_ids.include?(friend.id)
   end
@@ -44,7 +46,7 @@ class Api::ProfilesControllerTest < ApiControllerTest
     friend = users(:friend)
     user.follow! friend
     authorize_user user
-    delete :unfollow, id: friend.login
+    delete :unfollow, params: { id: friend.login }
     assert !user.followee_ids.include?(friend.id)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require_relative '../api_controller_test'
 
@@ -6,10 +8,10 @@ class Api::BusinessesControllerTest < ApiControllerTest
     user = users(:john_doe)
     assert_difference 'Business.count', +1 do
       authorize_user user
-      post :create, business: businesses(:full).attributes
+      post :create, params: { business: businesses(:full).attributes }
       assert_response :created
     end
-    skip_check = %w(id user_id created_at updated_at)
+    skip_check = %w[id user_id created_at updated_at]
     original = businesses(:full).attributes.except(*skip_check)
     assert_equal original, user.business.attributes.except(*skip_check)
   end
@@ -19,7 +21,7 @@ class Api::BusinessesControllerTest < ApiControllerTest
     user.business = businesses(:full)
     assert_no_difference 'Business.count' do
       authorize_user user
-      post :create, business: businesses(:full).attributes
+      post :create, params: { business: businesses(:full).attributes }
       assert_response :forbidden
     end
   end
@@ -28,7 +30,7 @@ class Api::BusinessesControllerTest < ApiControllerTest
     user = users(:john_doe)
     user.business = businesses(:full)
     assert_no_difference 'Business.count' do
-      post :create, business: businesses(:full).attributes
+      post :create, params: { business: businesses(:full).attributes }
       assert_response :unauthorized
     end
   end
@@ -36,7 +38,7 @@ class Api::BusinessesControllerTest < ApiControllerTest
   test 'any user can retrieve business profile' do
     user = users(:john_doe)
     user.business = businesses(:full)
-    get :show, id: user.business.id
+    get :show, params: { id: user.business.id }
     assert_response :ok
   end
 
@@ -44,7 +46,7 @@ class Api::BusinessesControllerTest < ApiControllerTest
     user = users(:john_doe)
     user.business = businesses(:full)
     authorize_user user
-    patch :update, id: user.business.id, business: { name: 'Updated Name' }
+    patch :update, params: { id: user.business.id, business: { name: 'Updated Name' } }
     assert_response :no_content
     assert_equal 'Updated Name', user.business.reload.name
   end
@@ -54,7 +56,7 @@ class Api::BusinessesControllerTest < ApiControllerTest
     user.business = businesses(:full)
     authorize_user user
     assert_difference 'Business.count', -1 do
-      delete :destroy, id: user.business.id
+      delete :destroy, params: { id: user.business.id }
       assert_response :no_content
     end
     assert user.reload.business.nil?

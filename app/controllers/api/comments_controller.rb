@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Api::CommentsController < ApiController
-  before_action :require_user, only: %i(create update destroy)
+  before_action :require_user, only: %i[create update destroy]
   before_action :find_commentable
 
   def index

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateCars < ActiveRecord::Migration
+  # rubocop:disable Metrics/MethodLength
   def change
     create_table :cars do |t|
       t.references :model, index: true, foreign_key: true
@@ -14,7 +17,7 @@ class CreateCars < ActiveRecord::Migration
     end
 
     add_index :cars, :year
-    add_index :cars, %i(user_id slug), unique: true
+    add_index :cars, %i[user_id slug], unique: true
     add_index :cars, :first
     add_index :cars, :current
     add_index :cars, :past

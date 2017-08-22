@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::NotificationsController < ApiController
   before_action :require_user
 

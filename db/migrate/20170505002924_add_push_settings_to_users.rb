@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddPushSettingsToUsers < ActiveRecord::Migration
   def change
     add_column :users, :push_settings, :jsonb, null: false, default: {}

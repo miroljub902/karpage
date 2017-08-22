@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module FeaturedOrdering
   extend ActiveSupport::Concern
 
   # Internally we store the order value in powers of 10 so it's easier to reorder
 
+  # rubocop:disable Metrics/BlockLength
   included do
     scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
 
@@ -26,13 +29,13 @@ module FeaturedOrdering
     end
 
     def featured_order
-      order = read_attribute(:featured_order)
+      order = self[:featured_order]
       order ? order / 10 : order
     end
 
     def featured_order=(order)
-      order = order.to_i.to_s == order ? order.to_i : nil unless order.is_a?(Fixnum)
-      write_attribute :featured_order, order ? order * 10 : nil
+      order = order.to_i.to_s == order ? order.to_i : nil unless order.is_a?(Integer)
+      self[:featured_order] = order ? order * 10 : nil
       order
     end
 

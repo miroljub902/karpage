@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trim < ActiveRecord::Base
   include FriendlyId
 

@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 class UserSessionsController < ApplicationController
-  before_action :require_no_user, only: %i(new create)
+  before_action :require_no_user, only: %i[new create]
   before_action :require_user, only: :destroy
-  after_action :track_signup, only: :create, if: -> { @user_session.valid? && @user_session.user.created_at > 10.seconds.ago }
+  after_action :track_signup, only: :create, if: -> {
+    @user_session.valid? && @user_session.user.created_at > 10.seconds.ago
+  }
   skip_before_action :require_complete_profile, only: :destroy
 
   layout 'simple'
@@ -14,11 +18,15 @@ class UserSessionsController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
   def create
     @user_session = omniauth_session || normal_session
     user = @user_session.user
     respond_to do |format|
-      format.js {
+      format.js do
         # Double check with empty errors so we con't clear previously set errors
         if @user_session.errors.empty? && @user_session.valid?
           location = user.incomplete_profile? ? edit_user_path : profile_path(user)
@@ -26,8 +34,8 @@ class UserSessionsController < ApplicationController
         else
           render '_modals/new', locals: { id: 'modalSignIn', content: 'new' }
         end
-      }
-      format.html {
+      end
+      format.html do
         # Double check with empty errors so we con't clear previously set errors
         if @user_session.errors.empty? && @user_session.valid?
           location = user.incomplete_profile? ? edit_user_path : profile_path(user)
@@ -35,7 +43,7 @@ class UserSessionsController < ApplicationController
         else
           render :new
         end
-      }
+      end
     end
   end
 

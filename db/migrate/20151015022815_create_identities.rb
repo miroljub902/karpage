@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateIdentities < ActiveRecord::Migration
   def change
     create_table :identities do |t|
@@ -10,7 +12,7 @@ class CreateIdentities < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :identities, %i(user_id provider uid), unique: true
-    add_index :identities, %i(provider uid)
+    add_index :identities, %i[user_id provider uid], unique: true
+    add_index :identities, %i[provider uid]
   end
 end

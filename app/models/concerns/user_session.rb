@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class UserSession < Authlogic::Session::Base
-  find_by_login_method :find_by_login_or_email
+  # rubocop:disable Rails/DynamicFindBy
+  self.find_by_login_method :find_by_login_or_email
 
   after_destroy :reset_user_access_token
   after_create :reset_user_access_token

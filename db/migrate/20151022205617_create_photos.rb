@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePhotos < ActiveRecord::Migration
   def change
     create_table :photos do |t|
@@ -13,6 +15,6 @@ class CreatePhotos < ActiveRecord::Migration
     end
 
     add_index :photos, :photo_type
-    add_index :photos, %i(attachable_type attachable_id)
+    add_index :photos, %i[attachable_type attachable_id]
   end
 end

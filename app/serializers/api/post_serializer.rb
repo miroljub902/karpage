@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::PostSerializer < ApiSerializer
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper

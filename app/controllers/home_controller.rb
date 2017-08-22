@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :js_config
 
+  # rubocop:disable Metrics/AbcSize
   def index
     force_splash = params[:m] == "1"
     if !force_splash && ((cookies[:splash] && !browser.device.mobile?) || params[:h] == '1')

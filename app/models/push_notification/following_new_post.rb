@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::FollowingNewPost < PushNotification
   def message
     "#{source} has a new post"

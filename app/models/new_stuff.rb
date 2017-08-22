@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NewStuff < ActiveRecord::Base
   belongs_to :user
   belongs_to :stuff_owner, class_name: 'User'
@@ -16,10 +18,8 @@ class NewStuff < ActiveRecord::Base
   end
 
   def reset!(delay = false)
-    update_attribute :last_at, Time.now - (delay ? 10.seconds : 0)
+    update_attribute :last_at, Time.zone.now - (delay ? 10.seconds : 0)
   end
-
-  private
 
   def self.stuff_class(stuff)
     stuff.is_a?(ActiveRecord::Relation) ? stuff : stuff.first.class
@@ -28,7 +28,7 @@ class NewStuff < ActiveRecord::Base
   def self.get_counter(stuff, user, owner:)
     klass = stuff_class(stuff).name.sub(/Decorator$/, '')
     find_or_initialize_by(user: user, stuff: klass, stuff_owner: owner).tap do |counter|
-      counter.last_at ||= Time.now
+      counter.last_at ||= Time.zone.now
       counter.save! if counter.changed?
     end
   end

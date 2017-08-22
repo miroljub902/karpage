@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class PushNotificationTest < ActiveSupport::TestCase
@@ -19,7 +21,7 @@ class PushNotificationTest < ActiveSupport::TestCase
   end
 
   test 'push!' do
-    stub_request(:post, /.*onesignal.com\/.*/)
+    stub_request(:post, %r{.*onesignal.com\/.*})
     @notification.push!
     assert @notification.reload.sent?, "Not sent: #{@notification.status_message}"
   end
@@ -33,9 +35,15 @@ class PushNotificationTest < ActiveSupport::TestCase
 
   test 'do not spam notifications' do
     Timecop.freeze Date.new(3000, 1, 1) do
-      notification = Notification.belay_create(user: @user, source: users(:friend), notifiable: @car, type: 'your_car_like')
+      notification = Notification.belay_create(user: @user,
+                                               source: users(:friend),
+                                               notifiable: @car,
+                                               type: 'your_car_like')
       assert notification.present?, 'Notification was not created!'
-      notification = Notification.belay_create(user: @user, source: users(:friend), notifiable: @car, type: 'your_car_like')
+      notification = Notification.belay_create(user: @user,
+                                               source: users(:friend),
+                                               notifiable: @car,
+                                               type: 'your_car_like')
       assert notification.nil?, 'No notification should be created!'
     end
   end

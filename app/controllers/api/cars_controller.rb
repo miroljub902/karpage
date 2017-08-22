@@ -1,6 +1,12 @@
-class Api::CarsController < ApiController
-  before_action :require_user, only: %i(create update destroy reset_counter)
+# frozen_string_literal: true
 
+class Api::CarsController < ApiController
+  before_action :require_user, only: %i[create update destroy reset_counter]
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
   def index
     @cars = Car.has_photos.owner_has_login.includes(:user, :model, :make, parts: :photo).not_blocked(current_user)
     if params[:search].present?
@@ -14,8 +20,9 @@ class Api::CarsController < ApiController
 
     if params[:page].to_i > 1 || params[:search].present?
       start_at = params[:page].to_i
-      start_at = 1 if start_at == 0
-      start_at -= 1 unless params[:search].present? # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      start_at = 1 if start_at.zero?
+      # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      start_at -= 1 if params[:search].blank?
       @cars = @cars.distinct.order(created_at: :desc).page(start_at).per(per)
       @total_count = @cars.total_count
     else
@@ -32,12 +39,12 @@ class Api::CarsController < ApiController
   end
 
   COUNTERS = {
-    'car_likes' => -> (car) { NewStuff.reset_count(car.likes, car.user, owner: car.user) },
-    'car_comments' => -> (car) { NewStuff.reset_count(car.comments, car.user, owner: car.user) }
-  }
+    'car_likes' => ->(car) { NewStuff.reset_count(car.likes, car.user, owner: car.user) },
+    'car_comments' => ->(car) { NewStuff.reset_count(car.comments, car.user, owner: car.user) }
+  }.freeze
 
   def reset_counter
-    return render(nothing: true, status: :not_found) unless COUNTERS.has_key?(params[:counter])
+    return render(nothing: true, status: :not_found) unless COUNTERS.key?(params[:counter])
     car = current_user.cars.find(params[:id])
     COUNTERS[params[:counter]].call car
     render nothing: true, status: :ok
@@ -70,10 +77,10 @@ class Api::CarsController < ApiController
       :description,
       :sorting,
       :type,
-      photos_attributes: %i(id _destroy image_id image_content_type image_size image_filename sorting),
+      photos_attributes: %i[id _destroy image_id image_content_type image_size image_filename sorting],
       parts_attributes: [
         :type, :manufacturer, :model, :price,
-        { photo_attributes: %i(id _destroy image_id image_content_type image_size image_filename) }
+        { photo_attributes: %i[id _destroy image_id image_content_type image_size image_filename] }
       ]
     )
   end

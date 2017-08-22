@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::YourCarLike < PushNotification
   def message
     "#{source} liked your #{notifiable}"

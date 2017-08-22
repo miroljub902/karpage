@@ -1,8 +1,10 @@
-class UsersController < ApplicationController
-  layout 'simple', only: %i(edit update)
+# frozen_string_literal: true
 
-  before_action :require_no_user, only: %i(new create)
-  before_action :require_user, only: %i(edit update)
+class UsersController < ApplicationController
+  layout 'simple', only: %i[edit update]
+
+  before_action :require_no_user, only: %i[new create]
+  before_action :require_user, only: %i[edit update]
 
   def new
     @user = User.new
@@ -14,13 +16,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     respond_to do |format|
-      format.js {
+      format.js do
         if @user.save
           render inline: "window.location = '#{profile_path(@user)}'"
         else
           render '_modals/new', locals: { id: 'modalSignUp', content: 'new' }
         end
-      }
+      end
     end
   end
 
@@ -32,34 +34,42 @@ class UsersController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def update
     @user = current_user
     @user.attributes = user_params
+    # rubocop:disable Metrics/BlockLength
     respond_to do |format|
-      format.js {
+      format.js do
         is_profile_page = @user.login && request.referer == profile_url(@user.login_was)
-        location = @user.login_changed? && is_profile_page ? %Q(window.location = "#{profile_path(@user)}") : 'window.location.reload()'
+        location = if @user.login_changed? && is_profile_page
+                     %(window.location = "#{profile_path(@user)}")
+                   else
+                     'window.location.reload()'
+                   end
         if @user.save
           render inline: location
         else
           render '_modals/new', locals: { id: 'modalAccount', content: 'edit' }
         end
-      }
-      format.json {
+      end
+      format.json do
         if @user.save
           render json: {}
         else
           render json: @user.errors, status: :unprocessable_entity
         end
-      }
-      format.html {
+      end
+      format.html do
         if @user.save
           redirect_to profile_path(current_user), notice: 'Changes saved'
         else
           flash.now.alert = 'Could not update your profile'
           render :edit
         end
-      }
+      end
     end
   end
 

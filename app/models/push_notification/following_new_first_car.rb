@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::FollowingNewFirstCar < PushNotification
   def message
     "#{source} added first car: #{notifiable}"

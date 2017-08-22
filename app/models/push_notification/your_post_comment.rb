@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::YourPostComment < PushNotification
   def message
     "#{source} commented on your post"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 require 'openssl'
 
@@ -14,6 +16,6 @@ class S3SignaturesController < ApplicationController
   def sign(details)
     digest = OpenSSL::Digest.new('sha1')
     hmac = OpenSSL::HMAC.digest(digest, ENV['S3_SECRET_KEY'], details)
-    Base64.encode64(hmac).gsub("\n", '')
+    Base64.encode64(hmac).delete("\n")
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require_relative '../api_controller_test'
 
@@ -13,7 +15,7 @@ class Api::PostsControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     assert_difference 'user.posts.count' do
-      post :create, post: { body: 'Howdy', photo_id: 'dummy' }
+      post :create, params: { post: { body: 'Howdy', photo_id: 'dummy' } }
       assert_response :created
     end
   end
@@ -23,7 +25,7 @@ class Api::PostsControllerTest < ApiControllerTest
     authorize_user user
     channel = PostChannel.create! name: 'monday'
     assert_difference 'user.posts.count' do
-      post :create, post: { body: 'Howdy', post_channel_name: 'monday', photo_id: 'dummy' }
+      post :create, params: { post: { body: 'Howdy', post_channel_name: 'monday', photo_id: 'dummy' } }
       assert_response :created
     end
     post = Post.find json_response['post']['id']
@@ -34,7 +36,7 @@ class Api::PostsControllerTest < ApiControllerTest
     user = users(:john_doe)
     post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
-    patch :update, id: post.id, post: { body: 'Updated' }
+    patch :update, params: { id: post.id, post: { body: 'Updated' } }
     assert_response :no_content
     assert_equal 'Updated', post.reload.body
   end
@@ -42,7 +44,7 @@ class Api::PostsControllerTest < ApiControllerTest
   test 'returns post' do
     user = users(:john_doe)
     post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
-    get :show, id: post.id
+    get :show, params: { id: post.id }
     assert_response :ok
   end
 
@@ -51,18 +53,18 @@ class Api::PostsControllerTest < ApiControllerTest
     user = users(:john_doe)
     post = user.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
-    delete :destroy, id: post.id
+    delete :destroy, params: { id: post.id }
     assert_response :no_content
     assert_raise { post.reload }
   end
 
   test 'returns user posts' do
     user = users(:john_doe)
-    user_2 = users(:friend)
+    user2 = users(:friend)
     user.posts.create! body: 'Nope', photo_id: 'dummy'
-    post = user_2.posts.create! body: 'Howdy', photo_id: 'dummy'
+    post = user2.posts.create! body: 'Howdy', photo_id: 'dummy'
     authorize_user user
-    get :index, user_id: user_2.id
+    get :index, params: { user_id: user2.id }
     assert_equal 1, json_response['posts'].size
     assert_equal post.body, json_response['posts'].first['body']
   end

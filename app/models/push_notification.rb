@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'imgix_refile_helper'
 
 class PushNotification
@@ -32,9 +34,7 @@ class PushNotification
     source.avatar ? ix_refile_image_url(source, :avatar) : nil
   end
 
-  def notifiable_id
-    notification.notifiable_id
-  end
+  delegate :notifiable_id, to: :notification
 
   def related_id
     source_id

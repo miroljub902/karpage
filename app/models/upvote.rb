@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Upvote < ActiveRecord::Base
   belongs_to :voteable, polymorphic: true, counter_cache: true
   belongs_to :user
@@ -13,6 +15,6 @@ class Upvote < ActiveRecord::Base
   end
 
   def self.unvote!(voteable, user)
-    where(voteable: voteable, user: user).first.try(:destroy)
+    find_by(voteable: voteable, user: user).try(:destroy)
   end
 end

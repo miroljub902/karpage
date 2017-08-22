@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class UserCarsController < ApplicationController
   before_action :require_user
 
   def new
     @car = current_user.cars.new(new_car_params)
-    render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car }}
+    render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
   end
 
   def create
@@ -11,13 +13,13 @@ class UserCarsController < ApplicationController
     if @car.save
       render inline: 'window.location.reload()'
     else
-      render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car }}
+      render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
     end
   end
 
   def edit
     @car = current_user.cars.friendly.find(params[:id])
-    render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car }}
+    render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
   end
 
   def update
@@ -25,7 +27,7 @@ class UserCarsController < ApplicationController
     if @car.update_attributes(car_params)
       render inline: 'window.location.reload()'
     else
-      render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car }}
+      render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
     end
   end
 
@@ -59,7 +61,7 @@ class UserCarsController < ApplicationController
       :trim_id,
       :description,
       :type,
-      photos_attributes: %i(image_id image_content_type image_size image_filename sorting)
+      photos_attributes: %i[image_id image_content_type image_size image_filename sorting]
     )
   end
 end

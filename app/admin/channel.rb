@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register PostChannel, as: 'Channels' do
   menu parent: 'Posts'
 
@@ -15,7 +18,11 @@ ActiveAdmin.register PostChannel, as: 'Channels' do
 
     actions defaults: false do |channel|
       item 'Edit', edit_admin_channel_path(channel.id), class: 'member_link'
-      item 'Delete', admin_channel_path(channel.id), method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'member_link'
+      item 'Delete',
+           admin_channel_path(channel.id),
+           method: :delete,
+           data: { confirm: 'Are you sure you want to delete this?' },
+           class: 'member_link'
     end
   end
 

@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 UserCarDecorator.new(car).tap do |car|
-  json.(car, :id, :year, :make_id, :model_id, :trim_id, :description, :created_at, :updated_at, :likes_count, :sorting)
+  json.call(car,
+            :id, :year, :make_id, :model_id, :trim_id, :description, :created_at, :updated_at, :likes_count, :sorting)
 
   json.make car.make&.name
   json.model car.object.model.name # car.model gets a Car since it's a decorator
 
   json.liked Like.where(likeable: @car, user: current_user).exists? if current_user
 
-  if (photo = car.photos.sorted.first)
-    json.image_url ix_refile_image_url(photo, :image)
+  if (first_photo = car.photos.sorted.first)
+    json.image_url ix_refile_image_url(first_photo, :image)
   else
     json.image_url nil
   end

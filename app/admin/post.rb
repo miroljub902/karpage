@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register Post do
   menu priority: 30
 
-  actions :all, except: %i(new)
+  actions :all, except: %i[new]
 
   scope :all, default: true
   scope :sorted

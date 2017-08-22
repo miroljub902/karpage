@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddReviewAndSortingToCarParts < ActiveRecord::Migration
   def change
     add_column :car_parts, :review, :string

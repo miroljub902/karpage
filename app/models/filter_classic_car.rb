@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FilterClassicCar < Filter
   def search
     Car.has_photos.owner_has_login.joins(:make, :model).where('year <= 1980')

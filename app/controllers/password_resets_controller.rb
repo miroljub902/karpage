@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PasswordResetsController < ApplicationController
   before_action :require_no_user
   skip_before_action :verify_authenticity_token
@@ -11,11 +13,13 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by_login_or_email(params[:login])
-    @user.deliver_reset_password_instructions! if @user
+    @user = User.find_by(login_or_email: params[:login])
+    @user&.deliver_reset_password_instructions!
 
     respond_to do |format|
-      format.js { render '_modals/new', locals: { id: 'modalPasswordReset', content: 'new', options: { success: true } } }
+      format.js do
+        render '_modals/new', locals: { id: 'modalPasswordReset', content: 'new', options: { success: true } }
+      end
     end
   end
 

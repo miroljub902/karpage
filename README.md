@@ -17,3 +17,8 @@ The `example.env` file has the variables that need to be set.
 ## Deployment
 
 1. `mina deploy`
+
+## Development
+
+Run `overcommit --sign` or make sure to run rubocop before every commit.
+

@@ -1,5 +1,7 @@
-ActiveAdmin.register_page 'Dashboard' do
+# frozen_string_literal: true
 
+# # rubocop:disable Metrics/BlockLength
+ActiveAdmin.register_page 'Dashboard' do
   menu priority: 1, label: 'Dashboard'
 
   content title: 'Dashboard' do
@@ -9,7 +11,9 @@ ActiveAdmin.register_page 'Dashboard' do
           h1 do
             span User.count
             span class: "small" do
-              ("- " + link_to('Reported (' + Report.users.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'User'))).html_safe
+              text = 'Reported (' + Report.users.distinct.count('reportable_id').to_s + ')'
+              link = link_to(text, admin_reports_path("q[reportable_type_eq]": 'User'))
+              safe_join ['- ', link]
             end
           end
         end
@@ -20,8 +24,10 @@ ActiveAdmin.register_page 'Dashboard' do
           h1 do
             span Car.count
             span class: "small" do
-              ("- " + link_to('Reported (' + Report.cars.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Car'))).html_safe
-             end
+              text = 'Reported (' + Report.cars.distinct.count('reportable_id').to_s + ')'
+              link = link_to(text, admin_reports_path("q[reportable_type_eq]": 'Car'))
+              safe_join ['- ', link]
+            end
           end
         end
       end
@@ -31,7 +37,9 @@ ActiveAdmin.register_page 'Dashboard' do
           h1 do
             span Post.count
             span class: "small" do
-              ("- " + link_to('Reported (' + Report.posts.distinct.count("reportable_id").to_s + ')', admin_reports_path("q[reportable_type_eq]": 'Post'))).html_safe
+              text = 'Reported (' + Report.posts.distinct.count('reportable_id').to_s + ')'
+              link = link_to(text, admin_reports_path("q[reportable_type_eq]": 'Post'))
+              safe_join ['- ', link]
             end
           end
         end

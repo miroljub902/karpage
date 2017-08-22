@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -14,7 +16,7 @@ end
 class ActionDispatch::IntegrationTest
   def sign_in(user, password)
     mock_request :ga
-    post user_session_path, user_session: { login: user.login, password: password }
+    post user_session_path, params: { user_session: { login: user.login, password: password } }
     assert_response :found
   end
 end
@@ -23,6 +25,8 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
+  # TODO: Refactor
+  # rubocop:disable Metrics/MethodLength
   def omniauth_mock_facebook
     OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new(
       provider: 'facebook',
@@ -40,7 +44,7 @@ class ActiveSupport::TestCase
       },
       credentials: {
         token: 'ABCDEF...',
-        expires_at: 1321747205,
+        expires_at: 1_321_747_205,
         expires: true
       },
       extra: {

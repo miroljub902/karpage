@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddInstagramIdToUsers < ActiveRecord::Migration
   def change
     add_column :users, :instagram_id, :string

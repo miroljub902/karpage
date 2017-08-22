@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexesToTimestamps < ActiveRecord::Migration
   def change
     add_index :posts, :created_at

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class AddImagesAndDescriptionToPostChannels < ActiveRecord::Migration
+  # rubocop:disable Rails/ReversibleMigration
   def change
     change_table :post_channels do |t|
       t.string :description

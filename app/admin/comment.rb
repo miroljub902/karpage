@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register Comment, as: 'UserComment' do
   menu priority: 40
 
-  actions :all, except: %i(new)
+  actions :all, except: %i[new]
 
   filter :body
   filter :created_at

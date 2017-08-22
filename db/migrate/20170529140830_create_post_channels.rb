@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePostChannels < ActiveRecord::Migration
   def change
     create_table :post_channels do |t|

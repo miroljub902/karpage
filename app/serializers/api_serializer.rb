@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiSerializer < ActiveModel::Serializer
   private
 
@@ -8,7 +10,7 @@ class ApiSerializer < ActiveModel::Serializer
 
   def url(helper_name, *args)
     options = args.extract_options!
-    options.merge! host: ENV.fetch('HOSTNAME')
+    options[:host] = ENV.fetch('HOSTNAME')
     args += [options]
     Rails.application.routes.url_helpers.public_send helper_name, *args
   end

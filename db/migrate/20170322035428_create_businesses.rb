@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateBusinesses < ActiveRecord::Migration
+  # rubocop:disable Metrics/MethodLength
   def change
     create_table :businesses do |t|
       t.references :user, index: true

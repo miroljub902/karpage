@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::BusinessesController < ApiController
   before_action :require_user, except: :show
 
@@ -51,6 +53,8 @@ class Api::BusinessesController < ApiController
   private
 
   def business_params
-    params.require(:business).permit(%i(name address city state post_code description phone email url instagram_id keywords))
+    params.require(:business).permit(
+      %i[name address city state post_code description phone email url instagram_id keywords]
+    )
   end
 end

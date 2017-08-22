@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PostChannel < ActiveRecord::Base
   has_many :posts, dependent: :nullify
 

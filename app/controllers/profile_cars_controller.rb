@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
 class ProfileCarsController < ApplicationController
   layout 'simple', only: :index
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
   def index
     @filters = Filter.all
     @cars = Car.has_photos.owner_has_login
@@ -18,9 +23,10 @@ class ProfileCarsController < ApplicationController
     if params[:page].to_i > 1 || params[:search].present?
       @cars = @cars.order(created_at: :desc)
       start_at = params[:page].to_i
-      start_at = 1 if start_at == 0
+      start_at = 1 if start_at.zero?
       @for_pagination = @cars.page(start_at).per(per_page)
-      start_at -= 1 unless params[:search].present? # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      # Start at page 1 when user is at page 2 (since page 1 is really a random set)
+      start_at -= 1 if params[:search].blank?
       @cars = @cars.page(start_at).per(per_page)
     else
       @for_pagination = @cars.page(params[:page]).per(per_page)
@@ -30,7 +36,11 @@ class ProfileCarsController < ApplicationController
 
   def show
     user = User.find_by(login: params[:profile_id])
-    car = user.cars.friendly.find(params[:car_id]) rescue nil
+    car = begin
+            user.cars.friendly.find(params[:car_id])
+          rescue
+            nil
+          end
     return render_404 if user.nil? || car.nil?
     @car = UserCarDecorator.new(car)
     @car.increment! :hits unless @car.user_id == current_user.try(:id)

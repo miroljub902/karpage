@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::FollowingMovesNewCar < PushNotification
   def message
     "#{source} no longer owns #{notifiable}"

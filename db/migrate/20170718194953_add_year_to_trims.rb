@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddYearToTrims < ActiveRecord::Migration
   def change
     add_column :trims, :year, :integer, index: true

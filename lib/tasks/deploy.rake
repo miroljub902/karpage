@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :deploy do
   task notify_appsignal: :environment do
     env = 'production'

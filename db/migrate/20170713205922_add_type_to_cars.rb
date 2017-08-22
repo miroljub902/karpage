@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTypeToCars < ActiveRecord::Migration
   def change
     add_column :cars, :type, :string

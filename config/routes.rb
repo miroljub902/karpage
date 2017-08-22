@@ -1,25 +1,30 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   apipie
-  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-    username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
-  end if Rails.env.production?
+  if Rails.env.production?
+    Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+      username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
+    end
+  end
 
   mount Sidekiq::Web => '/sidekiq'
 
   ActiveAdmin.routes(self)
 
   namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
-    resource :session, only: %i(create destroy), path: 'session'
-    resource :password_reset, path: 'password', only: %i(create update)
-    resource :user, only: %i(show create update) do
+    resource :session, only: %i[create destroy], path: 'session'
+    resource :password_reset, path: 'password', only: %i[create update]
+    resource :user, only: %i[show create update] do
       put :reset_counter
     end
     resources :notifications, only: :index
-    resources :profiles, only: %i(index show), path: 'users', constraints: { id: /[^\/]+/ } do
+    resources :profiles, only: %i[index show], path: 'users', constraints: { id: %r{[^\/]+} } do
       post :follow, on: :member
       delete :unfollow, on: :member
-      resources :reports, only: :create, reportable_type: 'User', constraints: { profile_id: /[^\/]+/ }
-      resource :block, only: :create, constraints: { profile_id: /[^\/]+/ }
+      resources :reports, only: :create, reportable_type: 'User', constraints: { profile_id: %r{[^\/]+} }
+      resource :block, only: :create, constraints: { profile_id: %r{[^\/]+} }
       resources :friends, only: [] do
         get 'followers', on: :collection
         get 'following', on: :collection
@@ -37,19 +42,19 @@ Rails.application.routes.draw do
     end
 
     resources :filters, only: :index
-    resources :cars, only: %i(index show create update destroy) do
+    resources :cars, only: %i[index show create update destroy] do
       put :reset_counter
 
-      resource :like, only: %i(create destroy), likeable_type: 'Car'
+      resource :like, only: %i[create destroy], likeable_type: 'Car'
       resources :comments, commentable_type: 'Car'
       resources :reports, only: :create, reportable_type: 'Car'
-      resources :car_parts, only: %i(create update destroy), path: 'parts', as: :parts
+      resources :car_parts, only: %i[create update destroy], path: 'parts', as: :parts
     end
-    resources :posts, only: %i(index show create update destroy) do
-      get 'user/:user_id' => 'posts#index', on: :collection, constraints: { user_id: /[^\/]+/ }
+    resources :posts, only: %i[index show create update destroy] do
+      get 'user/:user_id' => 'posts#index', on: :collection, constraints: { user_id: %r{[^\/]+} }
       get :feed, on: :collection
       resources :comments, commentable_type: 'Post'
-      resource :like, only: %i(create destroy), likeable_type: 'Post'
+      resource :like, only: %i[create destroy], likeable_type: 'Post'
       resources :reports, only: :create, reportable_type: 'Post'
       resource :upvote, only: %i[create destroy], voteable_type: 'Post'
       collection do
@@ -68,24 +73,24 @@ Rails.application.routes.draw do
   get 'auth/:provider/callback', to: 'user_sessions#create'
   get 'auth/failure', to: redirect('/')
 
-  resource :user, only: %i(new create edit update) do
-    resource :password_reset, path: 'password', only: %i(new create edit update)
+  resource :user, only: %i[new create edit update] do
+    resource :password_reset, path: 'password', only: %i[new create edit update]
     resources :user_cars, path: 'cars', as: :cars do
       post :resort, on: :collection
 
-      resources :car_photos, path: 'photos', as: :photos, only: %i(create destroy) do
+      resources :car_photos, path: 'photos', as: :photos, only: %i[create destroy] do
         post 'reorder', on: :collection
       end
 
-      resources :comments, only: %i(create destroy), scope: :car
+      resources :comments, only: %i[create destroy], scope: :car
     end
 
-    resources :car_singles, path: 'singles', as: :singles, only: %i(new create destroy)
-    resources :posts, only: %i(new create edit update destroy) do
-      resources :comments, only: %i(create destroy), scope: :post
+    resources :car_singles, path: 'singles', as: :singles, only: %i[new create destroy]
+    resources :posts, only: %i[new create edit update destroy] do
+      resources :comments, only: %i[create destroy], scope: :post
     end
   end
-  resource :user_session, only: %i(new create destroy), path: 'session'
+  resource :user_session, only: %i[new create destroy], path: 'session'
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 
@@ -107,19 +112,19 @@ Rails.application.routes.draw do
     end
   end
 
-  get ':profile_id' => 'profiles#show', as: :profile, constraints: { profile_id: /[^\/]+/ }
-  scope ':profile_id', constraints: { profile_id: /[^\/]+/ } do
+  get ':profile_id' => 'profiles#show', as: :profile, constraints: { profile_id: %r{[^\/]+} }
+  scope ':profile_id', constraints: { profile_id: %r{[^\/]+} } do
     post 'follow' => 'profiles#follow', as: :follow_user
     post 'unfollow' => 'profiles#unfollow', as: :unfollow_user
     get 'followers' => 'follows#index', followers: true, as: :user_followers
     get 'following' => 'follows#index', following: true, as: :user_followees
 
-    resources :posts, only: %i(index show) do
+    resources :posts, only: %i[index show] do
       put 'like' => 'likes#toggle', as: :toggle_like, likeable_class: Post
     end
 
-    get ':car_id' => 'profile_cars#show', as: :profile_car, constraints: { car_id: /[^\/]+/ }
-    scope ':car_id', constraints: { car_id: /[^\/]+/ } do
+    get ':car_id' => 'profile_cars#show', as: :profile_car, constraints: { car_id: %r{[^\/]+} }
+    scope ':car_id', constraints: { car_id: %r{[^\/]+} } do
       put 'like' => 'likes#toggle', as: :toggle_like_car, likeable_class: Car
     end
   end

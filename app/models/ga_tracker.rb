@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GATracker
   def self.event!(user, category:, action:, label:, value:)
     id = user.try(:id) || SecureRandom.uuid

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ImgixRefileHelper
   include Refile::AttachmentHelper
   include Imgix::Rails::UrlHelper
@@ -21,15 +23,19 @@ module ImgixRefileHelper
     default = {
       class: "attachnent #{obj.class.model_name.to_s.downcase} #{key} #{opts[:class]}"
     }
-    default.merge!(rot: obj.rotate) if obj.respond_to?(:rotate) && obj.rotate.present?
-    crop_params = obj.send("#{key}_crop_params").try(:presence) rescue nil
-    default.merge!(rect: crop_params) if crop_params && !opts.delete(:no_crop)
+    default[:rot] = obj.rotate if obj.respond_to?(:rotate) && obj.rotate.present?
+    crop_params = begin
+                    obj.__send__("#{key}_crop_params").try(:presence)
+                  rescue
+                    nil
+                  end
+    default[:rect] = crop_params if crop_params && !opts.delete(:no_crop)
     default
   end
 
   def s3_path(obj, key)
     refile_id = obj["#{key}_id"]
-    s3_prefix = obj.send(key).try(:backend).instance_variable_get(:@prefix)
+    s3_prefix = obj.__send__(key).try(:backend).instance_variable_get(:@prefix)
 
     s3_prefix ? "#{s3_prefix}/#{refile_id}" : nil
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::LikesController < ApiController
   before_action :require_user, :find_likeable
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :commentable, polymorphic: true, counter_cache: true
@@ -8,7 +10,7 @@ class Comment < ActiveRecord::Base
   after_create :notify_user
 
   scope :sorted, -> { order(created_at: :desc) }
-  scope :not_blocked, -> (user) {
+  scope :not_blocked, ->(user) {
     if user
       joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
     else

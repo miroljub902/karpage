@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
+# rubocop:disable Rails/Output
+# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register Car do
   menu priority: 20
 
-  actions :all, except: %i(new)
+  actions :all, except: %i[new]
 
-  filter :featured_order_present, as: :select, collection: [['Yes', '1'], ['No', nil]], label: 'Featured'
+  filter :featured_order_present, as: :select, collection: [%w[Yes 1], ['No', nil]], label: 'Featured'
   filter :make
   filter :model
   filter :year
@@ -11,7 +15,11 @@ ActiveAdmin.register Car do
 
   member_action :toggle_featured, method: :put do
     resource.toggle_featured!
-    notice = resource.featured? ? "#{resource} featured in position ##{resource.featured_order}" : "#{resource} un-featured"
+    notice = if resource.featured?
+               "#{resource} featured in position ##{resource.featured_order}"
+             else
+               "#{resource} un-featured"
+             end
     redirect_to admin_cars_path, notice: notice
   end
 
@@ -32,7 +40,11 @@ ActiveAdmin.register Car do
       label = car.featured? ? 'Unfeature' : 'Feature'
       item label, toggle_featured_admin_car_path(car.id), class: 'member_link', method: :put
       item 'Edit', edit_admin_car_path(car.id), class: 'member_link'
-      item 'Delete', admin_car_path(car.id), method: :delete, data: { confirm: 'Are you sure you want to delete this?' }, class: 'member_link'
+      item 'Delete',
+           admin_car_path(car.id),
+           method: :delete,
+           data: { confirm: 'Are you sure you want to delete this?' },
+           class: 'member_link'
     end
   end
 

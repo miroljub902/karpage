@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit
 
@@ -37,7 +39,7 @@ class ApplicationController < ActionController::Base
   private
 
   def require_complete_profile
-    return if !signed_in? || (controller_name == 'users' && %w(edit update).include?(action_name))
+    return if !signed_in? || (controller_name == 'users' && %w[edit update].include?(action_name))
     redirect_to edit_user_path, notice: 'Please provide a username and e-mail' if current_user.incomplete_profile?
   end
 
@@ -96,11 +98,11 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def current_admin_user
-    current_user && current_user.admin? ? current_user : nil
+    current_user&.admin? ? current_user : nil
   end
 
   def authenticate_admin_user!
-    return if current_user && current_user.admin?
+    return if current_user&.admin?
     render_404
   end
 

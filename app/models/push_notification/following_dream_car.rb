@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotification::FollowingDreamCar < PushNotification
   def message
     "#{source} added dream car"

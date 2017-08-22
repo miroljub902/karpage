@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.user do
   json.partial! 'api/users/public', user: @user
 end

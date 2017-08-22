@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTrims < ActiveRecord::Migration
   def change
     create_table :trims do |t|
