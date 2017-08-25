@@ -1,0 +1,46 @@
+postgres:
+  image: camptocamp/postgres:latest
+  environment:
+    POSTGRES_USER: deploy
+    POSTGRES_PASSWORD: deploy
+  ports:
+    - '5432:5432'
+  volumes:
+    - karpage-postgres:/var/lib/postgresql/data
+
+redis:
+  image: redis:3.0.5
+  ports:
+    - '6379:6379'
+  volumes:
+    - karpage-redis:/var/lib/redis/data
+
+web:
+  build: .
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/karpage
+  ports:
+    - '3000:3000'
+  env_file:
+    - .env.development.local
+
+sidekiq:
+  build: .
+  command: bundle exec sidekiq -c 5 -q default -q mailers -e production
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/karpage
+  env_file:
+    - .env.development.local
+
+bundle:
+  # `docker-compose images` to get the list
+  image: karpage_web
+  command: echo Container for bundler cache
+  volumes:
+    - /bundle
