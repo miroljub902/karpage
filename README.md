@@ -21,3 +21,11 @@ The `example.env` file has the variables that need to be set.
 ## Development
 
 Run `overcommit --install && overcommit --sign` or make sure to run rubocop before every commit.
+
+## Docker
+
+1. Create `.env.development.local`
+2. Build image: `docker-compose build`
+3. Create database: `docker-compose run web rake db:create`
+4. Run migrations: `docker-compose run web rake db:migrate`
+5. Run: `docker-compose up`
