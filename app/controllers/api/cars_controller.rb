@@ -70,7 +70,7 @@ class Api::CarsController < ApiController
   private
 
   def car_params
-    params.require(:car).permit(
+    params = self.params.require(:car).permit(
       :year,
       :model_id,
       :trim_id,
@@ -83,5 +83,16 @@ class Api::CarsController < ApiController
         { photo_attributes: %i[id _destroy image_id image_content_type image_size image_filename] }
       ]
     )
+    params[:type] = case params[:type]
+                    when 'first'
+                      Car.types[:first_car]
+                    when 'current'
+                      Car.types[:current_car]
+                    when 'previous'
+                      Car.types[:past_car]
+                    else
+                      params[:type]
+                    end
+    params
   end
 end
