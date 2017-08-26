@@ -10,6 +10,7 @@ class UsersController < ApplicationController
     @user = User.new
     respond_to do |format|
       format.js { render '_modals/new', locals: { id: 'modalSignUp', content: 'new' } }
+      format.html { redirect_back_or_default root_path }
     end
   end
 
