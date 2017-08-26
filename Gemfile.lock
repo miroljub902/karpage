@@ -61,9 +61,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    apipie-rails (0.4.0)
-      json
-      rails (>= 4.0)
     appsignal (2.1.2)
       rack
       thread_safe
@@ -420,7 +417,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.5)
   activeadmin!
-  apipie-rails (~> 0.4.0)
   appsignal (~> 2.1.0)
   authlogic (~> 3.4.6)
   bcrypt (~> 3.1.10)

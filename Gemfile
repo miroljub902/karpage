@@ -30,7 +30,6 @@ gem 'appsignal', '~> 2.1.0'
 gem 'staccato', '~> 0.4.7'
 gem 'rack-attack', '~> 5.0.1'
 gem 'active_model_serializers', '~> 0.10.5'
-gem 'apipie-rails', '~> 0.4.0'
 gem 'groupdate', '~> 3.2.0'
 
 gem 'sidekiq', '~> 4.2.2'
