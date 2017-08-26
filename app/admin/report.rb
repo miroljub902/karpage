@@ -14,7 +14,9 @@ ActiveAdmin.register Report do
       when "Car"
         link_to report.reportable, admin_car_path(report.reportable_id)
       when "Post"
-        link_to truncate(report.reportable.body, length: 30), admin_post_path(report.reportable)
+        link_to_if report.reportable,
+                   truncate(report.reportable&.body, length: 30),
+                   admin_post_path(report.reportable_id)
       end
     end
     column :user do |report|
