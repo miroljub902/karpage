@@ -25,6 +25,6 @@ class HeaderCell < Cell::ViewModel
   end
 
   def style
-    "background-image: url(#{background})" if @options[:background]
+    "background-image: url(#{background})" unless @options[:background].eql?(false)
   end
 end
