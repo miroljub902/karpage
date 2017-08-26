@@ -36,5 +36,5 @@ COPY . .
 # Expose a volume so that nginx will be able to read in assets in production.
 VOLUME ["$INSTALL_PATH/public"]
 
-# The default command that gets ran will be to start the Unicorn server.
-CMD bundle exec rails s -b 0.0.0.0 -p 3000
+# Start with remote debugging
+CMD rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 -- bin/rails s -b 0.0.0.0 -p 3000

@@ -60,7 +60,8 @@ gem 'progress_bar', '~> 1.0.5', require: false
 group :development, :test do
   gem 'quiet_assets', '~> 1.1.0'
   gem 'pry-rails', '~> 0.3.4'
-  gem 'pry-byebug', '~> 3.4.0'
+  gem 'ruby-debug-ide', '~> 0.6.0'
+  gem 'debase', '~> 0.2.1'
   gem 'rubocop', '~> 0.48.1'
   gem 'overcommit', '~> 0.39.1'
 end

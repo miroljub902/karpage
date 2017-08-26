@@ -24,8 +24,9 @@ web:
     - .:/karpage
   ports:
     - '3000:3000'
+    - '1234:1234'
   env_file:
-    - .env.development.local
+    - .env.docker.local
 
 sidekiq:
   build: .
@@ -36,7 +37,7 @@ sidekiq:
   volumes:
     - .:/karpage
   env_file:
-    - .env.development.local
+    - .env.docker.local
 
 bundle:
   # `docker-compose images` to get the list

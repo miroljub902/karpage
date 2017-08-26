@@ -24,8 +24,10 @@ Run `overcommit --install && overcommit --sign` or make sure to run rubocop befo
 
 ## Docker
 
-1. Create `.env.development.local`
+1. Create `.env.docker.local`
 2. Build image: `docker-compose build`
 3. Create database: `docker-compose run web rake db:create`
 4. Run migrations: `docker-compose run web rake db:migrate`
-5. Run: `docker-compose up`
+5. Run:
+    1. `docker-compose up postgres redis sidekiq`
+    2. `docker-compose run -p 3000:3000 -p 1234:1234 -v <app local dir>:/app web`
