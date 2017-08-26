@@ -89,6 +89,12 @@ class Car < ActiveRecord::Base
     end
   end
 
+  def save(*)
+    super
+  rescue PG::UniqueViolation
+    errors.add :base, 'Duplicate car'
+  end
+
   def toggle_like!(user)
     if (like = likes.find_by(user: user))
       like.destroy
