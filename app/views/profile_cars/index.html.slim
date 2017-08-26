@@ -41,7 +41,7 @@ h1.text-center
           params: { search: params[:search], filter: params[:filter], location: params[:location], lat: params[:lat], lng: params[:lng] },
           class: 'btn btn-default btn-lg btn-block'
       .col-sm-6
-        - if params[:lat].present? && @cars.total_pages > 1
+        - if params[:lat].present? && @for_pagination.total_pages > 1
           = link_to_next_page @for_pagination || @cars, 'Next Page',
             params: { search: params[:search], filter: params[:filter], location: params[:location], lat: params[:lat], lng: params[:lng] },
             class: 'btn btn-default btn-lg btn-block'
