@@ -3,6 +3,7 @@
 # rubocop:disable Metrics/ClassLength
 class User < ActiveRecord::Base
   include FeaturedOrdering
+  include UniqueViolationGuard
 
   strip_attributes allow_empty: true
 

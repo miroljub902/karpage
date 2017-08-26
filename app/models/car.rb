@@ -4,6 +4,7 @@
 class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
+  include UniqueViolationGuard
 
   self.inheritance_column = '_no_sti'
 
@@ -95,12 +96,6 @@ class Car < ActiveRecord::Base
     # Override so an ArgumentError is not raised on invalid types, handle through validation instead
     super if self.class.types.values.include?(value)
     value
-  end
-
-  def save(*)
-    super
-  rescue PG::UniqueViolation
-    errors.add :base, 'Duplicate car'
   end
 
   def toggle_like!(user)
