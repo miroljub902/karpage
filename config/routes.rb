@@ -4,7 +4,8 @@
 Rails.application.routes.draw do
   if Rails.env.production?
     Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-      username == ENV['SIDEKIQ_USERNAME'] && password == ENV['SIDEKIQ_PASSWORD']
+      ENV['SIDEKIQ_USERNAME'].present? && username == ENV['SIDEKIQ_USERNAME'] &&
+        ENV['SIDEKIQ_PASSWORD'].present? && password == ENV['SIDEKIQ_PASSWORD']
     end
   end
 
