@@ -6,6 +6,7 @@ class PushNotification::FollowingNextCar < PushNotification
   end
 
   def notifiable_image_url
-    ix_refile_image_url notifiable, :image if notifiable
+    photo = notifiable.photos.sorted.first
+    photo ? ix_refile_image_url(photo, :image) : nil
   end
 end
