@@ -5,12 +5,12 @@ class CarSinglesController < ApplicationController
 
   def new
     respond_to do |format|
-      format.js {
+      format.js do
         render '_modals/new', locals: { id: 'modalNewSingle', content: 'new', options: { type: params[:type] } }
-      }
-      format.html {
+      end
+      format.html do
         redirect_to profile_path(current_user), notice: 'There was an unexpected error, please try again later.'
-      }
+      end
     end
   end
 
