@@ -86,7 +86,7 @@ class Api::CarsController < ApiController
     params[:type] = case params[:type]
                     when 'first'
                       Car.types[:first_car]
-                    when 'current'
+                    when 'current', 'current_cars'
                       Car.types[:current_car]
                     when 'previous'
                       Car.types[:past_car]
