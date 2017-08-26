@@ -4,7 +4,14 @@ class CarSinglesController < ApplicationController
   before_action :require_user
 
   def new
-    render '_modals/new', locals: { id: 'modalNewSingle', content: 'new', options: { type: params[:type] } }
+    respond_to do |format|
+      format.js {
+        render '_modals/new', locals: { id: 'modalNewSingle', content: 'new', options: { type: params[:type] } }
+      }
+      format.html {
+        redirect_to profile_path(current_user), notice: 'There was an unexpected error, please try again later.'
+      }
+    end
   end
 
   def create
