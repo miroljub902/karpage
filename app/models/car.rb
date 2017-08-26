@@ -31,6 +31,7 @@ class Car < ActiveRecord::Base
 
   validates :year, numericality: { less_than: 9999, greater_than_or_equal_to: 1885 }
   validates :make_id, :model_id, presence: true
+  validates :type, inclusion: { in: types.values, message: 'Invalid car type' }
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
@@ -87,6 +88,12 @@ class Car < ActiveRecord::Base
         Notification.belay_create user: follower, type: type, notifiable: self, source: user
       end
     end
+  end
+
+  def type=(value)
+    # Override so an ArgumentError is not raised on invalid types, handle through validation instead
+    super if self.class.types.values.include?(value)
+    value
   end
 
   def save(*)
