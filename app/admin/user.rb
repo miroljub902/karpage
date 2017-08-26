@@ -101,11 +101,11 @@ ActiveAdmin.register User do
           end
           column :description
           column :type do |car|
-            label = if car.first?
+            label = if car.first_car?
                       'First Car'
-                    elsif car.current?
+                    elsif car.current_car?
                       'Current Car'
-                    elsif car.past?
+                    elsif car.past_car?
                       'Past Car'
                     end
             status_tag label if label
