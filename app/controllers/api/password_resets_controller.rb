@@ -2,7 +2,7 @@
 
 class Api::PasswordResetsController < ApiController
   def create
-    @user = User.find_by(login_or_email: params.require(:login))
+    @user = User.with_login_or_email(params.require(:login))
     return render_404 unless @user
     @user.deliver_reset_password_instructions!
     render nothing: true, status: :created

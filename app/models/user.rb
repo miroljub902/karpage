@@ -74,6 +74,10 @@ class User < ActiveRecord::Base
     end
   }
 
+  scope :with_login_or_email, ->(login_or_email) {
+    where('login = :l OR email = :l', l: login_or_email)
+  }
+
   def self.find_by_login_or_email(login)
     normalized = login.to_s.strip.downcase
     User.find_by(login: normalized) || User.find_by(email: normalized)

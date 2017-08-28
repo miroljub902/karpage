@@ -13,7 +13,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(login_or_email: params[:login])
+    @user = User.with_login_or_email(params[:login]).first
     @user&.deliver_reset_password_instructions!
 
     respond_to do |format|
