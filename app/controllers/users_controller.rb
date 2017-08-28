@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     # rubocop:disable Metrics/BlockLength
     respond_to do |format|
       format.js do
-        is_profile_page = @user.login && request.referer == profile_url(@user.login_was)
+        is_profile_page = @user.login && @user.login_was.present? && request.referer == profile_url(@user.login_was)
         location = if @user.login_changed? && is_profile_page
                      %(window.location = "#{profile_path(@user)}")
                    else

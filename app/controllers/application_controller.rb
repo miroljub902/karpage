@@ -10,7 +10,9 @@ class ApplicationController < ActionController::Base
   before_action :require_complete_profile
 
   rescue_from ActionController::UnknownFormat, with: :render_404
-  rescue_from ActionController::InvalidCrossOriginRequest, with: :render_403
+  rescue_from ActionController::InvalidCrossOriginRequest do |_exception|
+    render_403 unless performed?
+  end
 
   def api_base
     subdomain = ENV.fetch('API_SUBDOMAIN')
