@@ -77,7 +77,7 @@ class Post < ActiveRecord::Base
   end
 
   def validate_photo_size
-    return if !photo || photo.size < photo.backend.max_size
+    return if !photo || !photo.size || photo.size < photo.backend.max_size
     errors.add :photo, :too_large
   end
 end

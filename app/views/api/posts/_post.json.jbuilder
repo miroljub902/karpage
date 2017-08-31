@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-json.call(post, :id, :user_id, :body, :created_at, :likes_count)
+json.call(post, :id, :user_id, :created_at, :likes_count)
+
+json.body Rinku.auto_link(post.body, :all, 'target="_blank"')
 
 if current_user
   json.liked Like.where(likeable: post, user: current_user).exists?

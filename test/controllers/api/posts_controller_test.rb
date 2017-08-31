@@ -4,6 +4,10 @@ require 'test_helper'
 require_relative '../api_controller_test'
 
 class Api::PostsControllerTest < ApiControllerTest
+  setup do
+    mock_request :s3
+  end
+
   test 'returns posts' do
     user = users(:john_doe)
     user.posts.create! body: 'Howdy', photo_id: 'dummy'
@@ -67,5 +71,13 @@ class Api::PostsControllerTest < ApiControllerTest
     get :index, params: { user_id: user2.id }
     assert_equal 1, json_response['posts'].size
     assert_equal post.body, json_response['posts'].first['body']
+  end
+
+  test 'autolinks URLs' do
+    user = users(:john_doe)
+    user_post = user.posts.create! body: 'A link: http://google.com', photo_id: 'dummy'
+    get :index, params: { user_id: user.id }
+    body = json_response['posts'].find { |p| p['id'] == user_post.id }['body']
+    assert_match /a href=/, body
   end
 end
