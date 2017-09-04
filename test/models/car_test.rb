@@ -16,14 +16,14 @@ class CarTest < ActiveSupport::TestCase
       user.cars.create model: model, year: 2015 + i, type: Car.types[:current_car]
     end
     sorting = -> { user.cars.order(sorting: :asc).pluck(:year) }
-    assert_equal [2019, 2018, 2017, 2016, 2015], sorting.call
+    assert_equal [2015, 2016, 2017, 2018, 2019], sorting.call
     car = user.cars.find_by(year: 2017)
     car.update_attribute :sorting, car.sorting - 1
-    assert_equal [2019, 2017, 2018, 2016, 2015], sorting.call
+    assert_equal [2015, 2017, 2016, 2018, 2019], sorting.call
     car.update_attribute :sorting, 6
-    assert_equal [2019, 2018, 2016, 2015, 2017], sorting.call
+    assert_equal [2015, 2016, 2018, 2019, 2017], sorting.call
     car.update_attribute :sorting, 0
-    assert_equal [2017, 2019, 2018, 2016, 2015], sorting.call
+    assert_equal [2017, 2015, 2016, 2018, 2019], sorting.call
   end
 
   test 'creates past car notification' do

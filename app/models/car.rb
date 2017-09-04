@@ -37,7 +37,7 @@ class Car < ActiveRecord::Base
 
   attr_accessor :make_name, :car_model_name
   before_validation :find_or_build_make_and_model
-  after_create :resort_first
+  before_create -> { self.sorting = (self.class.where(user: user).pluck('MAX(sorting)').first || -1) + 1 }
   after_update -> { @sorting_changed = sorting_changed? }
   after_save :update_user_profile_thumbnail
 
@@ -127,14 +127,6 @@ class Car < ActiveRecord::Base
   end
 
   private
-
-  def resort_first
-    return unless current_car? || past_car?
-    update_column :sorting, -1
-    scope = self.class.where(user: user)
-    scope = current_car? ? scope.current_car : scope.past_car
-    scope.update_all 'sorting = sorting + 1'
-  end
 
   # This can't happen inside same transaction as car update or deadlocks can occur
   def resort_all
