@@ -78,6 +78,6 @@ class Api::PostsControllerTest < ApiControllerTest
     user_post = user.posts.create! body: 'A link: http://google.com', photo_id: 'dummy'
     get :index, params: { user_id: user.id }
     body = json_response['posts'].find { |p| p['id'] == user_post.id }['body']
-    assert_match /a href=/, body
+    assert_match(/a href=/, body)
   end
 end

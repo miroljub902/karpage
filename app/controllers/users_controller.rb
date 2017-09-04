@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
