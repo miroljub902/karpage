@@ -8,7 +8,7 @@
           .profile-avatar.large.pull-left
             = ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 100, h: 100, size: '100x100'
           .car-count.pull-right
-            span.count= user.cars.count
+            span.count= user.cars_count
             .sprite.sprite-search-car-counter
           h3.name= user
           .location= user.location

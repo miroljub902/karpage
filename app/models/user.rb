@@ -54,7 +54,18 @@ class User < ActiveRecord::Base
                changes.keys.any? { |attr| %w[login name avatar_id description profile_background_id].include?(attr) }
              }
 
-  scope :by_cars_owned, -> { order(cars_count: :desc) }
+  scope :by_cars_owned, -> { cars_count.order('filtered_cars_count DESC') }
+
+  scope :cars_count, -> {
+    select('users.*, COUNT(cars_counter.id) AS filtered_cars_count')
+      .joins(
+        <<-SQL
+        LEFT OUTER JOIN cars cars_counter ON cars_counter.user_id = users.id
+          AND cars_counter.type <> '#{Car.types[:next_car]}'
+        SQL
+      )
+      .group('users.id')
+  }
 
   scope :simple_search, ->(term, lat, lng) {
     like = %w[name login description link location].map { |column| "#{column} ILIKE :term" }
@@ -171,6 +182,10 @@ class User < ActiveRecord::Base
       .where('follows.user_id = :id OR follows.followee_id = :id', id: id)
       .where.not(id: id)
       .distinct
+  end
+
+  def cars_count
+    self['filtered_cars_count'] || (self['cars_count'] - cars.next_car.count)
   end
 
   def friends_posts

@@ -165,9 +165,7 @@ ActiveAdmin.register User do
               column '' do |user|
                 link_to user, admin_user_path(user)
               end
-              column :cars do |user|
-                user.cars.count
-              end
+              column :cars, &:cars_count
             end
           end
         end
@@ -181,9 +179,7 @@ ActiveAdmin.register User do
               column '' do |user|
                 link_to user, admin_user_path(user)
               end
-              column :cars do |user|
-                user.cars.count
-              end
+              column :cars, &:cars_count
             end
           end
         end
@@ -212,6 +208,10 @@ ActiveAdmin.register User do
   end
 
   controller do
+    def scoped_collection
+      end_of_association_chain.cars_count
+    end
+
     def find_resource
       params[:id] =~ /^\d+$/ ? User.find(params[:id]) : User.find_by(login: params[:id])
     end

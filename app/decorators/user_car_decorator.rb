@@ -10,7 +10,7 @@ class UserCarDecorator < Draper::Decorator
   end
 
   def first_photo_url
-    photo = photos.sorted.first
+    photo = (photos.loaded? ? photos.sort_by { |p| p.sorting || 1_000 } : photos.sorted).first
     return unless photo
     h.ix_refile_image_url photo, :image, auto: 'enhance,format', fit: 'clip', h: 250
   end

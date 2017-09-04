@@ -8,7 +8,7 @@ class ProfileCarsController < ApplicationController
   # rubocop:disable Metrics/PerceivedComplexity
   def index
     @filters = Filter.all
-    @cars = Car.has_photos.owner_has_login
+    @cars = Car.standard.has_photos.owner_has_login.includes(:user, :photos, :trim, model: :make)
     filter = Filter.find_by(id: params[:filter])
     if params[:search].present?
       @cars = @cars.simple_search(params[:search], params[:lat], params[:lng])

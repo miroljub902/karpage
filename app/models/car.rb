@@ -73,6 +73,10 @@ class Car < ActiveRecord::Base
     end
   }
 
+  scope :standard, -> {
+    where(type: types.slice(:current_car, :past_car, :first_car).values)
+  }
+
   concerning :Notifications do
     included do
       after_create -> { notify_followers :following_new_car }, if: :current_car?
