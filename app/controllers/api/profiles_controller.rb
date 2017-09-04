@@ -5,17 +5,11 @@ class Api::ProfilesController < ApiController
 
   # rubocop:disable Metrics/AbcSize
   def index
+    scope = User.by_cars_owned.cars_count.not_blocked(current_user).page(params[:page])
     @users = if params[:search].present?
-               User
-                 .by_cars_owned
-                 .not_blocked(current_user)
-                 .simple_search(params[:search], params[:lat], params[:lng])
-                 .page(params[:page])
+               scope.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
              else
-               User
-                 .by_cars_owned
-                 .not_blocked(current_user)
-                 .page(params[:page])
+               scope
              end
     @users = @users.distinct.per(params[:per] || User.default_per_page)
     respond_with @users

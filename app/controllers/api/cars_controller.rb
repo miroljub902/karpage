@@ -8,17 +8,21 @@ class Api::CarsController < ApiController
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/PerceivedComplexity
   def index
-    @cars = Car.has_photos.owner_has_login.includes(:user, :model, :make, parts: :photo).not_blocked(current_user)
+    @cars = Car.standard
+               .has_photos
+               .owner_has_login
+               .includes(:user, :model, :make, parts: :photo)
+               .not_blocked(current_user)
+
     if params[:search].present?
-      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng])
-      @user_count = User.simple_search(params[:search], params[:lat], params[:lng]).count
+      @cars = @cars.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
     elsif params[:filter_id]
       @cars = Filter.find(params[:filter_id]).search
     end
 
     per = params[:per] ? params[:per].to_i : Car.default_per_page
 
-    if params[:page].to_i > 1 || params[:search].present?
+    if params[:page].to_i > 1 || params[:search].present? || (params[:lat].present? && params[:lng].present?)
       start_at = params[:page].to_i
       start_at = 1 if start_at.zero?
       # Start at page 1 when user is at page 2 (since page 1 is really a random set)

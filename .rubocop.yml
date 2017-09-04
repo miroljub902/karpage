@@ -84,10 +84,16 @@ Metrics/PerceivedComplexity:
 
 ##################### Rails ##################################
 
+Bundler/OrderedGems:
+  Enabled: false
+
 Rails:
   Enabled: true
 
 Rails/FilePath:
+  Enabled: false
+
+Rails/HttpPositionalArguments:
   Enabled: false
 
 Rails/Output:
@@ -97,9 +103,6 @@ Rails/Output:
     - db/**/*.rb
     - lib/**/*.rb
     - test/**/*.rb
-
-Bundler/OrderedGems:
-  Enabled: false
 
 Rails/SkipsModelValidations:
   Enabled: false
