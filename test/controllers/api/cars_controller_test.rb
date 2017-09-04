@@ -114,7 +114,6 @@ class Api::CarsControllerTest < ApiControllerTest
   end
 
   test 'can add with parts list' do
-    mock_request 's3'
     user = users(:john_doe)
     authorize_user user
     post :create, params: { car: {
@@ -135,5 +134,18 @@ class Api::CarsControllerTest < ApiControllerTest
     assert_equal 2, car.parts.count
     assert_equal 700, car.parts.sum(:price)
     assert car.parts.first.photo.present?
+  end
+
+  test 'returns liked' do
+    user = users(:john_doe)
+    car = cars(:current)
+    car.expects(:update_user_profile_thumbnail)
+    user.cars << car
+    car.photos.create! image_id: 'dummy'
+    Like.like! car, user
+    authorize_user user
+    get :index
+    assert_response :ok
+    assert json_response['cars'].first['liked']
   end
 end
