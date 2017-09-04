@@ -8,10 +8,14 @@ class ProfilesController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def index
     user_scope = User.not_blocked(current_user)
-    @users = if params[:search].present?
-               @car_count = Car.has_photos.simple_search(params[:search], params[:lat], params[:lng]).count
-               user_scope.cars_count.by_cars_owned.simple_search(params[:search], params[:lat], params[:lng])
-                         .page(params[:page]).per(8)
+    @users = if params[:search].present? || (params[:lat].present? && params[:lng].present?)
+               @car_count = Car.has_photos.simple_search(*params.slice(:search, :lat, :lng, :radius).values).count
+               search_scope = user_scope.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
+               @user_count = search_scope.count
+               search_scope
+                 .cars_count
+                 .by_cars_owned
+                 .page(params[:page]).per(8)
              else
                @user_count = user_scope.count
                User.cars_count.by_cars_owned.page(params[:page]).per(8)

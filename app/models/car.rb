@@ -50,7 +50,7 @@ class Car < ActiveRecord::Base
   scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
-  scope :simple_search, ->(term, lat, lng) {
+  scope :simple_search, ->(term, lat, lng, radius_in_km = nil) {
     year = term.to_i.to_s == term.strip ? term.to_i : nil
     term = term.to_s.split(' ').map(&:strip).join('%')
     year_condition = "cars.year = #{year} OR" if year
@@ -58,9 +58,11 @@ class Car < ActiveRecord::Base
       users.name ILIKE :term
       OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term
     SQL
-    scope = joins(:make, :user).where(query, term: "%#{term}%", year: term.to_i)
+    scope = joins(:make, :user)
+    scope = scope.where(query, term: "%#{term}%", year: term.to_i) if term.present?
     if lat.present? && lng.present?
-      meters = 20 * 1600 # (20 miles)
+      # 20 miles default
+      meters = radius_in_km.blank? ? 32_000 : radius_in_km.to_f * 1000
       scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
     end
     scope

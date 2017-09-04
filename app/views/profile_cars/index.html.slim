@@ -3,19 +3,30 @@
     .col-sm-5
       .sprite.sprite-search-magnifying-glass
       = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners', class: 'with-sprite'
-    .col-sm-2.text-center style="line-height: 43px"
-      'within 20mi of
-    .col-sm-5
+    .col-sm-4
       = text_field_tag :location, params[:location], placeholder: 'Location... (optional)'
+    .col-sm-3 style="line-height: 43px"
+      'within
+      .radius-select
+        label
+          input type="radio" name="radius" value="4.8" checked=('checked' if params[:radius] == '4.8')
+          span 3 miles
+        label
+          input type="radio" name="radius" value="54" checked=('checked' if params[:radius].blank? || params[:radius] == '54')
+          span 30 miles
+        label
+          input type="radio" name="radius" value="192" checked=('checked' if params[:radius] == '192')
+          span 120 miles
+
     = hidden_field_tag :lat, params[:lat]
     = hidden_field_tag :lng, params[:lng]
   .hidden= submit_tag 'Search'
 
 h1.text-center
-  - if params[:search].present?
+  - if @user_count
     'Cars (#{@cars.total_count})
     span.text-muted |&nbsp;
-    = link_to "Owners (#{@user_count})", profiles_path(search: params[:search], location: params[:location], lat: params[:lat], lng: params[:lng])
+    = link_to "Owners (#{@user_count})", profiles_path(params.slice(:search, :location, :lat, :lng, :radius))
   - else
     p.text-primary Explore Most Popular
     'Cars

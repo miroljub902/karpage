@@ -41,8 +41,12 @@ handler = ->
       autocomplete = new google.maps.places.Autocomplete($this.get(0), options)
       autocomplete.addListener 'place_changed', ->
         place = autocomplete.getPlace()
-        $lat.val place.geometry.location.lat()
-        $lng.val place.geometry.location.lng()
+        if place
+          $lat.val place.geometry.location.lat()
+          $lng.val place.geometry.location.lng()
+
+      $this.on 'keydown', (e) ->
+        e.preventDefault() if e.keyCode == 13 && $('.pac-container:visible').length
 
       $this.data 'autocomplete-initialized', true
 

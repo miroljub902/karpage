@@ -25,6 +25,28 @@ form.car-search {
       }
     }
   }
+
+  .radius-select {
+    display: inline-block;
+    margin-left: 0.5em;
+
+    label {
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    label + label {
+      margin-left: 1em;
+    }
+
+    input {
+      display: none;
+    }
+
+    :checked + span {
+      color: @brand-primary;
+    }
+  }
 }
 
 .user-list {

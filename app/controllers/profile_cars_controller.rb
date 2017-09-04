@@ -10,8 +10,8 @@ class ProfileCarsController < ApplicationController
     @filters = Filter.all
     @cars = Car.standard.has_photos.owner_has_login.includes(:user, :photos, :trim, model: :make)
     filter = Filter.find_by(id: params[:filter])
-    if params[:search].present?
-      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng])
+    if params[:search].present? || (params[:lat].present? && params[:lng].present?)
+      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
       @user_count = User.simple_search(params[:search], params[:lat], params[:lng]).count
     elsif filter
       @cars = filter.search
@@ -20,7 +20,7 @@ class ProfileCarsController < ApplicationController
     per_page = 12
 
     # Show random results on first page, order by date for page 2+
-    if params[:page].to_i > 1 || params[:search].present?
+    if params[:page].to_i > 1 || params[:search].present? || (params[:lat].present? && params[:lng].present?)
       @cars = @cars.order(created_at: :desc)
       start_at = params[:page].to_i
       start_at = 1 if start_at.zero?

@@ -67,11 +67,14 @@ class User < ActiveRecord::Base
       .group('users.id')
   }
 
-  scope :simple_search, ->(term, lat, lng) {
-    like = %w[name login description link location].map { |column| "#{column} ILIKE :term" }
-    scope = where(like.join(' OR '), term: "%#{term.to_s.strip}%")
+  scope :simple_search, ->(term, lat, lng, radius_in_km = 32_000) {
+    like = %w[name login description link location].map { |column| "#{table_name}.#{column} ILIKE :term" }
+    scope = all
+    scope = scope.where(like.join(' OR '), term: "%#{term.to_s.strip}%") if term.present?
+
     if lat.present? && lng.present?
-      meters = 20 * 1600 # (20 miles)
+      # 20 miles default
+      meters = radius_in_km.blank? ? 32_000 : radius_in_km.to_f * 1000
       scope = scope.where("ST_DWithin(point, ST_GeogFromText('SRID=4326;POINT(#{lng.to_f} #{lat.to_f})'), #{meters})")
     end
     scope
