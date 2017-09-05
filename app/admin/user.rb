@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Rails/Output
-# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register User do
   menu priority: 10
 

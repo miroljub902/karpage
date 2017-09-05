@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Rails/Output
-# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register Car do
   menu priority: 20
 
@@ -60,6 +59,7 @@ ActiveAdmin.register Car do
       row :make
       row :model
       row :year
+      row :trim
       row :page do |car|
         link_to car.slug, profile_car_path(car.user, car), target: '_blank'
       end

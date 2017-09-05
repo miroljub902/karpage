@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register Comment, as: 'UserComment' do
   menu priority: 40
 

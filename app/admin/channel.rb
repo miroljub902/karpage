@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 ActiveAdmin.register PostChannel, as: 'Channels' do
   menu parent: 'Posts'
 

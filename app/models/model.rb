@@ -10,6 +10,7 @@ class Model < ActiveRecord::Base
   friendly_id :name, scope: :make, use: %i[slugged scoped]
 
   validates :name, presence: true, uniqueness: { scope: :make_id, case_sensitive: false }
+  validates :make_id, presence: true
 
   scope :official, -> { where(official: true) }
   scope :sorted, -> { order(name: :asc) }
