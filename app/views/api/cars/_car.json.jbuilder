@@ -4,6 +4,7 @@ UserCarDecorator.new(car).tap do |car|
   json.call(car, :id, :year, :make_id, :model_id, :trim_id, :created_at, :updated_at, :likes_count, :sorting)
 
   json.description simple_format(car.description, {}, wrapper_tag: :div)
+  json.plain_description car.description
 
   json.make car.make&.name
   json.model car.object.model.name # car.model gets a Car since it's a decorator
