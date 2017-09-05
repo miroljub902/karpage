@@ -12,8 +12,8 @@ class ProfileCarsController < ApplicationController
     @cars = Car.standard.has_photos.owner_has_login.includes(:user, :photos, :trim, model: :make)
     filter = Filter.find_by(id: params[:filter])
     if params[:search].present? || (params[:lat].present? && params[:lng].present?)
-      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
-      @user_count = User.simple_search(params[:search], params[:lat], params[:lng]).count
+      @cars = @cars.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
+      @user_count = User.simple_search(*params.slice(:search, :lat, :lng, :radius).values).count
     elsif filter
       @cars = filter.search
     end
