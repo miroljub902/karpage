@@ -7,7 +7,7 @@ class Api::ProfilesController < ApiController
   def index
     scope = User.by_cars_owned.cars_count.not_blocked(current_user).page(params[:page])
     @users = if params[:search].present?
-               scope.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
+               scope.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
              else
                scope
              end

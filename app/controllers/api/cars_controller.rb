@@ -15,7 +15,7 @@ class Api::CarsController < ApiController
                .not_blocked(current_user)
 
     if params[:search].present?
-      @cars = @cars.simple_search(*params.slice(:search, :lat, :lng, :radius).values)
+      @cars = @cars.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
     elsif params[:filter_id]
       @cars = Filter.find(params[:filter_id]).search
     end
