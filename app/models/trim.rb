@@ -9,6 +9,7 @@ class Trim < ActiveRecord::Base
   validates :model_id, :year, presence: true
 
   scope :official, -> { where(official: true) }
+  scope :official_or_with_id, ->(id) { where('trims.official = ? OR trims.id = ?', true, id) }
   scope :sorted, -> { order(name: :asc) }
   scope :with_make_id, ->(id) { joins(:model).where(models: { make_id: id }) }
   scope :with_model_id, ->(id) { where(model_id: id) }

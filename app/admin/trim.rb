@@ -49,8 +49,8 @@ ActiveAdmin.register Trim do
 
   form do |f|
     inputs do
-      input :make, collection: Make.official.order(name: :asc)
-      input :model, collection: f.object.make&.models&.official&.order(name: :asc) || []
+      input :make, collection: Make.official_or_with_id(f.object.make_id).order(name: :asc)
+      input :model, collection: f.object.make&.models&.official_or_with_id(f.object.model_id)&.order(name: :asc) || []
       input :year
       input :name
       input :official
@@ -75,7 +75,7 @@ ActiveAdmin.register Trim do
               .preload(:make, :model)
               .joins('LEFT OUTER JOIN cars ON cars.trim_id = trims.id')
               .group('makes.id, models.id, trims.id')
-      scope = scope.official unless @filtered
+      scope = scope.official unless @filtered || action_name != 'index'
       scope
     end
   end

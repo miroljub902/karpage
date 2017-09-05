@@ -1,7 +1,7 @@
 #modalEditCar.car-form.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalEditCarLabel"
   .modal-dialog role="document"
     .modal-content
-      = form_for [:user, car], data: { remote: true }, html: { class: ('custom-make' if car.custom?) } do |f|
+      = form_for [:user, car], data: { remote: true } do |f|
         .modal-header
           h4#modalEditCarLabel.modal-title.text-center Edit Car
 
@@ -17,12 +17,12 @@
                   class: 'form-control'
               .col-md-3
                 = f.select :model_id,
-                  f.object.make ? f.object.make.models.official.sorted.pluck(:name, :id) : [],
+                  f.object.make ? f.object.make.models.official_or_with_id(f.object.model_id).sorted.pluck(:name, :id) : [],
                   { include_blank: '* MODEL' },
                   class: 'form-control'
               .col-md-4
                 = f.select :trim_id,
-                  f.object.model ? f.object.model.trims.official.sorted.pluck(:name, :id) : [],
+                  f.object.model ? f.object.model.trims.official_or_with_id(f.object.trim_id).sorted.pluck(:name, :id) : [],
                   { include_blank: 'TRIM' },
                   class: 'form-control'
 

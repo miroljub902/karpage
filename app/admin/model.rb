@@ -45,9 +45,9 @@ ActiveAdmin.register Model do
 
   permit_params :name, :official, :make_id
 
-  form do |_f|
+  form do |f|
     inputs do
-      input :make, collection: Make.official.order(name: :asc)
+      input :make, collection: Make.official_or_with_id(f.object.make_id).order(name: :asc)
       input :name
       input :official
     end
@@ -71,7 +71,7 @@ ActiveAdmin.register Model do
               .preload(:make)
               .joins('LEFT OUTER JOIN cars ON cars.model_id = models.id')
               .group('makes.id, models.id')
-      scope = scope.official unless @filtered
+      scope = scope.official unless @filtered || action_name != 'index'
       scope
     end
   end

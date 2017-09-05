@@ -9,7 +9,7 @@ class Car
     validates :make_name, :car_model_name, presence: true, if: :custom?
 
     def makes_collection_for_select
-      (year ? Make.official.has_year(year).sorted.pluck(:name, :id) : []).tap do |collection|
+      (year ? Make.official_or_with_id(make_id).has_year(year).sorted.pluck(:name, :id) : []).tap do |collection|
         collection.push %w[<OTHER> other]
       end
     end
@@ -33,6 +33,7 @@ class Car
     def save(*)
       assign_or_create_make
       assign_or_create_model
+      assign_or_create_trim
       super
     end
 
@@ -50,6 +51,13 @@ class Car
       return unless make && car_model_name.present?
       self.model = make.models.find_by(slug: car_model_name.parameterize) ||
                    make.models.new(name: car_model_name, official: false)
+    end
+
+    def assign_or_create_trim
+      # Set trim from existing trim name or create it
+      return unless model && trim_name.present?
+      self.trim = model.trims.find_by(name: trim_name) ||
+                   model.trims.new(name: trim_name, year: year, official: false)
     end
   end
 end

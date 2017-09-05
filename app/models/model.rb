@@ -13,6 +13,7 @@ class Model < ActiveRecord::Base
   validates :make_id, presence: true
 
   scope :official, -> { where(official: true) }
+  scope :official_or_with_id, ->(id) { where('models.official = ? OR models.id = ?', true, id) }
   scope :sorted, -> { order(name: :asc) }
   scope :with_make_id, ->(id) { where(make_id: id) }
   scope :has_year, ->(year) { year.present? ? distinct.joins(:trims).where(trims: { year: year }) : all }

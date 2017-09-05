@@ -65,7 +65,7 @@ ActiveAdmin.register Make do
               .joins('LEFT OUTER JOIN models ON models.make_id = makes.id')
               .joins('LEFT OUTER JOIN cars ON cars.model_id = models.id')
               .group('makes.id')
-      scope = scope.official unless @filtered
+      scope = scope.official unless @filtered || action_name != 'index'
       scope
     end
   end
