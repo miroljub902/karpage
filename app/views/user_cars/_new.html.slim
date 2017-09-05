@@ -1,7 +1,7 @@
 #modalNewCar.car-form.modal.fade tabindex="-1" role="dialog" aria-labelledby="#modalNewCarLabel"
   .modal-dialog role="document"
     .modal-content
-      = form_for [:user, car], data: { remote: true } do |f|
+      = form_for [:user, car], data: { remote: true }, html: { class: ('custom-make' if car.custom?) } do |f|
         = f.hidden_field :type
 
         .modal-header
@@ -14,7 +14,7 @@
                 = f.text_field :year, class: 'form-control', placeholder: '* Year', maxlength: 4
               .col-md-3
                 = f.select :make_id,
-                  f.object.year ? Make.official.has_year(f.object.year).sorted.pluck(:name, :id) : [],
+                  car.makes_collection_for_select,
                   { include_blank: '* MAKE' },
                   class: 'form-control'
               .col-md-3
@@ -27,6 +27,17 @@
                   f.object.model ? f.object.model.trims.official.sorted.pluck(:name, :id) : [],
                   { include_blank: 'TRIM' },
                   class: 'form-control'
+
+            .custom-make
+              .row
+                .col-xs-12
+                  = f.text_field :make_name, placeholder: '* MAKE', class: 'form-control'
+              .row
+                .col-xs-12
+                  = f.text_field :car_model_name, placeholder: '* MODEL', class: 'form-control'
+              .row
+                .col-xs-12
+                  = f.text_field :trim_name, placeholder: 'TRIM', class: 'form-control'
 
             .row
               .col-xs-12

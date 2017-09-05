@@ -4,12 +4,12 @@ class UserCarsController < ApplicationController
   before_action :require_user
 
   def new
-    @car = current_user.cars.new(new_car_params)
+    @car = Car::Save.new(new_car_params.merge(user: current_user))
     render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
   end
 
   def create
-    @car = current_user.cars.new(car_params)
+    @car = Car::Save.new(car_params.merge(user: current_user))
     if @car.save
       render inline: 'window.location.reload()'
     else
@@ -18,12 +18,12 @@ class UserCarsController < ApplicationController
   end
 
   def edit
-    @car = current_user.cars.friendly.find(params[:id])
+    @car = Car::Save.where(user: current_user).friendly.find(params[:id])
     render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
   end
 
   def update
-    @car = current_user.cars.friendly.find(params[:id])
+    @car = Car::Save.where(user: current_user).friendly.find(params[:id])
     if @car.update_attributes(car_params)
       render inline: 'window.location.reload()'
     else
@@ -61,6 +61,9 @@ class UserCarsController < ApplicationController
       :trim_id,
       :description,
       :type,
+      :make_name,
+      :car_model_name,
+      :trim_name,
       photos_attributes: %i[image_id image_content_type image_size image_filename sorting]
     )
   end

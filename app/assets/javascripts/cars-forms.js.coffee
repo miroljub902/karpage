@@ -17,10 +17,14 @@ $ ->
         $models.find('option[value!=""]').remove()
         $trims.find('option[value!=""]').remove()
 
-        return unless /^\d\d\d\d$/.test(year)
+        unless /^\d\d\d\d$/.test(year)
+          $makes.append .append("<option value='other'><OTHER></option>")
+          return
+
         $.getJSON "//#{Config.apiBase}/api/makes", year: year, (data) ->
           $makes.append $.map data.makes, (make) ->
             "<option value='#{make.id}'>#{make.name}</option>"
+          $makes.append("<option value='other'>&lt;OTHER&gt;</option>")
       , 200
 
   $(document).on 'change', 'select#car_make_id', (e) ->
@@ -33,6 +37,16 @@ $ ->
     $trims.find('option[value!=""]').remove()
 
     makeId = $this.val()
+
+    if makeId == 'other'
+      $form.addClass 'custom-make'
+      $models.val ''
+      $trims.val ''
+      return
+    else if makeId != ''
+      $form.find('.custom-make input').val ''
+      $form.removeClass 'custom-make'
+
     return if makeId == ''
     $.getJSON "//#{Config.apiBase}/api/makes/#{makeId}/models", year: year, (data) ->
       $models.append $.map data.models, (model) ->

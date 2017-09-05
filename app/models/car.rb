@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class Car < ActiveRecord::Base
   include FriendlyId
   include FeaturedOrdering
@@ -31,12 +30,11 @@ class Car < ActiveRecord::Base
   friendly_id :slug_candidates, scope: :user, use: %i[slugged scoped]
 
   validates :year, numericality: { less_than: 9999, greater_than_or_equal_to: 1885 }
-  validates :make_id, :model_id, presence: true
+  validates :make_id, :model_id, presence: true, if: -> { respond_to?(:custom?) && !custom? }
   validates :type, inclusion: { in: types.values, message: 'Invalid car type' }
   validates :description, length: { maximum: 2700 }
 
   attr_accessor :make_name, :car_model_name
-  before_validation :find_or_build_make_and_model
   before_create -> { self.sorting = (self.class.where(user: user).pluck('MAX(sorting)').first || -1) + 1 }
   after_update -> { @sorting_changed = sorting_changed? }
   after_save :update_user_profile_thumbnail
@@ -113,15 +111,15 @@ class Car < ActiveRecord::Base
   end
 
   def make_id
-    make.try :id
+    make&.id
   end
 
   def make_name
-    @make_name.nil? ? make.try(:name) : @make_name
+    @make_name.nil? ? make&.name : @make_name
   end
 
   def car_model_name
-    @car_model_name.nil? ? model.try(:name) : @car_model_name
+    @car_model_name.nil? ? model&.name : @car_model_name
   end
 
   def to_s
@@ -140,19 +138,6 @@ class Car < ActiveRecord::Base
     scope = self.class.where(user: user).where('sorting >= ?', sorting).where.not(id: id)
     scope = current_car? ? scope.current_car : scope.past_car
     scope.update_all 'sorting = sorting + 1'
-  end
-
-  def find_or_build_make_and_model
-    # Set make from existing make name or create it
-    unless @make_name.nil?
-      self.make = Make.find_by(slug: @make_name.parameterize) || Make.create(name: @make_name)
-    end
-
-    unless @car_model_name.nil? || make.nil?
-      self.model = make.models.find_by(slug: @car_model_name.parameterize) || make.models.new(name: @car_model_name)
-    end
-
-    true
   end
 
   def update_user_profile_thumbnail

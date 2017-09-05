@@ -55,12 +55,13 @@ class Api::CarsController < ApiController
   end
 
   def create
-    @car = current_user.cars.create(car_params)
+    @car = Car::Save.new(car_params.merge(user: current_user))
+    @car.save
     respond_with :api, @car, status: :created
   end
 
   def update
-    @car = current_user.cars.find(params[:id])
+    @car = Car::Save.where(user: current_user).find(params[:id])
     @car.update_attributes car_params
     respond_with @car
   end
@@ -81,6 +82,9 @@ class Api::CarsController < ApiController
       :description,
       :sorting,
       :type,
+      :make_name,
+      :car_model_name,
+      :trim_name,
       photos_attributes: %i[id _destroy image_id image_content_type image_size image_filename sorting],
       parts_attributes: [
         :type, :manufacturer, :model, :price,
