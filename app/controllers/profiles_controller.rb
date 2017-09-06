@@ -9,7 +9,9 @@ class ProfilesController < ApplicationController
   def index
     user_scope = User.not_blocked(current_user)
     @users = if params[:search].present? || (params[:lat].present? && params[:lng].present?)
-               @car_count = Car.has_photos.simple_search(params[:search], params[:lat], params[:lng], params[:radius]).count
+               @car_count = Car.has_photos.simple_search(
+                 params[:search], params[:lat], params[:lng], params[:radius]
+               ).count
                search_scope = user_scope.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
                @user_count = search_scope.count
                search_scope

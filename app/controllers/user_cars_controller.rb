@@ -11,7 +11,7 @@ class UserCarsController < ApplicationController
   def create
     @car = Car::Save.new(car_params.merge(user: current_user))
     if @car.save
-      render inline: 'window.location.reload()'
+      render inline: 'window.location.reload()', status: :created
     else
       render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
     end

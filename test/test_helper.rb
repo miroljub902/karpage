@@ -21,6 +21,10 @@ class ActionDispatch::IntegrationTest
   end
 end
 
+class ActionController::TestCase
+  def authorize_user(user); end
+end
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

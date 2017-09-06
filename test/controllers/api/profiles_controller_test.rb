@@ -49,9 +49,4 @@ class Api::ProfilesControllerTest < ApiControllerTest
     delete :unfollow, id: friend.login
     assert !user.followee_ids.include?(friend.id)
   end
-
-  test 'search profiles' do
-    get :index
-    puts json_response
-  end
 end

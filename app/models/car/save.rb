@@ -21,10 +21,14 @@ class Car
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def custom?
       @custom_make_name || @custom_car_model_name || @custom_trim_name ||
         (make && !make.official?) || (model && !model.official?) || (trim && !trim.official?)
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def make_name;      @make_name || make&.name;       end
     def car_model_name; @car_model_name || model&.name; end
@@ -43,21 +47,21 @@ class Car
       # Set make from existing make name or create it
       return if make_name.blank?
       self.make = Make.find_by(slug: make_name.parameterize) ||
-                  Make.create(name: make_name, official: false)
+                  Make.create!(name: make_name, official: false)
     end
 
     def assign_or_create_model
       # Set model from existing model name or create it
       return unless make && car_model_name.present?
       self.model = make.models.find_by(slug: car_model_name.parameterize) ||
-                   make.models.new(name: car_model_name, official: false)
+                   make.models.create!(name: car_model_name, official: false)
     end
 
     def assign_or_create_trim
       # Set trim from existing trim name or create it
       return unless model && trim_name.present?
-      self.trim = model.trims.find_by(name: trim_name) ||
-                   model.trims.new(name: trim_name, year: year, official: false)
+      self.trim = model.trims.find_by('name ILIKE ?', trim_name) ||
+                  model.trims.create!(name: trim_name, year: year, official: false)
     end
   end
 end
