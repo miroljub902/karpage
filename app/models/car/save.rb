@@ -23,7 +23,7 @@ class Car
 
     def custom?
       @custom_make_name || @custom_car_model_name || @custom_trim_name ||
-        !make&.official? || !model&.official? || !trim&.official?
+        (make && !make.official?) || (model && !model.official?) || (trim && !trim.official?)
     end
 
     def make_name;      @make_name || make&.name;       end
