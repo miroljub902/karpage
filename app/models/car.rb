@@ -110,7 +110,7 @@ class Car < ActiveRecord::Base
     end
   end
 
-  delegate :id, to: :make, prefix: true
+  delegate :id, to: :make, prefix: true, allow_nil: true
 
   def make_name
     @make_name.nil? ? make&.name : @make_name
