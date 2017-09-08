@@ -4,6 +4,7 @@
     meta property="og:title" content=@user.to_s
     meta property="og:description" content="See #{@user}'s profile on KarPage.com"
     meta property="og:image" content=ix_refile_image_url(@user, :profile_thumbnail)
+    meta property="og:type" content="profile"
     meta property="fb:app_id" content=ENV['FACEBOOK_APP_ID']
 
 = render 'header'
