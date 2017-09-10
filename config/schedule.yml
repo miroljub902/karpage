@@ -1,4 +1,4 @@
 profile_thumbnail:
   cron: '0 * * * *'
-  class: 'ProfileThumbnailRegen'
+  class: 'ProfileThumbnailRegenJob'
   queue: default
