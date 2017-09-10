@@ -7,6 +7,7 @@ class Car
     attr_accessor :make_name, :car_model_name, :trim_name
 
     validates :make_name, :car_model_name, presence: true, if: :custom?
+    validates_associated :make, :model, :trim
 
     def makes_collection_for_select
       (year ? Make.official_or_with_id(make_id).has_year(year).sorted.pluck(:name, :id) : []).tap do |collection|
@@ -47,21 +48,21 @@ class Car
       # Set make from existing make name or create it
       return if make_name.blank?
       self.make = Make.find_by(slug: make_name.parameterize) ||
-                  Make.create!(name: make_name, official: false)
+                  Make.create(name: make_name, official: false)
     end
 
     def assign_or_create_model
       # Set model from existing model name or create it
       return unless make && car_model_name.present?
       self.model = make.models.find_by(slug: car_model_name.parameterize) ||
-                   make.models.create!(name: car_model_name, official: false)
+                   make.models.create(name: car_model_name, official: false)
     end
 
     def assign_or_create_trim
       # Set trim from existing trim name or create it
       return unless model && trim_name.present?
       self.trim = model.trims.find_by('name ILIKE ?', trim_name) ||
-                  model.trims.create!(name: trim_name, year: year, official: false)
+                  model.trims.create(name: trim_name, year: year, official: false)
     end
   end
 end
