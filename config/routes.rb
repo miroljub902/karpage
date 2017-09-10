@@ -102,7 +102,6 @@ Rails.application.routes.draw do
   resources :profiles, only: :index, path: 'users'
 
   get 'posts/explore' => 'posts#explore'
-  get 'posts/feed' => 'posts#feed'
 
   get 'posts/:id' => 'posts_channels#show', as: :posts_channel,
       constraints: { id: /monday|tuesday|wednesday|thursday|friday|saturday|sunday/ }
