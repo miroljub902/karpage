@@ -4,6 +4,6 @@ profile_thumbnail:
   queue: default
 
 fb_og_refresh:
-  cron: '0 0/6/12/18 * * *'
+  cron: '0 */6 * * *'
   class: 'FacebookOgRefreshJob'
   queue: default
