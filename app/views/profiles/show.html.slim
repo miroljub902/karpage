@@ -1,11 +1,10 @@
-- if @user.profile_thumbnail
-  - content_for :html_head do
-    meta property="og:url" content=profile_url(@user)
-    meta property="og:title" content=@user.to_s
-    meta property="og:description" content="See #{@user}'s profile on KarPage.com"
-    meta property="og:image" content=(@user.profile_thumbnail ? ix_refile_image_url(@user, :profile_thumbnail) : image_url('profile/default.jpg'))
-    meta property="og:type" content="profile"
-    meta property="fb:app_id" content=ENV['FACEBOOK_APP_ID']
+- content_for :html_head do
+  meta property="og:url" content=profile_url(@user)
+  meta property="og:title" content=@user.to_s
+  meta property="og:description" content="See #{@user}'s profile on KarPage.com"
+  meta property="og:image" content=(@user.profile_thumbnail ? ix_refile_image_url(@user, :profile_thumbnail) : image_url('profile/default.jpg'))
+  meta property="og:type" content="profile"
+  meta property="fb:app_id" content=ENV['FACEBOOK_APP_ID']
 
 = render 'header'
 
