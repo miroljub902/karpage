@@ -2,6 +2,9 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  require 'sidekiq/cron/web'
+
   if Rails.env.production?
     Sidekiq::Web.use Rack::Auth::Basic do |username, password|
       ENV['SIDEKIQ_USERNAME'].present? && username == ENV['SIDEKIQ_USERNAME'] &&

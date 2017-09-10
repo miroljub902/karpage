@@ -36,6 +36,7 @@ gem 'rinku', '~> 2.0.3'
 gem 'sidekiq', '~> 4.2.2'
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-unique-jobs', '~> 4.0.13'
+gem 'sidekiq-cron', '~> 0.6.3'
 gem 'sinatra', '~> 1.4.6', require: nil
 
 gem 'rmagick', '~> 2.16.0'

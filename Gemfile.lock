@@ -128,6 +128,8 @@ GEM
       activesupport (>= 3.0)
       request_store (~> 1.0)
     erubis (2.7.0)
+    et-orbi (1.0.5)
+      tzinfo
     execjs (2.7.0)
     faker (1.5.0)
       i18n (~> 0.5)
@@ -336,6 +338,8 @@ GEM
     ruby-debug-ide (0.6.0)
       rake (>= 0.8.1)
     ruby-progressbar (1.8.1)
+    rufus-scheduler (3.4.2)
+      et-orbi (~> 1.0)
     safe_yaml (1.0.4)
     sass (3.5.1)
       sass-listen (~> 4.0.0)
@@ -356,6 +360,9 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq-cron (0.6.3)
+      rufus-scheduler (>= 3.3.0)
+      sidekiq (>= 4.2.1)
     sidekiq-failures (0.4.5)
       sidekiq (>= 2.16.0)
     sidekiq-unique-jobs (4.0.18)
@@ -464,6 +471,7 @@ DEPENDENCIES
   ruby-debug-ide (~> 0.6.0)
   sass-rails (= 5.0.6)
   sidekiq (~> 4.2.2)
+  sidekiq-cron (~> 0.6.3)
   sidekiq-failures (~> 0.4.5)
   sidekiq-unique-jobs (~> 4.0.13)
   sinatra (~> 1.4.6)
@@ -481,4 +489,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.15.4

@@ -263,7 +263,13 @@ class ProfileUploader
       end
     end
 
-    force_facebook_og_refresh if Rails.env.production?
+    if Rails.env.production?
+      if force_facebook_og_refresh
+        user.update_columns fb_og_refreshed: true, fb_og_refreshed_at: Time.zone.now
+      else
+        user.update_column :fb_og_refreshed, false
+      end
+    end
   end
 
   def force_facebook_og_refresh
@@ -273,7 +279,8 @@ class ProfileUploader
 
     uri = URI.parse('https://graph.facebook.com')
     params = { id: profile_url(user), scrape: true, access_token: token }
-    Net::HTTP.post_form uri, params
+    response = Net::HTTP.post_form(uri, params)
+    response.is_a? Net::HTTPSuccess
   end
 
   def default_url_options
