@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProfileThumbnailRegenJob < ActiveJob::Base
-  queue_as :image_processing
+  queue_as :default
 
   def perform
     pending = User
