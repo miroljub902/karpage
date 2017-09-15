@@ -12,7 +12,8 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = commentable.comments.find(params[:id])
+    @comment = commentable.comments.find_by(id: params[:id])
+    return render_404 unless @comment
     authorize @comment
     @comment.destroy
     respond_to do |format|
