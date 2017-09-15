@@ -932,7 +932,9 @@ CREATE TABLE users (
     gender character varying,
     point geography,
     lat numeric(9,5),
-    lng numeric(9,5)
+    lng numeric(9,5),
+    fb_og_refreshed boolean DEFAULT false NOT NULL,
+    fb_og_refreshed_at timestamp without time zone
 );
 
 
@@ -1784,6 +1786,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
+-- Name: index_users_on_fb_og_refreshed; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_fb_og_refreshed ON users USING btree (fb_og_refreshed);
+
+
+--
 -- Name: index_users_on_featured_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2007,4 +2016,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170718015754');
 INSERT INTO schema_migrations (version) VALUES ('20170718194953');
 
 INSERT INTO schema_migrations (version) VALUES ('20170718203928');
+
+INSERT INTO schema_migrations (version) VALUES ('20170910193821');
 
