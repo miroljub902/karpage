@@ -71,8 +71,8 @@ class PostsController < ApplicationController
     when nil
       Post.all
     else
-      @user = User.find_by!(login: params[:scope])
-      @user.posts
+      @user = User.find_by(login: params[:scope])
+      @user ? @user.posts : Post.none
     end.sorted.with_photo.global
   end
 
