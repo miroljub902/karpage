@@ -1,7 +1,7 @@
 = form_tag profile_cars_path, method: :get, class: 'car-search' do
   .searchfield
     .sprite.sprite-search-magnifying-glass
-    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners'
+    = text_field_tag :search, params[:search], placeholder: 'Search for Cars or Owners', class: 'with-sprite'
 
 h1.text-center
   p.text-primary Explore Most Popular
