@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   has_many :blocks, dependent: :delete_all
   has_one :business, dependent: :destroy
   has_many :notifications, dependent: :delete_all
+  has_many :notifications_as_source, as: :source, class_name: 'Notification', dependent: :delete_all
 
   accepts_nested_attributes_for :dream_cars, allow_destroy: true
 
