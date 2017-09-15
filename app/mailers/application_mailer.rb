@@ -10,4 +10,18 @@ class ApplicationMailer
   def postmark
     @_postmark ||= Postmark::ApiClient.new(ENV['POSTMARK_API_KEY'])
   end
+
+  private
+
+  def handle_invalid_recipient(_user)
+    begin
+      yield
+    rescue Postmark::InvalidMessageError => e
+      # https://postmarkapp.com/developer/api/overview
+      case e.error_code
+      when 406 # Inactive recipient
+        # TODO?
+      end
+    end
+  end
 end
