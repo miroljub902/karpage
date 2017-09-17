@@ -13,6 +13,20 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidCrossOriginRequest do |_exception|
     render_403 unless performed?
   end
+  rescue_from ActionController::InvalidAuthenticityToken do
+    # unless performed?
+      respond_to do |format|
+        format.js do
+          render inline: 'alert("Your session has expired, please reload the page.")'
+        end
+        format.html do
+          render template: 'application/message',
+                 locals: { message: 'Your session has expired, please go back and reload the page.' },
+                 layout: 'simple'
+        end
+      end
+    # end
+  end
 
   def api_base
     subdomain = ENV.fetch('API_SUBDOMAIN')
@@ -39,6 +53,13 @@ class ApplicationController < ActionController::Base
   helper_method :reset_new_stuff
 
   private
+
+  # Bad users could request with array or hash params when we expect a simple string or integer
+  def sanitize_string_params(*param_names)
+    param_names.each do |param|
+      params[param] = params[param].to_s
+    end
+  end
 
   def require_complete_profile
     return if !signed_in? || (controller_name == 'users' && %w[edit update].include?(action_name))

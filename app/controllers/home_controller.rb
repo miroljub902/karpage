@@ -5,6 +5,7 @@ class HomeController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def index
+    raise ActionController::InvalidAuthenticityToken
     force_splash = params[:m] == "1"
     if !force_splash && ((cookies[:splash] && !browser.device.mobile?) || params[:h] == '1')
       @cars = Car.featured.limit(6).presence || Car.popular.limit(6)

@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
   layout 'simple', only: :index
 
   before_action :require_user, only: %i[follow unfollow]
+  before_action -> { sanitize_string_params :page, :search, :lat, :lng, :radius }
 
   # rubocop:disable Metrics/AbcSize
   def index
