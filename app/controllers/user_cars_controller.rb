@@ -5,33 +5,35 @@ class UserCarsController < ApplicationController
 
   def new
     @car = Car::Save.new(new_car_params.merge(user: current_user))
-    render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
+    respond_to_js do
+      render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
+    end
   end
 
   def create
     @car = Car::Save.new(car_params.merge(user: current_user))
-    respond_to do |format|
-      format.js do
-        if @car.save
-          render inline: 'window.location.reload()', status: :created
-        else
-          render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
-        end
+    respond_to_js do
+      if @car.save
+        render inline: 'window.location.reload()', status: :created
+      else
+        render '_modals/new', locals: { id: 'modalNewCar', content: 'new', options: { car: @car } }
       end
     end
   end
 
   def edit
     @car = Car::Save.where(user: current_user).friendly.find(params[:id])
-    render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
+    respond_to_js do
+      render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
+    end
   end
 
   def update
     @car = Car::Save.where(user: current_user).friendly.find(params[:id])
     if @car.update_attributes(car_params)
-      render inline: 'window.location.reload()'
+      respond_to_js { render inline: 'window.location.reload()' }
     else
-      render '_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }
+      respond_to_js { render('_modals/new', locals: { id: 'modalEditCar', content: 'edit', options: { car: @car } }) }
     end
   end
 
@@ -41,15 +43,13 @@ class UserCarsController < ApplicationController
       car.update_column :sorting, ids.index(car.id)
     end
 
-    respond_to do |format|
-      format.js { render nothing: true, status: :ok }
-    end
+    respond_to_js { render(nothing: true, status: :ok) }
   end
 
   def destroy
     @car = current_user.cars.friendly.find(params[:id])
     @car.destroy
-    render inline: 'window.location.reload()'
+    respond_to_js { render(inline: 'window.location.reload()') }
   end
 
   private

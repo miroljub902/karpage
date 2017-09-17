@@ -67,6 +67,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def respond_to_js(&block)
+    respond_to do |format|
+      format.js &block
+      format.html do
+        render file: 'public/js_required', status: :bad_request, layout: false
+      end
+    end
+  end
+
   def require_no_user
     redirect_back_or_default root_path if current_user
   end
