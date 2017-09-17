@@ -8,8 +8,12 @@ class Rack::Attack
   blocklist 'bad request' do |req|
     begin
       CGI.unescape(req.path).encode('utf-8')
+      req.params.values.each { |value| CGI.unescape(value).encode('utf-8') }
       false
-    rescue Encoding::UndefinedConversionError
+    rescue Encoding::UndefinedConversionError, ArgumentError => e
+      if e.is_a?(ArgumentError)
+        raise unless e.message.match /invalid byte sequence/
+      end
       true
     end
   end
