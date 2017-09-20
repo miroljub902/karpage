@@ -5,14 +5,14 @@ class Api::PasswordResetsController < ApiController
     @user = User.with_login_or_email(params.require(:login)).first
     return render_404 unless @user
     @user.deliver_reset_password_instructions!
-    render nothing: true, status: :created
+    head :created
   end
 
   def update
     @user = User.find_by(perishable_token: params.require(:token))
     if @user.update_attributes(user_params)
       UserSession.create @user, true
-      render nothing: true, status: :ok
+      head :ok
     else
       respond_with @user
     end

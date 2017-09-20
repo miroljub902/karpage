@@ -8,11 +8,11 @@ class ApiController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def route_options
-    render nothing: true, content_type: 'text/plain'
+    head :ok, content_type: 'text/plain'
   end
 
   def render_404
-    render nothing: true, status: :not_found
+    head :not_found
   end
 
   # Also on ApplicationController

@@ -12,7 +12,7 @@ class CarPhotosController < ApplicationController
   def destroy
     car = current_user.cars.friendly.find(params[:car_id])
     car.photos.find(params[:id]).destroy
-    render nothing: true, status: :ok
+    head :ok
   end
 
   def reorder
@@ -21,7 +21,7 @@ class CarPhotosController < ApplicationController
     car.photos.each do |photo|
       photo.update_attribute :sorting, sorting.index(photo.id)
     end
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private

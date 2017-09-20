@@ -23,7 +23,7 @@ class Api::CommentsController < ApiController
   def destroy
     @comment = @commentable.comments.find_by!(id: params[:id], user_id: current_user.id)
     @comment.destroy
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private

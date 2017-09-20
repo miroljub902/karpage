@@ -6,6 +6,6 @@ class Api::BlocksController < ApiController
   def create
     @user = User.find(params[:profile_id])
     @block = current_user.blocks.create(blocked_user: @user)
-    render nothing: true, status: :created
+    head :created
   end
 end

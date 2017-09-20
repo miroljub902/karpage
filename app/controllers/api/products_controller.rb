@@ -22,14 +22,14 @@ class Api::ProductsController < ApiController
 
   def update
     @product = Product.find_by(id: params[:id], business_id: @business.id)
-    return(render nothing: true, status: :forbidden) if @product.nil?
+    return(head :forbidden) if @product.nil?
     @product.update_attributes(product_params)
     respond_with :api, @business, @product
   end
 
   def destroy
     @product = Product.find_by(id: params[:id], business_id: @business.id)
-    return(render nothing: true, status: :forbidden) if @product.nil?
+    return(head :forbidden) if @product.nil?
     @product.destroy
     respond_with :api, @business, @product
   end

@@ -5,12 +5,12 @@ class Api::LikesController < ApiController
 
   def create
     Like.like! @likeable, current_user
-    render nothing: true, status: :created
+    head :created
   end
 
   def destroy
     Like.unlike! @likeable, current_user
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private

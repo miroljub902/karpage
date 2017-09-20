@@ -25,12 +25,12 @@ class Api::ProfilesController < ApiController
   def follow
     @user = User.find_by(login: params[:id]) || User.find(params[:id])
     current_user.follow! @user
-    render nothing: true, status: :created
+    head :created
   end
 
   def unfollow
     @user = User.find_by(login: params[:id]) || User.find(params[:id])
     current_user.unfollow! @user
-    render nothing: true, status: :ok
+    head :ok
   end
 end

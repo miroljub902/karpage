@@ -51,7 +51,7 @@ class Api::CarsController < ApiController
     return render(nothing: true, status: :not_found) unless COUNTERS.key?(params[:counter])
     car = current_user.cars.find(params[:id])
     COUNTERS[params[:counter]].call car
-    render nothing: true, status: :ok
+    head :ok
   end
 
   def create

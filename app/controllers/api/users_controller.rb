@@ -17,7 +17,7 @@ class Api::UsersController < ApiController
   def reset_counter
     return render(nothing: true, status: :not_found) unless COUNTERS.key?(params[:counter])
     COUNTERS[params[:counter]].call current_user
-    render nothing: true, status: :ok
+    head :ok
   end
 
   def update
