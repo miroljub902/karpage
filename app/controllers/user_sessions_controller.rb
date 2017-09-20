@@ -64,8 +64,8 @@ class UserSessionsController < ApplicationController
   end
 
   def omniauth_session
-    return nil unless env['omniauth.auth']
-    identity = Identity.from_omniauth(env['omniauth.auth'])
+    return nil unless request.env['omniauth.auth']
+    identity = Identity.from_omniauth(request.env['omniauth.auth'])
     UserSession.create(identity.user, true)
   rescue ActiveRecord::StatementInvalid
     UserSession.new.tap do |session|
