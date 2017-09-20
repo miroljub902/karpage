@@ -111,9 +111,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_back_or_default(default, options = {})
-    redirect_to :back, options
-  rescue ::ActionController::RedirectBackError
-    redirect_to default, options
+    redirect_back options, fallback_location: default
   end
 
   def current_user_session
