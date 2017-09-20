@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_back_or_default(default, options = {})
-    redirect_back options, fallback_location: default
+    redirect_back fallback_location: default, **options
   end
 
   def current_user_session
