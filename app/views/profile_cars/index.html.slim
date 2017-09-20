@@ -26,7 +26,7 @@ h1.text-center
   - if @user_count
     'Cars (#{@cars.total_count})
     span.text-muted |&nbsp;
-    = link_to "Owners (#{@user_count})", profiles_path(params.slice(:search, :location, :lat, :lng, :radius))
+    = link_to "Owners (#{@user_count})", profiles_path(params.permit(:search, :location, :lat, :lng, :radius))
   - else
     p.text-primary Explore Most Popular
     'Cars

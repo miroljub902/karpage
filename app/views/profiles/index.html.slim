@@ -24,7 +24,7 @@
 
 h1.text-center
   - if @car_count
-    = link_to "Cars (#{@car_count})", profile_cars_path(params.slice(:search, :location, :lat, :lng, :radius))
+    = link_to "Cars (#{@car_count})", profile_cars_path(params.permit(:search, :location, :lat, :lng, :radius))
     span.text-muted &nbsp;|
     '  Owners (#{@users.total_count})
   - else
