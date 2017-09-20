@@ -5,7 +5,7 @@ AllCops:
   DisplayCopNames: true
   ExtraDetails: true
   TargetRubyVersion: 2.4
-  TargetRailsVersion: 4.2
+  TargetRailsVersion: 5.1
 
 # TODO: Re-enable when has_many ... through: ... stops triggering it
 Rails/HasManyOrHasOneDependent:
