@@ -8,7 +8,7 @@ class S3SignaturesController < ApplicationController
 
   def create
     encoded = sign(params[:to_sign])
-    render text: encoded, status: 200
+    render plain: encoded, status: 200
   end
 
   private
