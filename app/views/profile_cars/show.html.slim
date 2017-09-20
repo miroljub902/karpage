@@ -1,4 +1,4 @@
-= cell :nav, nil, transparent: true
+= Views::NavDecorator.new(transparent: true).render
 
 .car-page
   - @car.photos.sorted.each_with_index do |photo, index|

@@ -6,7 +6,7 @@ html
     = csrf_meta_tags
 
   body
-    = cell :header, nil, class: nil, background: false do
+    = Views::HeaderDecorator.new(class: nil, background: false).render do
       = yield :header
 
     .container

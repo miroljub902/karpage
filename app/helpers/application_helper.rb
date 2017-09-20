@@ -18,19 +18,6 @@ module ApplicationHelper
     "@ #{years} Kar Page Inc. All Rights Reserved."
   end
 
-  # There's a bug that in production causes the cell's contents
-  # to return as escaped HTML, so we have to explicitly call ".()"
-  # Also allows block render-yield as a convenience
-  def cell(name, model = nil, options = {})
-    options = options.dup
-    if block_given?
-      options[:content] = -> {
-        capture { yield }
-      }
-    end
-    controller.cell(name, model, options).call
-  end
-
   def param?(key, default = false)
     params[key].present? ? params[key] == 'true' : default
   end

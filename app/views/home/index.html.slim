@@ -1,5 +1,5 @@
 - content_for :header do
-  = cell :header, nil, nav_affix: false do
+  = Views::HeaderDecorator.new(nav_affix: false).render do
     h1
       'Show your car and share your car history
       small with other car enthusiasts around the world
