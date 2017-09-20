@@ -102,9 +102,6 @@ Rails:
 Rails/FilePath:
   Enabled: false
 
-Rails/HttpPositionalArguments:
-  Enabled: false
-
 Rails/Output:
   Include:
     - app/**/*.rb

@@ -9,7 +9,7 @@ class Api::BlocksControllerTest < ApiControllerTest
     friend = users(:friend)
     assert_difference 'user.blocks.count' do
       authorize_user user
-      post :create, profile_id: friend.id
+      post :create, params: { profile_id: friend.id }
       assert_response :created
     end
   end

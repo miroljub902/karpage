@@ -11,13 +11,13 @@ class UserCarsControllerTest < ActionController::TestCase
     user = users(:john_doe)
     UserSession.create user
     assert_difference 'Make.count + Model.count + Trim.count', +3 do
-      post :create, car: {
+      post :create, params: { car: {
         year: 2017,
         make_name: 'Custom Make',
         car_model_name: 'Custom Model',
         trim_name: 'Custom Trim',
         type: Car.types[:current_car]
-      }, format: :js
+      }, format: :js }
       assert_response :created
     end
     car = user.cars.last

@@ -36,7 +36,7 @@ class Car < ApplicationRecord
 
   attr_writer :make_name, :car_model_name
   before_create -> { self.sorting = (self.class.where(user: user).pluck('MAX(sorting)').first || -1) + 1 }
-  after_update -> { @sorting_changed = sorting_changed? }
+  after_update -> { @sorting_changed = saved_change_to_sorting? }
   after_save :update_user_profile_thumbnail
 
   attr_reader :sorting_changed
@@ -44,7 +44,6 @@ class Car < ApplicationRecord
   after_commit :resort_all, if: -> { sorting_changed }, on: :update
 
   scope :popular, -> { order(hits: :desc) }
-  scope :featured, -> { where.not(featured_order: nil).order(featured_order: :asc) }
   scope :sorted, -> { order(:sorting) }
   scope :has_photos, -> { distinct.joins(:photos) }
   scope :owner_has_login, -> { joins(:user).where.not(users: { login: '' }).where.not(users: { login: nil }) }
@@ -83,7 +82,7 @@ class Car < ApplicationRecord
       after_create -> { notify_followers :following_new_first_car }, if: :first_car?
       after_create -> { notify_followers :following_new_past_car }, if: :past_car?
       after_update -> { notify_followers :following_moves_new_car }, if: -> {
-        past_car? && type_was == Car.types[:current_car]
+        past_car? && type_in_database == Car.types[:current_car]
       }
       after_create -> { notify_followers :following_next_car }, if: :next_car?
     end

@@ -17,7 +17,7 @@ class Api::PostsChannelsControllerTest < ApiControllerTest
   end
 
   test 'retrieves channel posts' do
-    get :show, id: @channel.name
+    get :show, params: { id: @channel.name }
     assert_response :ok
     assert_equal 1, json_response['posts'].size
     assert_equal @post.id, json_response['posts'].first['id']

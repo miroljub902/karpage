@@ -16,7 +16,7 @@ module FeaturedOrdering
         self.class.reorder_featured
       end
       true
-    }, if: :featured_order_changed?
+    }, if: :saved_change_to_featured_order?
 
     def featured?
       featured_order.present?

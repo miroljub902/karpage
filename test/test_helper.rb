@@ -16,7 +16,7 @@ end
 class ActionDispatch::IntegrationTest
   def sign_in(user, password)
     mock_request :ga
-    post user_session_path, user_session: { login: user.login, password: password }
+    post user_session_path, params: { user_session: { login: user.login, password: password } }
     assert_response :found
   end
 end
@@ -28,6 +28,13 @@ end
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+
+  setup do
+    ApplicationJob.stubs(:perform_later)
+    Staccato.stubs(:event)
+    mock_request :s3
+    stub_request :post, /.*api.postmarkapp.com.*/
+  end
 
   # TODO: Refactor
   # rubocop:disable Metrics/MethodLength

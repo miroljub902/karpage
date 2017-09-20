@@ -10,7 +10,7 @@ class Api::SessionsControllerTest < ApiControllerTest
 
   test 'user can sign in' do
     token = @user.access_token
-    post :create, session: { login: @user.email, password: 'password' }
+    post :create, params: { session: { login: @user.email, password: 'password' } }
     assert_response :created
     assert_not_equal token, @user.reload.access_token, 'Token did not change'
     assert_equal @user.access_token, json_response['session']['access_token']
@@ -28,7 +28,7 @@ class Api::SessionsControllerTest < ApiControllerTest
   test 'sign in via facebook' do
     @user.identities.create! provider: 'facebook', uid: '137110159998964'
     mock_request :facebook_get_me, response: :valid_token
-    post :create, session: { facebook_token: '123abc' }
+    post :create, params: { session: { facebook_token: '123abc' } }
     assert_response :created
     assert_equal @user.reload.access_token, json_response['session']['access_token']
   end
@@ -36,12 +36,12 @@ class Api::SessionsControllerTest < ApiControllerTest
   test 'invalid facebook token' do
     @user.identities.create! provider: 'facebook', uid: '137110159998964'
     mock_request :facebook_get_me, response: :invalid_token
-    post :create, session: { facebook_token: '123abc' }
+    post :create, params: { session: { facebook_token: '123abc' } }
     assert_response :unprocessable_entity
   end
 
   test 'save device info on password login' do
-    post :create, session: { login: @user.email, password: 'password', device_info: { user_id: 'dummy' } }
+    post :create, params: { session: { login: @user.email, password: 'password', device_info: { user_id: 'dummy' } } }
     assert_response :created
     assert @user.reload.device_info.present?
     assert @user.device_info.key?('user_id')
@@ -51,7 +51,7 @@ class Api::SessionsControllerTest < ApiControllerTest
   test 'save device info on facebook login' do
     @user.identities.create! provider: 'facebook', uid: '137110159998964'
     mock_request :facebook_get_me, response: :valid_token
-    post :create, session: { facebook_token: '123abc', device_info: { user_id: 'dummy' } }
+    post :create, params: { session: { facebook_token: '123abc', device_info: { user_id: 'dummy' } } }
     assert_response :created
     assert @user.reload.device_info.present?
     assert @user.device_info.key?('user_id')

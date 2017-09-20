@@ -29,7 +29,7 @@ class NewStuff < ApplicationRecord
     klass = stuff_class(stuff).name.sub(/Decorator$/, '')
     find_or_initialize_by(user: user, stuff: klass, stuff_owner: owner).tap do |counter|
       counter.last_at ||= Time.zone.now
-      counter.save! if counter.changed?
+      counter.save! if counter.has_changes_to_save?
     end
   end
 end

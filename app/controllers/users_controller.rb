@@ -45,8 +45,10 @@ class UsersController < ApplicationController
     # rubocop:disable Metrics/BlockLength
     respond_to do |format|
       format.js do
-        is_profile_page = @user.login && @user.login_was.present? && request.referer == profile_url(@user.login_was)
-        location = if @user.login_changed? && is_profile_page
+        is_profile_page = @user.login &&
+                          @user.login_in_database.present? &&
+                          request.referer == profile_url(@user.login_in_database)
+        location = if @user.saved_change_to_login? && is_profile_page
                      %(window.location = "#{profile_path(@user)}")
                    else
                      'window.location.reload()'

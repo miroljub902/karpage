@@ -3,11 +3,15 @@
 require 'test_helper'
 
 class CarTest < ActiveSupport::TestCase
+  setup do
+    stub_request(:post, %r{.*onesignal.com\/.*})
+  end
+
   test 'resorting set of cars' do
     # This happens on after_commit on the model but we have to override it
     # here so tests pass as Rails won't run the after_commit for fixtures
     # (not even with self.transactional_fixtures = true)
-    Car.after_update :resort_all, if: :sorting_changed?
+    Car.after_update :resort_all, if: :saved_change_to_sorting?
 
     user = users(:john_doe)
     model = models(:audi_r8)
@@ -20,7 +24,7 @@ class CarTest < ActiveSupport::TestCase
     car = user.cars.find_by(year: 2017)
     car.update_attribute :sorting, car.sorting - 1
     assert_equal [2015, 2017, 2016, 2018, 2019], sorting.call
-    car.update_attribute :sorting, 6
+    car.update_attribute :sorting, 7
     assert_equal [2015, 2016, 2018, 2019, 2017], sorting.call
     car.update_attribute :sorting, 0
     assert_equal [2017, 2015, 2016, 2018, 2019], sorting.call

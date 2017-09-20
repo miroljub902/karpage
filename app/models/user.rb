@@ -13,11 +13,11 @@ class User < ApplicationRecord
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options(
       with: /\A\w[.\w+_]+\z/,
-      if: -> { identities.empty? || login.present? || login_was.present? },
+      if: -> { identities.empty? || login.present? || login_in_database.present? },
       message: 'should use only letters numbers and ._ please'
     )
     config.merge_validates_length_of_login_field_options if: -> {
-      identities.empty? || login.present? || login_was.present?
+      identities.empty? || login.present? || login_in_database.present?
     }
     config.merge_validates_length_of_password_field_options if: -> { identities.empty? && password.present? }
     config.merge_validates_confirmation_of_password_field_options if: -> { identities.empty? && password.present? }
@@ -49,10 +49,10 @@ class User < ApplicationRecord
   validates_associated :identities
 
   before_create :generate_access_token
-  after_save :send_welcome_email, if: -> { email.present? && email_was.blank? }
+  after_save :send_welcome_email, if: -> { email.present? && email_before_last_save.blank? }
   after_save -> { ProfileThumbnailJob.perform_later(id) },
              if: -> {
-               changes.keys.any? { |attr| %w[login name avatar_id description profile_background_id].include?(attr) }
+               changes_to_save.keys.any? { |attr| %w[login name avatar_id description profile_background_id].include?(attr) }
              }
 
   scope :by_cars_owned, -> { cars_count.order('filtered_cars_count DESC') }
@@ -142,10 +142,11 @@ class User < ApplicationRecord
       Notification.types[:following_new_post] => true
     }.freeze
 
+    # rubocop:disable Style/DoubleNegation
     def push_settings
       DEFAULT_PUSH_SETTINGS.each_with_object({}) do |(setting, default), settings|
         value = self[:push_settings].key?(setting) ? self[:push_settings][setting] : default
-        settings[setting] = value
+        settings[setting] = value == !!value ? value : value == 'true'
       end
     end
 

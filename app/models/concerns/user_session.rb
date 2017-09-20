@@ -22,6 +22,6 @@ class UserSession < Authlogic::Session::Base
   private
 
   def reset_user_access_token
-    user.generate_access_token! if user.present? && !user.access_token_changed?
+    user.generate_access_token! if user.present? && !user.will_save_change_to_access_token?
   end
 end

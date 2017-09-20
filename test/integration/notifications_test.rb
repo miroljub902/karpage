@@ -15,9 +15,9 @@ class NotificationsTest < ActionDispatch::IntegrationTest
   test 'do not spam notifications' do
     sign_in @friend, 'password'
     assert_difference '@user.notifications.count', +1 do
-      xhr :put, toggle_like_car_path(@user, @car), format: :js
-      xhr :put, toggle_like_car_path(@user, @car), format: :js
-      xhr :put, toggle_like_car_path(@user, @car), format: :js
+      put toggle_like_car_path(@user, @car), xhr: true
+      put toggle_like_car_path(@user, @car), xhr: true
+      put toggle_like_car_path(@user, @car), xhr: true
       assert_response :ok
     end
   end

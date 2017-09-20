@@ -4,6 +4,8 @@ require 'test_helper'
 
 class PushNotificationTest < ActiveSupport::TestCase
   setup do
+    ApplicationJob.stubs(:perform_later)
+
     @user = users(:john_doe)
     @user.update_attribute :device_info, user_id: 'dummy'
     @car = cars(:first)
