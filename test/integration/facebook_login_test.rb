@@ -6,14 +6,14 @@ class FacebookLoginTest < ActionDispatch::IntegrationTest
   setup do
     omniauth_mock_facebook
     mock_request :s3
-    mock_request :ga
+    GATracker.stubs(:event!)
   end
 
   test 'facebook signup' do
     User.any_instance.expects(:send_welcome_email)
     assert_difference 'User.count' do
       auth = OmniAuth.config.mock_auth[:facebook].merge(uid: rand(999_999_999))
-      post '/session', params: { provider: :facebook }, headers: { 'omniauth.auth' => auth }
+      post '/session', { provider: :facebook }, 'omniauth.auth' => auth
       assert_response :found
     end
     user = assigns[:user_session].user
@@ -22,8 +22,8 @@ class FacebookLoginTest < ActionDispatch::IntegrationTest
 
   test 'facebook login' do
     assert_no_difference 'User.count' do
-      post '/session', params: { provider: :facebook },
-                       headers: { 'omniauth.auth' => OmniAuth.config.mock_auth[:facebook] }
+      post '/session', { provider: :facebook },
+           'omniauth.auth' => OmniAuth.config.mock_auth[:facebook]
       assert_response :found
     end
   end

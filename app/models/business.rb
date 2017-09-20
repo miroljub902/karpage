@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Business < ActiveRecord::Base
+class Business < ApplicationRecord
   belongs_to :user
   has_many :products, dependent: :destroy
 

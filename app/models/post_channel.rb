@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PostChannel < ActiveRecord::Base
+class PostChannel < ApplicationRecord
   has_many :posts, dependent: :nullify
 
   scope :active, -> { where(active: true) }

@@ -14,7 +14,7 @@ class UserSession < Authlogic::Session::Base
     facebook = Koala::Facebook::API.new(token).get_object('me')
     identity = Identity.find_by(provider: 'facebook', uid: facebook['id'])
     session = create(identity.try(:user))
-  rescue => e
+  rescue StandardError => e
     session.errors.add :base, "invalid Facebook token (#{e.message})"
     session
   end
@@ -22,6 +22,6 @@ class UserSession < Authlogic::Session::Base
   private
 
   def reset_user_access_token
-    user.generate_access_token! if user && !user.access_token_changed?
+    user.generate_access_token! if user.present? && !user.access_token_changed?
   end
 end

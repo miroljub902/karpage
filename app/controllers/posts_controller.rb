@@ -22,7 +22,7 @@ class PostsController < ApplicationController
     @post = @user.posts.find_by(id: params[:id])
     return render_404 unless @post
     @post = @post.decorate
-    @post.increment! :views unless current_user && current_user.id == @user.id
+    @post.increment! :views unless current_user&.id == @user.id
     respond_to do |format|
       format.html
       format.json { render 'viewer' }
@@ -61,6 +61,7 @@ class PostsController < ApplicationController
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def filter_posts
     scope = params[:following] && signed_in? ? 'friends' : params[:scope]
     case scope

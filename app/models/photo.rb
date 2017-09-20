@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Photo < ActiveRecord::Base
+class Photo < ApplicationRecord
   belongs_to :attachable, polymorphic: true
 
   scope :sorted, -> { order(sorting: :asc) }
@@ -15,7 +15,6 @@ class Photo < ActiveRecord::Base
                      else
                        0
                      end
-    true
   end
 
   concerning :Notifications do

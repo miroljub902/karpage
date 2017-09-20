@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.4.2'
 
 gem 'rails', '4.2.8'
 gem 'pg', '~> 0.18.3'
@@ -27,7 +27,7 @@ gem 'browser', '~> 2.0.2'
 gem 'sass-rails', '5.0.6'
 gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin.git', ref: '24029e2'
 gem 'appsignal', '~> 2.1.0'
-gem 'staccato', '~> 0.4.7'
+gem 'staccato', '~> 0.5.1'
 gem 'rack-attack', '~> 5.0.1'
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'groupdate', '~> 3.2.0'
@@ -52,19 +52,19 @@ gem 'therubyracer', '~> 0.12.2', platforms: :ruby
 gem 'cells', '~> 4.0.2'
 gem 'cells-slim', '~> 0.0.3'
 
-gem 'jquery-rails', '~> 4.0.5'
-gem 'jquery-ui-rails', '~> 5.0.5'
+gem 'jquery-rails', '~> 4.0'
+gem 'jquery-ui-rails', '~> 5.0'
 gem 'jbuilder', '~> 2.0'
 
-gem 'progress_bar', '~> 1.0.5', require: false
+gem 'progress_bar', '~> 1.0', require: false
 
 group :development, :test do
-  gem 'quiet_assets', '~> 1.1.0'
-  gem 'pry-rails', '~> 0.3.4'
-  gem 'ruby-debug-ide', '~> 0.6.0'
+  gem 'quiet_assets', '~> 1.1'
+  gem 'pry-rails', '~> 0.3'
+  gem 'ruby-debug-ide', '~> 0.6'
   gem 'debase', '~> 0.2.1'
-  gem 'rubocop', '~> 0.48.1'
-  gem 'overcommit', '~> 0.39.1'
+  gem 'rubocop', '~> 0.48'
+  gem 'overcommit', '~> 0.39'
 end
 
 group :development do
@@ -73,8 +73,8 @@ group :development do
 end
 
 group :test do
-  gem 'faker', '~> 1.5.0'
-  gem 'mocha', '~> 1.1.0'
-  gem 'webmock', '~> 1.22.6'
-  gem 'timecop', '~> 0.8.1'
+  gem 'faker', '~> 1.5'
+  gem 'mocha', '~> 1.1'
+  gem 'webmock', '~> 1.22'
+  gem 'timecop', '~> 0.8'
 end

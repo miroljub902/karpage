@@ -12,15 +12,13 @@ class Rack::Attack
       false
     rescue Encoding::UndefinedConversionError, ArgumentError => e
       if e.is_a?(ArgumentError)
-        raise unless e.message.match /invalid byte sequence/
+        raise unless e.message.match?(/invalid byte sequence/)
       end
       true
     end
   end
 
-  throttle('req/ip', limit: 500, period: 5.minutes) do |req|
-    req.ip
-  end
+  throttle('req/ip', limit: 500, period: 5.minutes, &:ip)
 
   throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
     if (req.path == '/api/session' || req.path == '/session') && req.post?

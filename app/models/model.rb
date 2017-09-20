@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Model < ActiveRecord::Base
+class Model < ApplicationRecord
   include FriendlyId
   include UniqueViolationGuard
 

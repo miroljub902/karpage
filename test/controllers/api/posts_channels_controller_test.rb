@@ -5,6 +5,7 @@ require_relative '../api_controller_test'
 
 class Api::PostsChannelsControllerTest < ApiControllerTest
   setup do
+    mock_request :s3
     Post.delete_all
     @channel = PostChannel.create!(name: 'dummy')
     @post = @channel.posts.create!(body: 'dummy', photo_id: 'dummy', user: users(:john_doe))
@@ -16,7 +17,7 @@ class Api::PostsChannelsControllerTest < ApiControllerTest
   end
 
   test 'retrieves channel posts' do
-    get :show, params: { id: @channel.name }
+    get :show, id: @channel.name
     assert_response :ok
     assert_equal 1, json_response['posts'].size
     assert_equal @post.id, json_response['posts'].first['id']

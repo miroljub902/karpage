@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Filter < ActiveRecord::Base
+class Filter < ApplicationRecord
   def search
     words = self.words.presence || name
     sql = words.split(',').map(&:strip).map do |word|

@@ -7,10 +7,11 @@ require_relative '../api_controller_test'
 class Api::UsersControllerTest < ApiControllerTest
   test 'can sign up' do
     User.any_instance.stubs(:send_welcome_email)
-    mock_request %w[s3 ga]
+    mock_request :s3
+    GATracker.stubs(:event!)
     assert_difference 'User.count' do
       post :create,
-        user: { login: Faker::Internet.user_name.tr('.', '-'), email: Faker::Internet.email, password: 'password' }
+           user: { login: Faker::Internet.user_name.tr('.', '-'), email: Faker::Internet.email, password: 'password' }
       assert_response :created
     end
   end
@@ -43,11 +44,11 @@ class Api::UsersControllerTest < ApiControllerTest
     end
     @request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 5.1.1; wv) Version/4.0 Chrome/48.0.2564.106'
     post :create,
-      user: {
-        login: Faker::Internet.user_name.tr('.', '-'),
-        email: Faker::Internet.email,
-        password: 'password'
-      }
+         user: {
+           login:    Faker::Internet.user_name.tr('.', '-'),
+           email:    Faker::Internet.email,
+           password: 'password'
+         }
   end
 
   test 'does not track failed signup' do
@@ -58,7 +59,7 @@ class Api::UsersControllerTest < ApiControllerTest
 
   test 'returns whats new' do
     mock_request :s3
-    user = users(:john_doe)
+    user   = users(:john_doe)
     friend = users(:friend)
     NewStuff.reset_count(user.friends_posts, user, owner: nil, delay: true)
     NewStuff.reset_count(user.follows_by, user, owner: user, delay: true)
@@ -73,7 +74,7 @@ class Api::UsersControllerTest < ApiControllerTest
 
   test 'returns whats new counters' do
     mock_request :s3
-    user = users(:john_doe)
+    user   = users(:john_doe)
     friend = users(:friend)
     NewStuff.reset_count(user.friends_posts, user, owner: nil, delay: true)
     NewStuff.reset_count(user.follows_by, user, owner: user, delay: true)
@@ -99,12 +100,13 @@ class Api::UsersControllerTest < ApiControllerTest
 
   test 'can signup with facebook token' do
     User.any_instance.stubs(:send_welcome_email)
-    mock_request %i[s3 ga]
+    mock_request :s3
+    GATracker.stubs(:event!)
     mock_request :facebook_get_me, response: :valid_token
     assert_difference 'User.count + Identity.count', +2 do
       post :create, user: {
-        login: Faker::Internet.user_name.tr('.', '-'),
-        email: Faker::Internet.email,
+        login:          Faker::Internet.user_name.tr('.', '_'),
+        email:          Faker::Internet.email,
         facebook_token: '123'
       }
       assert_response :created
@@ -117,8 +119,8 @@ class Api::UsersControllerTest < ApiControllerTest
     mock_request :facebook_get_me, response: :valid_token
     assert_no_difference 'User.count + Identity.count' do
       post :create, user: {
-        login: Faker::Internet.user_name.tr('.', '-'),
-        email: Faker::Internet.email,
+        login:          Faker::Internet.user_name.tr('.', '_'),
+        email:          Faker::Internet.email,
         facebook_token: '123'
       }
       assert_response :unprocessable_entity

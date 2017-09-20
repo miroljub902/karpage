@@ -14,14 +14,13 @@ class ApplicationMailer
   private
 
   def handle_invalid_recipient(_user)
-    begin
-      yield
-    rescue Postmark::InvalidMessageError => e
-      # https://postmarkapp.com/developer/api/overview
-      case e.error_code
-      when 406 # Inactive recipient
-        # TODO?
-      end
+    yield
+  rescue Postmark::InvalidMessageError => e
+    # https://postmarkapp.com/developer/api/overview
+    case e.error_code
+    # rubocop:disable Lint/EmptyWhen
+    when 406 # Inactive recipient
+      # TODO?
     end
   end
 end

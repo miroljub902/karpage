@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Identity < ActiveRecord::Base
+class Identity < ApplicationRecord
   belongs_to :user
 
   validates :uid, uniqueness: { scope: %i[user_id provider] }

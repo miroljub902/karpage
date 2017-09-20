@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PushNotificationJob < ActiveJob::Base
+class PushNotificationJob < ApplicationJob
   queue_as :default
 
   def perform(notification_id)

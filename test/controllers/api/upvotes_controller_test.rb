@@ -8,8 +8,8 @@ class Api::UpvotesControllerTest < ApiControllerTest
     user = users(:john_doe)
     voteable = posts(:dummy)
     authorize_user user
-    assert_difference('post.reload.upvotes_count', +1) do
-      post :create, params: { post_id: voteable.id, voteable_type: 'Post' }
+    assert_difference('voteable.reload.upvotes_count', +1) do
+      post :create, post_id: voteable.id, voteable_type: 'Post'
       assert_response :created
     end
   end
@@ -19,8 +19,8 @@ class Api::UpvotesControllerTest < ApiControllerTest
     voteable = posts(:dummy)
     Upvote.vote!(voteable, user)
     authorize_user user
-    assert_difference 'post.reload.upvotes_count', -1 do
-      delete :destroy, params: { post_id: voteable.id, voteable_type: 'Post' }
+    assert_difference 'voteable.reload.upvotes_count', -1 do
+      delete :destroy, post_id: voteable.id, voteable_type: 'Post'
       assert_response :ok
     end
   end

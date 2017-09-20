@@ -16,7 +16,7 @@ end
 class ActionDispatch::IntegrationTest
   def sign_in(user, password)
     mock_request :ga
-    post user_session_path, params: { user_session: { login: user.login, password: password } }
+    post user_session_path, user_session: { login: user.login, password: password }
     assert_response :found
   end
 end

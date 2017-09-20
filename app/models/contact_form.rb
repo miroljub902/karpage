@@ -3,7 +3,8 @@
 class ContactForm
   include ActiveModel::Model
 
-  attr_accessor :name, :email, :message
+  attr_accessor :name, :email
+  attr_reader :message
   validates :email, :message, presence: true
 
   def submit

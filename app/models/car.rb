@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Car < ActiveRecord::Base
+class Car < ApplicationRecord
   include FriendlyId
   include FeaturedOrdering
   include UniqueViolationGuard
@@ -34,7 +34,7 @@ class Car < ActiveRecord::Base
   validates :type, inclusion: { in: types.values, message: 'Invalid car type' }
   validates :description, length: { maximum: 2700 }
 
-  attr_accessor :make_name, :car_model_name
+  attr_writer :make_name, :car_model_name
   before_create -> { self.sorting = (self.class.where(user: user).pluck('MAX(sorting)').first || -1) + 1 }
   after_update -> { @sorting_changed = sorting_changed? }
   after_save :update_user_profile_thumbnail
@@ -96,6 +96,7 @@ class Car < ActiveRecord::Base
     end
   end
 
+  # rubocop:disable Lint/Void
   def type=(value)
     # Override so an ArgumentError is not raised on invalid types, handle through validation instead
     super if self.class.types.values.include?(value)

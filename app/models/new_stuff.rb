@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NewStuff < ActiveRecord::Base
+class NewStuff < ApplicationRecord
   belongs_to :user
   belongs_to :stuff_owner, class_name: 'User'
 

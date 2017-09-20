@@ -86,7 +86,7 @@ class ProfileUploader
     image = handle_network_errors default: -> { default_car_image } do
       car = user.cars.current.has_photos.sorted.first
       photo = car.photos.sorted.first if car
-      if photo && photo.image_content_type.to_s.starts_with?('image/')
+      if photo&.image_content_type.to_s.starts_with?('image/')
         url = ix_refile_image_url(photo, :image, auto: 'enhance,format', fit: 'crop', crop: 'edges', w: 1238, h: 677)
         text = "#{car.year} #{car.make.name} #{car.model.name}"
         point_size = case text.size

@@ -49,7 +49,7 @@ class Api::CarsControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     assert_difference 'user.cars.count' do
-      post :create, car: { year: '2015', make_name: 'Audi', car_model_name: 'R8' }
+      post :create, car: { year: '2015', make_name: 'Audi', car_model_name: 'R8', type: Car.types[:current_car] }
       assert_response :created
     end
   end
@@ -128,7 +128,7 @@ class Api::CarsControllerTest < ApiControllerTest
     user = users(:john_doe)
     authorize_user user
     post :create, car: {
-      year: '2015', make_name: 'Audi', car_model_name: 'R8',
+      year: '2015', make_name: 'Audi', car_model_name: 'R8', type: Car.types[:current_car],
       parts_attributes: [
         { type: 'Wheel', manufacturer: 'Michelin', model: 'X100', price: 500,
           photo_attributes: {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CarPart < ActiveRecord::Base
+class CarPart < ApplicationRecord
   self.inheritance_column = '_no_sti'
 
   belongs_to :car, inverse_of: :parts
@@ -14,6 +14,5 @@ class CarPart < ActiveRecord::Base
 
   before_save do
     self.sorting ||= (car.parts.maximum(:sorting) || -1) + 1
-    true
   end
 end

@@ -22,6 +22,8 @@ module KarPage
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # ActiveSupport.halt_callback_chains_on_return_false = false
+
     config.action_mailer.default_url_options = { host: ENV.fetch('HOSTNAME') }
 
     # Do not swallow errors in after_commit/after_rollback callbacks.

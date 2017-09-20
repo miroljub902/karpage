@@ -2,7 +2,6 @@
 
 class AddAvatarToUsers < ActiveRecord::Migration
   def change
-    # rubocop:disable Rails/ReversibleMigration
     change_table :users do |t|
       t.string :avatar_id
       t.string :avatar_filename

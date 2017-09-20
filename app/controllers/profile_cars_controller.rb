@@ -41,7 +41,7 @@ class ProfileCarsController < ApplicationController
     user = User.find_by(login: params[:profile_id])
     car = begin
             user.cars.friendly.find(params[:car_id])
-          rescue
+          rescue StandardError
             nil
           end
     return render_404 if user.nil? || car.nil?

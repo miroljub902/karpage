@@ -4,7 +4,7 @@ class Car
   class Save < Car
     include ApplicationForm
 
-    attr_accessor :make_name, :car_model_name, :trim_name
+    attr_writer :make_name, :car_model_name, :trim_name
 
     validates :make_name, :car_model_name, presence: true, if: :custom?
     validates_associated :make, :model, :trim
@@ -22,14 +22,10 @@ class Car
       end
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity
-    # rubocop:disable Metrics/PerceivedComplexity
     def custom?
       @custom_make_name || @custom_car_model_name || @custom_trim_name ||
-        (make && !make.official?) || (model && !model.official?) || (trim && !trim.official?)
+        !make&.official? || !model&.official? || !trim&.official?
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/PerceivedComplexity
 
     def make_name;      @make_name || make&.name;       end
     def car_model_name; @car_model_name || model&.name; end

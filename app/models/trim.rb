@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Trim < ActiveRecord::Base
+class Trim < ApplicationRecord
   belongs_to :model
   has_one :make, through: :model
   has_many :cars, dependent: :nullify

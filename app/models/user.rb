@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include FeaturedOrdering
   include UniqueViolationGuard
 
@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     config.merge_validates_format_of_login_field_options(
       with: /\A\w[.\w+_]+\z/,
       if: -> { identities.empty? || login.present? || login_was.present? },
-      message: 'should use only letters numbers and .-_ please'
+      message: 'should use only letters numbers and ._ please'
     )
     config.merge_validates_length_of_login_field_options if: -> {
       identities.empty? || login.present? || login_was.present?
@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :car_comments, through: :cars, source: :comments
-  has_many :follows
+  has_many :follows, dependent: :destroy
   has_many :follows_by, class_name: 'Follow', foreign_key: 'followee_id'
   has_many :followers, through: :follows_by, source: :user
   has_many :followees, through: :follows
@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
       else
         errors.add :facebook_token, :taken
       end
-    rescue => e
+    rescue StandardError => e
       errors.add :facebook_token, "invalid Facebook token (#{e.message})"
     end
   end

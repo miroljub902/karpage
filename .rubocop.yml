@@ -4,7 +4,21 @@ AllCops:
   DefaultFormatter: fuubar
   DisplayCopNames: true
   ExtraDetails: true
-  TargetRubyVersion: 2.3.1
+  TargetRubyVersion: 2.4
+  TargetRailsVersion: 4.2
+
+# TODO: Re-enable when has_many ... through: ... stops triggering it
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+
+Layout/MultilineMethodDefinitionBraceLayout:
+  Enabled: true
 
 Lint/AmbiguousBlockAssociation:
   Enabled: false
@@ -18,17 +32,8 @@ Style/CommandLiteral:
 Style/Documentation:
   Enabled: false
 
-Style/EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
-
 Style/Lambda:
   Enabled: false
-
-Style/MultilineMethodCallBraceLayout:
-  Enabled: true
-
-Style/MultilineMethodDefinitionBraceLayout:
-  Enabled: true
 
 Style/Send:
   Enabled: true
@@ -107,6 +112,9 @@ Rails/Output:
     - db/**/*.rb
     - lib/**/*.rb
     - test/**/*.rb
+
+Rails/OutputSafety:
+  Enabled: false
 
 Rails/SkipsModelValidations:
   Enabled: false

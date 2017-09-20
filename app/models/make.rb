@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Make < ActiveRecord::Base
+class Make < ApplicationRecord
   include FriendlyId
 
   has_many :models, dependent: :destroy

@@ -14,18 +14,16 @@ class ApplicationController < ActionController::Base
     render_403 unless performed?
   end
   rescue_from ActionController::InvalidAuthenticityToken do
-    # unless performed?
-      respond_to do |format|
-        format.js do
-          render inline: 'alert("Your session has expired, please reload the page.")'
-        end
-        format.html do
-          render template: 'application/message',
-                 locals: { message: 'Your session has expired, please go back and reload the page.' },
-                 layout: 'simple'
-        end
+    respond_to do |format|
+      format.js do
+        render inline: 'alert("Your session has expired, please reload the page.")'
       end
-    # end
+      format.html do
+        render template: 'application/message',
+               locals: { message: 'Your session has expired, please go back and reload the page.' },
+               layout: 'simple'
+      end
+    end
   end
 
   def api_base
@@ -90,7 +88,7 @@ class ApplicationController < ActionController::Base
 
   def respond_to_js(&block)
     respond_to do |format|
-      format.js &block
+      format.js(&block)
       format.html do
         render file: 'public/js_required', status: :bad_request, layout: false
       end
@@ -125,7 +123,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user.decorate
+    @current_user = current_user_session&.user&.decorate
   end
   helper_method :current_user
 

@@ -23,16 +23,16 @@ class Api::CarPartsTest < ActionDispatch::IntegrationTest
   test 'user can create a part for a car' do
     assert_difference '@car.parts.count' do
       post api_car_parts_url(@car.id, format: :json),
-           params: @part_params,
-           headers: { 'Authorization' => @user.access_token }
+           @part_params,
+           'Authorization' => @user.access_token
       assert_response :created
     end
   end
 
   test 'can add a photo' do
     post api_car_parts_url(@car.id, format: :json),
-         params: @part_params,
-         headers: { 'Authorization' => @user.access_token }
+         @part_params,
+         'Authorization' => @user.access_token
     photo = @car.parts.first.photo
     assert !photo.nil?
   end
@@ -41,14 +41,14 @@ class Api::CarPartsTest < ActionDispatch::IntegrationTest
     part = @car.parts.create! @part_params[:car_part]
     params = { car_part: { type: 'Changed' } }
     put api_car_part_url(@car.id, part.id, format: :json),
-        params: params,
-        headers: { 'Authorization' => @user.access_token }
+        params,
+        'Authorization' => @user.access_token
     assert_equal 'Changed', part.reload.type
   end
 
   test 'user can remove a part from a car' do
     part = @car.parts.create! @part_params[:car_part]
-    delete api_car_part_url(@car.id, part.id, format: :json), headers: { 'Authorization' => @user.access_token }
+    delete api_car_part_url(@car.id, part.id, format: :json), {}, 'Authorization' => @user.access_token
     assert_equal 0, @car.parts.count
   end
 end

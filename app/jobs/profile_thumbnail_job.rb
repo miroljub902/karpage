@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProfileThumbnailJob < ActiveJob::Base
+class ProfileThumbnailJob < ApplicationJob
   queue_as :image_processing
 
   def perform(user_id)

@@ -26,7 +26,7 @@ module ImgixRefileHelper
     default[:rot] = obj.rotate if obj.respond_to?(:rotate) && obj.rotate.present?
     crop_params = begin
                     obj.__send__("#{key}_crop_params").try(:presence)
-                  rescue
+                  rescue StandardError
                     nil
                   end
     default[:rect] = crop_params if crop_params && !opts.delete(:no_crop)

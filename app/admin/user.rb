@@ -212,7 +212,7 @@ ActiveAdmin.register User do
     end
 
     def find_resource
-      params[:id] =~ /^\d+$/ ? User.find(params[:id]) : User.find_by(login: params[:id])
+      params[:id].match?(/^\d+$/) ? User.find(params[:id]) : User.find_by(login: params[:id])
     end
   end
 end

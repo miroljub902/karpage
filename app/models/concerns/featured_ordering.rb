@@ -33,6 +33,7 @@ module FeaturedOrdering
       order ? order / 10 : order
     end
 
+    # rubocop:disable Lint/Void
     def featured_order=(order)
       order = order.to_i.to_s == order ? order.to_i : nil unless order.is_a?(Integer)
       self[:featured_order] = order ? order * 10 : nil

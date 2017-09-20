@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Notification < ActiveRecord::Base
+class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :notifiable, polymorphic: true
   belongs_to :source, polymorphic: true

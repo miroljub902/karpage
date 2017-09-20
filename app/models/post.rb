@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   belongs_to :user
   belongs_to :post_channel
   has_many :comments, as: :commentable, dependent: :destroy
