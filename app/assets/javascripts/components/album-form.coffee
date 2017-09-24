@@ -3,6 +3,7 @@ class window.AlbumForm
     @$ele = $ele
               .data('album-form-initialized', true)
               .on('click', '.photo .remove', (e) => @onPhotoRemove(e))
+    @attachable = @$ele.data('attachable')
     @$form = $ele.parents('form')
     @$selectButton = $ele.find('.album-photo-upload').on('click', (e) => @selectFiles(e))
     @$files = $ele.find('.album-photos').on('change', (e) => @onFilesChanged(e))
@@ -111,11 +112,11 @@ class window.AlbumForm
             $photo
               .removeClass('uploading')
               .addClass('has-photo')
-              .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_id]" value="' + imageId + '">')
-              .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_content_type]" value="' + file.type + '">')
-              .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_size]" value="' + file.size + '">')
-              .append('<input type="hidden" name="car[photos_attributes][' + randomId + '][image_filename]" value="' + file.name + '">')
-              .append('<input type="hidden" class="sorting" name="car[photos][' + randomId + '][sorting]" value="' + (start + i) + '">')
+              .append("<input type='hidden' name='#{_this.attachable}[photos_attributes][#{randomId}][image_id]' value='#{imageId}'>")
+              .append("<input type='hidden' name='#{_this.attachable}[photos_attributes][#{randomId}][image_content_type]' value='#{file.type}'>")
+              .append("<input type='hidden' name='#{_this.attachable}[photos_attributes][#{randomId}][image_size]' value='#{file.size}'>")
+              .append("<input type='hidden' name='#{_this.attachable}[photos_attributes][#{randomId}][image_filename]' value='#{file.name}'>")
+              .append("<input type='hidden' class='sorting' name='#{_this.attachable}[photos][#{randomId}][sorting]' value='#{start + i}'>")
 
             _this.updateButtonText()
 

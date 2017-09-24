@@ -12,7 +12,7 @@
   - grouped_posts.each do |post|
     .post
       = link_to post_path(post.user, post) do
-        .img style="background-image: url(#{ix_refile_image_url(post, :photo, format: 'auto', fit: 'clip', h: 300)})"
+        .img style="background-image: url(#{ix_refile_image_url(post, :cover_photo, format: 'auto', fit: 'clip', h: 300)})"
 
         .caption
           .pull-left.profile-avatar.small

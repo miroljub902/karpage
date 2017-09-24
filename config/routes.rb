@@ -81,7 +81,7 @@ Rails.application.routes.draw do
     resources :user_cars, except: :show, path: 'cars', as: :cars do
       post :resort, on: :collection
 
-      resources :car_photos, path: 'photos', as: :photos, only: %i[create destroy] do
+      resources :car_photos, path: 'photos', as: :photos, only: %i[create destroy], attachable_class: Car do
         post 'reorder', on: :collection
       end
 
@@ -111,6 +111,9 @@ Rails.application.routes.draw do
   resources :posts, only: [] do
     resource :upvote, only: [], voteable_type: 'Post' do
       post :toggle
+    end
+    resources :photos, only: %i[create destroy], attachable_class: Post do
+      post 'reorder', on: :collection
     end
   end
 

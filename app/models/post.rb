@@ -6,14 +6,21 @@ class Post < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :delete_all
   has_many :notifications, as: :notifiable, dependent: :delete_all
+  has_many :photos, as: :attachable, dependent: :destroy
 
   attachment :photo, type: :image
+
+  accepts_nested_attributes_for :photos, allow_destroy: true
 
   validate :validate_presence_of_photo, :validate_photo_size
 
   scope :sorted, -> { order(created_at: :desc) }
   scope :global, -> { where(post_channel_id: nil) }
-  scope :with_photo, -> { where.not(photo_id: nil) }
+  scope :with_photo, -> {
+    where('photo_id IS NOT NULL OR photos.id IS NOT NULL')
+      .joins("LEFT OUTER JOIN photos ON photos.attachable_type = 'Post' AND photos.attachable_id = posts.id")
+      .distinct
+  }
   scope :not_blocked, ->(user) {
     if user
       joins(:user).where.not(users: { id: user.blocks.select(:blocked_user_id) })
@@ -46,6 +53,14 @@ class Post < ApplicationRecord
 
   paginates_per 15
 
+  def cover_photo
+    photos.sorted.first || photo
+  end
+
+  def cover_photo_attacher
+    photos.sorted.first ? photos.sorted.first.image_attacher : photo_attacher
+  end
+
   def post_channel_name=(name)
     self.post_channel = PostChannel.find_by(name: name)
   end
@@ -72,12 +87,12 @@ class Post < ApplicationRecord
   private
 
   def validate_presence_of_photo
-    return if photo || photo_id.present?
+    return if photo || photo_id.present? || photos.size.positive?
     errors.add :photo, :blank
   end
 
   def validate_photo_size
-    return if !photo || !photo.size || photo.size < photo.backend.max_size
+    return if !photo || !photo.size || photo.size < photo.backend.max_size || photos.size.positive?
     errors.add :photo, :too_large
   end
 end

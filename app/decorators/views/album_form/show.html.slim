@@ -1,4 +1,4 @@
-.album-form
+.album-form.clearfix data-attachable=view.attachable
   h5.text-center Upload up to #{pluralize view.max_photos, 'photo', 'photos'}
 
   - if view.max_photos > 1
@@ -40,8 +40,12 @@
           = view.photos.any? ? 'Add More Photos' : 'Add Photos'
 
 javascript:
-  $('.album-form').each(function() {
-    var $this = $(this);
-    if ($this.data('album-form-initialized')) return;
-    new AlbumForm($(this));
+  waitFor('AlbumForm', function() {
+    $(document).ready(function() {
+      $('.album-form').each(function() {
+        var $this = $(this);
+        if ($this.data('album-form-initialized')) return;
+        new AlbumForm($(this));
+      });
+    });
   });

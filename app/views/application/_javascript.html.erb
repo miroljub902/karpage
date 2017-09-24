@@ -1,0 +1,17 @@
+<script>
+  window.waitFor = function(object, callback) {
+    var clear = function() {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
+
+    var timeout = setTimeout(clear, 2000);
+
+    var interval = setInterval(function() {
+      if (eval('typeof ' + object + " !== 'undefined'")) {
+        clear();
+        callback();
+      }
+    }, 10);
+  };
+</script>

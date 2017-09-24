@@ -1,10 +1,3 @@
 - url = post.new_record? ? user_posts_path : user_post_path(post)
 = form_for post, url: url, html: { multipart: true, class: 'post-form' } do |f|
-  .title Post Update
-  = f.text_area :body, rows: 8, class: 'form-control'
-  = f.file_field :photo
-  a.btn.btn-default.btn-lg.photobutton
-    = image_tag 'photo-white.png', class: 'icon', size: '28x22'
-    .text= f.object.photo.present? ? 'Change Photo' : 'Add Photo *'
-
-  .submit= f.submit 'Post', class: 'btn btn-default btn-lg'
+  = render 'fields', f: f
