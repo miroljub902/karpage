@@ -52,7 +52,9 @@ class User < ApplicationRecord
   after_save :send_welcome_email, if: -> { email.present? && email_before_last_save.blank? }
   after_save -> { ProfileThumbnailJob.perform_later(id) },
              if: -> {
-               changes_to_save.keys.any? { |attr| %w[login name avatar_id description profile_background_id].include?(attr) }
+               changes_to_save.keys.any? do |attr|
+                 %w[login name avatar_id description profile_background_id].include?(attr)
+               end
              }
 
   scope :by_cars_owned, -> { cars_count.order('filtered_cars_count DESC') }

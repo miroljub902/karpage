@@ -22,6 +22,10 @@ class Car
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Style/SafeNavigation
+    # That cop botches up this method
     def custom?
       @custom_make_name || @custom_car_model_name || @custom_trim_name ||
         (make && !make.official?) || (model && !model.official?) || (trim && !trim.official?)
