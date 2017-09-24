@@ -45,7 +45,7 @@ class window.AlbumForm
     Sortable.create(
       @$ele.find('.photos ul.sortable')[0]
       draggable: '.has-photo'
-      onSort: @updatePhotoIndexes
+      onSort: => @updatePhotoIndexes()
     )
 
   updatePhotoIndexes: ->
