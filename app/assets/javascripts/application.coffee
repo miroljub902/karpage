@@ -7,6 +7,7 @@
 #= require lightbox2/src/js/lightbox
 #= require Croppie/croppie
 #= require_self
+#= require_tree ./components
 #= require app/app
 
 $('[data-toggle="popover"]').popover()

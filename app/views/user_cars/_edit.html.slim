@@ -48,7 +48,8 @@
                       'I no longer own this car
 
             .row
-              .col-xs-12= render 'add_photos', f: f
+              .col-xs-12
+                = Views::AlbumForm.render(form: f, max_photos: CarPolicy.new(current_user, car).max_photos, url_base: :user_car)
 
         .modal-footer
           a.btn.btn-default.btn-lg data-dismiss="modal" Cancel

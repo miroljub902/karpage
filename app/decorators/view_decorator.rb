@@ -6,8 +6,12 @@ class ViewDecorator < Draper::Decorator
   delegate :asset_path, :capture, :content_tag, to: :h
 
   def initialize(options = {})
-    super nil
+    super options.delete(:object)
     @options = options
+  end
+
+  def self.render(options)
+    new(options).render
   end
 
   def render

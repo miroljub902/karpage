@@ -1,8 +1,9 @@
 $ ->
   $form = $('form.car-search')
-  return if $form.length == 0
-
   $location = $form.find('input#location')
+
+  return if $form.length == 0 || $location.length == 0
+
   $lat = $form.find('input#lat')
   $lng = $form.find('input#lng')
 

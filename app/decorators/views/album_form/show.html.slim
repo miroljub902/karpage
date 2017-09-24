@@ -1,0 +1,47 @@
+.album-form
+  h5.text-center Upload up to #{pluralize view.max_photos, 'photo', 'photos'}
+
+  - if view.max_photos > 1
+    p.text-center
+      i.text-muted Drag photos to rearrange them
+
+  .photos[data-create-url=view.create_url
+    data-update-url=view.update_url
+    data-sort-url=view.reorder_url
+    data-max-photos=view.max_photos]
+    ul.sortable
+      / No AR sort because we'll have non-saved photos for new records
+      - view.photos.sort_by { |p| p.sorting || 20 }.each_with_index do |photo, n|
+        li.photo.has-photo.sortable data-id=photo.id
+          .img style="background-image: url(#{photo.image_url(:fill, 180, 100)})"
+            .remove.sprite.sprite-delete
+          span.index= n + 1
+          - if photo.new_record?
+            = f.fields_for :photos, [photo] do |pf|
+              = pf.hidden_field :image_id
+              = pf.hidden_field :image_content_type
+              = pf.hidden_field :image_size
+              = pf.hidden_field :image_filename
+              = pf.hidden_field :sorting, class: 'sorting'
+
+      - (1..view.max_photos - view.photos.size).each do |n|
+        li.photo class=('single-photo' if view.max_photos == 1)
+          .img
+            .remove.sprite.sprite-delete
+          span.index= n + view.photos.size
+
+    .col-md-offset-2.col-md-8
+      input.album-photos[type="file" multiple accept="image/*" data-prefix="store"
+        data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+      a.btn.btn-default.btn-block.btn-lg.album-photo-upload class=('disabled' if view.photos.size == view.max_photos) href="#"
+        - if view.max_photos == 1
+          'Add Photo
+        - else
+          = view.photos.any? ? 'Add More Photos' : 'Add Photos'
+
+javascript:
+  $('.album-form').each(function() {
+    var $this = $(this);
+    if ($this.data('album-form-initialized')) return;
+    new AlbumForm($(this));
+  });
