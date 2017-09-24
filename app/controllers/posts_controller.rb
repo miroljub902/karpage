@@ -74,7 +74,7 @@ class PostsController < ApplicationController
     else
       @user = User.find_by(login: params[:scope])
       @user ? @user.posts : Post.none
-    end.sorted.with_photo.global
+    end.sorted.with_photo.global.includes(:user, :sorted_photos)
   end
 
   def post_params

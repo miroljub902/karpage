@@ -8,7 +8,7 @@
     .btn.btn-default.btn-lg href="#"
       = image_tag 'photo-white.png', class: 'icon', size: '28x22'
       span.text Change Photo
-- elsif f.object.persisted? && f.object.photos.size == 0
+- elsif f.object.new_record?
   .photobutton.dropdown
     .btn.btn-default.btn-lg href="#" data-toggle="dropdown"
       = image_tag 'photo-white.png', class: 'icon', size: '28x22'

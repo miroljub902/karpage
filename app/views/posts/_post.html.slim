@@ -3,17 +3,18 @@
 .post-item.row
   .col-md-6
     .thumbnail class="#{'has-photo' if post.cover_photo}"
-      = link_to ix_refile_image_url(post, :cover_photo, auto: 'enhance,format', fit: 'clip', h: 1024), data: { lightbox: "post-#{post.id}" } do
-        - photos = (post.photos.presence || [post.photo]).compact.presence
-        - if photos
-          .post__photos
-            - photos.each do |photo|
-              - if photo.is_a?(Photo)
-                .img style="background-image: url(#{ix_refile_image_url(photo, :image, format: 'auto', fit: 'clip', h: 250)})"
-              - else
-                .img style="background-image: url(#{ix_refile_image_url(post, :photo, format: 'auto', fit: 'clip', h: 250)})"
-        - else
-          .img class="empty"
+      - photos = (post.photos.presence || [post.photo]).compact.presence
+      - if photos
+        .post__photos
+          - photos.each do |photo|
+            - if photo.is_a?(Photo)
+              = link_to ix_refile_image_url(photo, :image, auto: 'enhance,format', format: 'auto', h: 1024), data: { lightbox: "post-#{post.id}" } do
+                .img style="background-image: url(#{ix_refile_image_url(photo, :image, auto: 'enhance,format', format: 'auto', fit: 'clip', h: 250)})"
+            - else
+              = link_to ix_refile_image_url(post, :photo, h: 1024), data: { lightbox: "post-#{post.id}" } do
+                .img style="background-image: url(#{ix_refile_image_url(post, :photo, auto: 'enhance,format', format: 'auto', fit: 'clip', h: 250)})"
+      - else
+        .img class="empty"
 
       .car-card
         .actions.clearfix

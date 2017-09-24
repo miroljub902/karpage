@@ -4,6 +4,15 @@ class PostDecorator < Draper::Decorator
   delegate_all
   decorates_association :user
 
+  def cover_url(options)
+    options = { auto: 'enhance,format', format: 'auto', fit: 'clip' }.merge(options)
+    if (photo = sorted_photos.first)
+      h.ix_refile_image_url(photo, :image, options)
+    elsif object.photo
+      h.ix_refile_image_url(post, :photo, options)
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   def truncated_body(length: 400)
     more = h.link_to('Read more', h.post_path(user, self))

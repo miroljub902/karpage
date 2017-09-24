@@ -7,6 +7,7 @@ class Post < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :delete_all
   has_many :notifications, as: :notifiable, dependent: :delete_all
   has_many :photos, as: :attachable, dependent: :destroy
+  has_many :sorted_photos, -> { sorted }, as: :attachable, class_name: 'Photo'
 
   attachment :photo, type: :image
 
@@ -54,11 +55,7 @@ class Post < ApplicationRecord
   paginates_per 15
 
   def cover_photo
-    photos.sorted.first || photo
-  end
-
-  def cover_photo_attacher
-    photos.sorted.first ? photos.sorted.first.image_attacher : photo_attacher
+    sorted_photos.first || photo
   end
 
   def post_channel_name=(name)
