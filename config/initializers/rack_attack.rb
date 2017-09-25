@@ -10,9 +10,9 @@ class Rack::Attack
       CGI.unescape(req.path).encode('utf-8')
       CGI.unescape(req.params.to_yaml).encode('utf-8')
       false
-    rescue Encoding::UndefinedConversionError, ArgumentError => e
+    rescue Encoding::UndefinedConversionError, Rack::QueryParser::InvalidParameterError, ArgumentError => e
       if e.is_a?(ArgumentError)
-        raise unless e.message.match?(/invalid byte sequence/)
+        raise unless e.message.match?(/invalid byte sequence/) || e.message.match?(/null byte/)
       end
       true
     end
