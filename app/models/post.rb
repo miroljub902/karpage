@@ -18,8 +18,8 @@ class Post < ApplicationRecord
   scope :sorted, -> { order(created_at: :desc) }
   scope :global, -> { where(post_channel_id: nil) }
   scope :with_photo, -> {
-    where('photo_id IS NOT NULL OR photos.id IS NOT NULL')
-      .joins("LEFT OUTER JOIN photos ON photos.attachable_type = 'Post' AND photos.attachable_id = posts.id")
+    where('photo_id IS NOT NULL OR ph.id IS NOT NULL')
+      .joins("LEFT OUTER JOIN photos ph ON ph.attachable_type = 'Post' AND ph.attachable_id = posts.id")
       .distinct
   }
   scope :not_blocked, ->(user) {

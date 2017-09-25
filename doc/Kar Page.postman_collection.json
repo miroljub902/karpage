@@ -183,7 +183,7 @@
 					},
 					"response": [
 						{
-							"id": "47533c59-05a4-4e1a-9919-3d91f82d7640",
+							"id": "39e53b0a-fb2e-4049-81bb-8129a775dd42",
 							"name": "(Dev) 200 Ok",
 							"originalRequest": {
 								"url": "http://api.karpage.dev:3000/api/notifications",
@@ -329,7 +329,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"post\": {\n    \"body\": \"\",\n    \"photo_id\": \"\",\n    \"photo_content_type\": \"\",\n    \"photo_size\": 123,\n    \"photo_filename\": \"photo.jpg\",\n  }\n}\n"
+							"raw": "{\n  \"post\": {\n    \"body\": \"\",\n    \"photo_id\": \"\",\n    \"photo_content_type\": \"\",\n    \"photo_size\": 123,\n    \"photo_filename\": \"photo.jpg\",\n    \"photos_attributes\": [{\n      \"image_id\": \"\",\n      \"image_content_type\": \"\",\n      \"image_size\": 123,\n      \"image_filename\": \"picture.jpg\",\n      \"sorting\": 1\n    }]\n  }\n}\n"
 						},
 						"description": ""
 					},
@@ -514,7 +514,7 @@
 					},
 					"response": [
 						{
-							"id": "3d9ea9a1-3ab3-4b95-9f12-a2d57a57603a",
+							"id": "069fa78f-3d21-4dd8-a6b8-257b5f2a32ef",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"url": "{{host}}/api/posts/267711040/upvote",
@@ -688,7 +688,7 @@
 					},
 					"response": [
 						{
-							"id": "c181cae9-18c9-43a7-aac5-23c4c14d08aa",
+							"id": "c8e6a784-df90-405b-91fa-b687e9368807",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"url": "{{host}}/api/posts/267711040/upvote",
@@ -830,7 +830,7 @@
 					},
 					"response": [
 						{
-							"id": "cbf98782-6c42-4c85-ac5c-88a4f2e0fa5b",
+							"id": "a90bf99c-eff4-4bb2-9d7f-f43d404d24d1",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"url": "{{host}}/api/posts/channels/monday",
@@ -943,7 +943,7 @@
 								}
 							],
 							"responseTime": 688,
-							"body": "{\"posts\":[{\"id\":267711040,\"user_id\":null,\"body\":\"Lorem ipsum dolor sit amet\",\"created_at\":\"2017-05-15T14:24:06.000-07:00\",\"likes_count\":0,\"upvotes_count\":0,\"image_url\":\"https://karpage-dev.imgix.net/store/dummy?ixlib=rails-1.0.0\",\"liked\":false,\"upvoted\":false,\"user\":null}]}"
+							"body": "{\n    \"posts\": [\n        {\n            \"id\": 267711040,\n            \"user_id\": null,\n            \"body\": \"Lorem ipsum dolor sit amet\",\n            \"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n            \"likes_count\": 0,\n            \"upvotes_count\": 0,\n            \"image_url\": \"https://karpage-dev.imgix.net/store/dummy?ixlib=rails-1.0.0\",\n            \"liked\": false,\n            \"upvoted\": false,\n            \"user\": null,\n            \"photos\": [\n        \t  {\n        \t  \t\"id\": 123,\n        \t  \t\"image_url\": \"https://...\",\n        \t  \t\"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n        \t  \t\"sorting\": 1\n        \t  }\n        \t]\n        }\n    ]\n}"
 						}
 					]
 				}
@@ -997,7 +997,7 @@
 					},
 					"response": [
 						{
-							"id": "749deb73-a487-4a20-8408-23a4288aab9a",
+							"id": "6b067bee-156e-41e9-a033-0a1afa23f4f3",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"url": "http://api.karpage.dev:3000/api/session",
@@ -1117,7 +1117,7 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "b8c0f631-7640-494a-959a-341edac5842d",
+							"id": "a7fa11c5-8969-4013-b0d8-ea6b040e68ed",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"url": "http://api.karpage.dev:3000/api/session",
@@ -1237,7 +1237,7 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "0346f7c9-683b-400e-995b-73014822e6ce",
+							"id": "ae630eb9-2f6a-432e-9c87-c806af3916a2",
 							"name": "(Staging) 201 Created",
 							"originalRequest": {
 								"url": "{{host}}/api/session",
@@ -1461,7 +1461,7 @@
 					},
 					"response": [
 						{
-							"id": "1ed01bc4-193f-41f1-936e-a92e5667d1ba",
+							"id": "eca8ba04-d5c4-4bae-a5f8-c265f77ea135",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"url": "http://api.karpage.dev:3000/api/user",
@@ -1584,7 +1584,7 @@
 							"body": "{\"user\":{\"id\":408913340,\"name\":\"\",\"email\":\"johndoe@example.com\",\"login\":\"johndoe\",\"location\":\"\",\"description\":\"\",\"link\":\"\",\"access_token\":\"8ee028a79deff8f9735b8483118502a009a708292af5e84e4f7ea1e083acb021\",\"cars_count\":0,\"avatar_url\":null,\"profile_background_url\":null,\"followers_count\":0,\"following_count\":0,\"instagram_id\":null,\"new_posts\":0,\"new_followers\":0,\"push_settings\":{\"your_car_like\":true,\"your_car_comment\":true,\"your_post_like\":true,\"your_post_comment\":true,\"new_follower\":true,\"following_new_car\":true,\"following_moves_new_car\":true,\"following_next_car\":true,\"following_dream_car\":true,\"following_new_post\":true}},\"dream_cars\":[{\"id\":980190963,\"created_at\":\"2017-05-04T18:39:53.478-07:00\",\"image_url\":null}],\"current_cars\":[],\"previous_cars\":[],\"next_car\":{\"id\":980190964,\"created_at\":\"2017-05-04T18:39:53.481-07:00\",\"image_url\":null},\"first_car\":null}"
 						},
 						{
-							"id": "8e5902c1-2cb1-4728-8029-9e7d3fbe8fa4",
+							"id": "5571f1f9-0902-455a-968f-d52827244558",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"url": "http://api.karpage.dev:3000/api/user",

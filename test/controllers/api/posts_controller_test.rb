@@ -70,7 +70,7 @@ class Api::PostsControllerTest < ApiControllerTest
     authorize_user user
     get :index, params: { user_id: user2.id }
     assert_equal 1, json_response['posts'].size
-    assert_equal post.body, json_response['posts'].first['body']
+    assert_equal "<p>#{post.body}</p>", json_response['posts'].first['body']
   end
 
   test 'autolinks URLs' do
@@ -79,5 +79,15 @@ class Api::PostsControllerTest < ApiControllerTest
     get :index, params: { user_id: user.id }
     body = json_response['posts'].find { |p| p['id'] == user_post.id }['body']
     assert_match(/a href=/, body)
+  end
+
+  test 'returns post photos' do
+    user = users(:john_doe)
+    user_post = user.posts.new body: 'Howdy'
+    photo = user_post.photos.new(image_id: 'howdy')
+    user_post.save!
+    get :index
+    assert json_response['posts'][0].has_key?('photos')
+    assert_equal photo.id, json_response['posts'][0]['photos'][0]['id']
   end
 end

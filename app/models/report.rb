@@ -6,7 +6,7 @@ class Report < ApplicationRecord
 
   scope :users, -> { where(reportable_type: "User") }
   scope :cars, -> { where(reportable_type: "Car") }
-  scope :posts, -> { where(reportable_type: "Post") }
+  scope :'posts-old', -> { where(reportable_type: "Post") }
 
   validates :reason, presence: true
 end

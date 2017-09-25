@@ -11,8 +11,9 @@ class Api::PostsController < ApiController
              .sorted
              .global
              .not_blocked(current_user)
+             .includes(:sorted_photos, :user)
              .page(params[:page]).per(params[:per] || Post.default_per_page)
-    respond_with @posts, include: %w[user comments.user]
+    respond_with @posts, include: %w[user comments.user photos]
   end
 
   def feed
@@ -21,16 +22,17 @@ class Api::PostsController < ApiController
              .friends_posts_for_feed
              .with_photo
              .sorted
+             .includes(:sorted_photos, :user)
              .page(params[:page])
              .per(params[:per] || Post.default_per_page)
              .decorate
-    respond_with @posts, include: %w[user comments.user]
+    respond_with @posts, include: %w[user comments.user photos]
   end
 
   def show
-    @post = Post.not_blocked(current_user).find_by(id: params[:id])
+    @post = Post.not_blocked(current_user).includes(:sorted_photos, :user).find_by(id: params[:id])
     return render_404 unless @post
-    respond_with @post, include: %w[user comments.user]
+    respond_with @post, include: %w[user comments.user photos]
   end
 
   def create
@@ -39,13 +41,13 @@ class Api::PostsController < ApiController
   end
 
   def update
-    @post = current_user.posts.find(params[:id])
+    @post = current_user.posts.includes(:sorted_photos, :user).find(params[:id])
     @post.update_attributes post_params
     respond_with @post, include: []
   end
 
   def destroy
-    @post = current_user.posts.find(params[:id])
+    @post = current_user.posts.includes(:sorted_photos, :user).find(params[:id])
     @post.destroy
     respond_with @post, include: []
   end
@@ -53,7 +55,9 @@ class Api::PostsController < ApiController
   private
 
   def post_params
-    params.require(:post).permit(:body, :photo_id, :photo_content_type, :photo_size, :photo_filename, :post_channel_id,
-                                 :post_channel_name)
+    params.require(:post).permit(
+      :body, :photo_id, :photo_content_type, :photo_size, :photo_filename, :post_channel_id, :post_channel_name,
+      photos_attributes: %i[id _destroy image_id image_content_type image_size image_filename sorting]
+    )
   end
 end

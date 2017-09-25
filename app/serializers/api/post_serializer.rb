@@ -3,6 +3,7 @@
 class Api::PostSerializer < ApiSerializer
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
+  include ActionView::Helpers::TextHelper
 
   attributes %i[id user_id body created_at likes_count upvotes_count image_url]
   attributes %i[liked upvoted], if: :current_user
@@ -10,6 +11,9 @@ class Api::PostSerializer < ApiSerializer
   has_one :user, serializer: Api::UserSerializer::PublicProfile
   has_many :comments do
     object.comments.sorted
+  end
+  has_many :photos do
+    object.sorted_photos
   end
 
   def liked
@@ -23,6 +27,14 @@ class Api::PostSerializer < ApiSerializer
   end
 
   def image_url
-    ix_refile_image_url object, :photo
+    if object.photo_id
+      ix_refile_image_url object, :photo
+    elsif (photo = object.sorted_photos.first)
+      ix_refile_image_url photo, :image
+    end
+  end
+
+  def body
+    simple_format auto_link(object.body, html: { target: '_blank' })
   end
 end
