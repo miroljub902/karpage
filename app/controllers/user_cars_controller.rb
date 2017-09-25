@@ -43,7 +43,7 @@ class UserCarsController < ApplicationController
       car.update_column :sorting, ids.index(car.id)
     end
 
-    respond_to_js { render(nothing: true, status: :ok) }
+    respond_to_js { head :ok }
   end
 
   def destroy
