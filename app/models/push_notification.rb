@@ -55,6 +55,7 @@ class PushNotification
   end
 
   def make_http_request!
+    retries = 0
     uri = URI.parse('https://onesignal.com/api/v1/notifications')
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -63,6 +64,10 @@ class PushNotification
                                   'Authorization' => "Basic #{ENV.fetch('ONESIGNAL_API_KEY')}")
     request.body = params.as_json.to_json
     http.request request
+  rescue Net::ReadTimeout
+    retries += 1
+    retry if retries == 1
+    OpenStruct.new(code: '408', body: 'Net::ReadTimeout')
   end
 
   def device_token
