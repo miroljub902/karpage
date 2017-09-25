@@ -83,11 +83,21 @@ class Api::PostsControllerTest < ApiControllerTest
 
   test 'returns post photos' do
     user = users(:john_doe)
-    user_post = user.posts.new body: 'Howdy'
-    photo = user_post.photos.new(image_id: 'howdy')
-    user_post.save!
+    user_post = user.posts.create! body: 'Howdy', photos_attributes: [{ image_id: 'dummy' }]
     get :index
     assert json_response['posts'][0].has_key?('photos')
-    assert_equal photo.id, json_response['posts'][0]['photos'][0]['id']
+    assert_equal user_post.photo_ids.first, json_response['posts'][0]['photos'][0]['id']
+  end
+
+  test 'feed returns comments' do
+    user       = users(:john_doe)
+    friend     = users(:friend)
+    friend_post = friend.posts.create! body: 'Howdy', photos_attributes: [{ image_id: 'dummy' }]
+    friend_post.comments.create! user: friend, body: 'Nice'
+    user.follow! friend
+    authorize_user user
+    get :feed
+    assert json_response['posts'][0].has_key?('comments')
+    assert_equal 'Nice', json_response['posts'][0]['comments'][0]['body']
   end
 end

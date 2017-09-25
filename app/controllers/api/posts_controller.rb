@@ -25,7 +25,6 @@ class Api::PostsController < ApiController
              .includes(:sorted_photos, :user)
              .page(params[:page])
              .per(params[:per] || Post.default_per_page)
-             .decorate
     respond_with @posts, include: %w[user comments.user photos]
   end
 
