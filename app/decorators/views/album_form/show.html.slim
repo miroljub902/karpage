@@ -17,7 +17,7 @@
             .remove.sprite.sprite-delete
           span.index= n + 1
           - if photo.new_record?
-            = f.fields_for :photos, [photo] do |pf|
+            = view.form.fields_for :photos, [photo] do |pf|
               = pf.hidden_field :image_id
               = pf.hidden_field :image_content_type
               = pf.hidden_field :image_size

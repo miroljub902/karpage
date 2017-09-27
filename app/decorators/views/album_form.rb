@@ -2,15 +2,16 @@
 
 module Views
   class AlbumForm < ViewDecorator
-    attr_reader :max_photos, :attachable
+    attr_reader :max_photos, :attachable, :form
 
     delegate :photos, to: :object
 
     def initialize(options = {})
       @attachable = options.delete(:attachable)
+      @form = options.delete(:form)
       raise 'No attachable specified' unless @attachable
       options[:url_base] ||= @attachable
-      super object: options[:form].object, **options
+      super object: form.object, **options
       @max_photos = options[:max_photos]
     end
 
