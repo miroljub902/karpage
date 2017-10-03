@@ -268,3 +268,8 @@ ActiveAdmin.setup do |config|
   #
   # config.include_default_association_filters = true
 end
+
+require 'active_admin/base_controller'
+ActiveAdmin::BaseController.class_eval do
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+end
