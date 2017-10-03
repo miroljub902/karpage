@@ -3,6 +3,7 @@
 class Api::UserSerializer < ApiSerializer
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
+  include ActionView::Helpers::AssetUrlHelper
 
   # Not for the PublicProfile
   if self == Api::UserSerializer
@@ -19,7 +20,7 @@ class Api::UserSerializer < ApiSerializer
     attribute :following, if: :current_user
     attribute :avatar_url, if: -> { object.avatar }
     attribute :profile_background_url, if: -> { object.profile_background }
-    attribute :profile_thumbnail_url, if: -> { object.profile_thumbnail }
+    attribute :profile_thumbnail_url
   end
 
   def profile_url
@@ -47,7 +48,8 @@ class Api::UserSerializer < ApiSerializer
   end
 
   def profile_thumbnail_url
-    ix_refile_image_url object, :profile_thumbnail
+    # ix_refile_image_url object, :profile_thumbnail
+    image_url 'profile/default.jpg'
   end
 
   def new_posts
