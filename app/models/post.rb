@@ -8,6 +8,7 @@ class Post < ApplicationRecord
   has_many :notifications, as: :notifiable, dependent: :delete_all
   has_many :photos, as: :attachable, dependent: :destroy
   has_many :sorted_photos, -> { sorted }, as: :attachable, class_name: 'Photo'
+  has_many :reports, as: :reportable, dependent: :destroy
 
   attachment :photo, type: :image
 
