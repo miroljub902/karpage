@@ -10,7 +10,7 @@ module UniqueViolationGuard
     false
   rescue ActiveRecord::StatementInvalid => e
     # Work around race condition
-    raise unless e.original_exception.is_a?(PG::InFailedSqlTransaction)
+    raise unless e.respond_to?(:original_exception) && e.original_exception.is_a?(PG::InFailedSqlTransaction)
     errors.add :base, 'Unexpected error, please try again later'
     false
   end
