@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddFbOgRefreshedToUsers < ActiveRecord::Migration
+class AddFbOgRefreshedToUsers < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :fb_og_refreshed, :boolean, null: false, default: true
     add_column :users, :fb_og_refreshed_at, :datetime
