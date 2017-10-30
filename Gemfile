@@ -44,7 +44,7 @@ gem 'mini_magick', '~> 4.8'
 
 gem 'sprockets', '~> 3.7'
 gem 'slim-rails', '~> 3.1'
-gem 'less-rails', '~> 2.8.0'
+gem 'less-rails', '~> 3.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'non-stupid-digest-assets', '~> 1.0.4'
