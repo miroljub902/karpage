@@ -136,6 +136,7 @@ class User < ApplicationRecord
       Notification.types[:your_car_comment] => true,
       Notification.types[:your_post_like] => true,
       Notification.types[:your_post_comment] => true,
+      Notification.types[:comment_replies] => true,
       Notification.types[:new_follower] => true,
       Notification.types[:following_new_car] => true,
       Notification.types[:following_new_first_car] => true,

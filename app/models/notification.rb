@@ -12,6 +12,7 @@ class Notification < ApplicationRecord
     your_post_like: 'your_post_like',
     your_car_comment: 'your_car_comment',
     your_post_comment: 'your_post_comment',
+    comment_replies: 'comment_replies',
     new_follower: 'new_follower',
     following_new_car: 'following_new_car',
     following_new_first_car: 'following_new_first_car',

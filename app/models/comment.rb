@@ -28,6 +28,8 @@ class Comment < ApplicationRecord
              Notification.types[:your_car_comment]
            when Post
              Notification.types[:your_post_comment]
+           when Comment
+             Notification.types[:comment_replies]
            end
     Notification.belay_create user: commentable.user, type: type, notifiable: self, source: user if type
     true
