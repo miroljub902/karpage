@@ -1,10 +1,9 @@
 {
-	"variables": [],
 	"info": {
 		"name": "Kar Page",
 		"_postman_id": "e504b7b6-f335-3150-5349-ccef7f9b6efb",
 		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -12,25 +11,187 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Get car",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/api/cars/:car_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"cars",
+								":car_id"
+							],
+							"variable": [
+								{
+									"key": "car_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Valid day names: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`"
+					},
+					"response": [
+						{
+							"id": "05c362a4-8b16-4774-be9e-890eefc49e5c",
+							"name": "(Dev) 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/posts/channels/monday",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"channels",
+										"monday"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Authorization, Content-Type, X-Requested-With, X-Prototype-Version, User-Agent, X-Resolution, Token, Origin, Accept",
+									"name": "Access-Control-Allow-Headers",
+									"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, PUT, PATCH, DELETE, OPTIONS",
+									"name": "Access-Control-Allow-Methods",
+									"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*",
+									"name": "Access-Control-Allow-Origin",
+									"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+								},
+								{
+									"key": "Access-Control-Max-Age",
+									"value": "1728000",
+									"name": "Access-Control-Max-Age",
+									"description": "Indicates how long the results of a preflight request can be cached in seconds."
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate",
+									"name": "Cache-Control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"543ecc497189370f8cb1787e48072a31\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff",
+									"name": "X-Content-Type-Options",
+									"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN",
+									"name": "X-Frame-Options",
+									"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "caa27afa-8f89-4b1c-a0df-04cdb7174c02",
+									"name": "X-Request-Id",
+									"description": "Custom header"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.668983",
+									"name": "X-Runtime",
+									"description": "Custom header"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block",
+									"name": "X-XSS-Protection",
+									"description": "Cross-site scripting (XSS) filter"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Mon Jan 18 2038 17:14:07 GMT-0600 (CST)",
+									"httpOnly": false,
+									"domain": "api.karpage.dev",
+									"path": "/",
+									"secure": false,
+									"value": "98ff952a3551f2ef4d9e31c300fd31b0f655b2b993afaa1e5c98391c6c8b5e810ffb95a580e8747e8b2f2ee7e62dfcc8808dd30e4860aea6cc35cc9981801844%3A%3A408913340",
+									"key": "user_credentials"
+								},
+								{
+									"expires": "Mon Jan 18 2038 17:14:07 GMT-0600 (CST)",
+									"httpOnly": true,
+									"domain": "api.karpage.dev",
+									"path": "/",
+									"secure": false,
+									"value": "WlZvaDRCR09ud2hSMERkdUk5T042dEdvNzZ3VUNuUEp3cGJDVEc5SzU3elJIRzJiWlBWUE54cUZDc1dIa28yN3kxUXVIaE13NnZnZkJZb3VXOW92NjNDUXRraC9Xc052Zy9BbXIxTlRsTGRNK3N1NlJVZGxPbHpISkJGYStGUkVDUkpleE50ZUg1bDgvdXZTZ0FBUXI0YWd1bzR6bTlNWlFCaGhLTzhibERoSDRKc3hvbFVxQjFtNXJqTEE4bmxxUVZEL21USS9VallJVkQwVGF3QnJac2IrRkR0L2g3bGR1d0t3YzlvSFlOeFhZajVIK1BwWVRJRXhhTWZQTE1WMVo1R01veTdQNlNNK1UyekZUWjhYZ3RLV0xoc21zcStXdzVoa0R4NC9qMS8xb1pyVjZYWGU1elBIOXpKZlAwemctLWRPNUxUWWs0NkFCWWZodVdyMnRtNkE9PQ%3D%3D--b44b4e8daa7819dea932a3377756e9ed6d264b04",
+									"key": "_KarPage_session"
+								}
+							],
+							"responseTime": 688,
+							"body": "{\n    \"posts\": [\n        {\n            \"id\": 267711040,\n            \"user_id\": null,\n            \"body\": \"Lorem ipsum dolor sit amet\",\n            \"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n            \"likes_count\": 0,\n            \"upvotes_count\": 0,\n            \"image_url\": \"https://karpage-dev.imgix.net/store/dummy?ixlib=rails-1.0.0\",\n            \"liked\": false,\n            \"upvoted\": false,\n            \"user\": null,\n            \"photos\": [\n        \t  {\n        \t  \t\"id\": 123,\n        \t  \t\"image_url\": \"https://...\",\n        \t  \t\"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n        \t  \t\"sorting\": 1\n        \t  }\n        \t]\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
 					"name": "Create car",
 					"request": {
-						"url": "{{host}}/api/cars",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"car\": {\n    \"year\": 2015,\n    \"make_name\": \"Audi\",\n    \"car_model_name\": \"R8\",\n    \"description\": \"My car\",\n    \"first\": false,\n    \"current\": true,\n    \"past\": false,\n    \"photos_attributes\": [{\n      \"image_id\": \"\",\n      \"image_content_type\": \"\",\n      \"image_size\": 123,\n      \"image_filename\": \"carpic.jpg\",\n      \"sorting\": 1\n    }]\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/cars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"cars"
+							]
 						},
 						"description": ""
 					},
@@ -39,6 +200,17 @@
 				{
 					"name": "Like a car",
 					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{host}}/api/cars/:car_id/like",
 							"host": [
@@ -50,25 +222,12 @@
 								":car_id",
 								"like"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": null,
 									"id": "car_id"
 								}
 							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
 						},
 						"description": ""
 					},
@@ -77,6 +236,21 @@
 				{
 					"name": "Reset car counter",
 					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"counter\": \"likes|comments\"\n}"
+						},
 						"url": {
 							"raw": "{{host}}/api/cars/:car_id/reset_counter",
 							"host": [
@@ -88,30 +262,12 @@
 								":car_id",
 								"reset_counter"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": null,
 									"id": "car_id"
 								}
 							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"counter\": \"likes|comments\"\n}"
 						},
 						"description": ""
 					},
@@ -120,6 +276,17 @@
 				{
 					"name": "Unlike a car",
 					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{host}}/api/cars/:car_id/like",
 							"host": [
@@ -131,7 +298,6 @@
 								":car_id",
 								"like"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": null,
@@ -139,17 +305,131 @@
 								}
 							]
 						},
-						"method": "DELETE",
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"description": "",
+			"item": [
+				{
+					"name": "Comment on a car",
+					"request": {
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n  \"comment\": {\n    \"body\": \"Howdy\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/cars/:car_id/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"cars",
+								":car_id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "car_id",
+									"value": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Comment on a post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment\": {\n    \"body\": \"\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/posts/:post_id/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								":post_id",
+								"comments"
+							],
+							"variable": [
+								{
+									"value": null,
+									"id": "post_id"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Reply to a comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment\": {\n    \"body\": \"reply\"\n  }\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/comments/:comment_id/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								":comment_id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": ""
+								}
+							]
 						},
 						"description": ""
 					},
@@ -164,29 +444,35 @@
 				{
 					"name": "Get notifications",
 					"request": {
-						"url": "{{host}}/api/notifications",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{host}}/api/notifications",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						},
 						"description": ""
 					},
 					"response": [
 						{
-							"id": "39e53b0a-fb2e-4049-81bb-8129a775dd42",
+							"id": "3ab124cf-4bb7-4b26-a81a-2e55f6be8846",
 							"name": "(Dev) 200 Ok",
 							"originalRequest": {
-								"url": "http://api.karpage.dev:3000/api/notifications",
 								"method": "GET",
 								"header": [
 									{
@@ -212,7 +498,21 @@
 										"value": "bac3ac45-1707-fe67-8097-d0dfdd32f0f2"
 									}
 								],
-								"body": {}
+								"body": {},
+								"url": {
+									"raw": "http://api.karpage.dev:3000/api/notifications",
+									"protocol": "http",
+									"host": [
+										"api",
+										"karpage",
+										"dev"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"notifications"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -307,72 +607,36 @@
 			]
 		},
 		{
-			"name": "Posts/Comments",
+			"name": "Posts",
 			"description": "",
 			"item": [
 				{
 					"name": "Create post",
 					"request": {
-						"url": "{{host}}/api/posts",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"post\": {\n    \"body\": \"\",\n    \"photo_id\": \"\",\n    \"photo_content_type\": \"\",\n    \"photo_size\": 123,\n    \"photo_filename\": \"photo.jpg\",\n    \"photos_attributes\": [{\n      \"image_id\": \"\",\n      \"image_content_type\": \"\",\n      \"image_size\": 123,\n      \"image_filename\": \"picture.jpg\",\n      \"sorting\": 1\n    }]\n  }\n}\n"
 						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Comment on a post",
-					"request": {
 						"url": {
-							"raw": "{{host}}/api/posts/:post_id/comments",
+							"raw": "{{host}}/api/posts",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"posts",
-								":post_id",
-								"comments"
-							],
-							"query": [],
-							"variable": [
-								{
-									"value": null,
-									"id": "post_id"
-								}
+								"posts"
 							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"comment\": {\n    \"body\": \"\"\n  }\n}\n"
 						},
 						"description": ""
 					},
@@ -381,6 +645,21 @@
 				{
 					"name": "Update comment",
 					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment\": {\n    \"body\": \"\"\n  }\n}\n"
+						},
 						"url": {
 							"raw": "{{host}}/api/posts/:post_id/comments/:id",
 							"host": [
@@ -393,7 +672,6 @@
 								"comments",
 								":id"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": null,
@@ -404,23 +682,6 @@
 									"id": "id"
 								}
 							]
-						},
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"comment\": {\n    \"body\": \"\"\n  }\n}\n"
 						},
 						"description": ""
 					},
@@ -429,6 +690,21 @@
 				{
 					"name": "Delete comment",
 					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{host}}/api/posts/:post_id/comments/:id",
 							"host": [
@@ -441,7 +717,6 @@
 								"comments",
 								":id"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": null,
@@ -453,23 +728,6 @@
 								}
 							]
 						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"description": ""
 					},
 					"response": []
@@ -477,6 +735,18 @@
 				{
 					"name": "Upvote post",
 					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
 						"url": {
 							"raw": "{{host}}/api/posts/:post_id/upvote",
 							"host": [
@@ -488,7 +758,6 @@
 								":post_id",
 								"upvote"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": "",
@@ -496,28 +765,13 @@
 								}
 							]
 						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {},
 						"description": ""
 					},
 					"response": [
 						{
-							"id": "069fa78f-3d21-4dd8-a6b8-257b5f2a32ef",
+							"id": "77f86d28-d071-4e27-b700-518a3a027db8",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
-								"url": "{{host}}/api/posts/267711040/upvote",
 								"method": "POST",
 								"header": [
 									{
@@ -537,7 +791,19 @@
 										"disabled": false
 									}
 								],
-								"body": {}
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/posts/267711040/upvote",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"267711040",
+										"upvote"
+									]
+								}
 							},
 							"status": "Created",
 							"code": 201,
@@ -651,6 +917,18 @@
 				{
 					"name": "Remove upvote from post",
 					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
 						"url": {
 							"raw": "{{host}}/api/posts/:post_id/upvote",
 							"host": [
@@ -662,7 +940,6 @@
 								":post_id",
 								"upvote"
 							],
-							"query": [],
 							"variable": [
 								{
 									"value": "",
@@ -670,28 +947,13 @@
 								}
 							]
 						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {},
 						"description": ""
 					},
 					"response": [
 						{
-							"id": "c8e6a784-df90-405b-91fa-b687e9368807",
+							"id": "36c4b460-46fa-48b0-b171-9e59ab704e20",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
-								"url": "{{host}}/api/posts/267711040/upvote",
 								"method": "DELETE",
 								"header": [
 									{
@@ -708,7 +970,19 @@
 										"disabled": false
 									}
 								],
-								"body": {}
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/posts/267711040/upvote",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"267711040",
+										"upvote"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -822,21 +1096,43 @@
 				{
 					"name": "Get posts for day",
 					"request": {
-						"url": "{{host}}/api/posts/channels/monday",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": {
+							"raw": "{{host}}/api/posts/channels/monday",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"posts",
+								"channels",
+								"monday"
+							]
+						},
 						"description": "Valid day names: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`"
 					},
 					"response": [
 						{
-							"id": "a90bf99c-eff4-4bb2-9d7f-f43d404d24d1",
+							"id": "4db9e2a0-3d28-4ac0-b87f-5df59bce3d9a",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
-								"url": "{{host}}/api/posts/channels/monday",
 								"method": "GET",
 								"header": [],
-								"body": {}
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/posts/channels/monday",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"channels",
+										"monday"
+									]
+								}
 							},
 							"status": "OK",
 							"code": 200,
@@ -970,37 +1266,42 @@
 						}
 					],
 					"request": {
-						"url": "{{host}}/api/session",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Cache-Control",
-								"value": "no-cache",
-								"description": ""
+								"value": "no-cache"
 							},
 							{
 								"key": "Postman-Token",
-								"value": "360f8481-444d-8b8a-c416-6bd756542dc3",
-								"description": ""
+								"value": "360f8481-444d-8b8a-c416-6bd756542dc3"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"session\": {\n    \"login\": \"johndoe@example.com\", \n    \"password\": \"password\", \n    \"device_info\": { \"user_id\": \"...\"}\n  }\n}"
 						},
+						"url": {
+							"raw": "{{host}}/api/session",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						},
 						"description": ""
 					},
 					"response": [
 						{
-							"id": "6b067bee-156e-41e9-a033-0a1afa23f4f3",
+							"id": "1d630be0-9a0a-4b3c-80eb-44094ab1c611",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
-								"url": "http://api.karpage.dev:3000/api/session",
 								"method": "POST",
 								"header": [
 									{
@@ -1026,6 +1327,20 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\"session\":{\"login\":\"johndoe@example.com\", \"password\": \"password\", \"device_info\": { \"user_id\": \"...\"}}}"
+								},
+								"url": {
+									"raw": "http://api.karpage.dev:3000/api/session",
+									"protocol": "http",
+									"host": [
+										"api",
+										"karpage",
+										"dev"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"session"
+									]
 								}
 							},
 							"status": "Created",
@@ -1117,10 +1432,9 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "a7fa11c5-8969-4013-b0d8-ea6b040e68ed",
+							"id": "fea4ef2f-1a97-4bd2-a7dc-19552a393e83",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
-								"url": "http://api.karpage.dev:3000/api/session",
 								"method": "POST",
 								"header": [
 									{
@@ -1146,6 +1460,20 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\"session\":{\"login\":\"johndoe@example.com\", \"password\": \"password\", \"device_info\": { \"user_id\": \"...\"}}}"
+								},
+								"url": {
+									"raw": "http://api.karpage.dev:3000/api/session",
+									"protocol": "http",
+									"host": [
+										"api",
+										"karpage",
+										"dev"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"session"
+									]
 								}
 							},
 							"status": "Created",
@@ -1237,10 +1565,9 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "ae630eb9-2f6a-432e-9c87-c806af3916a2",
+							"id": "0fb9be74-8995-4f09-abf7-24facb4b828c",
 							"name": "(Staging) 201 Created",
 							"originalRequest": {
-								"url": "{{host}}/api/session",
 								"method": "POST",
 								"header": [
 									{
@@ -1264,6 +1591,16 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\"session\":{\"login\":\"johndoe@example.com\", \"password\": \"password\", \"device_info\": { \"user_id\": \"...\"}}}"
+								},
+								"url": {
+									"raw": "{{host}}/api/session",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
 								}
 							},
 							"status": "Created",
@@ -1383,18 +1720,26 @@
 				{
 					"name": "Login (Facebook)",
 					"request": {
-						"url": "{{host}}/api/session",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\"session\":{\"facebook_token\":\"123abc...\", \"device_info\": { \"user_id\": \"...\"}}}"
+						},
+						"url": {
+							"raw": "{{host}}/api/session",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
 						},
 						"description": ""
 					},
@@ -1409,18 +1754,26 @@
 				{
 					"name": "Signup",
 					"request": {
-						"url": "{{host}}/api/user",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user\": {\n        \"email\":\"johndoe@example.com\", \n        \"login\": \"johndoe\", \n        \"password\": \"password\",\n        \"facebook_token\": \"123abc\",\n        \"location\": \"\",\n        \"description\": \"\",\n        \"link\": \"\",\n        \"name\": \"\",\n        \"avatar_id\": \"\",\n        \"profile_background_id\": \"\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
 						},
 						"description": "Password is not required when sending `facebook_token`."
 					},
@@ -1429,42 +1782,46 @@
 				{
 					"name": "Update user",
 					"request": {
-						"url": "{{host}}/api/user",
 						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Authorization",
-								"value": "8ee028a79deff8f9735b8483118502a009a708292af5e84e4f7ea1e083acb021",
-								"description": ""
+								"value": "8ee028a79deff8f9735b8483118502a009a708292af5e84e4f7ea1e083acb021"
 							},
 							{
 								"key": "Cache-Control",
-								"value": "no-cache",
-								"description": ""
+								"value": "no-cache"
 							},
 							{
 								"key": "Postman-Token",
-								"value": "5d76a3ca-b682-24eb-5130-0cc844467d98",
-								"description": ""
+								"value": "5d76a3ca-b682-24eb-5130-0cc844467d98"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user\": {\n        \"email\":\"johndoe@example.com\", \n        \"password\": \"password\",\n        \"location\": \"\",\n        \"description\": \"\",\n        \"link\": \"\",\n        \"name\": \"\",\n        \"avatar_id\": \"\",\n        \"avatar_content_type\": \"\",\n        \"avatar_size\": 123,\n        \"avatar_filename\": \"\",\n        \"profile_background_id\": \"\",\n        \"profile_background_content_type\": \"\",\n        \"profile_background_size\": 123,\n        \"profile_background_filename\": \"\",\n        \"dream_cars_attributes\": [\n            { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" }\n        ],\n        \"next_car_attributes\": { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" },\n        \"push_settings\": {\n            \"your_car_like\": true,\n            \"your_car_comment\": true,\n            \"your_post_like\": true,\n            \"your_post_comment\": true,\n            \"new_follower\": true,\n            \"following_new_car\": true,\n            \"following_moves_new_car\": true,\n            \"following_next_car\": true,\n            \"following_dream_car\": true,\n            \"following_new_post\": true\n        }\n    }\n}"
 						},
+						"url": {
+							"raw": "{{host}}/api/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
 						"description": "`push_settings` should be updated whole, sending a single setting will reset the rest."
 					},
 					"response": [
 						{
-							"id": "eca8ba04-d5c4-4bae-a5f8-c265f77ea135",
+							"id": "5d9828bd-d5af-454f-bdc0-ab107fb4c500",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
-								"url": "http://api.karpage.dev:3000/api/user",
 								"method": "PATCH",
 								"header": [
 									{
@@ -1493,6 +1850,20 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"user\": {\n        \"email\":\"johndoe@example.com\", \n        \"password\": \"password\",\n        \"location\": \"\",\n        \"description\": \"\",\n        \"link\": \"\",\n        \"name\": \"\",\n        \"avatar_id\": \"\",\n        \"avatar_content_type\": \"\",\n        \"avatar_size\": 123,\n        \"avatar_filename\": \"\",\n        \"profile_background_id\": \"\",\n        \"profile_background_content_type\": \"\",\n        \"profile_background_size\": 123,\n        \"profile_background_filename\": \"\",\n        \"dream_cars_attributes\": [\n            { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" }\n        ],\n        \"next_car_attributes\": { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.karpage.dev:3000/api/user",
+									"protocol": "http",
+									"host": [
+										"api",
+										"karpage",
+										"dev"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user"
+									]
 								}
 							},
 							"status": "OK",
@@ -1584,10 +1955,9 @@
 							"body": "{\"user\":{\"id\":408913340,\"name\":\"\",\"email\":\"johndoe@example.com\",\"login\":\"johndoe\",\"location\":\"\",\"description\":\"\",\"link\":\"\",\"access_token\":\"8ee028a79deff8f9735b8483118502a009a708292af5e84e4f7ea1e083acb021\",\"cars_count\":0,\"avatar_url\":null,\"profile_background_url\":null,\"followers_count\":0,\"following_count\":0,\"instagram_id\":null,\"new_posts\":0,\"new_followers\":0,\"push_settings\":{\"your_car_like\":true,\"your_car_comment\":true,\"your_post_like\":true,\"your_post_comment\":true,\"new_follower\":true,\"following_new_car\":true,\"following_moves_new_car\":true,\"following_next_car\":true,\"following_dream_car\":true,\"following_new_post\":true}},\"dream_cars\":[{\"id\":980190963,\"created_at\":\"2017-05-04T18:39:53.478-07:00\",\"image_url\":null}],\"current_cars\":[],\"previous_cars\":[],\"next_car\":{\"id\":980190964,\"created_at\":\"2017-05-04T18:39:53.481-07:00\",\"image_url\":null},\"first_car\":null}"
 						},
 						{
-							"id": "5571f1f9-0902-455a-968f-d52827244558",
+							"id": "6df688e2-d1b4-435d-923e-52cf7a90b9fb",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
-								"url": "http://api.karpage.dev:3000/api/user",
 								"method": "PATCH",
 								"header": [
 									{
@@ -1616,6 +1986,20 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"user\": {\n        \"email\":\"johndoe@example.com\", \n        \"password\": \"password\",\n        \"location\": \"\",\n        \"description\": \"\",\n        \"link\": \"\",\n        \"name\": \"\",\n        \"avatar_id\": \"\",\n        \"avatar_content_type\": \"\",\n        \"avatar_size\": 123,\n        \"avatar_filename\": \"\",\n        \"profile_background_id\": \"\",\n        \"profile_background_content_type\": \"\",\n        \"profile_background_size\": 123,\n        \"profile_background_filename\": \"\",\n        \"dream_cars_attributes\": [\n            { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" }\n        ],\n        \"next_car_attributes\": { \"image_id\": \"\", \"image_content_type\": \"\", \"image_size\": 123, \"image_filename\": \"\" }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://api.karpage.dev:3000/api/user",
+									"protocol": "http",
+									"host": [
+										"api",
+										"karpage",
+										"dev"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user"
+									]
 								}
 							},
 							"status": "OK",
@@ -1711,16 +2095,24 @@
 				{
 					"name": "Get current user",
 					"request": {
-						"url": "{{host}}/api/user",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{host}}/api/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
 						"description": ""
 					},
 					"response": []
@@ -1728,21 +2120,29 @@
 				{
 					"name": "Get user",
 					"request": {
-						"url": "{{host}}/api/users/johndoe",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {},
+						"url": {
+							"raw": "{{host}}/api/users/johndoe",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"johndoe"
+							]
+						},
 						"description": ""
 					},
 					"response": []
@@ -1750,23 +2150,31 @@
 				{
 					"name": "Reset user counter",
 					"request": {
-						"url": "{{host}}/api/user/reset_counter",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							},
 							{
 								"key": "Authorization",
-								"value": "{{access_token}}",
-								"description": ""
+								"value": "{{access_token}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"counter\": \"friends_posts|followers\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/user/reset_counter",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"reset_counter"
+							]
 						},
 						"description": ""
 					},

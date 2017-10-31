@@ -44,6 +44,10 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :comments, only: [] do
+      resources :comments, only: %i[create], commentable_type: 'Comment'
+    end
+
     resources :filters, only: :index
     resources :cars, only: %i[index show create update destroy] do
       put :reset_counter
