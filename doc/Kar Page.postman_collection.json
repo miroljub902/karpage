@@ -37,7 +37,7 @@
 					},
 					"response": [
 						{
-							"id": "05c362a4-8b16-4774-be9e-890eefc49e5c",
+							"id": "05e41cd3-f1bd-4a05-8756-99c1f25f596c",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"method": "GET",
@@ -434,6 +434,162 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "Get comment replies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{host}}/api/comments/:comment_id/comments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								":comment_id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "comment_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Valid day names: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`"
+					},
+					"response": [
+						{
+							"id": "3e81bab2-7877-4291-9fd4-34039db1fc11",
+							"name": "(Dev) 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/posts/channels/monday",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"channels",
+										"monday"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Authorization, Content-Type, X-Requested-With, X-Prototype-Version, User-Agent, X-Resolution, Token, Origin, Accept",
+									"name": "Access-Control-Allow-Headers",
+									"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, PUT, PATCH, DELETE, OPTIONS",
+									"name": "Access-Control-Allow-Methods",
+									"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*",
+									"name": "Access-Control-Allow-Origin",
+									"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+								},
+								{
+									"key": "Access-Control-Max-Age",
+									"value": "1728000",
+									"name": "Access-Control-Max-Age",
+									"description": "Indicates how long the results of a preflight request can be cached in seconds."
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate",
+									"name": "Cache-Control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"543ecc497189370f8cb1787e48072a31\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff",
+									"name": "X-Content-Type-Options",
+									"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN",
+									"name": "X-Frame-Options",
+									"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "caa27afa-8f89-4b1c-a0df-04cdb7174c02",
+									"name": "X-Request-Id",
+									"description": "Custom header"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.668983",
+									"name": "X-Runtime",
+									"description": "Custom header"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block",
+									"name": "X-XSS-Protection",
+									"description": "Cross-site scripting (XSS) filter"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Mon Jan 18 2038 17:14:07 GMT-0600 (CST)",
+									"httpOnly": false,
+									"domain": "api.karpage.dev",
+									"path": "/",
+									"secure": false,
+									"value": "98ff952a3551f2ef4d9e31c300fd31b0f655b2b993afaa1e5c98391c6c8b5e810ffb95a580e8747e8b2f2ee7e62dfcc8808dd30e4860aea6cc35cc9981801844%3A%3A408913340",
+									"key": "user_credentials"
+								},
+								{
+									"expires": "Mon Jan 18 2038 17:14:07 GMT-0600 (CST)",
+									"httpOnly": true,
+									"domain": "api.karpage.dev",
+									"path": "/",
+									"secure": false,
+									"value": "WlZvaDRCR09ud2hSMERkdUk5T042dEdvNzZ3VUNuUEp3cGJDVEc5SzU3elJIRzJiWlBWUE54cUZDc1dIa28yN3kxUXVIaE13NnZnZkJZb3VXOW92NjNDUXRraC9Xc052Zy9BbXIxTlRsTGRNK3N1NlJVZGxPbHpISkJGYStGUkVDUkpleE50ZUg1bDgvdXZTZ0FBUXI0YWd1bzR6bTlNWlFCaGhLTzhibERoSDRKc3hvbFVxQjFtNXJqTEE4bmxxUVZEL21USS9VallJVkQwVGF3QnJac2IrRkR0L2g3bGR1d0t3YzlvSFlOeFhZajVIK1BwWVRJRXhhTWZQTE1WMVo1R01veTdQNlNNK1UyekZUWjhYZ3RLV0xoc21zcStXdzVoa0R4NC9qMS8xb1pyVjZYWGU1elBIOXpKZlAwemctLWRPNUxUWWs0NkFCWWZodVdyMnRtNkE9PQ%3D%3D--b44b4e8daa7819dea932a3377756e9ed6d264b04",
+									"key": "_KarPage_session"
+								}
+							],
+							"responseTime": 688,
+							"body": "{\n    \"posts\": [\n        {\n            \"id\": 267711040,\n            \"user_id\": null,\n            \"body\": \"Lorem ipsum dolor sit amet\",\n            \"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n            \"likes_count\": 0,\n            \"upvotes_count\": 0,\n            \"image_url\": \"https://karpage-dev.imgix.net/store/dummy?ixlib=rails-1.0.0\",\n            \"liked\": false,\n            \"upvoted\": false,\n            \"user\": null,\n            \"photos\": [\n        \t  {\n        \t  \t\"id\": 123,\n        \t  \t\"image_url\": \"https://...\",\n        \t  \t\"created_at\": \"2017-05-15T14:24:06.000-07:00\",\n        \t  \t\"sorting\": 1\n        \t  }\n        \t]\n        }\n    ]\n}"
+						}
+					]
 				}
 			]
 		},
@@ -470,7 +626,7 @@
 					},
 					"response": [
 						{
-							"id": "3ab124cf-4bb7-4b26-a81a-2e55f6be8846",
+							"id": "886139df-010b-432d-b27c-91b95034389b",
 							"name": "(Dev) 200 Ok",
 							"originalRequest": {
 								"method": "GET",
@@ -769,7 +925,7 @@
 					},
 					"response": [
 						{
-							"id": "77f86d28-d071-4e27-b700-518a3a027db8",
+							"id": "4b915515-ce28-49d1-b14d-85036aae1fbe",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"method": "POST",
@@ -951,7 +1107,7 @@
 					},
 					"response": [
 						{
-							"id": "36c4b460-46fa-48b0-b171-9e59ab704e20",
+							"id": "b243ee73-1994-482d-a7a3-6f2560b89368",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"method": "DELETE",
@@ -1115,7 +1271,7 @@
 					},
 					"response": [
 						{
-							"id": "4db9e2a0-3d28-4ac0-b87f-5df59bce3d9a",
+							"id": "d7141a48-16f9-4332-909c-474db8e407b3",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"method": "GET",
@@ -1299,7 +1455,7 @@
 					},
 					"response": [
 						{
-							"id": "1d630be0-9a0a-4b3c-80eb-44094ab1c611",
+							"id": "ef0d920f-27a0-4cd4-b22c-5723312098aa",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"method": "POST",
@@ -1432,7 +1588,7 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "fea4ef2f-1a97-4bd2-a7dc-19552a393e83",
+							"id": "a9960e7a-bd91-4532-b8f6-d8064ed77ec2",
 							"name": "(Dev) 201 Created",
 							"originalRequest": {
 								"method": "POST",
@@ -1565,7 +1721,7 @@
 							"body": "{\"session\":{\"access_token\":\"d24a8ebd0e634508443ca54d47825a0a957a61b3a874b0ee3858f10ffef214be\"}}"
 						},
 						{
-							"id": "0fb9be74-8995-4f09-abf7-24facb4b828c",
+							"id": "a783bdb8-01da-4305-9ff9-d6c0e79768ee",
 							"name": "(Staging) 201 Created",
 							"originalRequest": {
 								"method": "POST",
@@ -1819,7 +1975,7 @@
 					},
 					"response": [
 						{
-							"id": "5d9828bd-d5af-454f-bdc0-ab107fb4c500",
+							"id": "3effa2e3-a784-45ca-aa61-df18ab8c2e93",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"method": "PATCH",
@@ -1955,7 +2111,7 @@
 							"body": "{\"user\":{\"id\":408913340,\"name\":\"\",\"email\":\"johndoe@example.com\",\"login\":\"johndoe\",\"location\":\"\",\"description\":\"\",\"link\":\"\",\"access_token\":\"8ee028a79deff8f9735b8483118502a009a708292af5e84e4f7ea1e083acb021\",\"cars_count\":0,\"avatar_url\":null,\"profile_background_url\":null,\"followers_count\":0,\"following_count\":0,\"instagram_id\":null,\"new_posts\":0,\"new_followers\":0,\"push_settings\":{\"your_car_like\":true,\"your_car_comment\":true,\"your_post_like\":true,\"your_post_comment\":true,\"new_follower\":true,\"following_new_car\":true,\"following_moves_new_car\":true,\"following_next_car\":true,\"following_dream_car\":true,\"following_new_post\":true}},\"dream_cars\":[{\"id\":980190963,\"created_at\":\"2017-05-04T18:39:53.478-07:00\",\"image_url\":null}],\"current_cars\":[],\"previous_cars\":[],\"next_car\":{\"id\":980190964,\"created_at\":\"2017-05-04T18:39:53.481-07:00\",\"image_url\":null},\"first_car\":null}"
 						},
 						{
-							"id": "6df688e2-d1b4-435d-923e-52cf7a90b9fb",
+							"id": "6923457b-92f1-442f-aab4-58fb32a035f6",
 							"name": "(Dev) 200 OK",
 							"originalRequest": {
 								"method": "PATCH",
