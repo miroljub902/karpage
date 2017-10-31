@@ -58,5 +58,5 @@
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Post', class: 'btn btn-green pull-right'
 
-          .comment-list data-commentable-type="Car" data-commentable-id=@car.id
-            = render partial: 'comments/comment', collection: @car.comments, as: :comment, commentable: @car
+        .comment-list data-commentable-type="Car" data-commentable-id=@car.id
+          = render partial: 'comments/comment', collection: @car.comments, as: :comment, commentable: @car
