@@ -1,0 +1,46 @@
+- commentable = local_assigns.key?(:commentable) ? local_assigns[:commentable] : comment.commentable
+- comment = comment.decorate
+.media.comment data-id=comment.id
+  .media-left
+    = link_to profile_path(comment.user), class: 'profile-avatar' do
+      .initials= comment.user.decorate.initials
+      - if comment.user.avatar
+        img.media-object.avatar src=ix_refile_image_url(comment.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 70, h: 70) width="70" height="70"
+
+  .media-body
+    h4.media-heading.clearfix
+      = comment.user.to_s
+      .small.created-at= comment.created_at.strftime('%a %b %d %Y at %l:%M%P')
+
+    .pull-right
+      - if policy(comment).destroy?
+        = link_to [comment, { return_to: comment.commentable_path }], title: 'Delete this comment', method: :delete, data: { remote: true, confirm: 'Are you sure?' } do
+          .fa.fa-trash-o
+
+      - if policy(comment).reply?
+        a.m-l-1.btn-plain href="#comment-#{comment.id}__reply" data-toggle="collapse"
+          .fa.fa-comment-o
+          span Reply
+
+    = simple_format comment.body
+
+    - if link ||= false
+      = link_to link_text, link
+
+    - if policy(comment).reply?
+      = form_for Comment.new(commentable: comment),
+        url: comment_comments_path(comment),
+        remote: true,
+        html: { id: "comment-#{comment.id}__reply", class: 'new-comment collapse clearfix m-t-3' },
+        data: { 'commentable-type': 'Comment', 'commentable-id': comment.id } do |f|
+
+        = hidden_field_tag 'return_to', comment_comments_path(comment.id)
+        = f.text_area :body, class: 'form-control', rows: 6
+        = f.submit 'Reply', class: 'btn btn-green pull-right'
+
+    - unless commentable.is_a?(Comment)
+      .comment-list data-commentable-type="Comment" data-commentable-id=comment.id
+        - replies = comment.recent_comments
+        = render partial: "comments/comment", collection: replies, as: :comment, commentable: comment
+        - if comment.comments_count > replies.size
+          .m-t-2= link_to "More replies (#{comment.comments_count})", comment_path(comment)

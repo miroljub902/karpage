@@ -4,6 +4,8 @@ class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :commentable, polymorphic: true, counter_cache: true
   has_many :notifications, as: :notifiable, dependent: :delete_all
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :recent_comments, -> { sorted.page(1).per(10) }, class_name: 'Comment', as: :commentable
 
   validates :body, presence: true
 

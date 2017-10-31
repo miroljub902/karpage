@@ -92,8 +92,14 @@ Rails.application.routes.draw do
     resources :posts, only: %i[new create edit update destroy] do
       resources :comments, only: %i[create destroy], scope: :post
     end
+
   end
   resource :user_session, only: %i[new create destroy], path: 'session'
+
+  resources :comments, only: %i[show destroy] do
+    resources :comments, only: %i[create destroy], scope: :comment
+  end
+  # get '/car'
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 

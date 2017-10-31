@@ -47,7 +47,7 @@
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Comment', class: 'btn btn-green pull-right'
 
-        = render partial: 'comments/post_comment', collection: post.comments, as: :comment
+        = render partial: 'comments/comment', collection: post.comments, as: :comment
     - else
       .text-center.m-t-2
         = link_to 'Reply', post_path(post.user, post), class: 'btn btn-default'

@@ -35,10 +35,14 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
     .header
       h3
         .sprite.sprite-chat-bubble
-          span.comments-count= post.comments_count
+          span.comments-count data-commentable-type='Post' data-commentable-id=post.id = post.comments_count
         'Comments
 
-    = form_for Comment.new, url: user_post_comments_path(post), remote: true, html: { class: 'media new-comment m-t-1' } do |f|
+    = form_for Comment.new,
+      url: user_post_comments_path(post),
+      remote: true,
+      data: { 'commentable-type': 'Post', 'commentable-id': post.id },
+      html: { class: 'media new-comment m-t-1' } do |f|
       = hidden_field_tag :return_to, request.original_url
       .media
         .media-left
@@ -51,4 +55,4 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
           = f.text_area :body, class: 'form-control', rows: 6
           = f.submit 'Reply', class: 'btn btn-green pull-right'
 
-.comment-list.padded data-commentable-type="Post" data-commentable-id=post.id = render partial: 'comments/post_comment.html', collection: post.comments, as: :comment
+.comment-list.padded data-commentable-type="Post" data-commentable-id=post.id = render partial: 'comments/comment.html', collection: post.comments, as: :comment

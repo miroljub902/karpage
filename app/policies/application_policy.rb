@@ -51,5 +51,17 @@ class ApplicationPolicy
     def resolve
       scope
     end
+
+    private
+
+    def admin_user?
+      user&.admin?
+    end
+  end
+
+  private
+
+  def admin_user?
+    user&.admin?
   end
 end

@@ -6,7 +6,7 @@ class UserCarDecorator < Draper::Decorator
   decorates_associations :user
 
   def comments
-    model.comments.sorted.decorate
+    model.comments.sorted.includes(:user, recent_comments: [:user, { commentable: :user }], commentable: :user).decorate
   end
 
   def first_photo_url

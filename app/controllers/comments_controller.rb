@@ -3,6 +3,12 @@
 class CommentsController < ApplicationController
   before_action :require_user
 
+  layout 'simple'
+
+  def show
+    @comment = Comment.includes(:commentable, :user, comments: [:user]).find(params[:id]).decorate
+  end
+
   def create
     @comment = current_user.comments.create(comment_params.merge(commentable: commentable))
     respond_to do |format|
@@ -12,7 +18,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = commentable.comments.find_by(id: params[:id])
+    @comment = policy_scope(Comment).find_by(id: params[:id])
     return render_404 unless @comment
     authorize @comment
     @comment.destroy

@@ -55,6 +55,10 @@ class Post < ApplicationRecord
 
   paginates_per 15
 
+  def to_s
+    "#{user}'s post on #{created_at.strftime('%B %d %Y')}"
+  end
+
   def cover_photo
     sorted_photos.first || photo
   end

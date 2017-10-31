@@ -1,2 +1,3 @@
+dataSelector = '[data-commentable-type=<%= @comment.commentable_type %>][data-commentable-id=<%= @comment.commentable_id %>]'
 $('.comment[data-id=<%= @comment.id %>]').remove();
-$('.comments-count').html(<%= @comment.commentable.comments_count %>);
+$('.comments-count' + dataSelector).html(<%= @comment.commentable.comments_count %>);

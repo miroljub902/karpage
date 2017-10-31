@@ -36,12 +36,18 @@
         hr
         h3
           .sprite.sprite-chat-bubble
-            span.comments-count= @car.comments.count
+            span.comments-count data-commentable-type="Car" data-commentable-id=@car.id = @car.comments.count
           'Comments
 
         - if signed_in?
-          = form_for Comment.new, url: user_car_comments_path, html: { class: 'media new-comment' } do |f|
-            = hidden_field_tag :return_to, request.original_url
+          = form_for Comment.new,
+            url: user_car_comments_path,
+            remote: true,
+            html: { class: 'media new-comment' },
+            data: { 'commentable-type': 'Car', 'commentable-id': @car.id } do |f|
+
+            = hidden_field_tag 'return_to', request.original_url
+
             .media-left
               .profile-avatar
                 .initials= current_user.initials
@@ -52,4 +58,5 @@
               = f.text_area :body, class: 'form-control', rows: 6
               = f.submit 'Post', class: 'btn btn-green pull-right'
 
-        = render partial: 'comments/car_comment', collection: @car.comments, as: :comment
+          .comment-list data-commentable-type="Car" data-commentable-id=@car.id
+            = render partial: 'comments/comment', collection: @car.comments, as: :comment, commentable: @car
