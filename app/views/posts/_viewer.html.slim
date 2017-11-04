@@ -52,7 +52,7 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
               img.media-object.avatar src=ix_refile_image_url(current_user, :avatar, auto: 'enhance,format', fit: 'crop', w: 70, h: 70) width="70" height="70"
 
         .media-body
-          = f.text_area :body, class: 'form-control', rows: 6
+          = f.text_area :body, class: 'form-control js-mentions', rows: 6
           = f.submit 'Reply', class: 'btn btn-green pull-right'
 
 .comment-list.padded data-commentable-type="Post" data-commentable-id=post.id = render partial: 'comments/comment.html', collection: post.comments, as: :comment

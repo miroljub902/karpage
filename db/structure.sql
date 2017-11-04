@@ -416,6 +416,71 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
+-- Name: hashtag_uses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE hashtag_uses (
+    id bigint NOT NULL,
+    hashtag_id bigint,
+    taggable_type character varying,
+    taggable_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: hashtag_uses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE hashtag_uses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hashtag_uses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE hashtag_uses_id_seq OWNED BY hashtag_uses.id;
+
+
+--
+-- Name: hashtags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE hashtags (
+    id bigint NOT NULL,
+    tag citext,
+    hashtag_uses_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: hashtags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE hashtags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: hashtags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE hashtags_id_seq OWNED BY hashtags.id;
+
+
+--
 -- Name: identities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1033,6 +1098,20 @@ ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY hashtag_uses ALTER COLUMN id SET DEFAULT nextval('hashtag_uses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY hashtags ALTER COLUMN id SET DEFAULT nextval('hashtags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_seq'::regclass);
 
 
@@ -1205,6 +1284,22 @@ ALTER TABLE ONLY follows
 
 ALTER TABLE ONLY friendly_id_slugs
     ADD CONSTRAINT friendly_id_slugs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: hashtag_uses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY hashtag_uses
+    ADD CONSTRAINT hashtag_uses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: hashtags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY hashtags
+    ADD CONSTRAINT hashtags_pkey PRIMARY KEY (id);
 
 
 --
@@ -1513,6 +1608,41 @@ CREATE INDEX index_friendly_id_slugs_on_sluggable_id ON friendly_id_slugs USING 
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USING btree (sluggable_type);
+
+
+--
+-- Name: index_hashtag_uses_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_hashtag_uses_on_created_at ON hashtag_uses USING btree (created_at);
+
+
+--
+-- Name: index_hashtag_uses_on_hashtag_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_hashtag_uses_on_hashtag_id ON hashtag_uses USING btree (hashtag_id);
+
+
+--
+-- Name: index_hashtag_uses_on_taggable_type_and_taggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_hashtag_uses_on_taggable_type_and_taggable_id ON hashtag_uses USING btree (taggable_type, taggable_id);
+
+
+--
+-- Name: index_hashtags_on_hashtag_uses_count; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_hashtags_on_hashtag_uses_count ON hashtags USING btree (hashtag_uses_count);
+
+
+--
+-- Name: index_hashtags_on_tag; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_hashtags_on_tag ON hashtags USING btree (tag);
 
 
 --
@@ -1978,6 +2108,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170718194953'),
 ('20170718203928'),
 ('20170910193821'),
-('20171030234131');
+('20171030234131'),
+('20171104220734'),
+('20171104221107');
 
 

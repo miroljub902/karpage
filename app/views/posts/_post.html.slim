@@ -44,7 +44,7 @@
           = form_for Comment.new, url: user_post_comments_path(post), html: { class: 'media new-comment m-t-2' } do |f|
             = hidden_field_tag :return_to, request.original_url
             .media-body
-              = f.text_area :body, class: 'form-control', rows: 6
+              = f.text_area :body, class: 'form-control js-mentions', rows: 6
               = f.submit 'Comment', class: 'btn btn-green pull-right'
 
         = render partial: 'comments/comment', collection: post.comments, as: :comment

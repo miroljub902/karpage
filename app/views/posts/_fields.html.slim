@@ -1,6 +1,6 @@
 = f.hidden_field :post_channel_id
 .title Post Update
-= f.text_area :body, rows: 8, class: 'form-control', placeholder: 'Post pictures of your car, pictures from car events, car spotting, or anything in between...'
+= f.text_area :body, rows: 8, class: 'form-control js-mentions', placeholder: 'Post pictures of your car, pictures from car events, car spotting, or anything in between...'
 = f.file_field :photo
 
 - if f.object.photo

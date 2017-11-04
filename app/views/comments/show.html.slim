@@ -43,7 +43,7 @@
                   data: { 'commentable-type': 'Comment', 'commentable-id': comment.id } do |f|
 
                   = hidden_field_tag 'return_to', comment_comments_path(comment.id)
-                  = f.text_area :body, class: 'form-control', rows: 6
+                  = f.text_area :body, class: 'form-control js-mentions', rows: 6
                   = f.submit 'Reply', class: 'btn btn-green pull-right'
 
               - unless commentable.is_a?(Comment)

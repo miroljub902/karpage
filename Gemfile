@@ -32,6 +32,7 @@ gem 'rack-attack', '~> 5.0.1'
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'groupdate', '~> 3.2.0'
 gem 'rinku', '~> 2.0.3'
+gem 'rack-cors', '~> 1.0'
 
 gem 'sidekiq', '~> 5.0'
 gem 'sidekiq-failures', '~> 1.0'

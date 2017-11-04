@@ -34,6 +34,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :api_base
 
+  def api_url(path_helper, *args)
+    '//' + api_base + public_send("api_#{path_helper}_path", *args)
+  end
+  helper_method :api_url
+
   def signed_in?
     current_user.present?
   end

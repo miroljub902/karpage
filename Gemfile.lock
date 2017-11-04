@@ -276,6 +276,7 @@ GEM
     rack (2.0.3)
     rack-attack (5.0.1)
       rack
+    rack-cors (1.0.2)
     rack-protection (2.0.0)
       rack
     rack-test (0.7.0)
@@ -463,6 +464,7 @@ DEPENDENCIES
   pry-rails (~> 0.3)
   pundit (~> 1.1)
   rack-attack (~> 5.0.1)
+  rack-cors (~> 1.0)
   rails (= 5.1.4)
   rails_autolink (~> 1.1.6)
   refile!

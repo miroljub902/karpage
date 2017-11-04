@@ -68,6 +68,8 @@ Rails.application.routes.draw do
         resources :posts_channels, path: 'channels', only: %i[index show]
       end
     end
+
+    resources :hashtags, only: :index
   end
 
   scope constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
@@ -96,7 +98,6 @@ Rails.application.routes.draw do
     resources :posts, only: %i[new create edit update destroy] do
       resources :comments, only: %i[create destroy], scope: :post
     end
-
   end
   resource :user_session, only: %i[new create destroy], path: 'session'
 

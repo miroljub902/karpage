@@ -29,4 +29,6 @@ $ ->
     e.preventDefault()
     $viewer.modal('show')
     $body = $viewer.find('.modal-body').html('Loading...')
-    $.getJSON $(this).attr('href'), (data) -> $body.html data.html
+    $.getJSON $(this).attr('href'), (data) ->
+      $body.html data.html
+      initializeMentions $body
