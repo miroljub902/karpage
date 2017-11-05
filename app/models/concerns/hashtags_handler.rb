@@ -28,6 +28,6 @@ module HashtagsHandler
 
   def hashtags
     test = public_send(self.class.class_variable_get('@@_hashtags_handler_column'))
-    test.scan(/\B#([\w-]+)/).flatten
+    test.scan(/\B#([\w-]+)/).flatten.uniq
   end
 end

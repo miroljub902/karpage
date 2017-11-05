@@ -25,6 +25,6 @@ module MentionsNotifier
 
   def mentions
     test = public_send(self.class.class_variable_get('@@_mentions_notifier_column'))
-    test.scan(/\B@([\w.]+)/).flatten
+    test.scan(/\B@([\w.]+)/).flatten.uniq
   end
 end
