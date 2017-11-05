@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class UserCarDecorator < Draper::Decorator
+  include MentionsFormatter
+  delegate :link_to, :profile_path, to: :h
+
   delegate_all
 
   decorates_associations :user
@@ -13,5 +16,9 @@ class UserCarDecorator < Draper::Decorator
     photo = (photos.loaded? ? photos.sort_by { |p| p.sorting || 1_000 } : photos.sorted).first
     return unless photo
     h.ix_refile_image_url photo, :image, auto: 'enhance,format', fit: 'clip', h: 250
+  end
+
+  def formatted_description
+    h.simple_format format_mentions(description)
   end
 end

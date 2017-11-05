@@ -17,7 +17,7 @@
 
             h1
               = @car
-              .small=simple_format @car.description
+              .small= @car.formatted_description
 
   .container
     a.likes href=toggle_like_car_path(@car.user, @car) data-remote=true data-method="put"
