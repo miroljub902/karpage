@@ -15,14 +15,21 @@ class ProfilesController < ApplicationController
                ).count
                search_scope = user_scope.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
                @user_count = search_scope.count
-               search_scope
-                 .cars_count
-                 .by_cars_owned
-                 .page(params[:page]).per(8)
+               search_scope.cars_count
              else
                @user_count = user_scope.count
-               User.cars_count.by_cars_owned.page(params[:page]).per(8)
+               User.cars_count
              end
+
+    @users = params[:friends_first] && current_user ? @users.friends_first(current_user) : @users.by_cars_owned
+    @users = @users.page(params[:page]).per(8)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @users, each_serializer: Api::UserSerializer
+      end
+    end
   end
 
   def show

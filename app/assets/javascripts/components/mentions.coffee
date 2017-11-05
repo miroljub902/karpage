@@ -5,7 +5,7 @@ window.initializeMentions = ($root) ->
     return if query == ''
     $input = this.$inputor
     userSearchDelay = setTimeout ->
-      $.getJSON "//#{Config.apiBase}/api/users", search: query, friends_first: true, format: 'json', (data) ->
+      $.getJSON "/users", search: query, friends_first: true, format: 'json', (data) ->
         callback(data.users)
     , 100
 
@@ -35,6 +35,7 @@ window.initializeMentions = ($root) ->
             "<li data-login='#{map.login}'>#{img}#{name}<em>#{map.login}</em></li>"
           beforeInsert: (value, $li) ->
             "@#{$li.data('login')}"
+          sorter: (query, items, searchKey) -> items
         searchKey: 'login'
       .atwho
         at: '#'

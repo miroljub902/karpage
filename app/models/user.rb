@@ -61,6 +61,12 @@ class User < ApplicationRecord
 
   scope :by_cars_owned, -> { cars_count.order('filtered_cars_count DESC') }
 
+  scope :friends_first, ->(user) {
+    joins("LEFT OUTER JOIN follows ON follows.followee_id = users.id AND follows.user_id = #{user.id}")
+      .group('users.id, follows.id')
+      .order('follows.id ASC')
+  }
+
   scope :cars_count, -> {
     select('users.*, COUNT(cars_counter.id) AS filtered_cars_count')
       .joins(
