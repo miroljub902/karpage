@@ -1,9 +1,10 @@
 module MentionsFormatter
   REGEX = /\B@([\w-]+)/
+  MAX_MENTIONS = 5
 
   private
 
-  def format_mentions(string, limit: 5)
+  def format_mentions(string, limit: MAX_MENTIONS)
     string.dup.tap do |formatted|
       string.scan(REGEX).flatten.uniq[0...limit].each do |mention|
         link = link_to "@#{mention}", profile_path(mention)

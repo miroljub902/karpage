@@ -25,6 +25,6 @@ module MentionsNotifier
 
   def mentions
     test = public_send(self.class.class_variable_get('@@_mentions_notifier_column'))
-    test.scan(MentionsFormatter::REGEX).flatten.uniq
+    test.scan(MentionsFormatter::REGEX).flatten.uniq[0...MentionsFormatter::MAX_MENTIONS]
   end
 end
