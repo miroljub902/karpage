@@ -65,6 +65,7 @@ class User < ApplicationRecord
     joins("LEFT OUTER JOIN follows ON follows.followee_id = users.id AND follows.user_id = #{user.id}")
       .group('users.id, follows.id')
       .order('follows.id ASC')
+      .where.not(users: { id: user.id })
   }
 
   scope :cars_count, -> {
@@ -78,8 +79,12 @@ class User < ApplicationRecord
       .group('users.id')
   }
 
-  scope :simple_search, ->(term, lat, lng, radius_in_km = 32_000) {
-    like = %w[name login description link location].map { |column| "#{table_name}.#{column} ILIKE :term" }
+  scope :simple_search, ->(term, lat, lng, radius_in_km = 32_000, deep = true) {
+    like = if deep
+             %w[name login description link location].map { |column| "#{table_name}.#{column} ILIKE :term" }
+           else
+             %w[name login].map { |column| "#{table_name}.#{column} ILIKE :term" }
+           end
     scope = all
     scope = scope.where(like.join(' OR '), term: "%#{term.to_s.strip}%") if term.present?
 

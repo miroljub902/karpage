@@ -13,7 +13,13 @@ class ProfilesController < ApplicationController
                @car_count = Car.has_photos.simple_search(
                  params[:search], params[:lat], params[:lng], params[:radius]
                ).count
-               search_scope = user_scope.simple_search(params[:search], params[:lat], params[:lng], params[:radius])
+               search_scope = user_scope.simple_search(
+                 params[:search],
+                 params[:lat],
+                 params[:lng],
+                 params[:radius],
+                 params[:deep_search] != 'false'
+               )
                @user_count = search_scope.count
                search_scope.cars_count
              else
