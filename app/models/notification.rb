@@ -20,7 +20,8 @@ class Notification < ApplicationRecord
     following_moves_new_car: 'following_moves_new_car',
     following_next_car: 'following_next_car',
     following_dream_car: 'following_dream_car',
-    following_new_post: 'following_new_post'
+    following_new_post: 'following_new_post',
+    mention: 'mention'
   }
 
   before_create :set_message

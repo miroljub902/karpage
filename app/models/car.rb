@@ -4,6 +4,8 @@ class Car < ApplicationRecord
   include FriendlyId
   include FeaturedOrdering
   include UniqueViolationGuard
+  include MentionsNotifier
+  include HashtagsHandler
 
   self.inheritance_column = '_no_sti'
 
@@ -56,6 +58,7 @@ class Car < ApplicationRecord
       users.name ILIKE :term
       OR #{year_condition} cars.slug ILIKE :term OR makes.name ILIKE :term OR models.name ILIKE :term
     SQL
+    query += " OR cars.description ILIKE :term" if term.starts_with?('#')
     scope = joins(:make, :user)
     scope = scope.where(query, term: "%#{term}%", year: term.to_i) if term.present?
     if lat.present? && lng.present?

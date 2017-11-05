@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class Comment < ApplicationRecord
+  include MentionsNotifier
+  include HashtagsHandler
+
   belongs_to :user
   belongs_to :commentable, polymorphic: true, counter_cache: true
   has_many :notifications, as: :notifiable, dependent: :delete_all
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :recent_comments, -> { sorted.page(1).per(10) }, class_name: 'Comment', as: :commentable
-  has_many :hashtag_uses, as: :taggable, dependent: :delete_all
-  has_many :hashtags, -> { distinct }, through: :hashtag_uses
 
   validates :body, presence: true
 

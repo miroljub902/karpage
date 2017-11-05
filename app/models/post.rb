@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Post < ApplicationRecord
+  include MentionsNotifier
+  include HashtagsHandler
+
   belongs_to :user
   belongs_to :post_channel
   has_many :comments, as: :commentable, dependent: :destroy
