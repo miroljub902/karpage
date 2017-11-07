@@ -8,6 +8,7 @@
 #= require Croppie/croppie
 #= require Caret.js/src/jquery.caret
 #= require At.js/dist/js/jquery.atwho
+#= require bootstrap3-typeahead.min
 #= require_self
 #= require_tree ./components
 #= require app/app

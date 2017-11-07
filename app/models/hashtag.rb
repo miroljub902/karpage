@@ -11,5 +11,11 @@ class Hashtag < ApplicationRecord
 
   scope :simple_search, ->(term) { where('tag ILIKE ?', "%#{term}%") }
 
+  scope :unique_count, -> {
+    select('hashtags.*, COUNT(DISTINCT(relatable_id, relatable_type)) AS unique_count')
+      .joins(:uses)
+      .group('hashtags.id')
+  }
+
   validates :tag, uniqueness: true
 end

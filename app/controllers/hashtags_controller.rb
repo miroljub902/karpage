@@ -6,7 +6,7 @@ class HashtagsController < ApplicationController
       show
       render :show
     elsif request.xhr?
-      @hashtags = Hashtag.search(tag_cont: params[:search])
+      @hashtags = Hashtag.unique_count.search(tag_cont: params[:search]).result
       render json: @hashtags
     end
   end
