@@ -1,0 +1,12 @@
+var $cards = $('.hashtag-cards');
+var $btnMore = $('.js-loadmore');
+
+<% uses = @hashtag.uses_page %>
+$cards.append("<%= j render 'list', uses: uses %>");
+
+<% if uses.total_pages == params[:page].to_i %>
+$btnMore.remove();
+<% else %>
+var newUrl = $btnMore.data('url').replace('__PAGE__', <%= params[:page].to_i + 1 %>);
+$btnMore.attr('href', newUrl);
+<% end %>

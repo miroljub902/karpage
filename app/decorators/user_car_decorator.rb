@@ -2,7 +2,8 @@
 
 class UserCarDecorator < Draper::Decorator
   include MentionsFormatter
-  delegate :link_to, :profile_path, to: :h
+  include HashtagsFormatter
+  delegate :link_to, :profile_path, :hashtag_path, to: :h
 
   delegate_all
 
@@ -19,6 +20,6 @@ class UserCarDecorator < Draper::Decorator
   end
 
   def formatted_description
-    h.simple_format format_mentions(description)
+    h.simple_format format_hashtags(format_mentions(description))
   end
 end

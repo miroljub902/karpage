@@ -2,7 +2,8 @@
 
 class PostDecorator < Draper::Decorator
   include MentionsFormatter
-  delegate :link_to, :profile_path, to: :h
+  include HashtagsFormatter
+  delegate :link_to, :profile_path, :hashtag_path, to: :h
 
   delegate_all
   decorates_association :user
@@ -27,6 +28,6 @@ class PostDecorator < Draper::Decorator
   end
 
   def html_body(body = post.body)
-    h.simple_format format_mentions(h.auto_link(body, html: { target: '_blank' }))
+    h.simple_format format_hashtags(format_mentions(h.auto_link(body, html: { target: '_blank' })))
   end
 end

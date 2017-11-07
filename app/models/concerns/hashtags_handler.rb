@@ -17,8 +17,9 @@ module HashtagsHandler
     after_save do
       if saved_change_to_attribute?(self.class.class_variable_get('@@_hashtags_handler_column'))
         hashtag_uses.destroy_all
+        relatable = commentable if respond_to?(:commentable)
         hashtags.each do |hashtag|
-          hashtag_uses.create! hashtag: Hashtag.where(tag: hashtag).first_or_create!
+          hashtag_uses.create! hashtag: Hashtag.where(tag: hashtag).first_or_create!, relatable: relatable
         end
       end
     end

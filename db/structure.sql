@@ -425,7 +425,9 @@ CREATE TABLE hashtag_uses (
     taggable_type character varying,
     taggable_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    relatable_type character varying,
+    relatable_id bigint
 );
 
 
@@ -1625,6 +1627,13 @@ CREATE INDEX index_hashtag_uses_on_hashtag_id ON hashtag_uses USING btree (hasht
 
 
 --
+-- Name: index_hashtag_uses_on_relatable_type_and_relatable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_hashtag_uses_on_relatable_type_and_relatable_id ON hashtag_uses USING btree (relatable_type, relatable_id);
+
+
+--
 -- Name: index_hashtag_uses_on_taggable_type_and_taggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2110,6 +2119,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170910193821'),
 ('20171030234131'),
 ('20171104220734'),
-('20171104221107');
+('20171104221107'),
+('20171107172157');
 
 

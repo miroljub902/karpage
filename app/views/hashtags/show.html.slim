@@ -1,0 +1,22 @@
+= form_tag hashtags_path, method: :get, class: 'car-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :id, params[:id], placeholder: '#hashtag...', class: 'with-sprite'
+
+#post-viewer.modal.fade
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-body
+
+- uses = @hashtag.uses_page
+.hashtag-cards.cards.row.m-t-3
+  = render 'list', uses: uses
+
+- if uses.size < uses.total_count
+  .col-md-offset-2.col-md-8.m-t-3
+    a.btn.btn-lg.btn-default.btn-block.js-loadmore[
+      href=hashtag_path(@hashtag.tag, page: (params[:page] || 1).to_i + 1)
+      data-url=hashtag_path(@hashtag.tag, page: '__PAGE__')
+      data-remote="true"
+    ]
+      'Load More

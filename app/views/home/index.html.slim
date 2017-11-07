@@ -15,9 +15,9 @@
     .col-sm-2.text-right.h1-side
       = link_to 'Explore', profile_cars_path, class: 'btn btn-default'
 
-  .row.car-cards
+  .row.car-cards.cards
     - @cars.each do |car|
-      .car-card.col-md-6
+      .car-card.card.col-md-6
         = render 'user_cars/card', car: UserCarDecorator.new(car), car_counter: true
 
   .row
@@ -28,7 +28,7 @@
       = link_to 'Explore', profiles_path, class: 'btn btn-default'
 
   .row
-    .car-cards.clearfix.m-t-0
+    .car-cards.cards.clearfix.m-t-0
       .col-lg-6.m-t-3
         = link_to '/thatyellowS2k' do
           = image_tag '/featured1.jpg', class: 'img-responsive', style: "box-shadow: 2px 2px 8px rgba(0,0,0,0.5);border-radius: 8px;"

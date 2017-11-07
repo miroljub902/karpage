@@ -1,0 +1,33 @@
+- photo = post.cover_photo
+.thumbnail class="#{'has-photo' if photo}"
+  = link_to post.user.login ? post_path(post.user, post) : '#' do
+    .img style="background-image: url(#{post.cover_url(h: 322)})"
+
+  .caption
+    .pull-left.profile-avatar.small
+      .avatar-container
+        - if post.user.avatar
+          img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+        - else
+          .initials
+      h3= post.user
+
+    .pull-right.m-r-1
+      = pluralize post.comments_count, 'Comment', 'Comments'
+      span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'
+
+/= link_to post_path(post.user, post) do
+  .img style="background-image: url(#{post.cover_url(h: 300)})"
+
+  .caption
+    .pull-left.profile-avatar.small
+      .avatar-container
+        - if post.user.avatar
+          img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+        - else
+          .initials
+      h3= post.user
+
+    .pull-right.m-r-1
+      = pluralize post.comments_count, 'Comment', 'Comments'
+      span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'

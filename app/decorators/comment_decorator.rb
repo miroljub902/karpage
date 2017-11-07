@@ -2,7 +2,8 @@
 
 class CommentDecorator < Draper::Decorator
   include MentionsFormatter
-  delegate :link_to, :profile_path, to: :h
+  include HashtagsFormatter
+  delegate :link_to, :profile_path, :hashtag_path, to: :h
 
   delegate_all
 
@@ -20,6 +21,6 @@ class CommentDecorator < Draper::Decorator
   end
 
   def formatted_body
-    h.simple_format format_mentions(body)
+    h.simple_format format_hashtags(format_mentions(body))
   end
 end

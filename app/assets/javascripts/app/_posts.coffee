@@ -25,7 +25,7 @@ $ ->
       $photoAlbumBtn.show()
 
   $viewer = $('#post-viewer').modal(show: false)
-  $('#explore-posts').on 'click', '.post a', (e) ->
+  $('.cards').on 'click', '.post-card a', (e) ->
     e.preventDefault()
     $viewer.modal('show')
     $body = $viewer.find('.modal-body').html('Loading...')

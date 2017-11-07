@@ -10,7 +10,7 @@
   .hr
 
   - grouped_posts.each do |post|
-    .post
+    .post.post-card
       = link_to post_path(post.user, post) do
         .img style="background-image: url(#{post.cover_url(h: 300)})"
 

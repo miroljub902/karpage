@@ -104,7 +104,8 @@ Rails.application.routes.draw do
   resources :comments, only: %i[show destroy] do
     resources :comments, only: %i[create destroy], scope: :comment
   end
-  # get '/car'
+
+  resources :hashtags, only: %i[index show]
 
   get 's3_signatures_path' => 's3_signatures#create', as: :s3_signatures
 

@@ -38,7 +38,7 @@ h1.text-center
         = link_to posts_channel_path(channel.name) do
           = ix_refile_image_tag channel, :thumb, auto: 'enhance,format', fit: 'crop', w: 322, h: 228, size: '322x228', class: 'img-responsive'
 
-  .posts= render 'list', posts: @posts, post: Post.new
+  .posts.cards= render 'list', posts: @posts, post: Post.new
 
   - if @posts.size < @posts.total_count
     .col-md-offset-2.col-md-8.m-t-3
