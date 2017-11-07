@@ -1,0 +1,4 @@
+= form_tag hashtags_path, method: :get, class: 'simple-search js-hashtag-search' do
+  .searchfield
+    .sprite.sprite-search-magnifying-glass
+    = text_field_tag :id, params[:id], placeholder: '#hashtag...', class: 'with-sprite hashtag'

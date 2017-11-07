@@ -6,3 +6,4 @@
 #= require app/_posts
 #= require app/_users
 #= require app/_welcome-popover
+#= require app/_hashtag-search

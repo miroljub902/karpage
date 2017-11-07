@@ -1,7 +1,7 @@
-= form_tag hashtags_path, method: :get, class: 'car-search' do
+= form_tag hashtags_path, method: :get, class: 'simple-search js-hashtag-search' do
   .searchfield
     .sprite.sprite-search-magnifying-glass
-    = text_field_tag :id, params[:id], placeholder: '#hashtag...', class: 'with-sprite'
+    = text_field_tag :id, params[:id], placeholder: '#hashtag...', class: 'with-sprite hashtag'
 
 #post-viewer.modal.fade
   .modal-dialog.modal-lg

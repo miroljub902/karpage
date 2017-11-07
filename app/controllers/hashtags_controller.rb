@@ -2,7 +2,13 @@ class HashtagsController < ApplicationController
   layout 'simple'
 
   def index
-
+    if params[:id]
+      show
+      render :show
+    elsif request.xhr?
+      @hashtags = Hashtag.search(tag_cont: params[:search])
+      render json: @hashtags
+    end
   end
 
   def show
