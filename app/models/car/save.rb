@@ -47,14 +47,14 @@ class Car
     def assign_or_create_make
       # Set make from existing make name or create it
       return if make_name.blank?
-      self.make = Make.find_by(slug: make_name.parameterize) ||
+      self.make = Make.find_by(slug: make_name.to_s.parameterize) ||
                   Make.create(name: make_name, official: false)
     end
 
     def assign_or_create_model
       # Set model from existing model name or create it
       return unless make && car_model_name.present?
-      self.model = make.models.find_by(slug: car_model_name.parameterize) ||
+      self.model = make.models.find_by(slug: car_model_name.to_s.parameterize) ||
                    make.models.find_by(name: car_model_name) ||
                    make.models.create(name: car_model_name, official: false)
     end
