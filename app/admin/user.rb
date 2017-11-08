@@ -30,7 +30,7 @@ ActiveAdmin.register User do
       ix_refile_image_tag user, :avatar, auto: 'enhance,format', fit: 'crop', w: 50, h: 50, size: '50x50'
     end
     column :login do |user|
-      link_to user.login.presence || '<no login>', admin_user_path(user)
+      link_to user.login.presence || '<no login>', admin_user_path(user.id)
     end
     column :name
     column :email
@@ -43,10 +43,10 @@ ActiveAdmin.register User do
     end
     actions defaults: false do |user|
       label = user.featured? ? 'Unfeature' : 'Feature'
-      item label, toggle_featured_admin_user_path(user), class: 'member_link', method: :put
-      item 'Edit', edit_admin_user_path(user), class: 'member_link'
+      item label, toggle_featured_admin_user_path(user.id), class: 'member_link', method: :put
+      item 'Edit', edit_admin_user_path(user.id), class: 'member_link'
       item 'Delete',
-           admin_user_path(user),
+           admin_user_path(user.id),
            method: :delete,
            data: { confirm: 'Are you sure you want to delete this?' },
            class: 'member_link'
@@ -213,6 +213,14 @@ ActiveAdmin.register User do
 
     def find_resource
       User.find_by(id: params[:id]) || User.find_by!(login: params[:id])
+    end
+
+    def edit_resource_path(resource)
+      edit_admin_user_path resource.id
+    end
+
+    def resource_path(resource)
+      admin_user_path resource.id
     end
   end
 end
