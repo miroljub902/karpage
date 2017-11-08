@@ -70,7 +70,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    appsignal (2.3.4)
+    appsignal (2.4.0)
       rack
     arbre (1.1.1)
       activesupport (>= 3.0.0)
@@ -433,7 +433,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.5)
   activeadmin (~> 1.1)
-  appsignal (~> 2.3)
+  appsignal (~> 2.4)
   authlogic (~> 3.6)
   bcrypt (~> 3.1.10)
   browser (~> 2.5)
