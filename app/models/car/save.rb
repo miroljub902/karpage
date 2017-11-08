@@ -55,6 +55,7 @@ class Car
       # Set model from existing model name or create it
       return unless make && car_model_name.present?
       self.model = make.models.find_by(slug: car_model_name.parameterize) ||
+                   make.models.find_by(name: car_model_name) ||
                    make.models.create(name: car_model_name, official: false)
     end
 

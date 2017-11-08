@@ -10,7 +10,7 @@ class Model < ApplicationRecord
 
   friendly_id :name, scope: :make, use: %i[slugged scoped]
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :make_id, case_sensitive: false }
   validates :slug, uniqueness: { scope: :make_id, case_sensitive: false }
   validates :make_id, presence: true
 
