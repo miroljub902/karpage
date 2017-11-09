@@ -10,7 +10,7 @@ ActiveAdmin.register Report do
     column :object do |report|
       case report.reportable_type
       when "User"
-        link_to report.reportable, admin_user_path(report.reportable)
+        link_to report.reportable, admin_user_path(report.reportable_id)
       when "Car"
         link_to report.reportable, admin_car_path(report.reportable_id)
       when "Post"
