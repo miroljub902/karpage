@@ -9,7 +9,7 @@ json.following_count user.followees.count
 # if user.profile_thumbnail
 #   json.profile_thumbnail_url ix_refile_image_url(user, :profile_thumbnail)
 # else
-  json.profile_thumbnail_url image_url('profile/default.jpg')
+json.profile_thumbnail_url image_url('profile/default.jpg')
 # end
 
 json.instagram_id user.instagram_id

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Hashtag < ApplicationRecord
   has_many :uses, class_name: 'HashtagUse'
 

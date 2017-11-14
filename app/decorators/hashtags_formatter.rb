@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HashtagsFormatter
   REGEX = /\B#([\w-]+)/
   MAX_HASHTAGS = 5

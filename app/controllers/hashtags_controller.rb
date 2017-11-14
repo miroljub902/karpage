@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HashtagsController < ApplicationController
   layout 'simple'
 

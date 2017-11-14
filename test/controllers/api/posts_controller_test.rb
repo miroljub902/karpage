@@ -85,7 +85,7 @@ class Api::PostsControllerTest < ApiControllerTest
     user = users(:john_doe)
     user_post = user.posts.create! body: 'Howdy', photos_attributes: [{ image_id: 'dummy' }]
     get :index
-    assert json_response['posts'][0].has_key?('photos')
+    assert json_response['posts'][0].key?('photos')
     assert_equal user_post.photo_ids.first, json_response['posts'][0]['photos'][0]['id']
   end
 
@@ -97,7 +97,7 @@ class Api::PostsControllerTest < ApiControllerTest
     user.follow! friend
     authorize_user user
     get :feed
-    assert json_response['posts'][0].has_key?('comments')
+    assert json_response['posts'][0].key?('comments')
     assert_equal 'Nice', json_response['posts'][0]['comments'][0]['body']
   end
 end

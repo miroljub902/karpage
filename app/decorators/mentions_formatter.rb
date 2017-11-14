@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MentionsFormatter
   REGEX = /\B@([\w-]+)/
   MAX_MENTIONS = 5

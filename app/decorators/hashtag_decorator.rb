@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HashtagDecorator < Draper::Decorator
   delegate_all
 
