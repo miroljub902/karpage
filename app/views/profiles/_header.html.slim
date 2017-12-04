@@ -74,7 +74,7 @@
       ul.nav.nav-pills.pull-right
         li.car-count
           = link_to profile_path(user) do
-            span= user.cars_count
+            span= user.filtered_cars_count
             .sprite.sprite-car-counter
 
         - if my_profile?

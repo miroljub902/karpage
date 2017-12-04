@@ -205,7 +205,7 @@ class User < ApplicationRecord
       .distinct
   end
 
-  def cars_count
+  def filtered_cars_count
     self['filtered_cars_count'] || (self['cars_count'] - cars.next_car.count)
   end
 
