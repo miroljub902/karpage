@@ -6,7 +6,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def reply?
-    user.present? && record.commentable_type != 'Comment'
+    user.present?
   end
 
   class Scope < Scope

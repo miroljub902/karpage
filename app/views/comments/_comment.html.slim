@@ -18,16 +18,21 @@
           .fa.fa-trash-o
 
       - if policy(comment).reply?
-        a.m-l-1.btn-plain href="#comment-#{comment.id}__reply" data-toggle="collapse"
-          .fa.fa-comment-o
-          span Reply
+        - if comment.commentable.is_a?(Comment)
+          a.m-l-1.btn-plain.js-thread-reply href="#" data-comment-id=comment.commentable_id data-comment-author=comment.user.login
+            .fa.fa-comment-o
+            span Reply
+        - else
+          a.m-l-1.btn-plain href="#comment-#{comment.id}__reply" data-toggle="collapse"
+            .fa.fa-comment-o
+            span Reply
 
     = comment.formatted_body
 
     - if link ||= false
       = link_to link_text, link
 
-    - if policy(comment).reply?
+    - if policy(comment).reply? && !comment.commentable.is_a?(Comment)
       = form_for Comment.new(commentable: comment),
         url: comment_comments_path(comment),
         remote: true,
