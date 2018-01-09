@@ -34,12 +34,11 @@ $ ->
       reader = new FileReader()
       reader.onload = (e) ->
         $preview.parent().addClass('with-preview')
-        $preview.find('img').attr('src', e.target.result)
+        $preview.find('img').attr('src', e.target.result).removeAttr('srcset')
       reader.readAsDataURL(file)
       removeRemovePhotoField()
     else
       $preview.parent().removeClass('with-preview')
-      $photoButton.text('Add Photo')
       $photoAlbumBtn.show()
       includeRemovePhotoField()
 
