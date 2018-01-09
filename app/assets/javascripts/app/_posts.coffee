@@ -20,6 +20,11 @@ $ ->
     $form.find('.tab-content .tab-pane').removeClass('active')
     $($(this).attr('href')).addClass('active')
 
+  includeRemovePhotoField = ->
+    $('<input type="hidden" name="post[remove_photo]" value="1"/>').appendTo($form)
+  removeRemovePhotoField = ->
+    $form.find('[name="post[remove_photo]"]').remove()
+
   $photoInput.change (e) ->
     file = e.target.files[0]
     if file && file.name
@@ -31,13 +36,16 @@ $ ->
         $preview.parent().addClass('with-preview')
         $preview.find('img').attr('src', e.target.result)
       reader.readAsDataURL(file)
+      removeRemovePhotoField()
     else
       $preview.parent().removeClass('with-preview')
       $photoButton.text('Add Photo')
       $photoAlbumBtn.show()
+      includeRemovePhotoField()
 
   $preview.find('.remove').click (e) ->
     e.stopPropagation()
+    includeRemovePhotoField()
     $photoInput.val('')
     $photoAlbumBtn.show()
     $preview.parent().removeClass('with-preview')

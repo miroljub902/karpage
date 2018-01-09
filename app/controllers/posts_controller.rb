@@ -79,7 +79,7 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(
-      :body, :photo, :post_channel_id,
+      :body, :photo, :post_channel_id, :remove_photo,
       photos_attributes: %i[image_id image_content_type image_size image_filename sorting]
     )
   end

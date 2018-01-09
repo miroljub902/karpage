@@ -92,7 +92,7 @@ class Post < ApplicationRecord
   private
 
   def validate_presence_of_photo
-    return if photo || photo_id.present? || photos.size.positive?
+    return if remove_photo != '1' && (photo || photo_id.present? || photos.size.positive?)
     errors.add :photo, :blank
   end
 
