@@ -6,8 +6,7 @@
 .photobutton-container class=(f.object.photo ? 'single' : 'dropdown')
   .photobutton.post__photo-btn.with-preview.single
     .preview
-      / = ix_refile_image_tag(f.object, :photo, auto: 'format', fit: 'clip', w: 200, h: 100, alt: '', size: '200x100')
-      = image_tag 'car_filters/bmw.png', size: '100x46'
+      = ix_refile_image_tag(f.object, :photo, auto: 'format', fit: 'clip', w: 100, h: 46, alt: '', size: '100x46')
       .remove.sprite.sprite-delete
 
   .photobutton.dropdown
