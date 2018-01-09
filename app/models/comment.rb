@@ -10,6 +10,8 @@ class Comment < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :recent_comments, -> { sorted.page(1).per(10) }, class_name: 'Comment', as: :commentable
 
+  attachment :photo, type: :image
+
   validates :body, presence: true
 
   after_create :notify_user

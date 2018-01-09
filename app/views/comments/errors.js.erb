@@ -1,0 +1,5 @@
+dataSelector = '[data-commentable-type=<%= @comment.commentable_type %>][data-commentable-id=<%= @comment.commentable_id %>]'
+$form = $('form.new-comment' + dataSelector);
+$form.find('.errors')
+  .text('<%= @comment.errors.messages.values.flatten.to_sentence %>')
+  .removeClass('hidden');

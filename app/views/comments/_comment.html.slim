@@ -1,6 +1,6 @@
 - commentable = local_assigns.key?(:commentable) ? local_assigns[:commentable] : comment.commentable
 - comment = comment.decorate
-.media.comment data-id=comment.id
+.media.comment data-id=comment.id data-photobutton=local_assigns[:photobutton]
   .media-left
     = link_to profile_path(comment.user), class: 'profile-avatar' do
       .initials= comment.user.decorate.initials
@@ -19,13 +19,16 @@
 
       - if policy(comment).reply?
         - if comment.commentable.is_a?(Comment)
-          a.m-l-1.btn-plain.js-thread-reply href="#" data-comment-id=comment.commentable_id data-comment-author=comment.user.login
+          a.m-l-1.btn-plain.js-thread-reply href="#" data-comment-id=comment.id data-commentable-id=comment.commentable_id data-comment-author=comment.user.login
             .fa.fa-comment-o
             span Reply
         - else
           a.m-l-1.btn-plain href="#comment-#{comment.id}__reply" data-toggle="collapse"
             .fa.fa-comment-o
             span Reply
+
+    - if comment.photo
+      = ix_refile_image_tag comment, :photo, auto: 'enhance,format', fit: 'clip', h: 400, class: 'img-responsive', alt: ''
 
     = comment.formatted_body
 
@@ -41,7 +44,9 @@
 
         = hidden_field_tag 'return_to', comment_comments_path(comment.id)
         = f.text_area :body, class: 'form-control js-mentions', rows: 6
-        = f.submit 'Reply', class: 'btn btn-green pull-right'
+        = f.submit 'Reply', class: 'btn btn-green pull-right m-t-1'
+        - if local_assigns[:photobutton]
+          .pull-right.m-t-1= render 'posts/photobutton.html', f: f
 
     - unless commentable.is_a?(Comment)
       .comment-list data-commentable-type="Comment" data-commentable-id=comment.id

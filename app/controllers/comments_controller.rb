@@ -13,7 +13,9 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.create(comment_params.merge(commentable: commentable))
     respond_to do |format|
       format.html { redirect_to return_to_path }
-      format.js
+      format.js do
+        render @comment.errors.any? ? 'errors' : 'create'
+      end
     end
   end
 
@@ -31,7 +33,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body, :photo)
   end
 
   def return_to_path

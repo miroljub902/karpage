@@ -24,3 +24,7 @@ en:
           attributes:
             photo:
               blank: is required
+        comment:
+          attributes:
+            body:
+              blank: Please write a comment

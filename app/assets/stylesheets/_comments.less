@@ -31,3 +31,57 @@
     border-radius: 5px;
   }
 }
+
+.comment-photobutton {
+  margin-right: 1rem;
+
+  input {
+    display: none;
+  }
+
+  .preview,
+  &.with-preview .comment-photobutton__btn {
+    display: none;
+  }
+
+  &.with-preview .preview {
+    display: block;
+  }
+
+  .preview {
+    position: relative;
+
+    .remove {
+      position: absolute;
+      top: -9px;
+      right: -9px;
+    }
+  }
+
+  img {
+    width: 100px;
+    height: 52px;
+  }
+
+  .comment-photobutton__btn {
+    cursor: pointer;
+
+    .fa {
+      font-size: 61px;
+      line-height: 52px;
+      color: @brand-primary;
+    }
+  }
+}
+
+[data-commentable-type=Comment] .comment-photobutton {
+  .fa {
+    font-size: 41px;
+    line-height: 34px;
+  }
+
+  .preview img {
+    width: 60px;
+    height: 34px;
+  }
+}

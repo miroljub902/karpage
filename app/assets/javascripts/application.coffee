@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery_ujs
+#= require jquery.remotipart
 #= require bootstrap/dist/js/bootstrap
 #= require evaporatejs/evaporate
 #= require Sortable/Sortable

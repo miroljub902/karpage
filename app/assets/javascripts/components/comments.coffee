@@ -12,25 +12,73 @@ $(document).on 'click', '.js-thread-reply', (e) ->
 
   $this = $(this)
   id = $this.attr('data-comment-id')
+  commentableId = $this.attr('data-commentable-id')
   mention = $this.attr('data-comment-author')
   mention = if mention.length > 0 then "@#{mention} " else ""
 
+  $comment = $this.closest('.comment')
   $existing = $('.js-thread-form')
   $existing.remove()
   if $existing.length == 0 || $existing.attr('data-commentable-id') != id
+    $form.get(0).reset()
+
+    if $comment.parents('[data-photobutton]').length && $form.find('.comment-photobutton').length == 0
+      $form.append """
+        <div class="comment-photobutton pull-right">
+          <input name="comment[photo]" type="file" accept="image/*"/>
+          <div class="preview">
+            <img/>
+            <div class="remove sprite sprite-delete"></div>
+          </div>
+          <div class="comment-photobutton__btn">
+            <div class="fa fa-photo"></div>
+          </div>
+        </div>
+      """
+
     $form
-      .attr('id', "comment-#{id}__reply")
+      .attr('id', "comment-#{commentableId}__reply")
       .attr('data-commentable-id', id)
-      .attr('action', "/comments/#{id}/comments")
+      .attr('action', "/comments/#{commentableId}/comments")
       .find('[name=return_to]')
-        .attr('value', "/comments/#{id}/comments")
+        .attr('value', "/comments/#{commentableId}/comments")
         .end()
       .find('[name="comment[body]"]')
         .text(mention)
         .end()
-      .insertAfter($this.closest('.comment'))
+      .insertAfter($comment)
       .addClass('in')
+      .find('input[type=submit]').removeAttr('disabled').end()
       .find('[name="comment[body]"]')
         .focus()
 
     initializeMentions $form
+
+$(document).on 'click', '.comment-photobutton img, .comment-photobutton__btn', (e) ->
+  e.stopPropagation()
+  $this = $(this)
+  $btn = $this.closest('.comment-photobutton')
+  $btn.find('input')
+    .change (e) ->
+      file = e.target.files[0]
+      if file && file.name
+        reader = new FileReader()
+        reader.onload = (e) ->
+          $btn.addClass('with-preview')
+          $btn.find('img').attr('src', e.target.result).removeAttr('srcset')
+        reader.readAsDataURL(file)
+       else
+        $btn.removeClass('with-preview')
+    .click()
+
+$(document).on 'reset', 'form.new-comment', (e) ->
+  $(this)
+    .find('.comment-photobutton').removeClass('with-preview').end()
+    .find('input[type=file]').val('')
+
+$(document).on 'click', '.comment-photobutton .remove', (e) ->
+  e.stopPropagation()
+  $this = $(this)
+  $btn = $this.closest('.comment-photobutton')
+  $btn.removeClass('with-preview')
+  $btn.find('input').val('')

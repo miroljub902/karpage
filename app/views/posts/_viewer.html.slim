@@ -52,7 +52,9 @@ a.likes href=post_toggle_like_path(post.user, post) data-remote=true data-method
               img.media-object.avatar src=ix_refile_image_url(current_user, :avatar, auto: 'enhance,format', fit: 'crop', w: 70, h: 70) width="70" height="70"
 
         .media-body
+          .alert.alert-danger.errors.hidden
           = f.text_area :body, class: 'form-control js-mentions', rows: 6
-          = f.submit 'Reply', class: 'btn btn-green pull-right'
+          = f.submit 'Reply', class: 'btn btn-green pull-right m-t-1'
+          .pull-right.m-t-1= render 'posts/photobutton.html', f: f
 
-.comment-list.padded data-commentable-type="Post" data-commentable-id=post.id = render partial: 'comments/comment.html', collection: post.comments, as: :comment
+.comment-list.padded data-commentable-type="Post" data-commentable-id=post.id = render partial: 'comments/comment.html', collection: post.comments, as: :comment, locals: { photobutton: true }

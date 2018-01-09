@@ -1,7 +1,8 @@
 dataSelector = '[data-commentable-type=<%= @comment.commentable_type %>][data-commentable-id=<%= @comment.commentable_id %>]'
 $form = $('form.new-comment' + dataSelector);
 $form[0].reset();
+$form.find('.errors').addClass('hidden');
 if ($form.hasClass('collapse')) { $form.collapse('hide'); }
 $comments = $('.comment-list' + dataSelector);
-$comments.html('<%=j render partial: "comments/comment", collection: @comment.commentable.comments.includes(:user, :commentable), as: :comment %>');
+$comments.html('<%=j render partial: "comments/comment", photobutton: true, collection: @comment.commentable.comments.includes(:user, :commentable), as: :comment %>');
 $('.comments-count' + dataSelector).html(<%= @comment.commentable.comments_count %>);

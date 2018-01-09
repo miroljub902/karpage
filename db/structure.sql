@@ -294,7 +294,11 @@ CREATE TABLE comments (
     body text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    comments_count integer DEFAULT 0 NOT NULL
+    comments_count integer DEFAULT 0 NOT NULL,
+    photo_id character varying,
+    photo_filename character varying,
+    photo_size integer,
+    photo_content_type character varying
 );
 
 
@@ -2120,6 +2124,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171030234131'),
 ('20171104220734'),
 ('20171104221107'),
-('20171107172157');
+('20171107172157'),
+('20180109060458');
 
 
