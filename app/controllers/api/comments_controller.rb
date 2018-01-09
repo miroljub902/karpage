@@ -29,7 +29,9 @@ class Api::CommentsController < ApiController
   private
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(
+      :body, :photo_id, :photo_content_type, :photo_size, :photo_filename
+    )
   end
 
   def find_commentable
