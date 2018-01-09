@@ -1,0 +1,36 @@
+.photobutton-container {
+  .dropdown, .single {
+    display: none;
+  }
+}
+
+.photobutton-container.dropdown .dropdown,
+.photobutton-container.single .single {
+  display: block;
+}
+
+.photobutton {
+  .preview {
+    display: none;
+    width: 100px;
+    height: 46px;
+    position: relative;
+  }
+
+  .remove {
+    position: absolute;
+    right: -9px;
+    top: -9px;
+  }
+}
+
+.photobutton.with-preview {
+  .preview {
+    display: block;
+  }
+
+  .btn {
+    display: none;
+  }
+
+}
