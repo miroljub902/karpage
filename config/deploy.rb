@@ -23,7 +23,7 @@ task :staging do
 end
 
 set :deploy_to, '/home/deploy/karpage'
-set :repository, 'git@bitbucket.org:paxx/karpage.git'
+set :repository, 'git@bitbucket.org:karpage/karpage.git'
 
 set :user, 'deploy'
 set :forward_agent, true
