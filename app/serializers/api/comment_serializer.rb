@@ -10,4 +10,8 @@ class Api::CommentSerializer < ApiSerializer
   def image_url
     ix_refile_image_url object, :photo
   end
+
+  def body
+    Rinku.auto_link(object.body, :all, 'target="_blank"')
+  end
 end
