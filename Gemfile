@@ -30,7 +30,7 @@ gem 'staccato', '~> 0.5.1'
 gem 'rack-attack', '~> 5.0.1'
 gem 'active_model_serializers', '~> 0.10.5'
 gem 'groupdate', '~> 3.2.0'
-gem 'rinku', '~> 2.0.3'
+gem 'rinku', '~> 2.0.4'
 gem 'rack-cors', '~> 1.0'
 gem 'remotipart', '1.3.1'
 

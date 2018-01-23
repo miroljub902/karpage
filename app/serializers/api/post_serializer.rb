@@ -35,6 +35,6 @@ class Api::PostSerializer < ApiSerializer
   end
 
   def body
-    simple_format auto_link(object.body, html: { target: '_blank' })
+    simple_format Rinku.auto_link(object.body, :all, 'target="_blank"')
   end
 end

@@ -28,6 +28,6 @@ class PostDecorator < Draper::Decorator
   end
 
   def html_body(body = post.body)
-    h.simple_format format_hashtags(format_mentions(h.auto_link(body, html: { target: '_blank' })))
+    h.simple_format format_hashtags(format_mentions(Rinku.auto_link(body, :all, 'target="_blank"')))
   end
 end
