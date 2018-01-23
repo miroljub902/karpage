@@ -5,18 +5,15 @@ class Api::UserSerializer < ApiSerializer
   include Imgix::Rails::UrlHelper
   include ActionView::Helpers::AssetUrlHelper
 
-  # Not for the PublicProfile
-  if self == Api::UserSerializer
-    attributes %i[
-      id name email login location description link access_token cars_count
-      avatar_url profile_background_url followers_count following_count profile_thumbnail_url instagram_id
-      new_posts new_followers push_settings
-    ]
-  end
+  attributes %i[
+    id name email login location description link access_token cars_count profile_url
+    avatar_url profile_background_url followers_count following_count profile_thumbnail_url instagram_id
+    new_posts new_followers push_settings
+  ]
 
   class PublicProfile < Api::UserSerializer
-    attributes %i[id name login location description link instagram_id profile_url cars_count
-                  followers_count following_count]
+    attribute :email, if: -> { false }
+    attribute :access_token, if: -> { false }
     attribute :following, if: :current_user
     attribute :avatar_url, if: -> { object.avatar }
     attribute :profile_background_url, if: -> { object.profile_background }
