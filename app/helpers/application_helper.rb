@@ -5,8 +5,12 @@ module ApplicationHelper
     Rinku.auto_link(
       text.gsub(/(\b[\w-]+?\.com\b)/, '<a href="http://\1" target="_blank">\1</a>'),
       :all,
-      'target="_blank"'
+      'target="_blank" rel="nofollow"'
     )
+  end
+
+  def auto_link(text)
+    ApplicationHelper.auto_link(text)
   end
 
   def my_profile?

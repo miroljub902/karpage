@@ -21,6 +21,6 @@ class CommentDecorator < Draper::Decorator
   end
 
   def formatted_body
-    h.simple_format format_hashtags(format_mentions(body))
+    h.simple_format h.auto_link(format_hashtags(format_mentions(body)))
   end
 end
