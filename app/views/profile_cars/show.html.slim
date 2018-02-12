@@ -23,6 +23,10 @@
     a.likes href=toggle_like_car_path(@car.user, @car) data-remote=true data-method="put"
       .count= @car.likes_count
 
+    - if (urls = @car.video&.urls)&.any?
+      video.m-x-a.m-t-3.d-block width="720" controls=true poster=@car.video.poster_url
+        = @car.video.video_sources
+
     .text-center
       .back
         = link_to profile_path(@car.user), class: 'btn btn-default' do
