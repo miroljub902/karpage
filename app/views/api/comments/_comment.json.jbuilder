@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-json.call(comment, :id, :user_id, :body, :created_at)
+json.call(comment, :id, :user_id, :created_at)
+json.body Rinku.auto_link(comment.body, :all, 'target="_blank"')
 json.image_url ix_refile_image_url comment, :photo
 
 json.user do
