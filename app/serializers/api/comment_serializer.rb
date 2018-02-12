@@ -12,6 +12,6 @@ class Api::CommentSerializer < ApiSerializer
   end
 
   def body
-    Rinku.auto_link(object.body, :all, 'target="_blank"')
+    ApplicationHelper.auto_link(object.body)
   end
 end
