@@ -5,7 +5,7 @@ profile_thumbnail:
 
 video_transcoding_status:
   cron: '*/5 * * * *'
-  class: 'UpdateTranscodingStatusJob'
+  class: 'VideoTranscodingStatusJob'
   queue: default
 
 fb_og_refresh:
