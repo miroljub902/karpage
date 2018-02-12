@@ -6,7 +6,7 @@ module ApplicationHelper
       text.gsub(/(\b[\w-]+?\.com\b)/, '<a href="http://\1" target="_blank" rel="nofollow">\1</a>'),
       :all,
       'target="_blank" rel="nofollow"'
-    )
+    ).html_safe
   end
 
   def auto_link(text)
