@@ -40,7 +40,7 @@ class ProfileCarsController < ApplicationController
   def show
     user = User.find_by(login: params[:profile_id])
     car = begin
-            user.cars.friendly.find(params[:car_id])
+            user.cars.includes(:video).friendly.find(params[:car_id])
           rescue StandardError
             nil
           end

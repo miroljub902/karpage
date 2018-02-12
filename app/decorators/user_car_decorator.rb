@@ -7,7 +7,7 @@ class UserCarDecorator < Draper::Decorator
 
   delegate_all
 
-  decorates_associations :user
+  decorates_associations :user, :video
 
   def comments
     model.comments.sorted.includes(:user, recent_comments: [:user, { commentable: :user }], commentable: :user).decorate

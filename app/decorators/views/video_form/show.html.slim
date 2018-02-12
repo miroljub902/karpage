@@ -15,9 +15,10 @@
       .small.text-normal Up to one minute long
 
     .video-form__video
-      video controls=true
-      .fa.fa-file-video-o
-      .remove.sprite.sprite-delete
+      video controls=true width="250"
+        source
+      / .fa.fa-file-video-o
+      / .remove.sprite.sprite-delete
 
     input.video-form__input[type="file" accept="video/*" data-prefix="video-input"
       data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]

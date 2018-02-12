@@ -1045,7 +1045,7 @@ CREATE TABLE videos (
     id bigint NOT NULL,
     attachable_type character varying,
     attachable_id bigint,
-    urls character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    urls jsonb DEFAULT '{}'::jsonb NOT NULL,
     source_id character varying,
     status character varying,
     job_id character varying,

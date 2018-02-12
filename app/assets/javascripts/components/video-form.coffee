@@ -37,8 +37,12 @@ class window.VideoForm
     text = if @hasVideo() then @$selectButton.data('update-label') else @$selectButton.data('create-label')
     @$selectButton.html(text)
 
-  updatePreview: (data) ->
-    console.log(data)
+  updatePreview: (file) ->
+    console.log file
+    @$video.find('source')
+      .attr 'src', URL.createObjectURL(file)
+      .end()
+      .get(0).load()
 
   hasVideo: ->
     @$ele.find('.video-form__video--present').length > 0
@@ -82,7 +86,7 @@ class window.VideoForm
               _this.$ele.removeClass('video-form--uploading').addClass('video-form__video--present')
               _this.enableButton()
               _this.updateButtonText()
-              _this.updatePreview data
+              _this.updatePreview file
 
     _this.$file.wrap('<form>').closest('form').get(0).reset()
     _this.$file.unwrap()

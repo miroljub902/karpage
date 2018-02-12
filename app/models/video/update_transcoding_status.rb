@@ -34,10 +34,20 @@ class Video
 
     private
 
+    MIME_TYPES = {
+      '.webm' => 'webm',
+      '.mp4'  => 'mp4'
+    }.freeze
+
     def promote!(job)
       delete_source_file
       job.outputs.each do |output|
-        video.urls.push promote_output(output.key)
+        type = MIME_TYPES[File.extname(output.key)]
+        video_url = promote_output(output.key)
+        video.urls[type] = {
+          source: video_url,
+          thumb: video_url.sub(/#{File.extname(video_url)}$/, '.png')
+        }
       end
       video.urls = video.urls # Trigger AM's dirty API
     end
@@ -46,7 +56,7 @@ class Video
       source       = "#{Video::TEMP_PREFIX}/#{video.id}/#{key}"
       source_thumb = source.sub(/#{File.extname(source)}$/, '-00001.png')
       target       = "#{Video::FINAL_PREFIX}/#{s3_key_prefix}/#{key}"
-      target_thumb = target.sub(/#{File.extname(target)}$/, '-00001.png')
+      target_thumb = target.sub(/#{File.extname(target)}$/, '.png')
       bucket       = ENV.fetch('S3_BUCKET')
       s3.copy_object(bucket: bucket, copy_source: "#{bucket}/#{source}", key: target)
       s3.put_object_acl(bucket: bucket, acl: 'public-read', key: target)
