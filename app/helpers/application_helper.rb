@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def self.auto_link(text)
+    Rinku.auto_link(
+      text.gsub(/(\b[\w-]+?\.com\b)/, '<a href="http://\1" target="_blank">\1</a>'),
+      :all,
+      'target="_blank"'
+    )
+  end
+
   def my_profile?
     current_user && @user && current_user.id == @user.id
   end
