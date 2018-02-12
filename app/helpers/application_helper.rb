@@ -4,7 +4,7 @@ module ApplicationHelper
   def self.auto_link(text)
     Rinku.auto_link(
       text
-        .gsub(/(\s[\w-]+?\.com\b)/, ' <a href="http://\1" target="_blank" rel="nofollow">\1</a>')
+        .gsub(/([\s>])([\w-]+?\.com\b)/, '\1<a href="http://\2" target="_blank" rel="nofollow">\2</a>')
         .gsub(/^([\w-]+?\.com\b)/, '<a href="http://\1" target="_blank" rel="nofollow">\1</a>'),
       :all,
       'target="_blank" rel="nofollow"'
