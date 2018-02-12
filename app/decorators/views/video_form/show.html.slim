@@ -1,0 +1,34 @@
+.video-form.clearfix[
+  data-attachable=view.attachable
+  data-create-url=view.create_url
+  data-update-url=view.update_url
+  data-max-size=104857600
+]
+  .col-md-offset-2.col-md-8
+    a.video-form__btn.btn.btn-default.btn-block.btn-lg[
+      href="#"
+      data-create-label="Add Video<div class='small text-normal'>Up to one minute long</div>"
+      data-update-label="Change Video<div class='small text-normal'>Up to one minute long</div>"
+    ]
+      / = view.photos.any? ? 'Add More Photos' : 'Add Photos'
+      'Add Video
+      .small.text-normal Up to one minute long
+
+    .video-form__video
+      video controls=true
+      .fa.fa-file-video-o
+      .remove.sprite.sprite-delete
+
+    input.video-form__input[type="file" accept="video/*" data-prefix="video-input"
+      data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]
+
+javascript:
+  waitFor('VideoForm', function() {
+    $(document).ready(function() {
+      $('.video-form').each(function() {
+        var $this = $(this);
+        if ($this.data('video-form-initialized')) return;
+        new VideoForm($(this));
+      });
+    });
+  });
