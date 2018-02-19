@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   acts_as_authentic do |config|
     config.crypto_provider Authlogic::CryptoProviders::BCrypt
-    config.perishable_token_valid_for 3.hours
+    config.perishable_token_valid_for 12.hours
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options(
       with: /\A\w[.\w+_]+\z/,
