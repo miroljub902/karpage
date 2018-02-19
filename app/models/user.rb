@@ -238,7 +238,7 @@ class User < ApplicationRecord
   end
 
   def deliver_reset_password_instructions!
-    reset_perishable_token!
+    reset_perishable_token! if perishable_token.nil?
     UserMailer.new(self).reset_password!
   end
 
