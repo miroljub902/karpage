@@ -5,7 +5,7 @@ class UserSession < Authlogic::Session::Base
   find_by_login_method :find_by_login_or_email
 
   after_destroy :reset_user_access_token
-  after_create :reset_user_access_token
+  after_create :reset_user_access_token, unless: -> { access_token.present? }
 
   delegate :access_token, to: :user, allow_nil: true
 
