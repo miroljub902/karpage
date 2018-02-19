@@ -79,7 +79,7 @@ class User < ApplicationRecord
       .group('users.id')
   }
 
-  scope :simple_search, ->(term, lat, lng, radius_in_km = 32_000, deep = true) {
+  scope :simple_search, ->(term, lat = nil, lng = nil, radius_in_km = 32_000, deep = true) {
     like = if deep
              %w[name login description link location].map { |column| "#{table_name}.#{column} ILIKE :term" }
            else
