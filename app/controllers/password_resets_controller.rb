@@ -25,7 +25,7 @@ class PasswordResetsController < ApplicationController
 
   def edit
     @user = params[:token].present? ? User.find_by(perishable_token: params[:token]) : nil
-    render_404 unless @user
+    render 'expired' unless @user
   end
 
   def update
