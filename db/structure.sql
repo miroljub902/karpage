@@ -968,7 +968,7 @@ ALTER SEQUENCE upvotes_id_seq OWNED BY upvotes.id;
 
 CREATE TABLE users (
     id integer NOT NULL,
-    email character varying,
+    email citext,
     name character varying,
     login citext,
     crypted_password character varying,
@@ -1035,6 +1035,44 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: videos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE videos (
+    id bigint NOT NULL,
+    attachable_type character varying,
+    attachable_id bigint,
+    urls jsonb DEFAULT '{}'::jsonb NOT NULL,
+    source_id character varying,
+    status character varying,
+    job_id character varying,
+    job_status character varying,
+    job_status_detail character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE videos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE videos_id_seq OWNED BY videos.id;
 
 
 --
@@ -1210,6 +1248,13 @@ ALTER TABLE ONLY upvotes ALTER COLUMN id SET DEFAULT nextval('upvotes_id_seq'::r
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY videos ALTER COLUMN id SET DEFAULT nextval('videos_id_seq'::regclass);
 
 
 --
@@ -1418,6 +1463,14 @@ ALTER TABLE ONLY upvotes
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: videos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY videos
+    ADD CONSTRAINT videos_pkey PRIMARY KEY (id);
 
 
 --
@@ -1995,6 +2048,20 @@ CREATE INDEX index_users_on_single_access_token ON users USING btree (single_acc
 
 
 --
+-- Name: index_videos_on_attachable_type_and_attachable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_videos_on_attachable_type_and_attachable_id ON videos USING btree (attachable_type, attachable_id);
+
+
+--
+-- Name: index_videos_on_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_videos_on_status ON videos USING btree (status);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2006,6 +2073,8 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 --
 
 CREATE TRIGGER trigger_users_on_lat_lng BEFORE INSERT OR UPDATE OF lat, lng ON users FOR EACH ROW EXECUTE PROCEDURE set_point_from_lat_lng();
+
+ALTER TABLE users DISABLE TRIGGER trigger_users_on_lat_lng;
 
 
 --
@@ -2125,6 +2194,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171104220734'),
 ('20171104221107'),
 ('20171107172157'),
-('20180109060458');
+('20180109060458'),
+('20180212005607'),
+('20180219230129');
 
 
