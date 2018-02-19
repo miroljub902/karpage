@@ -8,7 +8,11 @@ class Api::NotificationSerializer < ActiveModel::Serializer
   delegate :source_id, :image_url, :notifiable_image_url, :notifiable_id, :related_id, :related_type, to: :push_object
 
   def following
-    object.notifiable.user.following?(object.source)
+    if object.notifiable.is_a?(Follow)
+      object.user.following?(object.source)
+    else
+      object.notifiable.user.following?(object.source)
+    end
   end
 
   private

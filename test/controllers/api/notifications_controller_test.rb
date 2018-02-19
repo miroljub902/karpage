@@ -7,10 +7,10 @@ class Api::NotificationsControllerTest < ApiControllerTest
   setup do
     @user = users(:john_doe)
     Notification.delete_all
+    mock_request 's3'
   end
 
   test 'get user notifications' do
-    mock_request 's3'
     other_user     = users(:friend)
     other_car      = cars(:current)
     other_car.user = other_user
@@ -22,5 +22,14 @@ class Api::NotificationsControllerTest < ApiControllerTest
     assert_response :ok
     assert_equal 1, json_response.size
     assert_equal 'Dummy', json_response['notifications'].first['message']
+  end
+
+  test 'new_follower notification returns following true' do
+    other_user = users(:friend)
+    @user.follow! other_user
+    other_user.follow! @user
+    authorize_user @user
+    get :index
+    assert json_response['notifications'].first['following']
   end
 end
