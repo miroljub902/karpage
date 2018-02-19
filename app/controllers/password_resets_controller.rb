@@ -30,7 +30,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     @user = User.find_by!(perishable_token: params[:token])
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(user_params.merge(perishable_token: nil))
       UserSession.create @user, true
       redirect_to @user.login.present? ? profile_path(@user) : root_path
     else

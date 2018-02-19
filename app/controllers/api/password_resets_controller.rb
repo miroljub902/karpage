@@ -10,7 +10,7 @@ class Api::PasswordResetsController < ApiController
 
   def update
     @user = User.find_by(perishable_token: params.require(:token))
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(user_params.merge(perishable_token: nil))
       UserSession.create @user, true
       head :ok
     else
