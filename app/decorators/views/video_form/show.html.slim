@@ -8,15 +8,16 @@
     a.video-form__btn.btn.btn-default.btn-block.btn-lg[
       href="#"
       data-create-label="Add Video<div class='small text-normal'>Up to one minute long</div>"
-      data-update-label="Change Video<div class='small text-normal'>Up to one minute long</div>"
+      data-update-label="Replace Video<div class='small text-normal'>Up to one minute long</div>"
     ]
-      / = view.photos.any? ? 'Add More Photos' : 'Add Photos'
-      'Add Video
+      = view.video? ? 'Replace Video' : 'Add Video'
       .small.text-normal Up to one minute long
 
-    .video-form__video
-      video controls=true width="250"
-        source
+    .video-form__video class=('video-form__video--present' if view.video?)
+      - if view.video.complete?
+        video controls=true width="250" = view.video_sources
+      - else
+        'Processing...
       / .fa.fa-file-video-o
       / .remove.sprite.sprite-delete
 

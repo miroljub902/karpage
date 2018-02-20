@@ -8,4 +8,8 @@ class Video < ApplicationRecord
   enum status: {
     pending: 'pending', processing: 'processing', complete: 'complete', canceled: 'canceled', error: 'error'
   }
+
+  def final_url(path)
+    "https://s3.amazonaws.com/#{ENV.fetch('S3_BUCKET')}/#{path}"
+  end
 end

@@ -11,6 +11,7 @@ class Video
     end
 
     def execute!
+      scrub_temp_dir
       job = transcoder.create_job(job_options)
       video.update_attributes!(
         status: Video.statuses[:processing],
@@ -21,10 +22,20 @@ class Video
 
     private
 
+    def scrub_temp_dir
+      objects = s3.list_objects(bucket: ENV.fetch('S3_BUCKET'), prefix: "#{Video::TEMP_PREFIX}/#{video.id}")
+      objects = objects.contents.map { |object| { key: object.key } }
+      return unless objects.any?
+      s3.delete_objects(bucket: ENV.fetch('S3_BUCKET'),
+                        delete: {
+                          objects: objects
+                        })
+    end
+
     def job_options
       {
         pipeline_id: ENV.fetch('AWS_ET_PIPELINE_ID'),
-          input: {
+        input: {
           key:          "#{Video::INPUT_PREFIX}/#{video.source_id}",
           aspect_ratio: "auto",
           container:    "auto",
@@ -58,6 +69,14 @@ class Video
         access_key_id: ENV.fetch('S3_ACCESS_KEY'),
         secret_access_key: ENV.fetch('S3_SECRET_KEY'),
         region: 'us-east-1'
+      )
+    end
+
+    def s3
+      @_s3 ||= Aws::S3::Client.new(
+        region:            ENV.fetch('S3_REGION'),
+        access_key_id:     ENV.fetch('S3_ACCESS_KEY'),
+        secret_access_key: ENV.fetch('S3_SECRET_KEY')
       )
     end
   end

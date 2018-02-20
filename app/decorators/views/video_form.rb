@@ -20,6 +20,20 @@ module Views
       path_for(:update, object, id: '_ID_') if object.persisted?
     end
 
+    def video_sources
+      h.safe_join(video.urls.map do |format, url|
+        h.content_tag :source, nil, src: video.final_url(url['source']), format: "video/#{format}"
+      end)
+    end
+
+    def video?
+      video.present?
+    end
+
+    def video
+      object.video
+    end
+
     private
 
     def path_for(operation, *args)
