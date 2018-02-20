@@ -72,7 +72,7 @@ class Video
     end
 
     def s3_key_prefix
-      @_s3_key_prefix ||= Digest::MD5.hexdigest("#{video.attachable_id}/#{video.id}")
+      @_s3_key_prefix ||= video.s3_key_prefix
     end
 
     def s3

@@ -11,7 +11,7 @@ class Video
     end
 
     def execute!
-      scrub_temp_dir
+      scrub_output_dirs
       job = transcoder.create_job(job_options)
       video.update_attributes!(
         status: Video.statuses[:processing],
@@ -22,14 +22,12 @@ class Video
 
     private
 
-    def scrub_temp_dir
-      objects = s3.list_objects(bucket: ENV.fetch('S3_BUCKET'), prefix: "#{Video::TEMP_PREFIX}/#{video.id}")
-      objects = objects.contents.map { |object| { key: object.key } }
+    def scrub_output_dirs
+      list  = [s3.list_objects(bucket: ENV.fetch('S3_BUCKET'), prefix: "#{Video::TEMP_PREFIX}/#{video.id}")]
+      list += [s3.list_objects(bucket: ENV.fetch('S3_BUCKET'), prefix: "#{Video::FINAL_PREFIX}/#{video.s3_key_prefix}")]
+      objects = list.flat_map(&:contents).map { |object| { key: object.key } }
       return unless objects.any?
-      s3.delete_objects(bucket: ENV.fetch('S3_BUCKET'),
-                        delete: {
-                          objects: objects
-                        })
+      s3.delete_objects(bucket: ENV.fetch('S3_BUCKET'), delete: { objects: objects })
     end
 
     def job_options
