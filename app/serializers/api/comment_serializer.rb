@@ -4,11 +4,15 @@ class Api::CommentSerializer < ApiSerializer
   include ImgixRefileHelper
   include Imgix::Rails::UrlHelper
 
-  attributes %i[id user_id body image_url created_at]
+  attributes %i[id user_id body plain_body image_url created_at]
   has_one :user, serializer: Api::UserSerializer::PublicProfile
 
   def image_url
     ix_refile_image_url object, :photo
+  end
+
+  def plain_body
+    object.body
   end
 
   def body
