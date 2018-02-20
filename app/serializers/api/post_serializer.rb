@@ -5,7 +5,7 @@ class Api::PostSerializer < ApiSerializer
   include Imgix::Rails::UrlHelper
   include ActionView::Helpers::TextHelper
 
-  attributes %i[id user_id body created_at likes_count upvotes_count image_url]
+  attributes %i[id user_id body plain_body created_at likes_count upvotes_count image_url]
   attributes %i[liked upvoted], if: :current_user
 
   has_one :user, serializer: Api::UserSerializer::PublicProfile
@@ -32,6 +32,10 @@ class Api::PostSerializer < ApiSerializer
     elsif (photo = object.sorted_photos.first)
       ix_refile_image_url photo, :image
     end
+  end
+
+  def plain_body
+    object.body
   end
 
   def body
