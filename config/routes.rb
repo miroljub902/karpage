@@ -44,7 +44,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :comments, only: [] do
+    resources :comments, only: :destroy do
       resources :comments, only: %i[index create], commentable_type: 'Comment'
     end
 
