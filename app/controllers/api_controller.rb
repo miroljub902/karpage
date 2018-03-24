@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApiController < ActionController::Base
+  include Pundit
+
   respond_to :json
 
   before_action :cors_set_headers
