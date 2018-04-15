@@ -3,6 +3,11 @@ profile_thumbnail:
   class: 'ProfileThumbnailRegenJob'
   queue: default
 
+video_transcoding_status:
+  cron: '*/5 * * * *'
+  class: 'VideoTranscodingStatusJob'
+  queue: default
+
 fb_og_refresh:
   cron: '0 */6 * * *'
   class: 'FacebookOgRefreshJob'

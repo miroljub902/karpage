@@ -1,0 +1,40 @@
+.video-form {
+}
+
+.video-form__video {
+  width: 100%;
+  height: 100%;
+  margin: 2rem auto 0 auto;
+  text-align: center;
+  display: none;
+  position: relative;
+
+  .video-form__video--present & {
+    display: block;
+  }
+}
+
+.video-form__btn {
+  &:after {
+    content: attr(data-progress);
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    right: 0;
+    top: 0;
+    color: #000;
+    line-height: 46px;
+  }
+
+  .video-form--uploading &:after {
+    display: block;
+  }
+}
+
+.video-form__input {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}

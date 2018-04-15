@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       resources :car_photos, path: 'photos', as: :photos, only: %i[create destroy], attachable_class: Car do
         post 'reorder', on: :collection
       end
+      resources :videos, only: %i[create destroy], attachable_class: Car
 
       resources :comments, only: %i[create destroy], scope: :car
     end
@@ -127,6 +128,7 @@ Rails.application.routes.draw do
     resources :photos, only: %i[create destroy], attachable_class: Post do
       post 'reorder', on: :collection
     end
+    resources :videos, only: %i[create destroy], attachable_class: Post
   end
 
   get ':profile_id' => 'profiles#show', as: :profile, constraints: { profile_id: %r{[^\/]+} }
