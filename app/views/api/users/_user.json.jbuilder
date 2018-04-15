@@ -12,7 +12,7 @@ json.following_count user.followees.count
 json.profile_thumbnail_url image_url('profile/default.jpg')
 # end
 
-json.instagram_id user.instagram_id
+json.call user, :instagram_id, :facebook_url, :youtube_url, :twitter_url
 
 json.new_posts count_new_stuff(user.friends_posts, owner: nil)
 json.new_followers count_new_stuff(user.follows_by, owner: user)
