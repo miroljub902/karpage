@@ -37,3 +37,5 @@ module KarPage
     end
   end
 end
+
+require 'rails_rinku'

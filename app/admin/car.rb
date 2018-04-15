@@ -27,9 +27,11 @@ ActiveAdmin.register Car do
     column :car, sortable: 'slug' do |car|
       link_to car, admin_car_path(car.id)
     end
-    column :description
+    column :description do |car|
+      truncate car.description, length: 100
+    end
     column :user do |car|
-      link_to car.user, [:admin, car.user]
+      link_to Admin::UserDecorator.new(car.user), admin_user_path(car.user_id)
     end
     column :featured, sortable: 'featured_order' do |car|
       status_tag 'Yes' if car.featured?

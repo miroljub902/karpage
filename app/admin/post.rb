@@ -20,7 +20,9 @@ ActiveAdmin.register Post do
     column :body do |post|
       truncate post.body, length: 100
     end
-    column :user
+    column :user do |post|
+      link_to Admin::UserDecorator.new(post.user), admin_user_path(post.user_id)
+    end
     column :created_at do |post|
       I18n.l post.created_at.to_date, format: :long
     end

@@ -2,7 +2,7 @@
 
 class Api::CommentsController < ApiController
   before_action :require_user, only: %i[create update destroy]
-  before_action :find_commentable
+  before_action :find_commentable, except: %i[destroy]
 
   def index
     @comments = @commentable.comments.not_blocked(current_user).sorted.page(params[:page])
@@ -21,7 +21,7 @@ class Api::CommentsController < ApiController
   end
 
   def destroy
-    @comment = @commentable.comments.find_by!(id: params[:id], user_id: current_user.id)
+    @comment = policy_scope(Comment).find(id: params[:id])
     @comment.destroy
     head :ok
   end

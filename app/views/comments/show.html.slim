@@ -30,7 +30,7 @@
                     .fa.fa-comment-o
                     span Reply
 
-              = simple_format comment.body
+              = comment.formatted_body
 
               - if link ||= false
                 = link_to link_text, link

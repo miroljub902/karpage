@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def self.auto_link(text)
+    Rinku.auto_link(
+      text
+        .gsub(/([\s>])([\w-]+?\.com\b)/, '\1<a href="http://\2" target="_blank" rel="nofollow">\2</a>')
+        .gsub(/^([\w-]+?\.com\b)/, '<a href="http://\1" target="_blank" rel="nofollow">\1</a>'),
+      :all,
+      'target="_blank" rel="nofollow"'
+    ).html_safe
+  end
+
+  def auto_link(text)
+    ApplicationHelper.auto_link(text)
+  end
+
   def my_profile?
     current_user && @user && current_user.id == @user.id
   end

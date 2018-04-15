@@ -5,7 +5,7 @@ class Api::PostSerializer < ApiSerializer
   include Imgix::Rails::UrlHelper
   include ActionView::Helpers::TextHelper
 
-  attributes %i[id user_id body created_at likes_count upvotes_count image_url]
+  attributes %i[id user_id body plain_body created_at likes_count upvotes_count image_url]
   attributes %i[liked upvoted], if: :current_user
 
   has_one :user, serializer: Api::UserSerializer::PublicProfile
@@ -34,7 +34,11 @@ class Api::PostSerializer < ApiSerializer
     end
   end
 
+  def plain_body
+    object.body
+  end
+
   def body
-    simple_format auto_link(object.body, html: { target: '_blank' })
+    simple_format Rinku.auto_link(object.body, :all, 'target="_blank"')
   end
 end

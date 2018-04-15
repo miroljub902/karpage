@@ -10,13 +10,15 @@ ActiveAdmin.register Comment, as: 'UserComment' do
 
   index do
     selectable_column
-    column :car, sortable: 'commentable_id' do |comment|
-      link_to comment.commentable, admin_car_path(comment.commentable)
+    column :subject, sortable: 'commentable_id' do |comment|
+      "#{comment.commentable.class}: #{link_to(comment.commentable, admin_car_path(comment.commentable))}".html_safe
     end
     column 'Comment' do |comment|
       truncate comment.body, length: 100
     end
-    column :user
+    column :user do |comment|
+      link_to Admin::UserDecorator.new(comment.user), admin_user_path(comment.user_id)
+    end
     column :created_at
     actions
   end

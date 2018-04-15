@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   acts_as_authentic do |config|
     config.crypto_provider Authlogic::CryptoProviders::BCrypt
-    config.perishable_token_valid_for 3.hours
+    config.perishable_token_valid_for 12.hours
     config.merge_validates_format_of_email_field_options if: -> { identities.empty? || email.present? }
     config.merge_validates_format_of_login_field_options(
       with: /\A\w[.\w+_]+\z/,
@@ -79,7 +79,7 @@ class User < ApplicationRecord
       .group('users.id')
   }
 
-  scope :simple_search, ->(term, lat, lng, radius_in_km = 32_000, deep = true) {
+  scope :simple_search, ->(term, lat = nil, lng = nil, radius_in_km = 32_000, deep = true) {
     like = if deep
              %w[name login description link location].map { |column| "#{table_name}.#{column} ILIKE :term" }
            else
@@ -238,7 +238,7 @@ class User < ApplicationRecord
   end
 
   def deliver_reset_password_instructions!
-    reset_perishable_token!
+    reset_perishable_token! if perishable_token.nil?
     UserMailer.new(self).reset_password!
   end
 

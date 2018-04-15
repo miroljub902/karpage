@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-json.call(comment, :id, :user_id, :body, :created_at)
+json.call(comment, :id, :user_id, :created_at)
+json.plain_body comment.body
+json.body ApplicationHelper.auto_link(comment.body)
 json.image_url ix_refile_image_url comment, :photo
 
 json.user do

@@ -5,7 +5,7 @@ ActiveAdmin.register User do
   menu priority: 10
 
   filter :featured_order_present, as: :select, collection: [%w[Yes 1], ['No', nil]], label: 'Featured'
-  filter :email
+  filter :email, as: :string
   filter :name
   filter :login, as: :string
   filter :location
