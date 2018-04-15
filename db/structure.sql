@@ -1016,7 +1016,10 @@ CREATE TABLE public.users (
     lat numeric(9,5),
     lng numeric(9,5),
     fb_og_refreshed boolean DEFAULT false NOT NULL,
-    fb_og_refreshed_at timestamp without time zone
+    fb_og_refreshed_at timestamp without time zone,
+    facebook_url character varying,
+    youtube_url character varying,
+    twitter_url character varying
 );
 
 
@@ -2199,4 +2202,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180109060458'),
 ('20180212005607'),
 ('20180219230129'),
-('20180415203834');
+('20180415203834'),
+('20180415211351');
+
+

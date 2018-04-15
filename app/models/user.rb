@@ -4,6 +4,9 @@
 class User < ApplicationRecord
   include FeaturedOrdering
   include UniqueViolationGuard
+  include UrlNormalizer
+
+  normalize_url :facebook_url, :youtube_url, :twitter_url
 
   strip_attributes allow_empty: true
 
