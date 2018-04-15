@@ -25,7 +25,7 @@ class Api::CarPartsController < ApiController
 
   def car_part_params
     params.require(:car_part).permit(
-      :type, :manufacturer, :model, :price, :review, :sorting,
+      :type, :manufacturer, :model, :price, :review, :sorting, :link,
       photo_attributes: %i[id _destroy image_id image_content_type image_size image_filename]
     )
   end
