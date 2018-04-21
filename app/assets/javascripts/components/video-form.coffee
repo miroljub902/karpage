@@ -1,12 +1,11 @@
 class window.VideoForm
   constructor: ($ele) ->
-    @$ele = $ele
-      .data('video-form-initialized', true)
-      .on('click', '.photo .remove', (e) => @onVideoRemove(e))
+    @$ele = $ele.data('video-form-initialized', true)
     @attachable = @$ele.data('attachable')
     @$form = $ele.parents('form')
 
     @$selectButton = $ele.find('.video-form__btn').on('click', (e) => @selectFiles(e))
+    @$removeButton = $ele.find('.video-form__remove .btn').on('click', (e) => @onRemoveVideo(e))
     @$file = $ele.find('.video-form__input').on('change', (e) => @onFileChanged(e))
     @$video = $ele.find('.video-form__video video')
     @maxSize = $ele.data('max-size')
@@ -38,7 +37,7 @@ class window.VideoForm
     @$selectButton.html(text)
 
   updatePreview: (file) ->
-    console.log file
+    @$video.parent().addClass('video-form__video--preview')
     @$video.find('source')
       .attr 'src', URL.createObjectURL(file)
       .end()
@@ -54,6 +53,7 @@ class window.VideoForm
       return _this.updateButtonText() unless _this.validateFile(file)
 
       _this.$ele.addClass('video-form--uploading').attr('data-progress', '0%')
+      _this.$video.parent().removeClass('video-form__video--complete')
       _this.$selectButton.attr 'data-progress', "Uploading... (0%)"
       _this.disableButton()
 
@@ -83,9 +83,9 @@ class window.VideoForm
               }
             }
             success: (data) ->
-              _this.$ele.removeClass('video-form--uploading').addClass('video-form__video--present')
-              _this.enableButton()
-              _this.updateButtonText()
+              _this.$ele.removeClass('video-form--uploading')
+              _this.$video.parent().addClass('video-form__video--present')
+              _this.$selectButton.hide()
               _this.updatePreview file
 
     _this.$file.wrap('<form>').closest('form').get(0).reset()
@@ -93,40 +93,28 @@ class window.VideoForm
     e.stopPropagation()
     e.preventDefault()
 
-  removeVideo: ($photo) ->
-    $photo.find('input[type=hidden]').remove()
+  resetForm: ->
+    @$video.parent().removeClass('video-form__video--present video-form__video--preview video-form__video--complete')
+    @updateButtonText()
     @enableButton()
-    $parent = $photo.parent()
-    $photo.fadeOut =>
-      $photo
-        .removeClass('has-photo')
-        .removeAttr('data-id')
-        .find('.img')
-        .removeAttr('style')
-        .end()
-        .detach()
-        .appendTo($parent)
-        .fadeIn()
 
-      @updatePhotoIndexes()
-      @updateButtonText()
-
-  onVideoRemove: (e) ->
+  onRemoveVideo: (e) ->
+    e.preventDefault()
     return unless confirm('Are you sure?')
 
+    @disableButton()
     $this = $(e.target)
-    $photo = $this.parents('.photo')
-
-    return @removeVideo($photo) unless $photo.data('id')
-
-    url = @$photos.data('update-url').replace('_ID_', $photo.data('id'))
     $.ajax
-      url: url,
+      url: $this.data('url')
       method: 'DELETE'
-      success: => @removeVideo $photo
+      success: =>
+        @$video.find('source').removeAttr('src')
+        @resetForm()
+      error: =>
+        alert('There was an unexpected error. Please try again later.')
 
   enableButton: ->
-    @$selectButton.removeClass('disabled')
+    @$selectButton.removeClass('disabled').show()
 
   disableButton: ->
     @$selectButton.addClass('disabled')

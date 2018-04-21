@@ -4,17 +4,49 @@
 .video-form__video {
   width: 100%;
   height: 100%;
-  margin: 2rem auto 0 auto;
+  margin: 0 auto;
   text-align: center;
   display: none;
   position: relative;
+
+  video {
+    display: none;
+    margin-bottom: 1rem;
+  }
+
+  .video-form__remove {
+    display: none;
+  }
+
+  &.video-form__video--complete {
+    .video-form__remove {
+      display: block;
+    }
+  }
+
+  &.video-form__video--complete, &.video-form__video--preview {
+    video {
+      display: inline-block;
+    }
+  }
 
   &.video-form__video--present {
     display: block;
   }
 }
 
+.video-form__processing {
+  margin: 0 auto;
+  width: 250px;
+  height: 160px;
+  background-color: #eee;
+  text-align: center;
+  line-height: 160px;
+}
+
 .video-form__btn {
+  margin-bottom: 2rem;
+
   &:after {
     content: attr(data-progress);
     display: none;

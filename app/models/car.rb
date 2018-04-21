@@ -27,6 +27,7 @@ class Car < ApplicationRecord
   has_many :notifications, as: :notifiable, dependent: :delete_all
   has_many :reports, as: :reportable, dependent: :destroy
   has_one :video, as: :attachable, dependent: :destroy
+  has_many :videos, as: :attachable # So we can delete more easily
 
   accepts_nested_attributes_for :photos, allow_destroy: true
   accepts_nested_attributes_for :parts, allow_destroy: true

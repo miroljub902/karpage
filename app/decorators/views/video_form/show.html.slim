@@ -5,21 +5,20 @@
   data-max-size=104857600
 ]
   .col-md-offset-2.col-md-8
-    a.video-form__btn.btn.btn-default.btn-block.btn-lg[
-      href="#"
-      data-create-label="Add Video<div class='small text-normal'>Up to one minute long</div>"
-      data-update-label="Replace Video<div class='small text-normal'>Up to one minute long</div>"
-    ]
-      = view.video? ? 'Replace Video' : 'Add Video'
-      .small.text-normal Up to one minute long
+    - if !view.video? || view.complete?
+      a.video-form__btn.btn.btn-default.btn-block.btn-lg[
+        href="#"
+        data-create-label="Add Video<div class='small text-normal'>Up to one minute long</div>"
+        data-update-label="Replace Video<div class='small text-normal'>Up to one minute long</div>"
+      ]
+        = view.video? ? 'Replace Video' : 'Add Video'
+        .small.text-normal Up to one minute long
 
-    .video-form__video class=('video-form__video--present' if view.video?)
-      - if view.video.complete?
-        video controls=true width="250" = view.video_sources
-      - else
-        'Processing...
-      / .fa.fa-file-video-o
-      / .remove.sprite.sprite-delete
+    .video-form__video class=view.video_css_class
+      video controls=true width="250" = view.video_sources
+      - if view.processing?
+        .video-form__processing Processing video...
+      .video-form__remove= view.delete_button
 
     input.video-form__input[type="file" accept="video/*" data-prefix="video-input"
       data-s3-signer=s3_signatures_path data-s3-key=(ENV['S3_ACCESS_KEY']) data-s3-host=(ENV['S3_HOST']) data-s3-bucket=(ENV['S3_BUCKET'])]

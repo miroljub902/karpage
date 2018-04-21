@@ -12,18 +12,44 @@ module Views
       super object: form.object, **options
     end
 
+    def delete_button
+      return unless object.persisted?
+      h.link_to 'Delete video', '#', data: { url: destroy_url }, class: 'btn btn-danger'
+    end
+
     def create_url
       path_for(:create, object.id) if object.persisted?
     end
 
     def update_url
-      path_for(:update, object, id: '_ID_') if object.persisted?
+      path_for(:update, object.id, id: '_ID_') if object.persisted?
+    end
+
+    def destroy_url
+      path_for(:destroy, object.id, id: video) if object.persisted?
     end
 
     def video_sources
+      return h.content_tag(:source, nil) unless complete?
+
       h.safe_join(video.urls.map do |format, url|
         h.content_tag :source, nil, src: video.final_url(url['source']), format: "video/#{format}"
       end)
+    end
+
+    def video_css_class
+      [
+        ('video-form__video--present' if video?),
+        ('video-form__video--complete' if complete?)
+      ].compact.join(' ')
+    end
+
+    def processing?
+      video? && !video.complete?
+    end
+
+    def complete?
+      video&.complete?
     end
 
     def video?
@@ -40,7 +66,7 @@ module Views
       case operation
       when :create
         h.public_send "#{options[:url_base]}_videos_path", *args
-      when :update
+      when :update, :destroy
         h.public_send "#{options[:url_base]}_video_path", *args
       end
     end
