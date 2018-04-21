@@ -21,7 +21,7 @@ class Api::CommentsController < ApiController
   end
 
   def destroy
-    @comment = policy_scope(Comment).find(id: params[:id])
+    @comment = policy_scope(Comment).find(params[:id])
     @comment.destroy
     head :ok
   end
