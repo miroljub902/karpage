@@ -7,7 +7,7 @@ class Api::PostsController < ApiController
   def index
     scope = params[:user_id] ? Post.where(user_id: params[:user_id]) : Post
     @posts = scope
-             .with_photo
+             .with_photo_or_video
              .sorted
              .global
              .not_blocked(current_user)
@@ -20,7 +20,7 @@ class Api::PostsController < ApiController
     @posts = current_user
              .decorate
              .friends_posts_for_feed
-             .with_photo
+             .with_photo_or_video
              .sorted
              .includes(:sorted_photos, :user)
              .page(params[:page])

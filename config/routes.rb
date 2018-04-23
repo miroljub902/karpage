@@ -102,6 +102,8 @@ Rails.application.routes.draw do
   end
   resource :user_session, only: %i[new create destroy], path: 'session'
 
+  resources :videos, only: %i[create]
+
   resources :comments, only: %i[show destroy] do
     resources :comments, only: %i[create destroy], scope: :comment
   end
@@ -117,7 +119,7 @@ Rails.application.routes.draw do
   resources :profile_cars, only: :index, path: 'cars'
   resources :profiles, only: :index, path: 'users'
 
-  get 'posts/explore' => 'posts#explore'
+  get 'posts/explore' => 'posts#explore', scope: :explore
 
   get 'posts/:id' => 'posts_channels#show', as: :posts_channel,
       constraints: { id: /monday|tuesday|wednesday|thursday|friday|saturday|sunday/ }

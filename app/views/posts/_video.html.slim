@@ -1,0 +1,20 @@
+- caption = local_assigns.key?(:caption) ? local_assigns[:caption] : true
+.video-player.video-player--paused.img
+  .video-player__pause-btn
+  .video-player__play-btn
+  video.d-block width=width height=height controls=false poster=post.cover_url
+    = post.video.video_sources
+
+  - if caption
+    = link_to post_path(post.user, post), class: 'caption video-player__caption'
+      .pull-left.profile-avatar.small
+        .avatar-container
+          - if post.user.avatar
+            img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+          - else
+            .initials
+        h3= post.user
+
+      .pull-right.m-r-1
+        = pluralize post.comments_count, 'Comment', 'Comments'
+        span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'

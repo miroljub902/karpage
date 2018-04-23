@@ -3,6 +3,7 @@
 module Views
   class VideoForm < ViewDecorator
     attr_reader :attachable, :form
+    view_attrs :form
 
     def initialize(options = {})
       @attachable = options.delete(:attachable)
@@ -18,7 +19,11 @@ module Views
     end
 
     def create_url
-      path_for(:create, object.id) if object.persisted?
+      if object.persisted?
+        path_for :create, object.id
+      else
+        h.videos_path
+      end
     end
 
     def update_url
@@ -45,7 +50,7 @@ module Views
     end
 
     def processing?
-      video? && !video.complete?
+      video? && video.persisted? && !video.complete?
     end
 
     def complete?
@@ -53,7 +58,7 @@ module Views
     end
 
     def video?
-      video.present?
+      video.present? && video.persisted?
     end
 
     def video

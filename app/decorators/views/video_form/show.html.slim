@@ -4,6 +4,10 @@
   data-update-url=view.update_url
   data-max-size=104857600
 ]
+  = form.fields_for :video, view.video || form.object.build_video do |f|
+    = f.hidden_field :id
+    = f.hidden_field :source_id
+
   .col-md-offset-2.col-md-8
     - if !view.video? || view.complete?
       a.video-form__btn.btn.btn-default.btn-block.btn-lg[

@@ -8,6 +8,7 @@ class window.VideoForm
     @$removeButton = $ele.find('.video-form__remove .btn').on('click', (e) => @onRemoveVideo(e))
     @$file = $ele.find('.video-form__input').on('change', (e) => @onFileChanged(e))
     @$video = $ele.find('.video-form__video video')
+    @$videoInput = $ele.find("##{@attachable}_video_attributes_source_id")
     @maxSize = $ele.data('max-size')
     @uploader = new Evaporate
       signerUrl: @$file.data('s3-signer')
@@ -72,21 +73,11 @@ class window.VideoForm
           progress = parseInt(progress * 100, 10) + '%'
           _this.$selectButton.attr 'data-progress', "Uploading... (#{progress})"
         complete: (xhr) ->
-          videoUrl = xhr.responseURL.replace(/\?.+/, '')
-          $.ajax
-            url: _this.$ele.data('create-url'),
-            method: 'POST'
-            data: {
-              video: {
-                source_id: videoId,
-                source_filename: file.name
-              }
-            }
-            success: (data) ->
-              _this.$ele.removeClass('video-form--uploading')
-              _this.$video.parent().addClass('video-form__video--present')
-              _this.$selectButton.hide()
-              _this.updatePreview file
+          _this.$videoInput.val(videoId)
+          _this.$ele.removeClass('video-form--uploading')
+          _this.$video.parent().addClass('video-form__video--present')
+          _this.$selectButton.hide()
+          _this.updatePreview file
 
     _this.$file.wrap('<form>').closest('form').get(0).reset()
     _this.$file.unwrap()

@@ -12,18 +12,22 @@ class Post < ApplicationRecord
   has_many :photos, as: :attachable, dependent: :destroy
   has_many :sorted_photos, -> { sorted }, as: :attachable, class_name: 'Photo'
   has_many :reports, as: :reportable, dependent: :destroy
+  has_one :video, as: :attachable, dependent: :destroy
 
   attachment :photo, type: :image
 
   accepts_nested_attributes_for :photos, allow_destroy: true
+  accepts_nested_attributes_for :video
 
   validate :validate_presence_of_photo, :validate_photo_size
 
   scope :sorted, -> { order(created_at: :desc) }
   scope :global, -> { where(post_channel_id: nil) }
-  scope :with_photo, -> {
-    where('photo_id IS NOT NULL OR ph.id IS NOT NULL')
-      .joins("LEFT OUTER JOIN photos ph ON ph.attachable_type = 'Post' AND ph.attachable_id = posts.id")
+  scope :with_photo_or_video, -> {
+    joins("LEFT OUTER JOIN photos ph ON ph.attachable_type = 'Post' AND ph.attachable_id = posts.id")
+      .joins("LEFT OUTER JOIN videos ON videos.attachable_type = 'Post' AND videos.attachable_id = posts.id")
+      .where('photo_id IS NOT NULL OR ph.id IS NOT NULL OR (videos.id IS NOT NULL AND videos.status = ?)',
+             Video.statuses[:complete])
       .distinct
   }
   scope :not_blocked, ->(user) {
@@ -92,6 +96,7 @@ class Post < ApplicationRecord
   private
 
   def validate_presence_of_photo
+    return if video
     return if remove_photo != '1' && (photo || photo_id.present? || photos.size.positive?)
     errors.add :photo, :blank
   end

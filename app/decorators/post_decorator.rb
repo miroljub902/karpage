@@ -6,14 +6,16 @@ class PostDecorator < Draper::Decorator
   delegate :link_to, :profile_path, :hashtag_path, to: :h
 
   delegate_all
-  decorates_association :user
+  decorates_associations :user, :video
 
-  def cover_url(options)
+  def cover_url(options = {})
     options = { auto: 'enhance,format', format: 'auto', fit: 'clip' }.merge(options)
     if (photo = sorted_photos.first)
       h.ix_refile_image_url(photo, :image, options)
     elsif object.photo
       h.ix_refile_image_url(post, :photo, options)
+    elsif (video = object.video)
+      video.thumb_url
     end
   end
 

@@ -1,0 +1,56 @@
+.video-player {
+  position: relative;
+}
+
+.video-player__play-btn,
+.video-player__pause-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  top: 50%;
+  margin-top: -25px;
+  margin-left: -25px;
+  font-family: FontAwesome;
+  font-size: 50px;
+  line-height: 50px;
+  color: rgba(200, 200, 200, 0.8);
+}
+
+.video-player__play-btn:before {
+  content: "\f04b";
+}
+
+.video-player__pause-btn:before {
+  content: "\f04c";
+}
+
+.video-player--paused {
+  .video-player__pause-btn {
+    display: none;
+  }
+
+  .video-player__play-btn {
+    display: block;
+  }
+}
+
+.video-player--playing {
+  .video-player__play-btn, .video-player__pause-btn {
+    display: none;
+  }
+
+  .video-player__caption {
+    display: none;
+  }
+
+  &:hover {
+    .video-player__caption {
+      display: block;
+    }
+
+    .video-player__pause-btn {
+      display: block;
+    }
+  }
+}

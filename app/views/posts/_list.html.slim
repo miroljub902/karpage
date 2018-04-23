@@ -10,19 +10,22 @@
   .hr
 
   - grouped_posts.each do |post|
-    .post.post-card
-      = link_to post_path(post.user, post) do
-        .img style="background-image: url(#{post.cover_url(h: 300)})"
+    .post.post-card class=("post--video" if post.video)
+      - if post.video
+        .div= render 'video', post: post, width: 579, height: 300
+      - else
+        = link_to post_path(post.user, post) do
+          .img style="background-image: url(#{post.cover_url(h: 300)})"
 
-        .caption
-          .pull-left.profile-avatar.small
-            .avatar-container
-              - if post.user.avatar
-                img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
-              - else
-                .initials
-            h3= post.user
+          .caption
+            .pull-left.profile-avatar.small
+              .avatar-container
+                - if post.user.avatar
+                  img.avatar src=ix_refile_image_url(post.user, :avatar, auto: 'enhance,format', fit: 'crop', w: 45, h: 45) width="45" height="45"
+                - else
+                  .initials
+              h3= post.user
 
-          .pull-right.m-r-1
-            = pluralize post.comments_count, 'Comment', 'Comments'
-            span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'
+            .pull-right.m-r-1
+              = pluralize post.comments_count, 'Comment', 'Comments'
+              span.m-l-1= pluralize post.likes_count, 'Like', 'Likes'

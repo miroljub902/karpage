@@ -66,21 +66,24 @@ class PostsController < ApplicationController
     scope = params[:following] && signed_in? ? 'friends' : params[:scope]
     case scope
     when 'all'
-      Post.all
+      Post.with_photo_or_video
     when 'friends'
-      current_user.friends_posts_for_feed
+      current_user.friends_posts_for_feed.with_photo_or_video
+    when :explore
+      Post.all.with_photo_or_video
     when nil
       Post.all
     else
       @user = User.find_by(login: params[:scope])
-      @user ? @user.posts : Post.none
-    end.sorted.with_photo.global.includes(:user, :sorted_photos)
+      @user ? @user.posts.with_photo_or_video : Post.none
+    end.sorted.global.includes(:user, :sorted_photos, :video)
   end
 
   def post_params
     params.require(:post).permit(
       :body, :photo, :post_channel_id, :remove_photo,
-      photos_attributes: %i[image_id image_content_type image_size image_filename sorting]
+      photos_attributes: %i[image_id image_content_type image_size image_filename sorting],
+      video_attributes: %i[source_id]
     )
   end
 
