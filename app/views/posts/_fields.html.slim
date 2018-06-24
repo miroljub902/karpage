@@ -2,7 +2,7 @@
 .title = f.object.persisted? ? 'Update Post' : 'Post Update'
 = f.text_area :body, rows: 8, class: 'form-control js-mentions', placeholder: f.object.persisted? ? '' : 'Post pictures of your car, pictures from car events, car spotting, or anything in between...'
 
-- if f.object.persisted? && !f.object.video
+- unless f.object.persisted? # Don't allow changing media after created
   = f.file_field :photo, accept: 'image/*'
   .photobutton-container class=(f.object.photo ? 'single' : 'dropdown')
     .photobutton.post__photo-btn.with-preview.single
