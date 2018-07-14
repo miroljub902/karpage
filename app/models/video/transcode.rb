@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Video
   class Transcode
     attr_reader :video

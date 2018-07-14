@@ -32,6 +32,13 @@ class Api::ProfilesControllerTest < ApiControllerTest
     end
   end
 
+  test 'returns post count' do
+    user = users(:john_doe)
+    user.posts.create! photo_id: 'dummy', body: 'dummy'
+    get :show, params: { id: user.login }
+    assert_equal 1, json_response['user']['posts_count']
+  end
+
   test 'can follow user' do
     user = users(:john_doe)
     friend = users(:friend)

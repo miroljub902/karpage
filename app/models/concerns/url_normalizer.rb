@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UrlNormalizer
   extend ActiveSupport::Concern
 
@@ -22,7 +24,7 @@ module UrlNormalizer
   def normalize_url_attribute(attr)
     value = self[attr]
     return if value.blank?
-    value = "http://#{value}" unless value =~ /\Ahttps?:\/\//
+    value = "http://#{value}" unless value.match?(/\Ahttps?:\/\//)
     self[attr] = value
   end
 end

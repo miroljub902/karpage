@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Video < ApplicationRecord
   INPUT_PREFIX = 'video-input'
   TEMP_PREFIX  = 'video-temp'

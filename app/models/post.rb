@@ -4,7 +4,7 @@ class Post < ApplicationRecord
   include MentionsNotifier
   include HashtagsHandler
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   belongs_to :post_channel
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :delete_all

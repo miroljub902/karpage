@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.call(user, :id, :name, :email, :login, :location, :description, :link, :access_token, :filtered_cars_count)
+json.call(user, :id, :name, :email, :login, :location, :description, :link, :access_token, :filtered_cars_count, :posts_count)
 json.avatar_url ix_refile_image_url(user, :avatar)
 json.profile_background_url ix_refile_image_url(user, :profile_background)
 json.followers_count user.followers.count

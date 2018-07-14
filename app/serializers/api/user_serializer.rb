@@ -9,7 +9,7 @@ class Api::UserSerializer < ApiSerializer
     id name email login location description link access_token cars_count profile_url
     avatar_url profile_background_url followers_count following_count profile_thumbnail_url
     instagram_id facebook_url youtube_url twitter_url
-    new_posts new_followers push_settings
+    new_posts new_followers push_settings posts_count
   ]
 
   class PublicProfile < Api::UserSerializer

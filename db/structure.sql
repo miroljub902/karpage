@@ -324,6 +324,39 @@ ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
 
 
 --
+-- Name: email_blasts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_blasts (
+    id bigint NOT NULL,
+    subject character varying NOT NULL,
+    body text NOT NULL,
+    draft boolean DEFAULT true NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: email_blasts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_blasts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_blasts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_blasts_id_seq OWNED BY public.email_blasts.id;
+
+
+--
 -- Name: filters; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1019,7 +1052,8 @@ CREATE TABLE public.users (
     fb_og_refreshed_at timestamp without time zone,
     facebook_url character varying,
     youtube_url character varying,
-    twitter_url character varying
+    twitter_url character varying,
+    posts_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1120,6 +1154,13 @@ ALTER TABLE ONLY public.cars ALTER COLUMN id SET DEFAULT nextval('public.cars_id
 --
 
 ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: email_blasts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_blasts ALTER COLUMN id SET DEFAULT nextval('public.email_blasts_id_seq'::regclass);
 
 
 --
@@ -1316,6 +1357,14 @@ ALTER TABLE ONLY public.cars
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_blasts email_blasts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_blasts
+    ADD CONSTRAINT email_blasts_pkey PRIMARY KEY (id);
 
 
 --
@@ -2203,6 +2252,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180212005607'),
 ('20180219230129'),
 ('20180415203834'),
-('20180415211351');
+('20180415211351'),
+('20180522032914'),
+('20180714171821');
 
 

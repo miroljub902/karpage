@@ -18,5 +18,6 @@ json.profile_thumbnail_url image_url('profile/default.jpg')
 json.cars_count user.filtered_cars_count
 json.followers_count user.followers.count
 json.following_count user.followees.count
+json.posts_count user.posts_count
 
 json.following current_user.following?(user) if current_user

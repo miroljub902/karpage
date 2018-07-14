@@ -5,6 +5,8 @@ module Views
     attr_reader :attachable, :form
     view_attrs :form
 
+    delegate :video, to: :object
+
     def initialize(options = {})
       @attachable = options.delete(:attachable)
       @form = options.delete(:form)
@@ -59,10 +61,6 @@ module Views
 
     def video?
       video.present? && video.persisted?
-    end
-
-    def video
-      object.video
     end
 
     private

@@ -20,14 +20,14 @@ class ViewDecorator < Draper::Decorator
   end
 
   def render
-    h.render file: view_path.join('show'), locals: view_attrs.merge({ view: self })
+    h.render file: view_path.join('show'), locals: view_attrs.merge(view: self)
   end
 
   private
 
   def view_attrs
     (_view_attrs || []).each_with_object({}) do |attr, attrs|
-      attrs[attr] = self.__send__(attr)
+      attrs[attr] = __send__(attr)
     end
   end
 

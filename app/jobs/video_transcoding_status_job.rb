@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VideoTranscodingStatusJob < ApplicationJob
   queue_as :default
 
