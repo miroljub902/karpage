@@ -8,7 +8,8 @@ class Api::PostsChannelsControllerTest < ApiControllerTest
     mock_request :s3
     Post.delete_all
     @channel = PostChannel.create!(name: 'dummy')
-    @post = @channel.posts.create!(body: 'dummy', photo_id: 'dummy', user: users(:john_doe))
+    @user = users(:john_doe)
+    @post = @channel.posts.create!(body: 'dummy', photo_id: 'dummy', user: @user)
   end
 
   test 'returns channels' do
@@ -21,5 +22,12 @@ class Api::PostsChannelsControllerTest < ApiControllerTest
     assert_response :ok
     assert_equal 1, json_response['posts'].size
     assert_equal @post.id, json_response['posts'].first['id']
+  end
+
+  test 'retrieve posts in newest order' do
+    Upvote.vote! @post, @user
+    @channel.posts.create!(body: 'newest', photo_id: 'dummy', user: @user)
+    get :show, params: { id: @channel.name, sort: 'newest' }
+    assert_equal %w[newest dummy], json_response['posts'].map { |p| p['plain_body'] }
   end
 end

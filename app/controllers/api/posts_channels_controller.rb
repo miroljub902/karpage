@@ -8,7 +8,11 @@ class Api::PostsChannelsController < ApiController
 
   def show
     @channel = PostChannel.active.find_by!(name: params[:id])
-    @posts = PostChannel.get_posts(@channel, user: current_user, page: params[:page], per: params[:per])
+    @posts = PostChannel.get_posts(@channel,
+                                   user: current_user,
+                                   page: params[:page],
+                                   per: params[:per],
+                                   sort: params[:sort])
     respond_with @posts, include: %w[user]
   end
 end
