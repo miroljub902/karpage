@@ -4,30 +4,23 @@
 
 - unless f.object.persisted? # Don't allow changing media after created
   = f.file_field :photo, accept: 'image/*'
-  .photobutton-container class=(f.object.photo ? 'single' : 'dropdown')
-    .photobutton.post__photo-btn.with-preview.single
-      .preview
-        = ix_refile_image_tag(f.object, :photo, auto: 'format', fit: 'clip', w: 100, h: 46, alt: '', size: '100x46')
-        .remove.sprite.sprite-delete
+  .photobutton-container class='single'
 
-    .photobutton.dropdown
+    .photobutton.post__photo-btn.with-preview.single
+
+    .photobutton.single
       .preview
         img width="100" height="46"
         .remove.sprite.sprite-delete
 
-      .btn.btn-default.btn-lg href="#" data-toggle="dropdown"
-        = image_tag 'photo-white.png', class: 'icon', size: '28x22'
-        span.text
-          'Photo&nbsp;
-          span.caret
-
-      ul.dropdown-menu
-        li
-          a.post__photo-btn href="#post__photo" Add Photo
-        li
-          a.post__album-btn href="#post__album" Add Album
-        li
-          a.post__album-btn href="#post__video" Add Video
+      .btn.btn-default.btn-lg href="#post_photo"
+          = image_tag 'photo-white.png', class: 'icon', size: '28x22'
+          a.post__photo-btn href="#post__photo" class="btn_color" PHOTO
+      .btn.btn-default.btn-lg href=""
+          a.post__album-btn href="#post__album" class="btn_color" ALBUM
+      
+      .btn.btn-default.btn-lg href="#"
+          a.post__album-btn href="#post__video" class="btn_color" VIDEO
 
   .tab-content
     #post__album.tab-pane.m-b-2 class=('active' if f.object.photos.size > 0)

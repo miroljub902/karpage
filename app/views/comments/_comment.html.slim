@@ -26,9 +26,10 @@
           a.m-l-1.btn-plain href="#comment-#{comment.id}__reply" data-toggle="collapse"
             .fa.fa-comment-o
             span Reply
-
+    
     - if comment.photo
-      = ix_refile_image_tag comment, :photo, auto: 'enhance,format', fit: 'clip', h: 400, class: 'img-responsive', alt: ''
+        = link_to ix_refile_image_url(comment, :photo, auto: 'enhance,format', format: 'auto', h: 1024), data: { lightbox: "comment-#{comment.id}" } do
+          = ix_refile_image_tag comment, :photo, auto: 'enhance,format', fit: 'clip', h: 400, class: 'img-responsive', alt: ''
 
     = comment.formatted_body
 
