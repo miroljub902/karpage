@@ -48,6 +48,7 @@ class User < ApplicationRecord
   has_many :notifications_as_source, as: :source, class_name: 'Notification', dependent: :delete_all
   has_many :reports_reported, class_name: 'Report', dependent: :destroy
   has_many :reports, as: :reportable, dependent: :destroy
+  has_many :gears
 
   accepts_nested_attributes_for :dream_cars, allow_destroy: true
 

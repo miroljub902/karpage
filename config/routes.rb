@@ -16,7 +16,8 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
+  # namespace :api, constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do
+  namespace :api do
     resource :session, only: %i[create destroy], path: 'session'
     resource :password_reset, path: 'password', only: %i[create update]
     resource :user, only: %i[show create update] do
@@ -70,6 +71,7 @@ Rails.application.routes.draw do
     end
 
     resources :hashtags, only: :index
+    resources :gears
   end
 
   scope constraints: { subdomain: ENV.fetch('API_SUBDOMAIN') } do

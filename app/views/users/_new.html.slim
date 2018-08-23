@@ -28,6 +28,11 @@
               - if @user.errors[:password_confirmation].any?
                 .help-block= @user.errors[:password_confirmation].join(', ')
 
+            .form-group class=(@user.errors[:user_type].any? ? 'error' : nil)
+              = f.text_field :user_type, class: 'form-control input-lg', placeholder: 'User type', required: true
+              - if @user.errors[:user_type].any?
+                .help-block= @user.errors[:user_type].join(', ')
+            
           .small.terms
             ' By joining Kar Page, you agree to the
             = link_to 'Terms of Use', page_path('terms-and-conditions'), target: '_blank'
